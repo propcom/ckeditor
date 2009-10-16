@@ -1,0 +1,55 @@
+$Id$
+
+- check permissions to admin/settings/ckeditor/edit/Advanced for unathenticated users
+
+- call Drupal.t() in javascript
+
+- Toggle doesn't work when CKEditor is set to start automatically
+
+- implement popup mode
+
+- XSS protection doesn't work 
+
+- finish CKFinder support, add quick uploads, check problems with bootstraping, add comments to filemanager.config.php how to use it
+
+- easy migration from FCKeditor module 
+ (older versions of modules may require database updates first - see fckeditor.install and fckeditor_update_XYZ() functions)
+ 
+- remove ckeditor_update_XYZ() functions from ckeditor.install
+
+- create same plugins for CKEditor that we had in FCKeditor, we can skip img_assist integration at the beginning
+
+- provide patches for external file browsers
+
+- check status of the Linktocontent module and provide some working solution
+
+- create new CHANGELOG.TXT
+
+- add UI color picker in the administration section (add informatino that it works with Kama skin)
+  adjust CKEditor color depending on selected color scheme (+ add option to disable this behavior)
+
+## Later (can be relatively simple with CKEditor) ##
+
+- check if CKEditor can work with dynamically created elements, i.e: 
+    http://drupal.org/node/205386
+    http://drupal.org/node/283524
+    http://drupal.org/node/428632
+    http://drupal.org/node/601038
+
+## Before release ##
+
+- make sure that CKEditor will be compatible with all file browsers compatible with FCKeditor (provide patches for other projects)
+
+- update copyright information
+
+- setup drupal.ckeditor.com demo website
+
+- launch demo web site: drupal.ckeditor.com
+
+- update documentation (help, README.TXT, TROUBLESHOOTING.txt, contents on the demo web site)
+
+- make sure CKEditor module passes coder module tests: http://drupal.org/project/coder
+
+- create .pot files, call for translations
+
+- test upgrading/migration from FCKeditor 6.x-1.x, 6.x-2.x 
