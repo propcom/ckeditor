@@ -1,8 +1,12 @@
 $Id$
 
+- check predefined toolbar definitions, perhaps they need some adjustments (choose the most important buttons, it should look fine in 1024x768)
+
 - check permissions to admin/settings/ckeditor/edit/Advanced for unathenticated users
 
 - call Drupal.t() in javascript
+
+- make sure module is easy to transalte
 
 - Toggle doesn't work when CKEditor is set to start automatically
 
@@ -19,9 +23,9 @@ $Id$
 
 - create same plugins for CKEditor that we had in FCKeditor, we can skip img_assist integration at the beginning
 
-- provide patches for external file browsers
+- provide patches for external file browsers (all compatible with FCKeditor at the beginning)
 
-- check status of the Linktocontent module and provide some working solution
+- provide some Link to content/menu solution
 
 - create new CHANGELOG.TXT
 
@@ -36,13 +40,13 @@ $Id$
     http://drupal.org/node/428632
     http://drupal.org/node/601038
 
+- check how it works with ajax comments
+
 ## Before release ##
 
 - make sure that CKEditor will be compatible with all file browsers compatible with FCKeditor (provide patches for other projects)
 
 - update copyright information
-
-- setup drupal.ckeditor.com demo website
 
 - launch demo web site: drupal.ckeditor.com
 
