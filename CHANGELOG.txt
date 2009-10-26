@@ -1,7 +1,7 @@
 $Id$
 
 -- 2009-10-26 version 6.x-1.x-dev
-* Fix compatibility with postgresql
+* #614612 Fix compatibility with postgresql
 
 -- 2009-10-22 version 6.x-1.x-dev
 * Port an update to the translation sources (text in t() function calls) from fckeditor 6.x-2.x
