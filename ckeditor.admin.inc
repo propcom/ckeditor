@@ -37,15 +37,19 @@ function ckeditor_admin_main() {
   $editor_path = ckeditor_path(TRUE);
   $ckconfig_file = $editor_path .'/config.js';
   if (!file_exists($ckconfig_file)) {
-    drupal_set_message(t('The CKEditor component appears to be not installed correctly, because %checkfile could not be found.') .'<br/>'. t('Please go to the !ckeditorlink to download the latest version. After that you must extract the files to %ckeditorpath and make sure that the directory %ckeditorsubdir and the file %ckeditorfile exist. Refer to the !readme for more information.',
-      array(
-        '%checkfile' => $ckconfig_file,
-        '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'),
-        '!readme' => l(t('readme.txt'), 'admin/help/ckeditor'),
-        '%ckeditorpath' => $editor_path,
-        '%ckeditorsubdir' => $editor_path .'/editor',
-        '%ckeditorfile' => $editor_path .'/ckeditor.js',
-      )), 'error');
+    drupal_set_message(
+      t('The CKEditor component appears to be not installed correctly, because %checkfile could not be found.',
+        array(
+          '%checkfile' => $ckconfig_file,
+        )) .'<br/>'.
+      t('Please go to the !ckeditorlink to download the latest version. After that you must extract the files to %ckeditorpath and make sure that the directory %ckeditorsubdir and the file %ckeditorfile exist. Refer to the !readme for more information.',
+        array(
+          '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'),
+          '!readme' => l(t('readme.txt'), 'admin/help/ckeditor'),
+          '%ckeditorpath' => $editor_path,
+          '%ckeditorsubdir' => $editor_path .'/editor',
+          '%ckeditorfile' => $editor_path .'/ckeditor.js',
+        )), 'error');
     drupal_set_message(t('If you have CKEditor already installed please edit !editgloballink and update CKEditor path.',
       array(
         '!editgloballink' => l(t('CKEditor Global Profile'), 'admin/settings/ckeditor/editg'),
@@ -1259,19 +1263,21 @@ function ckeditor_rebuild_selectors($name = NULL) {
 
       foreach (array('excl', 'simple_incl') as $var) {
         $settings[$var .'_regex'] = '';
-        $rules = preg_split('/[\s,]+/', $settings[$var]);
-        $regex = array();
+        if (!empty($settings[$var])) {
+          $rules = preg_split('/[\s,]+/', $settings[$var]);
+          $regex = array();
 
-        if (!empty($rules)) {
-          foreach ($rules as $rule) {
-            if (!empty($rule)) {
-              $rule = ckeditor_parse_rule($rule);
-              $regex[] = '(?:'. ckeditor_rule_to_regex($rule) .')';
+          if (!empty($rules)) {
+            foreach ($rules as $rule) {
+              if (!empty($rule)) {
+                $rule = ckeditor_parse_rule($rule);
+                $regex[] = '(?:'. ckeditor_rule_to_regex($rule) .')';
+              }
             }
-          }
 
-          if (!empty($regex)) {
-            $settings[$var .'_regex'] = '#'. implode('|', $regex) .'#';
+            if (!empty($regex)) {
+              $settings[$var .'_regex'] = '#'. implode('|', $regex) .'#';
+            }
           }
         }
       }
