@@ -73,7 +73,7 @@ Note: this instruction assumes that you install CKEditor in
       <a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr>
       <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong>
       <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code>
-      <cite> <embed> <object> <param> <strike> <caption>.<tbody>
+      <cite> <embed> <object> <param> <strike> <caption> <tbody>
       Fore easier usage (copying), all tags are below in one line:
       <a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption> <tbody> 
    7. To have a better control over line breaks, you may disable Line break converter
