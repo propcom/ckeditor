@@ -735,7 +735,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#title' => t('Load method'),
     '#default_value' => !empty($profile->settings['ckeditor_load_method']) ? $profile->settings['ckeditor_load_method'] : 'ckeditor.js',
     '#options' => _ckeditor_load_methods(),
-    '#description' => t('Select the load method of CKEditor. If ckeditor_base.js is used, only a small file is initially loaded and the rest part of the editor is loaded later (see "Load timeout").'),
+    '#description' => t('Select the load method of CKEditor. If ckeditor_base.js is used, only a small file is initially loaded and the rest part of the editor is loaded later (see "Load timeout"). This might be handy if CKEditor is disabled by default.'),
   );
   $form['advanced']['ckeditor_load_time_out'] = array(
     '#type' => 'textfield',
