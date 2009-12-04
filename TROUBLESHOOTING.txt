@@ -10,16 +10,13 @@ CONTENTS OF THIS FILE
  * Images aren't shown when submitted
  * I followed the instruction, but CKEditor doesn't show up (+ debugging instructions)
  * The CKEditor component is not installed correctly
- * Error loading fckstyles.xml
  * CKEditor doesn't work after upgrading
  * Text alignment doesn't work
  * Line breaks removed when editing content previously authored without using CKEditor
  * I successfully uploaded an image, but cannot see it in the file browser
- * Error creating folder "redirect:/index.php/" (Can't create redirect:directory)
  * Quote symbols being changed to quote entities
- * CKEditor does not appear and a Javascript warning concerning FCKLang is displayed
 
-CKEditor doesn't work in xxx theme (150556, 158173)
+CKEditor doesn't work in xxx theme
 ----------------------------------------------------
 
 Your theme may be missing:
@@ -42,19 +39,18 @@ At this moment, CKEditor will not show up, when the following modules are enable
     * Theme developer (http://drupal.org/node/318941)
     * Theme Builder (http://drupal.org/node/271032)
 
-Images aren't shown when submitted (175339)
+Images aren't shown when submitted
 -------------------------------------------
 
 You probably must configure properly the input format. Either set it to Full HTML or add <img> tag to Filtered HTML. 
 The full list of tags, which should be allowed, is available in README.txt file.
 
-I followed the instruction, but CKEditor doesn't show up (195759, 196549)
+I followed the instruction, but CKEditor doesn't show up
 --------------------------------------------------------------------------
 
 First of all make sure, that CKEditor is enabled on this specific page. 
 Take a look into source code of your page and search for something similar to:
-  var oFCK_1 = new CKEditor( 'oFCK_1' );
-  oFCK_1.BasePath	= '/modules/ckeditor/ckeditor/';
+  "ckeditor": { "module_path":
 
 If you can't find similar code, then it means that CKEditor is disabled on that page/field. 
 Make sure that you have the right permissions to use CKEditor and check your CKEditor profile (include/exclude settings, minimum rows value).
@@ -89,7 +85,7 @@ If CKEditor is enabled, but it doesn't show up, try the following steps:
    4. Finally, if nothing helped, to find out where exactly error occured, you may use Firefox with Firebug extension. 
       Use the project's site to create a new support request providing as much information as possible, including the exact javascript error message that you got.
 
-The CKEditor component is not installed correctly (205893, 210915, 110528)
+The CKEditor component is not installed correctly
 ---------------------------------------------------------------------------
 
 Please remember that installing CKEditor module is a two step process. You have to download and unpack:
@@ -98,42 +94,40 @@ CKEditor, the HTML editor
 
 If your CKEditor does not show you must check if all files are extracted correctly. 
 The directory /modules/ckeditor/ckeditor/ should have the following files:
-ckeditor.js, fckconfig.js, fckstyles.xml, fcktemplates.xml and a directory named editor.
+ckeditor.js, config.js, contents.css and directories named "skins", "themes", "lang", "images"
 
 The correct directory structure is as follows:
-modules
-   ckeditor
+modules               <dir>
+   ckeditor           <dir>
       ckeditor.module
-      ckeditor
-         _samples
-         editor
+      ckeditor.admin.inc
+      ...
+      ckeditor        <dir>
+         _source      <dir>
+         images       <dir>
+         lang         <dir>
+         plugins      <dir>
+         skins        <dir>
+         themes       <dir>
          COPY_HERE.txt
-         fckconfig.js
+         ckeditor.js
          ...
 
-Error loading fckstyles.xml (233006, 210294)
---------------------------------------------
-
-This may happen if your server is configured to parse .xml files just like .php files. 
-You may need to contact your server administrator / hosting provider to get a help regarding this issue.
-You can also try to add to .htaccess file the following directive:
-AddType text/xml xml
-
-CKEditor doesn't work after upgrading (244850)
+CKEditor doesn't work after upgrading
 -----------------------------------------------
 
 This may be caused by the browser's cache. Clear your browser's cache, restart the browser if it didn't help.
 If you upgraded CKEditor module, make sure that all roles with "access ckeditor" permissions are assigned to at least one CKEditor profile.
 
-Text alignment doesn't work (198637)
+Text alignment doesn't work
 ------------------------------------
 
 In ckeditor.config.js (located in ckeditor module directory), the following classes are defined to provide text alignment functionality:
-FCKConfig.JustifyClasses = ['rteleft','rtecenter','rteright','rtejustify'] ;
+config.justifyClasses = [ 'rteleft', 'rtecenter', 'rteright', 'rtejustify' ];
 
 Unfortunately, some themes may override those styles and text alignment may not work as expected.
 If you're using Full HTML input format, you may simply comment out this line:
-//FCKConfig.JustifyClasses = ['rteleft','rtecenter','rteright','rtejustify'] ;
+//config.justifyClasses = [ 'rteleft', 'rtecenter', 'rteright', 'rtejustify' ];
 
 and CKEditor will use inline styles instead: <p style="text-align: right;">sample text</p>. 
 The problem is that inline styles may be used only with Full HTML. 
@@ -162,7 +156,7 @@ To align <p> tag, you will have to edit modules/ckeditor/ckeditor.css file and c
 Use DOM inspector (in Firefox) to check why alignment doesn't work and to correct CSS styles. 
 There is no universal workaround for this.
 
-Line breaks removed when editing content previously authored without using CKEditor (240633)
+Line breaks removed when editing content previously authored without using CKEditor
 ---------------------------------------------------------------------------------------------
 
 The problems is in the way how did you configure your input filters. 
@@ -177,58 +171,15 @@ Possible workarounds:
 
  If you're a PHP programmer, you may try the approach proposed by BakerQ in drupal.org/node/240633
 
-
-I successfully uploaded an image, but cannot see it in the file browser (239552)
---------------------------------------------------------------------------------
-
-Well, it's probably one of the less intuitive things in CKEditor.
-When you upload image directly through the image dialog box, "QuickUpload" command is executed. The problem is that by default, "QuickUpload" command uploads files to "root directory" of the file browser. However, when you click "browse server" button, all three resource types: "Image", "Files", "Flash" point to subdirectories inside of that directory, that's why you're not able to see uploaded files in the root directory.
-
-The solution is to edit editor/filemanager/connectors/php/config.php. Scroll down to the bottom of this file and find:
-$Config['FileTypesPath']['Image'] = $Config['UserFilesPath'] . 'image/' ;
-$Config['FileTypesAbsolutePath']['Image'] = ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'image/' ;
-$Config['QuickUploadPath']['Image'] = $Config['UserFilesPath'] ;
-$Config['QuickUploadAbsolutePath']['Image']= $Config['UserFilesAbsolutePath'] ;
-
-change it to something similar to:
-$Config['FileTypesPath']['Image'] = $Config['UserFilesPath'] . 'image/' ;
-$Config['FileTypesAbsolutePath']['Image']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'image/' ;
-$Config['QuickUploadPath']['Image'] = $Config['FileTypesPath']['Image'];
-$Config['QuickUploadAbsolutePath']['Image']= $Config['FileTypesAbsolutePath']['Image'];
-
-(apply the same change to each resource type, I've changed the last two lines)
-
-The idea is that FileTypesPath and QuickUploadPath should point to the same path (same rule applies to FileTypesAbsolutePath and QuickUploadAbsolutePath). Note that now "QuickUploadPath" points to the subdirectory, so you'll be able to see only newly uploaded files with the QuickUpload command.
-
-You can also change FileTypesPath (QuickUploadPath and so on) of each resource type so that it pointed to the "root directory" ($Config['UserFilesPath']), but this way all files will be uploaded to the same directory.
-
-Error creating folder "redirect:/index.php/" (Can't create redirect:directory) (185406)
----------------------------------------------------------------------------------------
-
-This error appears when trying to use the built-in file browser in CKEditor and is caused by invalid $Config['UserFilesAbsolutePath'] in CKEditor configuration file. The reason of such message may be tricky, it usually means that you didn't follow the instructions from README.txt strictly (see "How to enable the file browser" section).
-
-Usually it is enough to check these two things:
-make sure that filemanager.config.php is included in the CKEditor configuration file exactly in the place where the instruction says
-uncomment $cookie_domain variable in settings.php and set it to the right value
-
-Quote symbols being changed to quote entities (263426)
+Quote symbols being changed to quote entities
 ------------------------------------------------------
 
 Some modules like Typogrify or SmartyPants require special handling of HTML entities. 
 For example, by default, CKEditor will convert double quote (") to &quot;. 
 To disable processing HTML entities, add the following line to modules/ckeditor/ckeditor.config.js:
 
-FCKConfig.ProcessHTMLEntities = false ;
+config.entities = false;
 
 It is also possible to disable processing HTML entities for selected CKEditor profile, by adding this line in "Advanced Options" -> "Custom javascript configuration":
 
-ProcessHTMLEntities = false ;
-
-CKEditor does not appear and a Javascript warning concerning FCKLang is displayed (190010)
--------------------------------------------------------------------------------------------
-
-One of CKEditors many features is its ability to detect the language of the user and load the appropriate language file. 
-At first, it might tempting to leave out all language files except the one you're using when you upload CKEditor. 
-But when people using other languages are using that CKEditor installation, 
-CKEditor will try to load a language file that isn't available and a Javascript error concerning FCKLang appears. 
-Either upload back all language files or disable the "Auto-detect language" setting in your CKEditor profile.
+entities = false ;

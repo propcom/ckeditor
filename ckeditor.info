@@ -1,0 +1,4 @@
+; $Id$
+name = CKEditor
+description = "Enables the usage of CKEditor (WYSIWYG) instead of plain text fields."
+core = 6.x

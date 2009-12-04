@@ -41,109 +41,169 @@
  * and will need to be removed.
  */
 function ckeditor_install() {
-
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
   drupal_install_schema('ckeditor');
 
-  //create two default roles based on previous settings
-  db_query("INSERT INTO {ckeditor_role} (name, rid) VALUES ('%s', %d)",
-  "Default", defined('DRUPAL_ANONYMOUS_RID') ? DRUPAL_ANONYMOUS_RID : 1);
-  db_query("INSERT INTO {ckeditor_role} (name, rid) VALUES ('%s', %d)",
-  "Advanced", defined('DRUPAL_AUTHENTICATED_RID') ? DRUPAL_AUTHENTICATED_RID : 2);
+  //migration
+  //checking fck editor schema version
+  $rs=db_query("SELECT schema_version FROM {system} WHERE name='fckeditor'");
+  $f_sv=FALSE;
+  if ($row = db_fetch_array($rs)) {
+    $f_sv=(int)$row['schema_version'];
+  }
 
-  //insert settings for default role
-  $arr = array();
-  $arr['allow_user_conf'] = "f";
-  $arr['min_rows'] = variable_get('ckeditor_minimum_rows', 1);
-  $arr['excl_mode'] = variable_get('ckeditor_exclude_toggle', 0);
-  $arr['filebrowser'] = 'none';
-  $arr['quickupload'] = 'f';
+  //searching ckeditor.js
+  $editor_path = _ckeditor_script_path();
 
-  //security
-  $arr['ss'] = "2";
-  $arr['filters']['filter/0'] = 1;
+  switch ($f_sv) {
+    case 6201:
+      db_query("INSERT INTO {ckeditor_role}(name, rid) SELECT name, rid FROM fckeditor_role");
+      $rs=db_query("SELECT * FROM {fckeditor_settings} WHERE 1");
+      while ($row=db_fetch_array($rs)) {
+        $nname=str_replace(array('FCKeditor', 'fckeditor'), array('CKEditor', 'ckeditor'), $row['name']);
+        $settings=unserialize($row['settings']);
+        if (array_key_exists('js_conf', $settings)) {
+          unset($settings['js_conf']);
+        }
+        foreach ($settings as $k => $v) {
+          if (FALSE!==strpos($k, 'fckeditor')) {
+            unset($settings[$k]);
+            $k=str_replace('fckeditor', 'ckeditor', $k);
+          }
+          if ((!is_array($v))&&(FALSE!==strpos($v, 'fckeditor'))) {
+            $v=str_replace('fckeditor', 'ckeditor', $v);
+          }
+          if ($k == 'skin' && $v != 'office2003') {
+            $v = 'kama';
+          }
+          if ($k == 'css_style' && $v != 'default') {
+            $v = 'default';
+          }
+          if ($k == 'styles_path' && strlen($v) > 0) {
+            $v='';
+          }
+          if ($editor_path && $k == 'ckeditor_path') {
+            $v=$editor_path;
+          }
+          $settings[$k]=$v;
+        }
+        if (!array_key_exists('excl', $settings)) {
+          $settings['excl']='';
+        }
+        if (!array_key_exists('simple_incl', $settings)) {
+          $settings['simple_incl']='';
+        }
+        $settings=serialize($settings);
+        db_query("INSERT INTO {ckeditor_settings}(name, settings) VALUES('%s', '%s')", $nname, $settings);
+      }
+      break;
+    default:
+      //create two default roles based on previous settings
+      db_query("INSERT INTO {ckeditor_role} (name, rid) VALUES ('%s', %d)",
+      "Default", defined('DRUPAL_ANONYMOUS_RID') ? DRUPAL_ANONYMOUS_RID : 1);
+      db_query("INSERT INTO {ckeditor_role} (name, rid) VALUES ('%s', %d)",
+      "Advanced", defined('DRUPAL_AUTHENTICATED_RID') ? DRUPAL_AUTHENTICATED_RID : 2);
 
-  //appearance
-  $arr['default'] = "t";
-  $arr['show_toggle'] = "t";
-  $arr['popup'] = variable_get('ckeditor_popup', 0) ? "t" : "f";
-  $arr['skin'] = "default";
-  $arr['toolbar'] = variable_get('ckeditor_default_toolbar', 'DrupalBasic');
-  $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
-  $arr['width'] = variable_get("ckeditor_width", "100%");
-  $arr['lang'] = "en";
-  $arr['auto_lang'] = "t";
+      //insert settings for default role
+      $arr = array();
+      $arr['allow_user_conf'] = "f";
+      $arr['min_rows'] = variable_get('ckeditor_minimum_rows', 1);
+      $arr['excl_mode'] = variable_get('ckeditor_exclude_toggle', 0);
+      $arr['filebrowser'] = 'none';
+      $arr['quickupload'] = 'f';
 
-  //output
-  $arr['enter_mode'] = "p";
-  $arr['shift_enter_mode'] = "br";
-  $arr['font_format'] = 'p;div;pre;address;h1;h2;h3;h4;h5;h6';
-  $arr['format_source'] = "t";
-  $arr['format_output'] = "t";
+      //security
+      $arr['ss'] = "2";
+      $arr['filters']['filter/0'] = 1;
 
-  //css
-  $arr['css_mode'] = "theme";
-  $arr['css_path'] = variable_get("ckeditor_stylesheet", "");
+      //appearance
+      $arr['default'] = "t";
+      $arr['show_toggle'] = "t";
+      $arr['popup'] = variable_get('ckeditor_popup', 0) ? "t" : "f";
+      $arr['skin'] = "kama";
+      $arr['toolbar'] = variable_get('ckeditor_default_toolbar', 'DrupalBasic');
+      $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
+      $arr['width'] = variable_get("ckeditor_width", "100%");
+      $arr['lang'] = "en";
+      $arr['auto_lang'] = "t";
 
-  //upload
-  //get permissions here like in _update_role_permissions
-  $arr['filebrowser'] = "none";
-  $arr['user_choose'] = "f";
-  $arr['show_fieldnamehint'] = "t";
+      //output
+      $arr['enter_mode'] = "p";
+      $arr['shift_enter_mode'] = "br";
+      $arr['font_format'] = 'p;div;pre;address;h1;h2;h3;h4;h5;h6';
+      $arr['format_source'] = "t";
+      $arr['format_output'] = "t";
 
-  db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Default", serialize($arr));
+      //css
+      $arr['css_mode'] = "theme";
+      $arr['css_path'] = variable_get("ckeditor_stylesheet", "");
 
-  //insert settings for advanced role
-  $arr['toolbar'] = variable_get('ckeditor_advanced_toolbar', 'DrupalFiltered');
-  db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Advanced", serialize($arr));
+      //upload
+      //get permissions here like in _update_role_permissions
+      $arr['filebrowser'] = "none";
+      $arr['user_choose'] = "f";
+      $arr['show_fieldnamehint'] = "t";
+      $arr['ckeditor_load_method'] = "ckeditor.js";
+      $arr['ckeditor_load_time_out'] = 0;
 
-  $arr = array();
+      db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Default", serialize($arr));
 
-  //exclude by default some known textareas where HTML is not expected
-  //edit-recipients //contact module
-  //edit-reply //contact module
-  //edit-description //taxonomy module
-  //edit-synonyms //taxonomy module
-  //edit-img-assist-textareas //img assist module
-  $arr['excl_mode'] = 0;
-  $arr['excl'] = variable_get("ckeditor_exclude",
-  "admin/user/settings.edit-user-mail-*\n".
-  "*.edit-pages\n".
-  "*.edit-pathauto-ignore-words\n".
-  "*.edit-recipients\n".
-  "*.edit-reply\n".
-  "*.edit-description\n".
-  "*.edit-synonyms\n".
-  "*.edit-img-assist-textareas\n".
-  "*.edit-img-assist-paths\n".
-  "*.edit-nodewords-description\n".
-  "*.edit-nodewords-description-value\n".
-  "admin/content/nodewords/global*\n".
-  "*.edit-relatedlinks-fieldset-relatedlinks\n".
-  "*.edit-allowed-values-php\n".
-  "*.edit-allowed-values\n".
-  "*.edit-update-notify-emails\n".
-  "*.edit-googleanalytics-*\n".
-  "*.edit-piwik-*\n".
-  "*.edit-feedburner-useragents\n".
-  "*@*.edit-webform-*\n".
-  "admin/*/logintoboggan\n".
-  "admin/settings/actions/configure/*\n".
-  "*.edit-target\n"
-  );
+      //insert settings for advanced role
+      $arr['toolbar'] = variable_get('ckeditor_advanced_toolbar', 'DrupalFiltered');
+      db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Advanced", serialize($arr));
 
-  //force by default simple toolbar on selected textareas
-  $arr['simple_incl_mode'] = 1;
-  $arr['simple_incl'] =
-  "*.edit-signature\n".
-  "admin/settings/site-information.*\n".
-  "admin/settings/site-maintenance.*\n".
-  "*.edit-page-help\n".
-  "*.edit-user-registration-help\n".
-  "*.edit-user-picture-guidelines\n";
+      $arr = array();
 
-  db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "CKEditor Global Profile", serialize($arr));
+      //exclude by default some known textareas where HTML is not expected
+      //edit-recipients //contact module
+      //edit-reply //contact module
+      //edit-description //taxonomy module
+      //edit-synonyms //taxonomy module
+      //edit-img-assist-textareas //img assist module
+      $arr['excl_mode'] = 0;
+      $arr['excl'] = variable_get("ckeditor_exclude",
+      "admin/user/settings.edit-user-mail-*\n".
+      "*.edit-pages\n".
+      "*.edit-pathauto-ignore-words\n".
+      "*.edit-recipients\n".
+      "*.edit-reply\n".
+      "*.edit-description\n".
+      "*.edit-synonyms\n".
+      "*.edit-img-assist-textareas\n".
+      "*.edit-img-assist-paths\n".
+      "*.edit-nodewords-description\n".
+      "*.edit-nodewords-description-value\n".
+      "admin/content/nodewords/global*\n".
+      "*.edit-relatedlinks-fieldset-relatedlinks\n".
+      "*.edit-allowed-values-php\n".
+      "*.edit-allowed-values\n".
+      "*.edit-update-notify-emails\n".
+      "*.edit-googleanalytics-*\n".
+      "*.edit-piwik-*\n".
+      "*.edit-feedburner-useragents\n".
+      "*@*.edit-webform-*\n".
+      "webform@*.edit-extra-items\n".
+      "admin/*/logintoboggan\n".
+      "admin/settings/actions/configure/*\n".
+      "*.edit-target\n"
+      );
 
-  module_load_include('inc', 'ckeditor', 'ckeditor.admin');
+      //force by default simple toolbar on selected textareas
+      $arr['simple_incl_mode'] = 1;
+      $arr['simple_incl'] =
+      "*.edit-signature\n".
+      "admin/settings/site-information.*\n".
+      "admin/settings/site-maintenance.*\n".
+      "*.edit-page-help\n".
+      "*.edit-user-registration-help\n".
+      "*.edit-user-picture-guidelines\n";
+      if ($editor_path) {
+        $arr['ckeditor_path']=$editor_path;
+      }
+
+      db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "CKEditor Global Profile", serialize($arr));
+  }
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.admin');
   ckeditor_rebuild_selectors();
 }
 
@@ -200,6 +260,8 @@ function ckeditor_schema() {
  * - Quick upload and/or the built-in file browser are used and $cookie_domain is not set
  */
 function ckeditor_requirements($phase) {
+  module_load_include('module', 'ckeditor');
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
   $requirements = array();
 
   if ($phase == 'runtime') {
@@ -233,30 +295,16 @@ function ckeditor_requirements($phase) {
         }
       }
     }
-
+    if ((($installed_version = _ckeditor_requirements_getinstalledversion()) !== NULL) && (-1==version_compare($installed_version, '3.1 SVN'))) {
+      $requirements['ckeditor']['description'] = t('Some features are disabled because you\'re using an older version of CKEditor, please upgrade the editor to CKEditor 3.1 (or higher).');
+      $requirements['ckeditor']['severity'] = REQUIREMENT_INFO;
+    }
     if (!empty($installed_version)) {
       $requirements['ckeditor']['value'] = $installed_version;
     }
   }
 
   return $requirements;
-}
-
-/**
- * Determines whether the CKEditor sources are present
- *
- * It checks if ckeditor.js is present.
- *
- * This function is used by ckeditor_requirements()
- *
- * @return boolean True if CKEditor is installed
- */
-function _ckeditor_requirements_isinstalled() {
-  module_load_include('module', 'ckeditor');
-  $editor_path = ckeditor_path(TRUE);
-  $jspath = $editor_path .'/ckeditor.js';
-
-  return file_exists($jspath);
 }
 
 /**
@@ -275,10 +323,13 @@ function _ckeditor_requirements_isinstalled() {
  */
 function _ckeditor_requirements_getinstalledversion() {
   module_load_include('module', 'ckeditor');
-  $editor_path = ckeditor_path(TRUE);
+  $editor_path = ckeditor_path(TRUE, TRUE);
   $jspath = $editor_path .'/ckeditor_basic.js';
 
-  $configcontents = file_get_contents($jspath);
+  $configcontents = @file_get_contents($jspath);
+  if (!$configcontents) {
+    return NULL;
+  }
   $matches = array();
   if (preg_match('#,version:\'(.*?)\',#', $configcontents, $matches)) {
     return $matches[1];
@@ -294,11 +345,14 @@ function _ckeditor_requirements_getinstalledversion() {
  */
 function _ckeditor_requirements_ckfinder_config_check($profile_name) {
   module_load_include('module', 'ckeditor');
-  $editor_path = ckeditor_path(TRUE);
-  $config_path = $editor_path .'/ckfinder/config.php';
+  $module_drupal_path = drupal_get_path('module', 'ckeditor');
+  $config_path = $module_drupal_path .'/ckfinder/config.php';
 
   if (!file_exists($config_path)) {
-    return t('!config not found. Make sure that you have uploaded all files or didn\'t remove that file accidentally.', array('!config' => 'ckfinder/config.php'));
+    return t('!ckfinder is not installed correctly: !config not found. Make sure that you have uploaded all files or didn\'t remove that file accidentally.', array(
+      '!config' => $module_drupal_path .'/ckfinder/config.php',
+      '!ckfinder' => '<a href="http://ckfinder.com">CKFinder</a>'
+    ));
   }
 
   if (!is_readable($config_path)) {

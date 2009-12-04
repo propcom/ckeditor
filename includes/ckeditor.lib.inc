@@ -2,7 +2,7 @@
 // $Id$
 /**
  * CKEditor - The text editor for Internet - http://ckeditor.com
- * Copyright (C) 2003-2009 Frederico Knabben
+ * Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
  *
  * == BEGIN LICENSE ==
  *
@@ -259,4 +259,164 @@ function ckeditor_load_lang_options() {
   asort($arr);
 
   return $arr;
+}
+
+function ckeditor_user_get_setting($user, $profile, $setting) {
+  $default = array(
+    'default' => 't',
+    'show_toggle' => 't',
+    'popup' => 'f',
+    'skin' => 'kama',
+    'toolbar' => 'default',
+    'expand' => 't',
+    'width' => '100%',
+    'lang' => 'en',
+    'auto_lang' => 't',
+  );
+
+  if ($profile->settings['allow_user_conf']) {
+    $status = isset($user->{'ckeditor_'. $setting}) ? $user->{'ckeditor_'. $setting} : (isset($profile->settings[$setting]) ? $profile->settings[$setting] : $default[$setting]);
+  }
+  else {
+    $status = isset($profile->settings[$setting]) ? $profile->settings[$setting] : $default[$setting];
+  }
+
+  return $status;
+}
+
+function ckeditor_user_get_profile($user, $element_id = NULL) {
+  $rids = array();
+
+  // Since ckeditor_profile_load() makes a db hit, only call it when we're pretty sure
+  // we're gonna render ckeditor.
+  $sorted_roles = ckeditor_sorted_roles();
+  foreach (array_keys($sorted_roles) as $rid) {
+    if (isset($user->roles[$rid])) {
+      $rids[] = $rid;
+    }
+  }
+
+  if ($user->uid == 1 && !sizeof($rids)) {
+    $r = db_fetch_object(db_query_range("SELECT r.rid FROM {ckeditor_role} r ORDER BY r.rid DESC", 1));
+    $rids[] = $r->rid;
+  }
+
+  $profile_names = array();
+  if (sizeof($rids)) {
+    $result = db_query("SELECT r.rid, s.name FROM {ckeditor_settings} s INNER JOIN {ckeditor_role} r ON r.name = s.name WHERE r.rid IN (". implode(",", $rids) .")");
+    while (($row = db_fetch_array($result))) {
+      if (!isset($profile_names[$row['rid']])) {
+        $profile_names[$row['rid']] = array();
+      }
+      array_push($profile_names[$row['rid']], $row['name']);
+    }
+  }
+
+  foreach ($rids as $rid) {
+    if (!empty($profile_names[$rid])) {
+      foreach ($profile_names[$rid] as $profile_name) {
+        $profile = ckeditor_profile_load($profile_name);
+
+        $conf = $profile->settings;
+        $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $element_id, $_GET['q']);
+
+        if ($enabled) {
+          return $profile;
+        }
+      }
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * sort roles according to precedence settings. previously sorted roles are followed by latest added roles.
+ */
+function ckeditor_sorted_roles($clear = FALSE) {
+  static $order;
+  if (isset($order) && $clear !== TRUE) {
+    return $order;
+  }
+  $order = array();
+  $roles = user_roles(0, 'access ckeditor');
+
+  $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name='CKEditor Global Profile'");
+  $data = db_fetch_object($result);
+  if (!empty($data->settings)) {
+    $settings = unserialize($data->settings);
+    if (isset($settings['rank']) && !empty($settings['rank']))
+    foreach ($settings['rank'] as $rid) {
+      if (isset($roles[$rid])) {
+        $order[$rid] = $roles[$rid];
+        unset($roles[$rid]);
+      }
+    }
+  }
+  krsort($roles);//sort the remaining unsorted roles by id, descending.
+  $order += $roles;
+  return $order;
+}
+
+/**
+ * @param int $excl_mode 1/include, exclude otherwise
+ * @param string $excl_regex paths (drupal paths with ids attached)
+ * @param string $element_id current ID
+ * @param string $get_q current path
+ *
+ * @return boolean
+ *    returns true if CKEditor is enabled
+ */
+function ckeditor_is_enabled($excl_mode, $excl_regex, $element_id, $get_q) {
+  $front = variable_get('site_frontpage', 'node');
+  $excl_regex = str_replace('<front>', $front, $excl_regex);
+  $nodetype = ckeditor_get_nodetype($get_q);
+  $element_id = str_replace('.', '\.', $element_id);
+
+  $match = !empty($excl_regex) && preg_match($excl_regex, $nodetype .'@'. $get_q .'.'. $element_id);
+
+  return ($excl_mode == '0' xor $match);
+}
+
+function _ckeditor_script_path() {
+  $jspath = FALSE;
+  $module_path=drupal_get_path('module', 'ckeditor');
+
+  if (file_exists($module_path . '/ckeditor/ckeditor.js')) {
+    $jspath='%m/ckeditor';
+  }
+  elseif (file_exists($module_path . '/ckeditor/ckeditor/ckeditor.js')) {
+    $jspath='%m/ckeditor/ckeditor';
+  }
+  elseif (file_exists('sites/all/libraries/ckeditor/ckeditor.js')) {
+    $jspath='%b/sites/all/libraries/ckeditor';
+  }
+  return $jspath;
+}
+
+/**
+ * Determines whether the CKEditor sources are present
+ *
+ * It checks if ckeditor.js is present.
+ *
+ * This function is used by ckeditor_requirements()
+ *
+ * @return boolean True if CKEditor is installed
+ */
+function _ckeditor_requirements_isinstalled() {
+  $editor_path = ckeditor_path(TRUE);
+  $jspath = $editor_path .'/ckeditor.js';
+  $jsp=file_exists($jspath);
+  if (!$jsp && ($editor_path = _ckeditor_script_path())) {
+    $result = db_query("SELECT name, settings FROM {ckeditor_settings} WHERE name = 'CKEditor Global Profile'");
+    if ($rs=db_fetch_array($result)) {
+      $rs['settings']=unserialize($rs['settings']);
+      $rs['settings']['ckeditor_path']=$editor_path;
+      $rs['settings']=serialize($rs['settings']);
+      db_query("UPDATE {ckeditor_settings} SET settings='%s' WHERE name = 'CKEditor Global Profile'", $rs['settings']);
+      $jsp=TRUE;
+      ckeditor_path(TRUE, TRUE);
+    }
+  }
+  return $jsp;
 }

@@ -3,15 +3,15 @@ Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-CKEDITOR.dialog.add( 'linktomenu', function( editor )
+CKEDITOR.dialog.add( 'linktonode', function( editor )
 {
 	//<!-- linktonode START -->
 	CKEDITOR.scriptLoader.load( Drupal.settings.basePath + "misc/jquery.js");
-	CKEDITOR.scriptLoader.load( Drupal.settings.ckeditor.module_path + "/plugins/linktomenu/jscripts/functions.js", function() {
+	CKEDITOR.scriptLoader.load( Drupal.settings.ckeditor.module_path + "/plugins/linktonode/jscripts/functions.js", function() {
+		//window.focus();
 		loadCategories(null);
 	});
 	//<!-- linktonode END -->
-
 
 	// Handles the event when the "Target" selection box is changed.
 	var targetChanged = function()
@@ -217,7 +217,7 @@ CKEDITOR.dialog.add( 'linktomenu', function( editor )
 	};
 
 	return {
-		title : 'Link to menu',
+		title : 'Link to node',
 		minWidth : 350,
 		minHeight : 230,
 		contents : [
@@ -228,35 +228,115 @@ CKEDITOR.dialog.add( 'linktomenu', function( editor )
 				elements :
 				[
 					{
+						type : 'vbox',
+						id : 'urlOptions',
+						children :
+						[
+							{
+								type : 'hbox',
+								widths : [ '25%', '75%' ],
+								children :
+								[
+									{
+										id : 'linkType',
+										type : 'select',
+										label : editor.lang.link.type,
+										hidden : !Drupal.settings.ckeditor.linktocontent_node_select_type,
+										'default' : 'url',
+										items :
+										[
+											[ 'path', 'path' ],
+											[ 'internal', 'internal' ],
+										],
+										onChange : function() {
+											var url = this.getDialog().getContentElement( 'info', 'url' );
+											if ( ( !Drupal.settings.ckeditor.linktocontent_node_select_type && Drupal.settings.ckeditor.linktocontent_node_path_filter )
+													|| this.getValue() == 'internal' ) {
+												url.setValue($('#txtUrlInternal').val());
+											}
+											else {
+												url.setValue($('#txtUrlPath').val());
+											}
+										},
+										setup : function( data )
+										{
+											if ( data.type )
+												this.setValue( data.type );
+										},
+										commit : function( data )
+										{
+											data.type = this.getValue();
+										}
+									},
+									{
+										type : 'text',
+										id : 'url',
+										label : editor.lang.common.url,
+										onLoad : function ()
+										{
+											this.allowOnChange = true;
+										},
+										validate : function()
+										{
+											var dialog = this.getDialog();
+											var func = CKEDITOR.dialog.validate.notEmpty( editor.lang.link.noUrl );
+											return func.apply( this );
+										},
+										setup : function( data )
+										{
+											this.allowOnChange = false;
+											if ( data.url )
+												this.setValue( data.url.url );
+											this.allowOnChange = true;
+
+											var linkType = this.getDialog().getContentElement( 'info', 'linkType' );
+											if ( linkType && linkType.getValue() == 'url' )
+												this.select();
+
+										},
+										commit : function( data )
+										{
+											if ( !data.url )
+												data.url = {};
+
+											data.url.url = this.getValue();
+											this.allowOnChange = false;
+										}
+									}
+								],
+								setup : function( data )
+								{
+									if ( !this.getDialog().getContentElement( 'info', 'linkType' ) )
+										this.getElement().show();
+								}
+							}
+						]
+					},
+					{
 						type : 'html',
 						html : 
-	'<link rel="stylesheet" href="' + Drupal.settings.ckeditor.module_path + '/plugins/linktomenu/css/linktocontent.css" type="text/css" />' +
-	'<input id="linktomenu_url" type="hidden" />' +
-	'<input id="linktomenu_text" type="hidden" />' +
-	'<div class="panel_wrap">' +
-	'<div id="browse_panel" class="panel current">' +
-		'<form id="form_browse" action="#" onsubmit="return false;">' +
-		'<strong>Browse</strong>' +
-		'</form>' +
-	'</div>' +
-	'</div>' +
-	'<!-- node list -->' +
+	'<link rel="stylesheet" href="' + Drupal.settings.ckeditor.module_path + '/plugins/linktonode/css/linktocontent.css" type="text/css" />' +
 	'<div class="panel_wrap" id="list">' +
-		'<div class="nodes">' +
-			'<div id="nodelist" class="scrollable accessible">' +
-				'<table cellspacing="0" summary="item list">' +
-				'<thead>' +
-				'<tr>' +
-					'<th><strong>Title</strong></th>' +
-				'</tr>' +
-				'</thead>' +
-				'<tbody>' +
-				'</tbody>' +
-				'</table>' +
-			'</div>' +
-		'</div>' +
+	'<div class="nodes">' +
+	'<div id="nodelist" class="scrollable accessible">' +
+		'<table cellspacing="0" summary="nodelist" style="width:100%">' +
+		'<thead>' +
+		'<tr>' +
+			'<th style="font-weight:bold">Node title</th>' +
+			'<th style="font-weight:bold">Created</th>' +
+			'<th style="font-weight:bold">Author</th>' +
+		'</tr>' +
+		'</thead>' +
+		'<tbody>' +
+		'</tbody>' +
+		'</table>' +
 	'</div>' +
-	'<div id="statusImg"><img alt="loading" src="' + Drupal.settings.ckeditor.module_path + '/plugins/linktomenu/images/loading.gif" />loading...</div>'
+	'</div>' +
+	'</div>' +
+	'<input id="txtUrlPath" type="hidden" />' + 
+	'<input id="txtUrlInternal" type="hidden" />' +
+	'<input id="txtUrlText" type="hidden" />' +
+	'<div id="statusImg"><img alt="loading" src="' + Drupal.settings.ckeditor.module_path + '/plugins/linktonode/images/loading.gif" />loading...</div>'
 					}
 				]
 			},
@@ -680,7 +760,7 @@ CKEDITOR.dialog.add( 'linktomenu', function( editor )
 
 			this.commitContent( data );
 			//<!-- linktonode START -->
-			attributes._cke_saved_href = (Drupal.settings.ckeditor.linktomenu_basepath || '' ) + $('#linktomenu_url').val();
+			attributes._cke_saved_href = (Drupal.settings.ckeditor.linktonode_basepath || '' ) + this.getContentElement( 'info', 'url' ).getValue();
 			//<!-- linktonode END -->
 
 			// Popups and target.
@@ -751,7 +831,7 @@ CKEDITOR.dialog.add( 'linktomenu', function( editor )
 				if ( ranges.length == 1 && ranges[0].collapsed )
 				{
 					// <!-- linktonode START -->
-					var text = new CKEDITOR.dom.text( $('#linktomenu_text').val() || attributes._cke_saved_href, editor.document );
+					var text = new CKEDITOR.dom.text( $('#txtUrlText').val() || attributes._cke_saved_href, editor.document );
 					// <!-- linktonode END -->
 					ranges[0].insertNode( text );
 					ranges[0].selectNodeContents( text );
@@ -816,6 +896,8 @@ CKEDITOR.dialog.add( 'linktomenu', function( editor )
 		},
 		onLoad : function()
 		{
+			CKEDITOR._._linkToNodeDialog = this;
+
 			if ( !editor.config.linkShowAdvancedTab )
 				this.hidePage( 'advanced' );		//Hide Advanded tab.
 

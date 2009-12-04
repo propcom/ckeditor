@@ -2,19 +2,19 @@
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
-CKEDITOR.plugins.add( 'linktomenu',
+CKEDITOR.plugins.add( 'linktonode',
 {
 	init : function( editor )
 	{
 		// Add the link and unlink buttons.
-		editor.addCommand( 'linktomenu', new CKEDITOR.dialogCommand( 'linktomenu' ) );
-		editor.ui.addButton( 'LinkToMenu',
+		editor.addCommand( 'linktonode', new CKEDITOR.dialogCommand( 'linktonode' ) );
+		editor.ui.addButton( 'LinkToNode',
 			{
-				label : 'Link to menu',
-				icon : this.path + 'images/linktomenu.gif',
-				command : 'linktomenu'
+				label : 'Link to node',
+				icon : this.path + 'images/linktonode.gif',
+				command : 'linktonode'
 			} );
-		CKEDITOR.dialog.add( 'linktomenu', this.path + 'dialogs/link.js' );
+		CKEDITOR.dialog.add( 'linktonode', this.path + 'dialogs/link.js' );
 
 		// If the "menu" plugin is loaded, register the menu items.
 		if ( editor.addMenuItems )
@@ -23,9 +23,9 @@ CKEDITOR.plugins.add( 'linktomenu',
 				{
 					linktomenu :
 					{
-						label : 'Link to menu',
-						command : 'linktomenu',
-						group : 'linktomenu',
+						label : 'Link to node',
+						command : 'linktonode',
+						group : 'linktonode',
 						order : 1
 					}
 				});

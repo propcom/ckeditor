@@ -2,7 +2,7 @@
 // $Id$
 /**
  * CKEditor - The text editor for Internet - http://ckeditor.com
- * Copyright (C) 2003-2009 Frederico Knabben
+ * Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
  *
  * == BEGIN LICENSE ==
  *
@@ -38,11 +38,14 @@ function ckeditor_help_delegate($path, $arg) {
 
     case 'admin/settings/ckeditor/edit/%':
     case 'admin/settings/ckeditor/add':
-      $output = '<p>'. t('CKEditor is highly configurable. The most commonly used features are listed below. If you want to take a look at all available settings, open %ckconfig and then customize %ckeditor_config to your needs. This is also the only way to define new toolbar sets. It is advised to not edit %ckconfigjs because you may overwrite it accidentally when you update the editor.',
+      $output = '<p>'. t('CKEditor is highly configurable. The most commonly used features are listed below. You can also customize CKEditor to your needs by changing the configuration file: %ckeditor_module_config. This is also the only way to define new toolbar sets.',
         array(
-          '%ckconfig' => drupal_get_path('module', 'ckeditor') .'/ckeditor/fckconfig.js',
-          '%ckeditor_config' => drupal_get_path('module', 'ckeditor') .'/ckeditor.config.js',
-          '%ckconfigjs' => 'fckconfig.js',
+          '%ckeditor_module_config' => drupal_get_path('module', 'ckeditor') .'/ckeditor.config.js',
+        )) .'</p>';
+      $output .= '<p>'. t('It is advised to not edit the configuration file that is distributed with CKEditor: %ckeditor_config_file (%ckeditor_config_path) because you may overwrite it accidentally when you update the editor.',
+        array(
+          '%ckeditor_config_path' => drupal_get_path('module', 'ckeditor') .'/ckeditor/config.js',
+          '%ckeditor_config_file' => 'config.js',
         )) .'</p>';
       break;
 
@@ -52,15 +55,15 @@ function ckeditor_help_delegate($path, $arg) {
       break;
 
     case 'admin/settings/ckeditor':
-      $output = 
+      $output =
         '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
           array(
-            '!wysiwyg' => '<acronym title="'.t('What You See Is What You Get').'">'.t('WYSIWYG').'</acronym>',
+            '!wysiwyg' => '<acronym title="'. t('What You See Is What You Get') .'">'. t('WYSIWYG') .'</acronym>',
           )) .'</p>'.
-        '<p>'. t('More information about the editor is located at the !ckeditorlink. A small user guide is located at !userguidelink.',
+        '<p>'. t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
           array(
             '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com'),
-            '!userguidelink' => l(t('CKEditor userguide'), 'http://docs.cksource.com/CKEditor/Users_Guide'),
+            '!userguidelink' => l(t('user guide'), 'http://docs.cksource.com/FCKeditor_2.x/Users_Guide/Quick_Reference'),
           )) .'</p>'.
         '<p>'. t('Profiles can be defined based on user roles. A CKEditor profile can define which pages receive this CKEditor capability, what buttons or themes are enabled for the editor, how the editor is displayed, and a few other editor functions. It is possible also to define the Global Profile that will hold values that will be appended to all other profiles.') .'</p>'.
         '<p>'. t('Lastly, only users with the %accesspermission !permissionlink will be able to use CKEditor.',
@@ -71,15 +74,15 @@ function ckeditor_help_delegate($path, $arg) {
       break;
 
     case 'admin/help#ckeditor':
-      $output  = '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
+      $output = '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
           array(
-            '!wysiwyg' => '<acronym title="'.t('What You See Is What You Get').'">'.t('WYSIWYG').'</acronym>',
+            '!wysiwyg' => '<acronym title="'. t('What You See Is What You Get') .'">'. t('WYSIWYG') .'</acronym>',
           )) .'</p>';
-      $output .= '<p>'. t('More information about the editor is located at the !ckeditorlink. A small user guide is located at !userguidelink.',
+      $output .= '<p>'. t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
           array(
             '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com'),
-            '!userguidelink' => l(t('CKEditor userguide'), 'http://docs.cksource.com/CKEditor/Users_Guide'),
-          )) .'</p>';
+            '!userguidelink' => l(t('user guide'), 'http://docs.cksource.com/FCKeditor_2.x/Users_Guide/Quick_Reference'),
+          )) .'</p>'.
       $output .= '<h3>'. t('Configuration') .'</h3>';
       $output .= '<ol>';
       $output .= '<li>'. t('Go to the !ckeditorlink and download the latest version of CKEditor. Then uncompress the contents of the ckeditor directory of the downloaded file to %ckeditordir.',
@@ -88,10 +91,9 @@ function ckeditor_help_delegate($path, $arg) {
           '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/',
         )) .'</li>';
       $output .= '<li>'. t('Enable the module as usual from Drupal\'s admin pages.') .'</li>';
-      $output .= '<li>'. t('Grant permissions for use of CKEditor in !adminpath. See the @sectionname section how to enable the file browser feature.',
+      $output .= '<li>'. t('Grant permissions for use of CKEditor in !adminpath.',
         array(
-          '!adminpath' => l(t('Administer').' > '.t('User management').' > '.t('Permissions'), 'admin/user/permissions'),
-          '@sectionname' => t('How to enable the built-in file browser'),
+          '!adminpath' => l(t('Administer') .' > '. t('User management') .' > '. t('Permissions'), 'admin/user/permissions'),
         )) .'</li>';
       $output .= '<li>'. t('Under !adminpath, adjust the ckeditor profiles. In each profile you can choose which textareas will be replaced by CKEditor, select default toolbar and configure some more advanced settings.',
         array(
@@ -106,9 +108,10 @@ function ckeditor_help_delegate($path, $arg) {
         array(
           '%settingname' => t('Line break converter'),
         )) .'</li>';
-      $output .= '<li>'. t('Modify the ckeditor.config.js file to custom your needs (optional). You may copy the needed configuration lines from the default CKEditor configuration settings (%ckconfig), the lines in ckeditor.config.js will override most settings.',
+      $output .= '<li>'. t('Modify the %ckconfig file to custom your needs (optional). Available configuration settings are available in the !apidocs.',
         array(
-          '%ckconfig' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/ckconfig.js',
+          '%ckconfig' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/ckeditor.config.js',
+          '!apidocs' => l(t('API documentation'), 'http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html')
         )) .'</li>';
       $output .= '</ol>';
 
@@ -140,21 +143,16 @@ function ckeditor_help_delegate($path, $arg) {
       $output .= '<p>';
       $output .= t('Take a look at !listlink when installing CKEditor.', array('!listlink' => l(t('list of common problems'), 'http://drupal.ckeditor.com/troubleshooting')));
       $output .= ' '. t('If you are looking for more information, have any trouble in configuration or if you found an issue, please visit the !officiallink.', array('!officiallink' => l(t('official project page'), 'http://drupal.org/project/ckeditor')));
-      $output .= ' '. t('More information about how to tune up CKEditor for your theme can be found !herelink.', array('!herelink' => l(t('here'), 'http://drupal.ckeditor.com/tricks')));
+      $output .= ' '. t('More information about how to tune up CKEditor for your theme can be found !herelink.', array('!herelink' => l(t('here'), 'http://drupal.fckeditor.net/tricks')));
       $output .= '</p>';
-
-      $output .= '<h3>'. t('Plugins: Teaser break and Pagebreak') .'</h3>';
-      $output .= '<p>'. t('By default, CKEditor module comes with two plugins that can handle teaser break (&lt;!--break--&gt;) and pagebreak (&lt;!--pagebreak--&gt;). You can enable any (or even both) of them.') .'</p>';
-      $output .= '<ol>';
-      $output .= '<li>'. t('Open %ckeditor.config.js and uncomment these three lines:', array('%ckeditor.config.js' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor.config.js')) .'<pre>'."\nFCKConfig.PluginsPath = '../../plugins/';\nFCKConfig.Plugins.Add('drupalbreak');\nFCKConfig.Plugins.Add('drupalpagebreak');\n".'</pre></li>';
-      $output .= '<li>'. t('The second step is to add buttons to the toolbar (in the same file). The button names are: <code>DrupalBreak</code>, <code>DrupalPageBreak</code>. For example if you have a toolbar with an array of buttons defined as follows: <pre>!buttons1</pre> simply add those two buttons at the end of array (remember about single quotes): <pre>!buttons2</pre>', array('!buttons1' => "['Image','Flash','Table','Rule','SpecialChar']", '!buttons2' => "['Image','Flash','Table','Rule','SpecialChar', 'DrupalBreak', 'DrupalPageBreak']")) .'</li>';
-      $output .= '<li>'. t('Note that the &lt;--pagebreak--&gt; tag is not supported by default in Drupal. You should install the !paginglink module to enable the &lt;!--pagebreak--&gt; tag support. Please refer to the Paging module documentation for detailed installation instructions.', array('!paginglink' => l(t('Paging'), 'http://drupal.org/project/paging'))) .'</li>';
-      $output .= '</ol>';
 
       $output .= '<h3>'. t('Uploading images and files') .'</h3>';
       $output .= '<p>'. t('There are three ways for uploading files:') .'</p>';
       $output .= '<ol>';
-      $output .= '<li>'. t('By using the built-in file browser.') .'</li>';
+      $output .= '<li>'. t('By using !ckfinder (commercial).',
+        array(
+          '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
+        )) .'</li>';
       $output .= '<li>'. t('By using a module like !imcelink, !iblink or !webfmlink.',
         array(
           '!imcelink' => l(t('IMCE'), 'http://drupal.org/project/imce'),
@@ -164,28 +162,48 @@ function ckeditor_help_delegate($path, $arg) {
       $output .= '<li>'. t('By using the core upload module.') .'</li>';
       $output .= '</ol>';
 
-      // The rest is untranslated for the moment.
-      $output .= '<h3>'. t('How to enable the built-in file browser') .'</h3>';
-      $output .= '<p>'. t('The editor gives the end user the flexibility to create a custom file browser that can be integrated on it. The included file browser allows users to view the content of a specific directory on the server and add new content to that directory (create folders and upload files).') .'</p>';
-      $output .= '<ol>';
-      $output .= '<li>';
-      $output .= ' '. t('To enable file browsing you need to edit the connector configuration file in your ckeditor module directory, the file should be in %config.', array('%config' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/editor/filemanager/connectors/php/config.php'));
-      $output .= ' '. t('In this file you will need to enable the file browser by adding one line that includes a file with the special authentication function for Drupal (filemanager.config.php).') .'<br />';
-      $output .= ' '. t('Add this code:') .'<br />';
-      $output .= ' <pre>  require_once \'../../../../../filemanager.config.php\';</pre>';
-      $output .= ' '. t('straight below this line:');
-      $output .= ' <pre>  $Config[\'UserFilesAbsolutePath\'] = \'\' ;</pre>';
-      $output .= ' '. t('The config.php file also holds some other important settings, please take a look at it and adjust it to your needs (optional).');
-      $output .= '</li>';
-      $output .= '<li>'. t('Locate file named %settingsphp inside your drupal directory and set %cookiedomain variable to the appropriate domain (remember to uncomment that line). If you not do this, CKEditor will claim that file browser is disabled.', array('%settingsphp' => 'settings.php', '%cookiedomain' => '$cookie_domain')) .'</li>';
-      $output .= '<li>'. t('Enabling file uploads is <strong>a security risk</strong>. That\'s why you have to grant a separate !permissionlink to enable the file browser to certain groups (assign the %uploadpermission permission).', array('!permissionlink' => l(t('permission'), 'admin/user/permissions'), '%uploadpermission' => t('allow ckeditor file uploads'))) .'</li>';
-      $output .= '<li>'. t('Lastly, adjust the %filebrowsersection for each !profilelink: set %filebrowsertypesetting to %builtinoption', array('!profilelink' => l(t('profile'), 'admin/settings/ckeditor'), '%filebrowsersection' => t('File browser settings'), '%filebrowsertypesetting' => t('File browser type'), '%builtinoption' => t('Built-in file browser'))) .'</li>';
-      $output .= '</ol>';
-
-      $output .= '<h3>'. t('Modules: Image Assist') .'</h3>';
-      $output .= '<p>'. t('Image Assist version 1 and 2 can be integrated with CKEditor. It is no longer necessary to copy a Javascript file.') .'</p>';
-
       break;
   }
   return !empty($output) ? $output : '';
+}
+
+/**
+ * AJAX callback - XSS filter
+ */
+function ckeditor_filter_xss() {
+  $GLOBALS['devel_shutdown'] = FALSE;
+
+  if (!isset($_POST['text']) || !is_string($_POST['text']) || !is_array($_POST['filters'])) {
+    exit;
+  }
+
+  $text = $_POST['text'];
+  $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
+
+  foreach ($_POST['filters'] as $module_delta) {
+    $module = strtok($module_delta, "/");
+    $delta = strtok("/");
+    $format = strtok("/");
+
+    if (!module_hook($module, 'filter')) {
+      continue;
+    }
+
+    //built-in filter module, a special case where we would like to strip XSS and nothing more
+    if ($module == 'filter' && $delta == 0) {
+      preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);
+      if ($matches[1]) {
+        $tags = array_unique($matches[1]);
+        $text = filter_xss($text, $tags);
+      }
+    }
+    else {
+      $text = module_invoke($module, 'filter', 'process', $delta, $format, $text);
+    }
+  }
+
+  $text = strtr($text, array('__COMMENT__START__' => '<!--', '__COMMENT__END__' => '-->'));
+
+  echo $text;
+  exit;
 }

@@ -1,14 +1,7 @@
 $Id$
 
--- 2009-11-02 version 6.x-1.x-dev
-* #620226 notice: Undefined index: excl , simple_incl
-* #620242 %checkfile in ...%checkfile could not be found
-
--- 2009-10-26 version 6.x-1.x-dev
-* #614612 Fix compatibility with postgresql
-
--- 2009-10-22 version 6.x-1.x-dev
-* Port an update to the translation sources (text in t() function calls) from fckeditor 6.x-2.x
+-- 2009-12-05 version 6.x-1.x-dev
+- First public (beta) release
 
 -- 2009-10-05 version 6.x-1.x-dev
-* Created initial version of the CKeditor module
+- Created initial dev version of the CKEditor module

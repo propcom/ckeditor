@@ -1,4 +1,5 @@
-nbproject
-.buildpath
 .project
 .settings
+.cache
+.buildpath
+nbproject

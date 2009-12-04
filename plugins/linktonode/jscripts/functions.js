@@ -4,28 +4,20 @@ function selectRow(row) {
 	if (!row) {
 		return;
 	}
-	$('#nodelist tbody tr').each( function() {
-		$(this).css('background', 'transparent');
+	$('#nodelist tbody tr').each(function() {
+		$(this).css({background: '#ffffff'});
+		selectedNode = null;
 	});
-	$(row).css('background', '#dadfe9');
-	selectedNode = row;
-	$('#linktomenu_url').val(row.cells[0].firstChild.nodeValue);
-	$('#linktomenu_text').val(row.cells[1].firstChild.nodeValue);
-}
 
-//save node/path urls
-function SaveDrupalUrls()
-{
-	//if ((!FCKConfig.DrupalLinkToContentSelect && FCKConfig.DrupalPathFilter) || GetE('cmbDrupalProtocol').value == 'internal') {
-	var url = CKEDITOR._._linkToNodeDialog.getContentElement( 'info', 'url' );
+	selectedNode = row;
+	$(row).css({background: '#dadfe9'});
+
+	$('#txtUrlPath').val( selectedNode.cells[0].firstChild.nodeValue );
+	$('#txtUrlInternal').val( 'internal:' + selectedNode.cells[4].firstChild.nodeValue );
+	$('#txtUrlText').val( selectedNode.cells[1].firstChild.nodeValue );
+
 	var type = CKEDITOR._._linkToNodeDialog.getContentElement( 'info', 'linkType' );
-	
-	if ( type.getValue() == 'internal' ) {
-		url.setValue($('#txtUrlInternal').val());
-	}
-	else {
-		url.setValue($('#txtUrlPath').val());
-	}
+	type.onChange();
 }
 
 /**
@@ -34,20 +26,29 @@ function SaveDrupalUrls()
  **/
 function loadCategories(obj) {
 	var params = '';
-	var mid = '0';
+	var vid = '-1';
 	var top = 95;
 	var objTop;
-	if (obj != null) {
-		mid = $(obj).get(0).value;
 
-		try {
+	if (obj != null) {
+		var fSel = $('#browse_sel_0_sel');
+		if (fSel !== null) {
+			vid = $(fSel).get(0).value;
+		}
+		if ($(obj).attr('id') != 'browse_sel_0_sel') {
+			params = '&ltc-term-id=' + $(obj).get(0).value;
+		}
+
+		try
+		{
 			objTop = $(obj).attr('id').match(/_(\d+)_sel/);
 			top += (objTop[1] * 17);
-		} catch (e) {
+		}
+		catch (e) {
 			top += 0;
 		}
 	}
-	params = 'ltc-type=linktocontent_menu&ltc-menu-id=' + mid;
+	params = 'ltc-type=linktocontent_node&ltc-vocab-id=' + vid + params;
 
 	$('#statusImg').css( {
 		top : top + 'px'
@@ -146,15 +147,14 @@ function _createDropdown(obj) {
  * _fillDropdown
  * @return true if a dropdown was inserted
  **/
-function _fillDropdown(obj, results) {
-	if (results.menus != false) {
+function _fillDropdown(obj, results){
+	if (results.categories != false) {
 		var select = _createDropdown(obj);
-		$(select).addOption(-1, "Choose Category");
-		for (key in results.menus) {
-			if (results.menus[key].hasChildren) {
-				$(select).addOption(results.menus[key].mid, results.menus[key].title);
-			}
-		}
+		<!-- linktonode START -->
+		$(select).addOption(-1, "Choose category");
+		//<!-- linktonode END -->
+		for (key in results.categories)
+			$(select).addOption(results.categories[key].tid, results.categories[key].title);
 		return true;
 	}
 	return false;
@@ -176,14 +176,11 @@ function _removeDescendant(elem) {
 var selectedNode = null;
 
 function _fillNodelist(results) {
-	if ((results == null) || (results.menus == null) || (results.menus == false))
+	if ((results == null) || (results.nodes == null) || (results.nodes == false))
 		return;
 
-	for (key in results.menus) {
-		if (results.menus[key].root) {
-			continue;
-		}
-		_addNodeToList(results.menus[key]);
+	for (key in results.nodes) {
+		_addNodeToList(results.nodes[key]);
 	}
 }
 
@@ -206,8 +203,11 @@ function _addNodeToList(node) {
 		selectRow(this);
 	});
 
-	$('<td class="nid">' + node.path + '</td>').appendTo(tr);
+	$('<td class="nid">' + node.href + '</td>').appendTo(tr);
 	$('<td>' + node.title + '</td>').appendTo(tr);
+	$('<td>' + node.date + '</td>').appendTo(tr);
+	$('<td>' + node.author + '</td>').appendTo(tr);
+	$('<td class="nid">' + node.orig_href + '</td>').appendTo(tr);
 }
 
 /**

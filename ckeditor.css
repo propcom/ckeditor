@@ -1,4 +1,6 @@
-/* $Id$ */
+// $Id$
+/* Indent & Justify classes */
+
 .rteindent1 {
   margin-left: 40px;
 }
@@ -23,16 +25,14 @@
 .rtejustify {
   text-align: justify;
 }
-.image_assist{
-  background-color: #eeeeee;
-  background-repeat: no-repeat;
-  background-image: url(plugins/imgassist/imgassist.gif);
-  background-position: 50% 50%;
-  border: 1px dashed #dddddd;
-}
 .ibimage_left {
   float: left;
 }
 .ibimage_right {
   float: right;
+}
+
+/* CKEditor padding in IE */
+table.cke_editor fieldset { 
+  padding:0 !important;
 }

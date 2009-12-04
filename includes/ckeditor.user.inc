@@ -2,7 +2,7 @@
 // $Id$
 /**
  * CKEditor - The text editor for Internet - http://ckeditor.com
- * Copyright (C) 2003-2009 Frederico Knabben
+ * Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
  *
  * == BEGIN LICENSE ==
  *
@@ -32,7 +32,7 @@
 
 function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
   if ($type == 'form' && $category == 'account' && user_access('access ckeditor')) {
-    module_load_include('lib.inc', 'ckeditor');
+    module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
     $profile = ckeditor_user_get_profile($user);
     $toolbar_options = ckeditor_load_toolbar_options();
@@ -68,7 +68,7 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
           't' => t('Yes'),
           'f' => t('No')
         ),
-        '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running in a popup window (see below).'),
+        '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running a popup window (see below).'),
       );
 
       if (user_access('administer ckeditor')) {
@@ -125,7 +125,7 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
         '#type' => 'textfield',
         '#title' => t('Width'),
         '#default_value' => isset($user->ckeditor_width) ? $user->ckeditor_width : (isset($profile->settings['width']) ? $profile->settings['width'] : '100%'),
-        '#description' => t('Width in pixels or percent.'). ' '. t('Example'). ': 400 '. t('or') .' 100%.',
+        '#description' => t('Width in pixels or percent.') .' '. t('Example') .': 400 '. t('or') .' 100%.',
         '#size' => 40,
         '#maxlength' => 128,
       );
@@ -163,67 +163,9 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
     }
 
     if (isset($edit['ckeditor_width']) && !preg_match('/^\d+%?$/', $edit['ckeditor_width'])) {
-      form_set_error('width', t('Enter valid width.') .' '. t('Example'). ': 400 '. t('or') .' 100%.');
+      form_set_error('ckeditor_width', t('Enter valid width.') .' '. t('Example') .': 400 '. t('or') .' 100%.');
     }
   }
 
   return NULL;
-}
-
-/**
- * This function wraps img_assist_loader
- */
-function ckeditor_wrapper_img_assist_loader() {
-  if (module_exists('img_assist')) {
-    $fckpath = drupal_get_path('module', 'ckeditor');
-    $fckjs = $fckpath . '/img_assist_ckeditor.js';
-    $iapath = drupal_get_path('module', 'img_assist');
-
-    // find the version of img_assist by looking at the CVS Id version
-    $cvsversion = -1;
-    $iafp = fopen($iapath . '/img_assist.module', 'r');
-    $cvsidlines = fread($iafp, 100); // the cvs version is probably in the first 100 bytes
-    fclose($iafp);
-    $matches = array();
-    if (preg_match('# \d+\.(\d+)[\d\.]* #', $cvsidlines, $matches)) {
-      $cvsversion = (int) $matches[1];
-    }
-
-    switch ($cvsversion) {
-      case 75: // this branch is the branch for 6.x-2.x of img_assist
-        // add img_assist js files before our own file to
-        drupal_add_js($iapath . '/img_assist_popup.js');
-        drupal_add_js($iapath . '/img_assist_textarea.js');
-        drupal_add_js($fckjs);
-        img_assist_loader();
-        break;
-
-      case 72: // this branch is the branch for 6.x-1.x of img_assist
-        ob_start();
-        img_assist_loader();
-        $text = ob_get_clean();
-
-        $search = '<script type="text/javascript" src="'. base_path() . $iapath .'/img_assist_ckeditor.js"></script>';
-        $new = '<script type="text/javascript" src="'. base_path() . $iapath .'/img_assist_textarea.js"></script>'."\n".
-        '<script type="text/javascript" src="'. base_path() . $fckjs .'"></script>';
-
-        if (strpos($text, $search) !== FALSE) {
-          $text = str_replace($search, $new, $text);
-
-          echo $text;
-          break;
-        }
-        else {
-          drupal_set_message(t('Image Assist output was not recognized'), 'error');
-          return '';
-        }
-
-      default:
-        drupal_set_message(t('This Image Assist version is not supported'), 'error');
-        return '';
-    }
-  }
-  else {
-    drupal_not_found();
-  }
 }
