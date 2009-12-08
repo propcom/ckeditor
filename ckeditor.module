@@ -589,7 +589,7 @@ function ckeditor_process_textarea($element) {
     $settings[$textarea_id]['customConfig'] = $ckeditor_config_path;
     $settings[$textarea_id]['baseHref'] = $editor_path;
     $settings[$textarea_id]['defaultLanguage'] = $conf['lang'];
-    $settings[$textarea_id]['toolbar'] = $conf['toolbar'];
+    $settings[$textarea_id]['toolbar'] = $toolbar;
     $settings[$textarea_id]['enterMode'] = constant("CKEDITOR_ENTERMODE_" . strtoupper($conf['enter_mode']));
     $settings[$textarea_id]['shiftEnterMode'] = constant("CKEDITOR_ENTERMODE_" . strtoupper($conf['shift_enter_mode']));
     $settings[$textarea_id]['toolbarStartupExpanded'] = ( $conf['expand']=='t' );
