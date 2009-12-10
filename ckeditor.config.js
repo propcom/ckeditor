@@ -119,4 +119,8 @@ CKEDITOR.editorConfig = function(config) {
     CKEDITOR.plugins.addExternal('linktonode', Drupal.settings.ckeditor.module_path + '/plugins/linktonode/');
     Drupal.settings.ckeditor.linktonode_basepath = Drupal.settings.basePath;
   }
+
+  //'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
+  //config.extraPlugins += (config.extraPlugins ? ',mediaembed' : 'mediaembed' );
+  //CKEDITOR.plugins.addExternal('mediaembed', Drupal.settings.ckeditor.module_path + '/plugins/mediaembed/');
 };

@@ -1,6 +1,7 @@
 $Id$
 
 -- 2009-12-10 version 6.x-1.x-dev
+- Added MediaEmbed plugin
  - [#652274] Fixed: Error Message from Color module with CKEditor
  - [#653498] Fixed: Empty teasers when editing content
  - [#651904] Fixed: CKEditor Widens Beyond content area when Resized

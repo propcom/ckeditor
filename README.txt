@@ -10,6 +10,7 @@ CONTENTS OF THIS FILE
  * Installation / Configuration
  * Installation troubleshooting
  * Plugins: Teaser break and Pagebreak
+ * Plugins: MediaEmbed
  * Uploading images and files
  * How to install CKFinder
  * Modules: Link to content (EXPERIMENTAL)
@@ -134,6 +135,28 @@ Both plugins are automatically enabled.
       to enable the <!--pagebreak--> tag support. Please refer to the Paging
       module documentation for detailed installation instructions.
       If you don't install Paging module, the 'DrupalPageBreak' will automatically disappear.
+
+Plugins: MediaEmbed
+-------------------
+MediaEmbed is a simple plugin that can be helpful when embedding Youtube movies (for example).
+To enable it, do the following:
+
+   1. Open /drupal/modules/ckeditor/ckeditor.config.js
+
+   2. Uncomment the following lines (remove "//") in ckeditor.config.js:
+      // config.extraPlugins += (config.extraPlugins ? ',mediaembed' : 'mediaembed' );
+      // CKEDITOR.plugins.addExternal('mediaembed', Drupal.settings.ckeditor.module_path + '/plugins/mediaembed/');
+
+   3. Add button to the toolbar. The button name is: MediaEmbed. 
+      For example if you have a toolbar with an array of buttons defined as follows:
+
+      ['Link','Unlink','Anchor']
+
+      simply add button at the end of array (or somewhere in the middle):
+
+      ['Link','Unlink','MediaEmbed','Anchor']
+
+      (remember about single quotes).
 
 Uploading images and files
 --------------------------
