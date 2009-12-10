@@ -436,15 +436,20 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     $palette = @color_get_palette($theme, FALSE); //[#652274]
     $color_palette['default'] = '#D3D3D3';
     if (!empty($palette)) {
-      $color_palette['color_base'] = $palette['base'];
-      $color_palette['color_top'] = $palette['top'];
-      $color_palette['color_bottom'] = $palette['bottom'];
+      if (!empty($palette['base'])) {
+        $color_palette['color_base'] = $palette['base'];
+        $ui_colors["color_base"] = t('Color module: base');
+      }
+      if (!empty($palette['top'])) {
+        $color_palette['color_top'] = $palette['top'];
+        $ui_colors["color_top"] = t('Color module: top');
+      }
+      if (!empty($palette['bottom'])) {
+        $color_palette['color_bottom'] = $palette['bottom'];
+        $ui_colors["color_bottom"] = t('Color module: bottom');
+      }
     }
     drupal_add_js(array('ckeditor_uicolor' => $color_palette), 'setting');
-
-    $ui_colors["color_base"] = t('Color module: base');
-    $ui_colors["color_top"] = t('Color module: top');
-    $ui_colors["color_bottom"] = t('Color module: bottom');
   }
 
   $editor_path = ckeditor_path(FALSE);
