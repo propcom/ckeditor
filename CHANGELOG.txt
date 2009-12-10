@@ -1,5 +1,11 @@
 $Id$
 
+-- 2009-12-10 version 6.x-1.x-dev
+ - [#652274] Fixed: Error Message from Color module with CKEditor
+ - [#653498] Fixed: Empty teasers when editing content
+ - [#651904] Fixed: CKEditor Widens Beyond content area when Resized
+ - [#652570] Fixed: Force simple toolbar doesn't work
+
 -- 2009-12-05 version 6.x-1.x-dev
 - First public (beta) release
 
