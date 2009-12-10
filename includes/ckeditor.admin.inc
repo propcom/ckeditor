@@ -433,7 +433,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     if (empty($theme)) {
       init_theme();
     }
-    $palette = color_get_palette($theme, FALSE);
+    $palette = @color_get_palette($theme, FALSE); //[#652274]
     $color_palette['default'] = '#D3D3D3';
     if (!empty($palette)) {
       $color_palette['color_base'] = $palette['base'];

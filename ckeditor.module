@@ -860,7 +860,7 @@ function ckeditor_process_textarea($element) {
     }
     if (!empty($conf['uicolor']) && strpos($conf['uicolor'], "color_") === 0) {
       if (function_exists('color_get_palette')) {
-        $palette = color_get_palette($theme, FALSE);
+        $palette = @color_get_palette($theme, FALSE); //[#652274]
         $color = str_replace("color_", "", $conf['uicolor']);
         if (!empty($palette[$color])) {
           $settings[$textarea_id]['uiColor'] = $palette[$color];
