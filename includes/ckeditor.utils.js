@@ -44,6 +44,17 @@ Drupal.ckeditorOn = function(textarea_id) {
       $("#" + textarea_id).val(tv + '\n<!--break-->\n' + $("#" + textarea_id).val());
       teaser.textarea.val('');
     }
+
+    // [#653498]
+    if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
+      try {
+        teaser.button.click();
+      } 
+      catch (e) {
+        teaser.button.val(Drupal.t('Split summary at cursor'));
+      }
+    }
+
     teaser.buttonContainer.hide();
     teaser.textareaContainer.hide();
   }
