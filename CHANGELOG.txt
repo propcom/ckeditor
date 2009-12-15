@@ -1,4 +1,6 @@
 $Id$
+-- 2009-12-15 version 6.x-1.x-dev
+- [#659314] Fixed name of Format button in Basic Toolbar
 
 -- 2009-12-10 version 6.x-1.x-dev
 - Added MediaEmbed plugin
