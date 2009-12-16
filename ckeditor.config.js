@@ -55,7 +55,7 @@ CKEDITOR.editorConfig = function(config) {
     ['DrupalBreak', 'DrupalPageBreak']
    ];
 
-  config.toolbar_DrupalBasic = [ [ 'Format', '-', 'Bold', 'Italic', '-', 'OrderedList', 'UnorderedList', '-', 'Link', 'Unlink', 'Image' ] ];
+  config.toolbar_DrupalBasic = [ [ 'Format', '-', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ];
 
   /*
    * This toolbar is dedicated to users with "Full HTML" access some of commands
