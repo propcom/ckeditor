@@ -3,6 +3,7 @@ $Id$
 -- 2009-12-16 version 6.x-1.x-dev
 - Fixed names of 'NumberedList' and 'BulletedList' buttons in Basic Toolbar
 - [#656570] Fixed problems with missing ckeditor.styles.js
+- [#654626] Fixed PHP notices "Undefined index: simple_incl, excl"
 
 -- 2009-12-15 version 6.x-1.x-dev
 - [#659314] Fixed name of Format button in Basic Toolbar

@@ -1200,6 +1200,13 @@ function ckeditor_rebuild_selectors($name = NULL) {
   while (($data = db_fetch_object($result))) {
     if ($data->settings) {
       $settings = unserialize($data->settings);
+      // [#654626]
+      if (!isset($settings['excl'])) {
+        $settings['excl'] = '';
+      }
+      if (!isset($settings['simple_incl'])) {
+        $settings['simple_incl'] = '';
+      }
 
       foreach (array('excl', 'simple_incl') as $var) {
         $settings[$var .'_regex'] = '';

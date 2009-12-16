@@ -111,6 +111,8 @@ function ckeditor_install() {
       $arr['excl_mode'] = variable_get('ckeditor_exclude_toggle', 0);
       $arr['filebrowser'] = 'none';
       $arr['quickupload'] = 'f';
+      $arr['excl']='';
+      $arr['simple_incl']='';
 
       //security
       $arr['ss'] = "2";
