@@ -765,19 +765,15 @@ function ckeditor_process_textarea($element) {
       }
     }
 
-    // TODO: http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.stylesCombo_stylesSet
-    // add custom xml stylesheet if it exists
-    if (!empty($conf['styles_path'])) {
-      $settings[$textarea_id]['stylesCombo_stylesSet'] = $host . $themepath . 'ckeditor.styles.js';
-    }
-    if (!empty($conf['css_style']) && $conf['css_style'] == 'theme') {
-      if (file_exists($themepath . 'ckeditor.styles.js')) {
-        $settings[$textarea_id]['stylesCombo_stylesSet'] = $host . $themepath . 'ckeditor.styles.js';
+    $settings[$textarea_id]['stylesCombo_stylesSet'] = "drupal:" . $module_full_path . '/ckeditor.styles.js';
+    if (!empty($conf['css_style'])) {
+      if ($conf['css_style'] == 'theme' && file_exists($themepath . 'ckeditor.styles.js')) {
+        $settings[$textarea_id]['stylesCombo_stylesSet'] = "drupal:" . $host . $themepath . 'ckeditor.styles.js';
       }
-    }
-    elseif (!empty($conf['css_style']) && $conf['css_style'] == 'self') {
-      $conf['styles_path'] = str_replace("%h%t", "%t", $conf['styles_path']);
-      $settings[$textarea_id]['stylesCombo_stylesSet'] = str_replace(array('%h', '%t', '%m'), array($host, $host . $themepath, $module_drupal_path), $conf['styles_path']);
+      elseif (!empty($conf['css_style']) && $conf['css_style'] == 'self') {
+        $conf['styles_path'] = str_replace("%h%t", "%t", $conf['styles_path']);
+        $settings[$textarea_id]['stylesCombo_stylesSet'] = "drupal:" . str_replace(array('%h', '%t', '%m'), array($host, $host . $themepath, $module_drupal_path), $conf['styles_path']);
+      }
     }
     // add custom stylesheet if configured
     // lets hope it exists but we'll leave that to the site admin

@@ -32,12 +32,8 @@ CKEDITOR.editorConfig = function(config) {
     config.extraPlugins += (config.extraPlugins ? ',linktomenu' : 'linktomenu' );
   }
 
-  /*
-   Define as many toolbars as you need, you can change toolbar names
-   DrupalBasic will be forced on some smaller textareas (if enabled)
-   if you change the name of DrupalBasic, you have to update
-   CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME in ckeditor.module
-   */
+  // Define as many toolbars as you need, you can change toolbar names and remove or add buttons.
+  // List of all buttons is here: http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.toolbar_Full
 
   // This toolbar should work fine with "Filtered HTML" filter
   config.toolbar_DrupalFiltered = [
@@ -55,6 +51,11 @@ CKEDITOR.editorConfig = function(config) {
     ['DrupalBreak', 'DrupalPageBreak']
    ];
 
+ /*
+  * DrupalBasic will be forced on some smaller textareas (if enabled)
+  * if you change the name of DrupalBasic, you have to update
+  * CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME in ckeditor.module
+  */
   config.toolbar_DrupalBasic = [ [ 'Format', '-', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ];
 
   /*
