@@ -1,5 +1,8 @@
 $Id$
 
+-- 2009-12-17 version 6.x-1.x-dev
+- [#654626] Fixed PHP notice (Undefined offset in ckeditor_get_nodetype)
+
 -- 2009-12-16 version 6.x-1.x-dev
 - Fixed names of 'NumberedList' and 'BulletedList' buttons in Basic Toolbar
 - [#656570] Fixed problems with missing ckeditor.styles.js
