@@ -1,18 +1,21 @@
 /*
-Plugin originally created by Kent Safranski: http://www.fluidbyte.net/index.php?view=embed-youtube-vimeo-etc-into-ckeditor
-Improved and optimized for Drupal module.
+Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
+/**
+ * @file Plugin for inserting Drupal embeded media
+ */
 ( function() {
   CKEDITOR.plugins.add( 'mediaembed',
   {
-    requires : [ 'fakeobjects' ],
+    requires : [ 'fakeobjects', 'htmlwriter' ],
     init: function( editor )
     {
       editor.addCss(
         'img.cke_mediaembed' +
         '{' +
-          'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.png' ) + ');' +
+          'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.gif' ) + ');' +
           'background-position: center center;' +
           'background-repeat: no-repeat;' +
           'border: 1px solid #a9a9a9;' +
@@ -48,12 +51,12 @@ Improved and optimized for Drupal module.
             if ( content.length>0 ) {
               var realElement = CKEDITOR.dom.element.createFromHtml('<div class="media_embed"></div>');
               realElement.setHtml(content);
-              var fakeElement = editor.createFakeElement( realElement , 'cke_mediaembed', 'div', false);
-              var matches = content.match(/width=\"(\d+)\"/i);
+              var fakeElement = editor.createFakeElement( realElement , 'cke_mediaembed', 'div', true);
+              var matches = content.match(/width=\"?(\d+)\"?/i);
               if (matches.length == 2) {
                 fakeElement.setStyle('width', cssifyLength(matches[1]));
               }
-              matches = content.match(/height=\"(\d+)\"/i);
+              matches = content.match(/height=\"?(\d+)\"?/i);
               if (matches.length == 2) {
                 fakeElement.setStyle('height', cssifyLength(matches[1]));
               }
@@ -75,8 +78,30 @@ Improved and optimized for Drupal module.
     afterInit : function( editor )
     {
       var dataProcessor = editor.dataProcessor,
-        dataFilter = dataProcessor && dataProcessor.dataFilter;
+        dataFilter = dataProcessor && dataProcessor.dataFilter,
+        htmlFilter = dataProcessor && dataProcessor.htmlFilter;
 
+      if ( htmlFilter )
+      {
+        htmlFilter.addRules({
+          elements :
+          {
+            'div' : function ( element ) {
+              if( element.attributes['class'] == 'media_embed' ) {
+                for (var x in element.children) {
+                  if (typeof(element.children[x].attributes.width) != undefined) {
+                    element.children[x].attributes.width = element.attributes.width;
+                  }
+                  if (typeof(element.children[x].attributes.height) != undefined) {
+                    element.children[x].attributes.height = element.attributes.height;
+                  }
+                  
+                }                
+              }
+            }
+          }
+        });
+      }
       if ( dataFilter )
       {
         dataFilter.addRules(
@@ -89,7 +114,7 @@ Improved and optimized for Drupal module.
                   classId = attributes.classid && String( attributes.classid ).toLowerCase();
                   
                 if (element.attributes[ 'class' ] == 'media_embed') {
-                  var fakeElement = editor.createFakeParserElement(element, 'cke_mediaembed', 'div', false);
+                  var fakeElement = editor.createFakeParserElement(element, 'cke_mediaembed', 'div', true);
                   var fakeStyle = fakeElement.attributes.style || '';
                   var height = element.children[0].attributes.height,
                     width = element.children[0].attributes.width;
