@@ -757,10 +757,16 @@ CKEDITOR.dialog.add( 'linktonode', function( editor )
 				removeAttributes = [],
 				data = { href : attributes.href },
 				me = this, editor = this.getParentEditor();
-
 			this.commitContent( data );
 			//<!-- linktonode START -->
-			attributes._cke_saved_href = (Drupal.settings.ckeditor.linktonode_basepath || '' ) + this.getContentElement( 'info', 'url' ).getValue();
+      var basepath = (Drupal.settings.ckeditor.linktonode_basepath || '' ),
+        urlvalue = this.getContentElement( 'info', 'url' ).getValue();
+      if( basepath.charAt(basepath.length-1) == '/' && urlvalue.indexOf('/') == 0 ) {
+        urlvalue = basepath.substr(0,basepath.length-2) + urlvalue; 
+      } else {
+        urlvalue = basepath + urlvalue;
+      }
+      attributes._cke_saved_href = urlvalue;
 			//<!-- linktonode END -->
 
 			// Popups and target.
