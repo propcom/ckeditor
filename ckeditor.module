@@ -831,11 +831,13 @@ function ckeditor_process_textarea($element) {
         break;
 
       case 'self':
-        $conf['css_path'] = str_replace("%h%t", "%t", $conf['css_path']);
         if (file_exists($module_drupal_path .'/ckeditor.css')) {
           $css_files[] = $module_full_path .'/ckeditor.css';
         }
-        $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $conf['css_path']);
+        foreach (explode(',',$conf['css_path']) as $css_path) {
+	        $css_path = str_replace("%h%t", "%t", $css_path);
+	        $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $css_path);
+        }
         break;
 
       case 'none':
