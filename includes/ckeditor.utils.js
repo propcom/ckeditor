@@ -57,6 +57,7 @@ Drupal.ckeditorOn = function(textarea_id) {
 
     teaser.buttonContainer.hide();
     teaser.textareaContainer.hide();
+    teaser.checkboxContainer.show();
   }
 
   if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
@@ -132,6 +133,7 @@ Drupal.ckeditorOff = function(textarea_id) {
     else {
       $("#" + textarea_id).val(data[0]);
       teaser.textarea.attr('disabled', 'disabled');
+      teaser.checkboxContainer.hide();
       if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
         try {
           teaser.button.click();
