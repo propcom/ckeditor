@@ -49,6 +49,7 @@ $_ckeditor_ids = array();
 * Implementation of hook_form_alter()
 */
 function ckeditor_form_alter(&$form, $form_state, $form_id) {
+  // [#659278], [#666560], [#666616]
   if (substr($form_id, -10) == '_node_form') {
     $nodetype = $form['type']['#value'];
     if (!empty($form['body_field']['teaser_js']['#teaser'])) {
