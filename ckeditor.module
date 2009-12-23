@@ -835,8 +835,8 @@ function ckeditor_process_textarea($element) {
           $css_files[] = $module_full_path .'/ckeditor.css';
         }
         foreach (explode(',',$conf['css_path']) as $css_path) {
-	        $css_path = str_replace("%h%t", "%t", $css_path);
-	        $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $css_path);
+          $css_path = trim(str_replace("%h%t", "%t", $css_path));
+          $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $css_path);
         }
         break;
 
