@@ -1,5 +1,14 @@
 $Id$
 
+-- 2009-12-23 version 6.x-1.x-dev
+- [#659278], [#666560], [#666616] Teaser buttons were missing when teasers were disabled by other modules
+
+-- 2009-12-22 version 6.x-1.x-dev
+- [#663228] Fixed: Link to node not working properly
+- [#665108] Fixed: CKeditor hide "Show summary in full view" checkbox
+- [#662590] Fixed: If more than one editor css file set in "Edit CKEditor profile" > "Define CSS path", then none are used
+- Improvements in MediaEmbed plugin
+
 -- 2009-12-17 version 6.x-1.x-dev
 - [#654626] Fixed PHP notice (Undefined offset in ckeditor_get_nodetype)
 

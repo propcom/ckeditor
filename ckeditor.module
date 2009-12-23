@@ -46,6 +46,19 @@ $_ckeditor_configuration = array();
 $_ckeditor_ids = array();
 
 /**
+* Implementation of hook_form_alter()
+*/
+function ckeditor_form_alter(&$form, $form_state, $form_id) {
+  if (substr($form_id, -10) == '_node_form') {
+    $nodetype = $form['type']['#value'];
+    if (!empty($form['body_field']['teaser_js']['#teaser'])) {
+      $setting['ckeditor']['teaser'] = $form['body_field']['teaser_js']['#teaser'];
+      drupal_add_js($setting, 'setting');
+    }
+  }
+}
+
+/**
  * Implementation of hook_help().
  *
  * This function delegates execution to ckeditor_help_delegate() in includes/ckeditor.page.inc to
