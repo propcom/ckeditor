@@ -1,4 +1,6 @@
 $Id$
+-- 2010-01-06
+- [#674454] by Dave Reid: Add drush integration to download the CKEditor library.
 
 -- 2009-12-23 version 6.x-1.x-dev
 - [#659278], [#666560], [#666616] Teaser buttons were missing when teasers were disabled by other modules
