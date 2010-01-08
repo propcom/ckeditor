@@ -39,6 +39,7 @@ Drupal.ckeditorOn = function(textarea_id) {
   }
 
   if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
+    var ch_checked = teaser.checkbox.attr('checked');
     var tv = teaser.textarea.val();
     if (tv.length > 0) {
       $("#" + textarea_id).val(tv + '\n<!--break-->\n' + $("#" + textarea_id).val());
@@ -58,6 +59,7 @@ Drupal.ckeditorOn = function(textarea_id) {
     teaser.buttonContainer.hide();
     teaser.textareaContainer.hide();
     teaser.checkboxContainer.show();
+    teaser.checkbox.attr('checked', ch_checked);
   }
 
   if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
