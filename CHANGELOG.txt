@@ -1,8 +1,12 @@
 $Id$
--- 2010-01-08
+
+-- 2010-01-12 version 6.x-1.x-dev
+- [#680202] Fixed: image preview not working in IE8
+
+-- 2010-01-08 version 6.x-1.x-dev
 - [#665108] Fixed: CKeditor Show summary in full view checkbox always checked in editing mode
 
--- 2010-01-06
+-- 2010-01-06 version 6.x-1.x-dev
 - [#674454] by Dave Reid: Add drush integration to download the CKEditor library.
 
 -- 2009-12-23 version 6.x-1.x-dev
