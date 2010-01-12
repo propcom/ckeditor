@@ -90,10 +90,6 @@ Drupal.ckeditorOn = function(textarea_id) {
         body.attr('id', ev.editor.config.bodyId);
       if (typeof(Drupal.smileysAttach) != 'undefined')
         ev.editor.dataProcessor.writer.indentationChars = '    ';
-
-      // IE8 - initial focus problem
-      if (CKEDITOR.env.ie)
-        ev.editor.insertHtml('');
     }
   };
 

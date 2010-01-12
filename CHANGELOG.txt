@@ -2,6 +2,7 @@ $Id$
 
 -- 2010-01-12 version 6.x-1.x-dev
 - [#680202] Fixed: image preview not working in IE8
+- [#664488] Fixed: CKEditor grabs initial focus in IE
 
 -- 2010-01-08 version 6.x-1.x-dev
 - [#665108] Fixed: CKeditor Show summary in full view checkbox always checked in editing mode
