@@ -44,6 +44,7 @@ Images aren't shown when submitted
 
 You probably must configure properly the input format. Either set it to Full HTML or add <img> tag to Filtered HTML. 
 The full list of tags, which should be allowed, is available in README.txt file.
+Make sure that you have read "Setting up filters" in README.txt or this page: http://drupal.ckeditor.com/filters
 
 I followed the instruction, but CKEditor doesn't show up
 --------------------------------------------------------------------------

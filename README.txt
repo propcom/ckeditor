@@ -14,6 +14,7 @@ CONTENTS OF THIS FILE
  * Uploading images and files
  * How to install CKFinder
  * Modules: Link to content (EXPERIMENTAL)
+ * Setting up filters
  * Upgrading instructions
  * Help & Contribution
  * Credits
@@ -33,7 +34,7 @@ http://ckeditor.com/
 More information and licence
 ----------------------------
 CKEditor - The text editor for internet
-Copyright (C) 2003-2009 CKSource - Frederico Knabben
+Copyright (C) 2003-2010 CKSource - Frederico Knabben
 
 Licensed under the terms of the GNU Lesser General Public License:
     http://www.opensource.org/licenses/lgpl-license.php
@@ -46,7 +47,7 @@ Requirements
 ------------
   - Drupal 6.x
   - PHP 4.3.0 or greater
-  - CKEditor 3.0.2 or greater (http://ckeditor.com/)
+  - CKEditor 3.1 or greater (http://ckeditor.com/)
 
 Installation / Configuration
 -------------------
@@ -76,7 +77,9 @@ Note: this instruction assumes that you install CKEditor in
       <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code>
       <cite> <embed> <object> <param> <strike> <caption> <tbody>
       Fore easier usage (copying), all tags are below in one line:
-      <a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption> <tbody> 
+      <a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption> <tbody>
+      If you're going to use CKEditor with Filtered HTML input format,
+      please read also "Setting up filters" section. 
    7. To have a better control over line breaks, you may disable Line break converter
       in the chosen filter (recommended).
    8. Modify the ckeditor.config.js file to custom your needs (optional).
@@ -246,6 +249,35 @@ Then do the following steps to add Linktocontent button to the CKEditor toolbar:
 
       Both buttons are enabled in DrupalFiltered and DrupalFull toolbars by default.
       If you don't install linktocontent module, both buttons will automatically disappear from the toolbar. 
+
+Setting up filters
+------------------
+In "Administer -> Input formats", Filtered HTML is the default filter. 
+Due to security reasons, enabling Full HTML is only an option for trusted users.
+To take the full advantage of using CKEditor you can extend the list of allowed tags in 
+HTML filter that is enabled in Filtered HTML input format.
+If you not do this, you may notice that created page looks different after saving it.
+
+Unfortunately, even if you extend the list of allowed tags, there is still one problem: 
+Filtered HTML not only strips disallowed tags, but also strips inline style definitions. 
+Basically, it means that you are unable to apply different font color, size, family, align images etc. 
+using CKEditor out of the box. You can solve this problem by creating another input format, 
+that will work in a similar way like Filtered HTML (will only allow specific tags), 
+but in a much better way - i.e. it will not strip inline styles that CKEditor is using when 
+formatting text or images after the page is saved 
+To create such input format, you'll need a so-called filter. Below are listed three 
+the most popular modules that provide HTML filter: 
+
+ - WYSIWYG Filter - seems to be the easiest to install, does not require third-party libraries
+   http://drupal.org/project/wysiwyg_filter
+ - HTML Purifier - the most popular and powerful, although some people claim that it might be a bit slow
+   http://drupal.org/project/htmlpurifier
+ - htmLawed - another alternative, less popular than both modules above
+   http://drupal.org/project/htmLawed
+
+It's up to you which one you decide to use. Just make sure that you'll allow to use only proper 
+inline styles, tags and attributes.
+See also http://drupal.ckeditor.com/filters for the latest version of this instruction.
 
 Upgrading instructions (migration from FCKeditor)
 -------------------------------------------------
