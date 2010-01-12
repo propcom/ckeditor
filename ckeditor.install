@@ -187,7 +187,8 @@ function ckeditor_install() {
       "webform@*.edit-extra-items\n".
       "admin/*/logintoboggan\n".
       "admin/settings/actions/configure/*\n".
-      "*.edit-target\n"
+      "*.edit-target\n".
+      "*.edit-wysiwyg-filter-*\n"
       );
 
       //force by default simple toolbar on selected textareas
