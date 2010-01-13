@@ -1,8 +1,5 @@
 $Id$
 
--- 2010-01-13 version 6.x-1.x-dev
-- [#680798] Fixed: Editor too wide, requires scrolling horizontally
-
 -- 2010-01-12 version 6.x-1.x-dev
 - [#680202] Fixed: image preview not working in IE8
 - [#664488] Fixed: CKEditor grabs initial focus in IE
