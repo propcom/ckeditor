@@ -36,3 +36,8 @@
 table.cke_editor fieldset { 
   padding:0 !important;
 }
+
+body {
+  /* [#680798] */
+  min-width:400px;
+}
