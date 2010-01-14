@@ -1,5 +1,8 @@
 $Id$
 
+-- 2010-01-14 version 6.x-1.x-dev
+- [#680798] Improved compatibility with NewsFlash theme
+
 -- 2010-01-12 version 6.x-1.x-dev
 - [#680202] Fixed: image preview not working in IE8
 - [#664488] Fixed: CKEditor grabs initial focus in IE

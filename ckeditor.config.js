@@ -93,6 +93,9 @@ CKEDITOR.editorConfig = function(config) {
     config.extraCss += "body{background:#FFF;text-align:left;font-size:0.8em;}";
     config.extraCss += "#primary ol, #primary ul{margin:10px 0 10px 25px;}";
   }
+  if (Drupal.settings.ckeditor.theme == "newsflash") {
+    config.extraCss = "body{min-width:400px}";
+  }
 
   /**
    * CKEditor's editing area body ID & class.
