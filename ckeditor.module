@@ -431,7 +431,7 @@ function ckeditor_process_textarea($element) {
       $element['#attributes']['class'] = $processed_ids[$element['#id']]['class'];
     }
     else {
-      $element['#attributes']['class'] .= " ".$processed_ids[$element['#id']]['class'];
+      $element['#attributes']['class'] .= " ". $processed_ids[$element['#id']]['class'];
     }
     if (empty($element['#suffix'])) {
       $element['#suffix'] = $processed_ids[$element['#id']]['suffix'];
@@ -847,7 +847,7 @@ function ckeditor_process_textarea($element) {
         if (file_exists($module_drupal_path .'/ckeditor.css')) {
           $css_files[] = $module_full_path .'/ckeditor.css';
         }
-        foreach (explode(',',$conf['css_path']) as $css_path) {
+        foreach (explode(',', $conf['css_path']) as $css_path) {
           $css_path = trim(str_replace("%h%t", "%t", $css_path));
           $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $css_path);
         }
