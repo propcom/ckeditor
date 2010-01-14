@@ -5,7 +5,7 @@ CONTENTS OF THIS FILE
 
  * Overview
  * Required components
- * More information and licence
+ * More information and license
  * Requirements
  * Installation / Configuration
  * Installation troubleshooting
@@ -128,7 +128,7 @@ Both plugins are automatically enabled.
 
    1. To add 'DrupalBreak' and 'DrupalPageBreak' buttons to the toolbar,
       open sites/all/modules/ckeditor/ckeditor.config.js and add them to the toolbar 
-      definiton (both buttons are enabled in DrupalFiltered and DrupalFull
+      definition (both buttons are enabled in DrupalFiltered and DrupalFull
       toolbars by default).
       The 'DrupalBreak' button will automatically disappear from the toolbar
       on textareas where teaser cannot be created.
@@ -169,7 +169,7 @@ by using modules like IMCE, WebFM, Image Browser or by using the core upload mod
 
 To select preferred file browser, under "Administer > Site configuration > CKEditor", adjust 
 CKEditor profiles. In each profile you can choose which file browser will be used (in "File browser settings" section).
-Note: to choose IMCE, WebFM or Image Browser you should install an appropiate Drupal module first.
+Note: to choose IMCE, WebFM or Image Browser you should install an appropriate Drupal module first.
 
  How to install CKFinder
 ------------------------
@@ -288,9 +288,9 @@ Upgrading instructions (migration from FCKeditor)
 -------------------------------------------------
    During the installation, CKEditor will check for the existence of FCKeditor module and 
    copy all FCKeditor settings, profiles etc. (to save your time, just disable FCKeditor module 
-   during CKEditor installation, if you unistall FCKeditor module before installing CKEditor, 
+   during CKEditor installation, if you uninstall FCKeditor module before installing CKEditor, 
    all FCKeditor settings will be deleted from the database and CKEditor will not copy them).
-   After installing CKEditor you may unsinstall FCKeditor module.
+   After installing CKEditor you may uninstall FCKeditor module.
 
    If both modules are enabled (CKEditor and FCKeditor) you may get javascript errors, if both editors
    will try to attach to the same textarea, be sure that's not a problem if you have problems after upgrading.
