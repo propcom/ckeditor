@@ -222,6 +222,11 @@ CKFinder is an AJAX based file manager created by CKEditor developers: http://ck
       (in selected CKEditor profile scroll down to "File browser settings" section).
       In the "File browser settings" section you may also change destination folders for files uploaded with CKFinder.
 
+   6. Locate file named settings.php inside your drupal directory
+      (usually sites/default/settings.php) and set $cookie_domain variable to the
+      appropiate domain (remember to uncomment that line). If you not do this,
+      CKFinder may show an information that the connector is disabled. 
+
 Modules: Link to content (EXPERIMENTAL)
 ---------------------------------------
 Link to content module can be integrated with CKEditor.
