@@ -1,5 +1,8 @@
 $Id$
 
+-- 2010-01-14 version 6.x-1.0
+- First stable release
+
 -- 2010-01-14 version 6.x-1.x-dev
 - [#680798] Improved compatibility with NewsFlash theme
 
