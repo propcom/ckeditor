@@ -97,7 +97,7 @@ Drupal.ckeditorOn = function(textarea_id) {
     }
   };
 
-  CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
+  Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
 };
 
 /**
@@ -236,6 +236,21 @@ Drupal.ckeditorTeaserInfo = function(taid) {
   
   return Drupal.ckeditorTeaser.cache[taid];
 };
+
+Drupal.ckeditorInsertHtml = function(html) {
+  if (!Drupal.ckeditorInstance)
+    return false;
+
+  if (Drupal.ckeditorInstance.mode == 'wysiwyg') {
+    Drupal.ckeditorInstance.insertHtml(html);
+    //Drupal.ckeditorInstance.focus();
+    return true;
+  }
+  else {
+    alert(Drupal.t('Content can be only inserted into CKEditor in WYSIWYG mode.'));
+    return false;
+  }
+}
 
 /**
  * IMCE support
