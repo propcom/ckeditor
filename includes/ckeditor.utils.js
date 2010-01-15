@@ -243,7 +243,6 @@ Drupal.ckeditorInsertHtml = function(html) {
 
   if (Drupal.ckeditorInstance.mode == 'wysiwyg') {
     Drupal.ckeditorInstance.insertHtml(html);
-    //Drupal.ckeditorInstance.focus();
     return true;
   }
   else {
