@@ -90,6 +90,10 @@ Drupal.ckeditorOn = function(textarea_id) {
         body.attr('id', ev.editor.config.bodyId);
       if (typeof(Drupal.smileysAttach) != 'undefined')
         ev.editor.dataProcessor.writer.indentationChars = '    ';
+    },
+    focus : function(ev)
+    {
+      Drupal.ckeditorInstance = ev.editor;
     }
   };
 
@@ -108,6 +112,8 @@ Drupal.ckeditorOff = function(textarea_id) {
   if (!CKEDITOR.env.isCompatible) {
     return;
   }
+  if (Drupal.ckeditorInstance && Drupal.ckeditorInstance.name == textarea_id)
+    delete Drupal.ckeditorInstance;
 
   var data = CKEDITOR.instances[textarea_id].getData();
   CKEDITOR.instances[textarea_id].destroy();

@@ -1,5 +1,8 @@
 $Id$
 
+-- 2010-01-15 version 6.x-1.x-dev
+- Added current instance tracking in javascript for easier integration with other module (Drupal.ckeditorInstance)
+
 -- 2010-01-14 version 6.x-1.0
 - First stable release
 
