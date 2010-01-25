@@ -1,4 +1,6 @@
 $Id$
+-- 2010-01-25 version 6.x-1.x-dev
+- [#692558] by J0nathan: Fixed problem with adding boolean values into "Custom javascript configuration"
 
 -- 2010-01-15 version 6.x-1.x-dev
 - Added current instance tracking in javascript for easier integration with other module (Drupal.ckeditorInstance)
