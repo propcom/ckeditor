@@ -767,10 +767,10 @@ function ckeditor_process_textarea($element) {
         preg_match_all('#(config\.)?(\w+)[ ]*=(.+)[;]?#is', $l, $matches);
         if (!empty($matches[0])) {
           $value=trim($matches[3][0], " ;'\"\n\r\t\0\x0B");
-          if ( strcasecmp($value, 'true') ) {
+          if ( strcasecmp($value, 'true') == 0 ) {
             $value=TRUE;
           }
-          if ( strcasecmp($value, 'false') ) {
+          if ( strcasecmp($value, 'false') == 0 ) {
             $value=FALSE;
           }
           $settings[$textarea_id][$matches[2][0]]=$value;
