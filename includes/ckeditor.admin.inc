@@ -873,7 +873,7 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
 
   if (!empty($edit['styles_path'])) {
     if ($edit['css_style'] != 'self') {
-      form_set_error('styles_path', t('Path to predefined styles is not empty. Please set the "Predefined styles" option to "define path to fckstyles.xml" mode.'));
+      form_set_error('styles_path', t('Path to predefined styles is not empty. Please set the "Predefined styles" option to "define path to ckeditor.styles.js" mode.'));
     }
     elseif (FALSE !== strpos($edit['styles_path'], '"')) {
       form_set_error('styles_path', t('Double quotes are not allowed in path.'));
