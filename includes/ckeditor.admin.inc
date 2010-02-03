@@ -1045,7 +1045,17 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#default_value' =>  !empty($profile->settings['ckeditor_path']) ? $profile->settings['ckeditor_path'] : '%m/ckeditor',
     '#size' => 40,
     '#maxlength' => 128,
-    '#description' => t('Path to CKEditor (the HTML editor, downloaded from <a href="!ckeditornet">ckeditor.com</a>) relative to the document root.<br />Available placeholders:<br /><strong>%b</strong> - base URL path of the Drupal installation (!base).<br /><strong>%m</strong> - base URL path where CKEditor module is stored (!files).<br />Current path: !path', array('!path' => ckeditor_path(FALSE), '!base' => base_path(), '!files' => base_path() . $module_drupal_path , '!ckeditornet' => 'http://ckeditor.com/download')),
+    '#description' => t('Path to CKEditor (the HTML editor, downloaded from <a href="!ckeditorcom">ckeditor.com</a>) relative to the document root.') .
+      '<br />'.
+      t('Available placeholders:!b - base URL path of the Drupal installation (!base).!m - base URL path where CKEditor module is stored (!files).<br />Current path: !path',
+      array(
+        '!b' => '<br /><strong>%b</strong>',
+        '!m' => '<br /><strong>%m</strong>',
+        '!path' => ckeditor_path(FALSE),
+        '!base' => base_path(),
+        '!files' => base_path() . $module_drupal_path ,
+        '!ckeditorcom' => 'http://ckeditor.com/download'
+     )),
     '#required' => TRUE
   );
 
