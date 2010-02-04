@@ -567,19 +567,6 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#description' => t('Semicolon separated list of HTML font formats. Allowed values are: p;div;pre;address;h1;h2;h3;h4;h5;h6'),
   );
 
-  /*
-  $form['output']['output_conf'] = array(
-    '#type' => 'select',
-    '#title' => t('Ignore this section, use default settings defined in config files'),
-    '#default_value' => $profile->settings['output_conf'] ? $profile->settings['output_conf'] : 'f',
-    '#options' => array(
-      'f' => t('False'),
-      't' => t('True')
-    ),
-    '#description' => t('Although it is less handy, defining settings only in config files ("fckconfig.js" and "ckeditor.config.js") will slightly leverage your traffic and improve load time of your site. <br/>Warning: if set to true, all changes made in "Cleanup and output" will have no affect on CKEditor\'s behaviour.'),
-  );
-  */
-
   $form['css'] = array(
     '#type' => 'fieldset',
     '#title' => t('CSS'),
