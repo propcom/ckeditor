@@ -1,4 +1,6 @@
 $Id$
+-- 2010-02-16
+- [#651616] by samuelsan: added Spanish translation 
 
 -- 2010-02-03
 - [#651616] by chmoindron: added French translation
