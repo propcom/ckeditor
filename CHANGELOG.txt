@@ -1,6 +1,7 @@
 $Id$
 -- 2010-02-17
 - [#651616] by FrankT: added German translation
+- [#707370] support Tinybrowser
 
 -- 2010-02-16
 - [#651616] by samuelsan: added Spanish translation

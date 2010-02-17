@@ -663,6 +663,11 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     $filebrowsers['imce'] = t('IMCE');
     $filebrowsers_dialogs['imce'] = t('IMCE');
   }
+  
+  if (module_exists('tinybrowser')) {
+    $filebrowsers['tinybrowser'] = t('TinyBrowser');
+    $filebrowsers_dialogs['tinybrowser'] = t('TinyBrowser');
+  }
 
   if (module_exists('imagebrowser')) {
     $filebrowsers['ib'] = t('Image Browser');
