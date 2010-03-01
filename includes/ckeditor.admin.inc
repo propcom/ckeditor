@@ -218,10 +218,10 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     $maxsize=128;   //default max name length
 
     $res=array();
-    $pat = "/^(?<name>.*?)_(?<n>[0-9]*)$/";
-    if (preg_match_all($pat, $oldname, $res)) {     // oldname like 'name_nr'
-      $name=$res['name'][0];
-      $num=$res['n'][0]+1;
+    $pat = "/^(.*?)_([0-9]+)$/";
+    if (preg_match($pat, $oldname, $res)) {     // oldname like 'name_nr'
+      $name=$res[1];
+      $num=$res[2]+1;
     }
     else{
       $name=$oldname;
@@ -663,7 +663,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     $filebrowsers['imce'] = t('IMCE');
     $filebrowsers_dialogs['imce'] = t('IMCE');
   }
-  
+
   if (module_exists('tinybrowser')) {
     $filebrowsers['tinybrowser'] = t('TinyBrowser');
     $filebrowsers_dialogs['tinybrowser'] = t('TinyBrowser');

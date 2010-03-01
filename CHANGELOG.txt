@@ -1,4 +1,8 @@
 $Id$
+
+-- 2010-03-01
+- [#716274] Clone Profile incompatible with PCRE <7.0
+
 -- 2010-02-17
 - [#651616] by FrankT: added German translation
 - [#707370] support Tinybrowser
