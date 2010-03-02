@@ -3,6 +3,7 @@ $Id$
 - [#729142] Notice: Undefined variable: filebroswer in ckeditor.module on line 703
 - [#728212] by morningtime: Looks for contents.css in wrong location
 - [#679976] support Panels
+= [#721914] Opening IMCE window without Image Dialog
 
 -- 2010-03-01
 - [#716274] Clone Profile incompatible with PCRE <7.0
