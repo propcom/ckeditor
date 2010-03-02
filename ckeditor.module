@@ -111,8 +111,17 @@ function ckeditor_elements() {
   if (user_access('access ckeditor')) {
     $type['textarea'] = array('#process' => array('ckeditor_process_textarea'));
     $type['form'] = array('#after_build' => array('ckeditor_process_form'));
+    $type['hidden'] = array('#process' => array('ckeditor_process_hidden'));
   }
   return $type;
+}
+
+function ckeditor_process_hidden($element, $edit, $form_state, $complete_form) {
+  if (!empty($element['#value']) && in_array($element['#value'], array('panels_edit_display_form', 'panels_panel_context_edit_content'))) {
+    $fake_element = array('#id' => 'edit-body');
+    ckeditor_process_textarea($fake_element);
+  }
+  return $element;
 }
 
 function ckeditor_process_form(&$form) {

@@ -268,6 +268,12 @@ function ckeditor_fileUrl(file, win){
   win.close();
 }
 
+Drupal.ckeditorSubmitAjaxForm = function () {
+  if (typeof(CKEDITOR.instances) != 'undefined' && typeof(CKEDITOR.instances['edit-body']) != 'undefined') {
+    Drupal.ckeditorOff('edit-body');
+  }
+}
+
 /**
  * Drupal behaviors
  */
@@ -284,6 +290,14 @@ Drupal.behaviors.ckeditor = function (context) {
   if (Drupal.behaviors.textarea) {
     Drupal.behaviors.textarea(context);
   }
+
+  if ($(context).attr('id') == 'modal-content') {
+    if (CKEDITOR.instances['edit-body'] != 'undefined') {
+      Drupal.ckeditorOff('edit-body');
+    }
+    $('input#edit-return', context).bind('mouseup', Drupal.ckeditorSubmitAjaxForm);
+    $('.close').bind('mouseup', Drupal.ckeditorSubmitAjaxForm);
+  }  
 
   $("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
     var ta_id=$(this).attr("id");
