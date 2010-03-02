@@ -893,7 +893,7 @@ function ckeditor_process_textarea($element) {
         if (file_exists($module_drupal_path .'/ckeditor.css')) {
           $css_files[] = $module_full_path .'/ckeditor.css';
         }
-        $css_files[] = $module_full_path .'/ckeditor/contents.css';
+        $css_files[] = $editor_path .'/contents.css';
         break;
     }
     $settings[$textarea_id]['contentsCss'] = array_values($css_files);
