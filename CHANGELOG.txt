@@ -1,4 +1,6 @@
 $Id$
+-- 2010-03-02
+- [#729142] Notice: Undefined variable: filebroswer in ckeditor.module on line 703
 
 -- 2010-03-01
 - [#716274] Clone Profile incompatible with PCRE <7.0

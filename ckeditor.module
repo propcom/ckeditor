@@ -691,7 +691,7 @@ function ckeditor_process_textarea($element) {
       }
     }
 
-    if (in_array('tinybrowser', array($filebroswer, $filebrowser_image, $filebrowser_flash))) {
+    if (in_array('tinybrowser', array($filebrowser, $filebrowser_image, $filebrowser_flash))) {
       $popup_win_size = variable_get('tinybrowser_popup_window_size', '770x480');
       if (!preg_match('#\d+x\d+#is', $popup_win_size)) {
         $popup_win_size = '770x480';
