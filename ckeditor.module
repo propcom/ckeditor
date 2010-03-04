@@ -628,8 +628,18 @@ function ckeditor_process_textarea($element) {
     $settings[$textarea_id]['height'] = $height;
     $settings[$textarea_id]['skin'] = $conf['skin'];
     $settings[$textarea_id]['format_tags'] = $conf['font_format'];
-    if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
-      $settings[$textarea_id]['contentLangDirection'] = 'rtl';
+    switch ($conf['language_direction']) {
+      case 'default': 
+        if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
+          $settings[$textarea_id]['contentsLangDirection'] = 'rtl';
+        }
+        break;
+      case 'ltr':
+        $settings[$textarea_id]['contentsLangDirection'] = 'ltr';
+        break;
+      case 'rtl':
+        $settings[$textarea_id]['contentsLangDirection'] = 'rtl';
+        break;
     }
     if ($conf['auto_lang']=="f") {
       $settings[$textarea_id]['language'] = $conf['lang'];

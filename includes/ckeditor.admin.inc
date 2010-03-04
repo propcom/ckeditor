@@ -526,7 +526,18 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     ),
     '#description' => t('Use auto detect user language feature.')
   );
-
+  
+  $form['appearance']['language_direction'] = array(
+    '#type' => 'select',
+    '#title' => t('Language Direction'),
+    '#default_value' => !empty($profile->settings['language_direction']) ? $profile->settings['language_direction'] : 'default',
+    '#options' => array(
+      'default' => t('get from current locale'),
+      'ltr' => t('Left-To-Right language (like English)'),
+      'rtl' => t('Right-To-Left languages (like Arabic)')
+    )
+  );
+  
   $form['output'] = array(
     '#type' => 'fieldset',
     '#title' => t('Cleanup and output'),
