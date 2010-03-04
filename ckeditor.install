@@ -128,7 +128,8 @@ function ckeditor_install() {
       $arr['width'] = variable_get("ckeditor_width", "100%");
       $arr['lang'] = "en";
       $arr['auto_lang'] = "t";
-
+      $arr['language_direction'] = "default";
+      
       //output
       $arr['enter_mode'] = "p";
       $arr['shift_enter_mode'] = "br";
