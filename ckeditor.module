@@ -495,7 +495,9 @@ function ckeditor_process_textarea($element) {
 
   $themepath = path_to_theme() .'/';
   $host = base_path();
-
+  if (!isset($lement['#rows'])){
+    $element['#rows'] = 5;
+  }
   // only replace textarea when it has enough rows and it is enabled
   if ($enabled && (($element['#rows'] > $conf['min_rows']) || ($conf['min_rows'] <= 1 && empty($element['#rows'])))) {
     $textarea_id = $element['#id'];
@@ -526,7 +528,9 @@ function ckeditor_process_textarea($element) {
       if (isset($element['#post']['teaser_js'])) {
         $content .= $element['#post']['teaser_js'] .'<!--break-->';
       }
-      $content .= $element['#value'];
+      if (isset($element['#value'])) {
+        $content .= $element['#value'];
+      }
       $wysiwyg_link = '';
       $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:Drupal.ckeditorToggle('{$textarea_id}','". str_replace("'", "\\'", t('Switch to plain text editor')) ."','". str_replace("'", "\\'", t('Switch to rich text editor')) ."',". $xss_check .");\" id=\"switch_{$textarea_id}\">";
       $wysiwyg_link .= $ckeditor_on ? t('Switch to plain text editor') : t('Switch to rich text editor');
@@ -544,7 +548,11 @@ function ckeditor_process_textarea($element) {
     $files_path         = $host . file_directory_path();
 
     // sensible default for small toolbars
-    $height = intval($element['#rows']) * 14 + 140;
+    if (isset($element['#rows'])) {
+      $height = intval($element['#rows']) * 14 + 140;
+    } else {
+      $height = 400;
+    }
     if (!$is_running) {
       drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', 'footer');
       /* In D6 drupal_add_js() can't add external JS, in D7 use drupal_add_js(...,'external') */
