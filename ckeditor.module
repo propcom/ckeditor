@@ -634,7 +634,9 @@ function ckeditor_process_textarea($element) {
     if ($conf['auto_lang']=="f") {
       $settings[$textarea_id]['language'] = $conf['lang'];
     }
-
+    if ($conf['forcePasteAsPlainText'] == 't') {
+      $settings[$textarea_id]['forcePasteAsPlainText'] = true;
+    }
     // add code for filebrowser for users that have access
     $filebrowser = !empty($conf['filebrowser']) ? $conf['filebrowser'] : 'none';
     $filebrowser_image = !empty($conf['filebrowser_image']) ? $conf['filebrowser_image'] : $filebrowser;

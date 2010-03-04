@@ -129,7 +129,7 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
         '#size' => 40,
         '#maxlength' => 128,
       );
-
+      
       $form['ckeditor']['ckeditor_lang'] = array(
         '#type' => 'select',
         '#title' => t('Language'),

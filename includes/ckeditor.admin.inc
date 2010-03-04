@@ -778,6 +778,15 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#maxlength' => 255,
     '#description' => t('The time to wait (in seconds) to load the full editor code after the page load, if the "ckeditor_basic.js" file is used. If set to zero, the editor is loaded on demand.'),
   );
+  $form['advanced']['forcePasteAsPlainText'] = array(
+    '#type' => 'select',
+    '#title' => t('Force Paste As Plain Text'),
+    '#default_value' => !empty($profile->settings['forcePasteAsPlainText']) ? $profile->settings['forcePasteAsPlainText'] : "f",
+    '#options' => array(
+      't' => t('Enabled'),
+      'f' => t('Disabled')
+      ),
+  );
   $form['advanced']['theme_config_js'] = array(
     '#type' => 'radios',
     '#title' => t('Load ckeditor.config.js from theme path'),
