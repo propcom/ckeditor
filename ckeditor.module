@@ -635,7 +635,19 @@ function ckeditor_process_textarea($element) {
       $settings[$textarea_id]['language'] = $conf['lang'];
     }
     if ($conf['forcePasteAsPlainText'] == 't') {
-      $settings[$textarea_id]['forcePasteAsPlainText'] = true;
+      $settings[$textarea_id]['forcePasteAsPlainText'] = TRUE;
+    }
+    if ($conf['custom_formatting'] == 't') {
+      foreach ($conf['custom_formatting_options'] as $k => $v) {
+        if ($v === 0) {
+          $conf['custom_formatting_options'][$k] = FALSE;
+        } else {
+          $conf['custom_formatting_options'][$k] = TRUE;
+        }
+      }
+      $settings[$textarea_id]['output_pre_indent'] = $conf['custom_formatting_options']['pre_indent'];
+      unset($conf['custom_formatting_options']['pre_indent']);
+      $settings[$textarea_id]['custom_formatting'] = $conf['custom_formatting_options'];
     }
     // add code for filebrowser for users that have access
     $filebrowser = !empty($conf['filebrowser']) ? $conf['filebrowser'] : 'none';

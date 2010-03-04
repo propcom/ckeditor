@@ -83,6 +83,16 @@ Drupal.ckeditorOn = function(textarea_id) {
     instanceReady : function(ev)
     {
       var body = $(ev.editor.document.$.body);
+      if (typeof(Drupal.settings.ckeditor.settings[textarea_id].custom_formatting) != 'undefined') {
+        var dtd = CKEDITOR.dtd;
+        for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
+          ev.editor.dataProcessor.writer.setRules( e, Drupal.settings.ckeditor.settings[textarea_id].custom_formatting);
+		}
+        ev.editor.dataProcessor.writer.setRules( 'pre',
+        {
+          indent: Drupal.settings.ckeditor.settings[textarea_id].output_pre_indent
+        });
+      }
 
       if (ev.editor.config.bodyClass)
         body.addClass(ev.editor.config.bodyClass);

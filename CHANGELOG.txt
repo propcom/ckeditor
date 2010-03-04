@@ -3,6 +3,7 @@ $Id$
 - [#731086] Notice: Undefined index: #rows / #value
 - [#703960] by hinanui: The CKEditor fails to load sporadically if the teaser of the node is empty
 - [#703428] Add forcePasteAsPlainText to CKEditor profile
+- [#707878] Add output formatting
 
 -- 2010-03-02
 - [#729142] Notice: Undefined variable: filebroswer in ckeditor.module on line 703

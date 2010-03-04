@@ -566,6 +566,36 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#maxlength' => 250,
     '#description' => t('Semicolon separated list of HTML font formats. Allowed values are: p;div;pre;address;h1;h2;h3;h4;h5;h6'),
   );
+  
+  $form['output']['custom_formatting'] = array(
+    '#type' => 'radios',
+    '#title' => t('Use custom formatting options'),
+    '#default_value' => !empty($profile->settings['custom_formatting']) ? $profile->settings['custom_formatting'] : 'f',
+    '#options' => array(
+      't' => t('Yes'),
+      'f' => t('No'),
+    ),
+  );
+
+  foreach( $profile->settings['custom_formatting_options'] as $k => $v ) {
+    if ($v === 0) {
+      unset($profile->settings['custom_formatting_options'][$k]);
+    }
+  }
+  
+  $form['output']['custom_formatting_options'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Formatting options'),
+    '#default_value' => !empty($profile->settings['custom_formatting_options']) ? array_keys((array) $profile->settings['custom_formatting_options']) : array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose'),
+    '#options' => array(
+      'indent' => t('indent the element contents'),
+      'breakBeforeOpen' => t('break line before the opener tag'),
+      'breakAfterOpen' => t('break line after the opener tag'),
+      'breakBeforeClose' => t('break line before the closer tag'),
+      'breakAfterClose' => t('break line after the closer tag'),
+      'pre_indent' => t('indent the &lt;pre&gt; element contents'),
+    ),
+  );
 
   $form['css'] = array(
     '#type' => 'fieldset',
