@@ -137,7 +137,7 @@ function ckeditor_install() {
       $arr['format_source'] = "t";
       $arr['format_output'] = "t";
       $arr['custom_formatting'] = "f";
-      $arr['custom_formatting_options'] = array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose');
+      $arr['formatting']['custom_formatting_options'] = array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose');
 
       //css
       $arr['css_mode'] = "theme";

@@ -577,6 +577,12 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#maxlength' => 250,
     '#description' => t('Semicolon separated list of HTML font formats. Allowed values are: p;div;pre;address;h1;h2;h3;h4;h5;h6'),
   );
+
+  foreach( $profile->settings['formatting']['custom_formatting_options'] as $k => $v ) {
+    if ($v === 0) {
+      unset($profile->settings['formatting']['custom_formatting_options'][$k]);
+    }
+  }
   
   $form['output']['custom_formatting'] = array(
     '#type' => 'radios',
@@ -587,17 +593,16 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       'f' => t('No'),
     ),
   );
-
-  foreach( $profile->settings['custom_formatting_options'] as $k => $v ) {
-    if ($v === 0) {
-      unset($profile->settings['custom_formatting_options'][$k]);
-    }
-  }
   
-  $form['output']['custom_formatting_options'] = array(
+  $form['output']['formatting'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Custom formatting options'),
+    '#tree' => TRUE,
+  );
+
+  $form['output']['formatting']['custom_formatting_options'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Formatting options'),
-    '#default_value' => !empty($profile->settings['custom_formatting_options']) ? array_keys((array) $profile->settings['custom_formatting_options']) : array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose'),
+    '#default_value' => !empty($profile->settings['formatting']['custom_formatting_options']) ? array_keys((array) $profile->settings['formatting']['custom_formatting_options']) : array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose'),
     '#options' => array(
       'indent' => t('indent the element contents'),
       'breakBeforeOpen' => t('break line before the opener tag'),
@@ -607,7 +612,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       'pre_indent' => t('indent the &lt;pre&gt; element contents'),
     ),
   );
-
+    
   $form['css'] = array(
     '#type' => 'fieldset',
     '#title' => t('CSS'),
