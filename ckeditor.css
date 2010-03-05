@@ -36,3 +36,10 @@
 table.cke_editor fieldset { 
   padding:0 !important;
 }
+/* hack with ie and garland editing area size fix - [#733512] */
+.cke_editor{
+  display: table !important;
+}
+.cke_editor,#ie#bug {
+  display: inline-table !important;
+}

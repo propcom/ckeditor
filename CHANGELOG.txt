@@ -1,4 +1,7 @@
 $Id$
+-- 2010-03-05
+- [#733512] Fixed editing area size 
+
 -- 2010-03-04
 - [#731086] Notice: Undefined index: #rows / #value
 - [#703960] by hinanui: The CKEditor fails to load sporadically if the teaser of the node is empty
