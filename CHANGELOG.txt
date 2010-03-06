@@ -1,4 +1,7 @@
 $Id$
+-- 2010-03-06
+- Fixed ckeditor dialog when editor is running in modal window from ctools
+
 -- 2010-03-05
 - [#733512] Fixed editing area size 
 

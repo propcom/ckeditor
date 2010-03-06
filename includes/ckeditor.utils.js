@@ -307,6 +307,16 @@ Drupal.behaviors.ckeditor = function (context) {
     }
     $('input#edit-return', context).bind('mouseup', Drupal.ckeditorSubmitAjaxForm);
     $('.close').bind('mouseup', Drupal.ckeditorSubmitAjaxForm);
+    CKEDITOR.on('dialogDefinition', function (ev) {
+      var dialogDefinition = ev.data.definition;
+      var _onShow = dialogDefinition.onShow;
+      dialogDefinition.onShow = function () {
+      	if ( _onShow ) {
+      	  _onShow.apply( this );
+      	}
+      	$('body').unbind('keypress');
+      }
+    });
   }  
 
   $("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
