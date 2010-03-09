@@ -1,4 +1,7 @@
 $Id$
+-- 2010-03-09
+- [#736786] by irakli: CKEditor is incompatible with Installation profiles
+
 -- 2010-03-06
 - [#732264] Fixed ckeditor dialog when editor is running in modal window from ctools
 
