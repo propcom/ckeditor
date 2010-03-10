@@ -10,7 +10,7 @@
  * Implements hook_drush_command().
  */
 function ckeditor_drush_command() {
-  $items['ckeditor download'] = array(
+  $items['ckeditor-download'] = array(
     'callback' => 'ckeditor_drush_download',
     'description' => dt('Downloads the required CKEditor library from svn.fckeditor.net.'),
     'arguments' => array(
