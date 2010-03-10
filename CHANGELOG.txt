@@ -1,4 +1,7 @@
 $Id$
+-- 2010-03-10
+- [#674454] Change drush command name 
+
 -- 2010-03-09
 - [#736786] by irakli: CKEditor is incompatible with Installation profiles
 
