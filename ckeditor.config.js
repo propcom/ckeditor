@@ -124,7 +124,11 @@ CKEDITOR.editorConfig = function(config) {
     Drupal.settings.ckeditor.linktonode_basepath = Drupal.settings.basePath;
   }
 
-  //'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
+  // 'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
   //config.extraPlugins += (config.extraPlugins ? ',mediaembed' : 'mediaembed' );
   //CKEDITOR.plugins.addExternal('mediaembed', Drupal.settings.ckeditor.module_path + '/plugins/mediaembed/');
+
+  // 'IMCE' plugin. If IMCE module is enabled, you may uncomment lines below and add an 'IMCE' button to selected toolbar. 
+  //config.extraPlugins += (config.extraPlugins ? ',imce' : 'imce' );
+  //CKEDITOR.plugins.addExternal('imce', Drupal.settings.ckeditor.module_path + '/plugins/imce/');
 };

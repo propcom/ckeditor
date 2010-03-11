@@ -526,18 +526,19 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     ),
     '#description' => t('Use auto detect user language feature.')
   );
-  
+
   $form['appearance']['language_direction'] = array(
     '#type' => 'select',
     '#title' => t('Language Direction'),
     '#default_value' => !empty($profile->settings['language_direction']) ? $profile->settings['language_direction'] : 'default',
     '#options' => array(
-      'default' => t('get from current locale'),
-      'ltr' => t('Left-To-Right language (like English)'),
-      'rtl' => t('Right-To-Left languages (like Arabic)')
-    )
+      'default' => t('Get from current locale (default)'),
+      'ltr' => t('Left-To-Right'),// language (like English)
+      'rtl' => t('Right-To-Left') // languages (like Arabic)
+    ),
+    '#description' => t('Choose language direction used in the editing area. Even when CKEditor auto detects user language and adjusts it\'s user interface, the editing area is not automatically changed into LTR or RTL mode. To be able to type LTR (like English) and RTL (like Arabic, Hebrew, Persian) content at the same time, please take a look at the <b>Styles</b> combo and <b>Language: RTL</b>, <b>Language: LTR</b> styles available there. Note: this combo box is not available in the default toolbar, the <b>Styles</b> button needs to be added to the toolbar in ckeditor.config.js.')
   );
-  
+
   $form['output'] = array(
     '#type' => 'fieldset',
     '#title' => t('Cleanup and output'),
@@ -578,12 +579,13 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#description' => t('Semicolon separated list of HTML font formats. Allowed values are: p;div;pre;address;h1;h2;h3;h4;h5;h6'),
   );
 
+  if (!empty($profile->settings['formatting']['custom_formatting_options']))
   foreach( $profile->settings['formatting']['custom_formatting_options'] as $k => $v ) {
     if ($v === 0) {
       unset($profile->settings['formatting']['custom_formatting_options'][$k]);
     }
   }
-  
+
   $form['output']['custom_formatting'] = array(
     '#type' => 'radios',
     '#title' => t('Use custom formatting options'),
@@ -593,7 +595,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       'f' => t('No'),
     ),
   );
-  
+
   $form['output']['formatting'] = array(
     '#type' => 'fieldset',
     '#title' => t('Custom formatting options'),
@@ -612,7 +614,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       'pre_indent' => t('indent the &lt;pre&gt; element contents'),
     ),
   );
-    
+
   $form['css'] = array(
     '#type' => 'fieldset',
     '#title' => t('CSS'),
@@ -826,12 +828,13 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   );
   $form['advanced']['forcePasteAsPlainText'] = array(
     '#type' => 'select',
-    '#title' => t('Force Paste As Plain Text'),
+    '#title' => t('Force pasting as plain text'),
     '#default_value' => !empty($profile->settings['forcePasteAsPlainText']) ? $profile->settings['forcePasteAsPlainText'] : "f",
     '#options' => array(
       't' => t('Enabled'),
       'f' => t('Disabled')
       ),
+      '#description' => t('If enabled, HTML content will be automatically changed to plain text when pasting.'),
   );
   $form['advanced']['theme_config_js'] = array(
     '#type' => 'radios',
