@@ -79,12 +79,6 @@ CKEDITOR.editorConfig = function(config) {
       ['Maximize', 'ShowBlocks'],
       ['DrupalBreak', 'DrupalPageBreak']
      ];
-  config.toolbar_DrupalCustom = [
-      ['Source'],
-      ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
-      ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
-      ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-     ];
 
   /*
    * Append here extra CSS rules that should be applied into the editing area.
