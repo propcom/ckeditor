@@ -336,7 +336,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   $form['ckeditor_exclude_settings']['min_rows'] = array(
     '#type' => 'textfield',
     '#title' => t('Minimum rows'),
-    '#default_value' => !empty($profile->settings['min_rows']) ? $profile->settings['min_rows'] : '5',
+    '#default_value' => !empty($profile->settings['min_rows']) ? $profile->settings['min_rows'] : '1',
     '#description' => t("CKEditor will be triggered if the textarea has more rows than entered here. Enter '1' if you do not want to use this feature."),
   );
 
