@@ -1,6 +1,7 @@
 $Id$
 -- 2010-03-15
 - [#742662] Notices Undefined index: language_direction and forcePasteAsPlainText
+- [#742680] Notice: Undefined property: stdClass::$name
 
 -----------------------------
  2010-03-11

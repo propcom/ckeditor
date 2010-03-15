@@ -211,35 +211,37 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#collapsed' => TRUE
   );
 
-  if (arg(3) == 'clone') {
-    //load all profiles to check their names
-    $profiles = ckeditor_profile_load();
-    $oldname = $profile->name;
-    $maxsize=128;   //default max name length
+  
+  switch (arg(3)) {
+    case 'clone':
+      //load all profiles to check their names
+      $profiles = ckeditor_profile_load();
+      $oldname = $profile->name;
+      $maxsize=128;   //default max name length
 
-    $res=array();
-    $pat = "/^(.*?)_([0-9]+)$/";
-    if (preg_match($pat, $oldname, $res)) {     // oldname like 'name_nr'
-      $name=$res[1];
-      $num=$res[2]+1;
-    }
-    else{
-      $name=$oldname;
-      $num=2;
-    }
+      $res=array();
+      $pat = "/^(.*?)_([0-9]+)$/";
+      if (preg_match($pat, $oldname, $res)) {     // oldname like 'name_nr'
+        $name=$res[1];
+        $num=$res[2]+1;
+      }
+      else{
+        $name=$oldname;
+        $num=2;
+      }
 
-    $newname=substr($name, 0, $maxsize-3) .'_'. $num;   // +limit
-    while (isset($profiles[$newname])) {            //find next free number
-      $num++;
-      $newname=substr($name, 0, $maxsize-3) .'_'. $num;
-
-    }
-    //dont clone rids
-    $profile->settings['rids']=array();
-    $profile->rids=array();
-  }
-  else {
-    $newname = $profile->name;
+      $newname=substr($name, 0, $maxsize-3) .'_'. $num;   // +limit
+      while (isset($profiles[$newname])) {            //find next free number
+        $num++;
+        $newname=substr($name, 0, $maxsize-3) .'_'. $num;
+      }
+      //dont clone rids
+      $profile->settings['rids']=array();
+      $profile->rids=array();
+      break;
+    case 'edit':
+      $newname = $profile->name;
+      break;
   }
 
   $form['basic']['name'] = array(
