@@ -1,4 +1,6 @@
 $Id$
+-- 2010-03-15
+- [#742662] Notices Undefined index: language_direction and forcePasteAsPlainText
 
 -----------------------------
  2010-03-11

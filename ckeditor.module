@@ -627,23 +627,25 @@ function ckeditor_process_textarea($element) {
     $settings[$textarea_id]['height'] = $height;
     $settings[$textarea_id]['skin'] = $conf['skin'];
     $settings[$textarea_id]['format_tags'] = $conf['font_format'];
-    switch ($conf['language_direction']) {
-      case 'default': 
-        if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
+    if (isset($conf['language_direction'])) {
+      switch ($conf['language_direction']) {
+        case 'default': 
+          if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
+            $settings[$textarea_id]['contentsLangDirection'] = 'rtl';
+          }
+          break;
+        case 'ltr':
+          $settings[$textarea_id]['contentsLangDirection'] = 'ltr';
+          break;
+        case 'rtl':
           $settings[$textarea_id]['contentsLangDirection'] = 'rtl';
-        }
-        break;
-      case 'ltr':
-        $settings[$textarea_id]['contentsLangDirection'] = 'ltr';
-        break;
-      case 'rtl':
-        $settings[$textarea_id]['contentsLangDirection'] = 'rtl';
-        break;
+          break;
+      }
     }
     if ($conf['auto_lang']=="f") {
       $settings[$textarea_id]['language'] = $conf['lang'];
     }
-    if ($conf['forcePasteAsPlainText'] == 't') {
+    if (isset($conf['forcePasteAsPlainText']) && $conf['forcePasteAsPlainText'] == 't') {
       $settings[$textarea_id]['forcePasteAsPlainText'] = TRUE;
     }
     if (isset($conf['custom_formatting']) && $conf['custom_formatting'] == 't') {
