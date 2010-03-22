@@ -259,6 +259,19 @@ Drupal.ckeditorInsertHtml = function(html) {
     alert(Drupal.t('Content can be only inserted into CKEditor in WYSIWYG mode.'));
     return false;
   }
+};
+
+/**
+ * Ajax support [#741572]
+ */
+if (typeof(Drupal.Ajax) != 'undefined' && typeof(Drupal.Ajax.plugins) != 'undefined') {
+  Drupal.Ajax.plugins.CKEditor = function(hook, args) {
+    if (hook === 'submit' && typeof(CKEDITOR.instances) != 'undefined') {
+      for (var i in CKEDITOR.instances)
+        CKEDITOR.instances[i].updateElement();
+    }
+    return true;
+  };
 }
 
 /**
@@ -278,11 +291,12 @@ function ckeditor_fileUrl(file, win){
   win.close();
 }
 
+//Support for Panels [#679976]
 Drupal.ckeditorSubmitAjaxForm = function () {
   if (typeof(CKEDITOR.instances) != 'undefined' && typeof(CKEDITOR.instances['edit-body']) != 'undefined') {
     Drupal.ckeditorOff('edit-body');
   }
-}
+};
 
 /**
  * Drupal behaviors
@@ -301,6 +315,7 @@ Drupal.behaviors.ckeditor = function (context) {
     Drupal.behaviors.textarea(context);
   }
 
+  // Support for Panels [#679976]
   if ($(context).attr('id') == 'modal-content') {
     if (CKEDITOR.instances['edit-body'] != 'undefined') {
       Drupal.ckeditorOff('edit-body');
@@ -311,11 +326,11 @@ Drupal.behaviors.ckeditor = function (context) {
       var dialogDefinition = ev.data.definition;
       var _onShow = dialogDefinition.onShow;
       dialogDefinition.onShow = function () {
-      	if ( _onShow ) {
-      	  _onShow.apply( this );
-      	}
-      	$('body').unbind('keypress');
-      }
+        if ( _onShow ) {
+          _onShow.apply( this );
+        }
+        $('body').unbind('keypress');
+      };
     });
   }  
 
