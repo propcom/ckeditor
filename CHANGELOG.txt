@@ -1,4 +1,6 @@
 $Id$
+-- 2010-03-30
+- [#756516] by kosilka: mistake in variable name
 
 -- 2010-03-22
 - [#741572] Fixed compatibility with the Ajax module
