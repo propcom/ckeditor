@@ -495,7 +495,7 @@ function ckeditor_process_textarea($element) {
 
   $themepath = path_to_theme() .'/';
   $host = base_path();
-  if (!isset($lement['#rows'])){
+  if (!isset($element['#rows'])){
     $element['#rows'] = 5;
   }
   // only replace textarea when it has enough rows and it is enabled
