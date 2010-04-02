@@ -102,6 +102,8 @@ The directory /modules/ckeditor/ckeditor/ should have the following files:
 ckeditor.js, config.js, contents.css 
 and directories: "skins", "themes", "lang", "images"
 
+Alternative directory can be sites/all/libraries/ckeditor, module automatically recognize proper path to editor. Libraries directory is default path when drush is used to download editor javascript.  
+
 The correct directory structure is as follows:
 modules               <dir>
    ckeditor           <dir>
