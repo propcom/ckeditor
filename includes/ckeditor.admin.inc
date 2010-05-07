@@ -606,7 +606,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
 
   $form['output']['formatting']['custom_formatting_options'] = array(
     '#type' => 'checkboxes',
-    '#default_value' => !empty($profile->settings['formatting']['custom_formatting_options']) ? array_keys((array) $profile->settings['formatting']['custom_formatting_options']) : array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose'),
+    '#default_value' => isset($profile->settings['formatting']['custom_formatting_options']) ? array_keys((array) $profile->settings['formatting']['custom_formatting_options']) : array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose'),
     '#options' => array(
       'indent' => t('indent the element contents'),
       'breakBeforeOpen' => t('break line before the opener tag'),
