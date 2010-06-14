@@ -1,6 +1,9 @@
 $Id$
+-- 2010-06-14
+- [#814970]: Fixed: Teaser break not working with CKEditor 3.3
+
 -- 2010-05-07
-- [#776026]: Fixed output default values are kept when editing a ckeditor profile
+- [#776026]: Fixed: output default values are kept when editing a ckeditor profile
 
 -- 2010-05-06
 - [#772134]: Avoid Javascript Caching of editor CSS
