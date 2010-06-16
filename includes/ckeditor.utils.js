@@ -220,7 +220,7 @@ Drupal.ckeditorTeaserInfo = function(taid) {
   // find the elements
   if (Drupal.ckeditorTeaser.lookup[taid]) {
     var obj;
-    if (window.opener) {
+    if (window.opener && window.ckeditor_was_opened_in_popup_window) {
       obj = {
         textarea: window.opener.$('#' + Drupal.ckeditorTeaser.lookup[taid]),
         checkbox: window.opener.$('#' + Drupal.settings.teaserCheckbox[Drupal.ckeditorTeaser.lookup[taid]])

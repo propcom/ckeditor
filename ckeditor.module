@@ -971,7 +971,7 @@ function ckeditor_process_textarea($element) {
     }
 
     if ($conf['popup'] == 't') {
-      $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="ckeditorOpenPopup(\''. $textarea_id .'\', \''. $element['#id'] .'\', \''. $conf['width'] .'\');">'. t('Open rich text editor') ."</a>)</span>";
+      $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="return ckeditorOpenPopup(\''. $textarea_id .'\', \''. $element['#id'] .'\', \''. $conf['width'] .'\');">'. t('Open rich text editor') ."</a>)</span>";
     }
   }
 

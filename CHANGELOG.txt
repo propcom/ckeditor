@@ -1,6 +1,7 @@
 $Id$
 -- 2010-06-16
 - [#822948]: Fixed: Migrating from fckeditor to ckeditor causes postgresql error
+- [#725086] by Dmitriy.trt: Fixed CKEditor does not appear on windows with non-empty window.opener
 
 -- 2010-06-14
 - [#814970]: Fixed: Teaser break not working with CKEditor 3.3
