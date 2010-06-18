@@ -150,6 +150,7 @@ function ckeditor_install() {
       $arr['show_fieldnamehint'] = "t";
       $arr['ckeditor_load_method'] = "ckeditor.js";
       $arr['ckeditor_load_time_out'] = 0;
+      $arr['scayt_autoStartup'] = "f";
 
       db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Default", serialize($arr));
 
