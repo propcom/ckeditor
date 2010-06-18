@@ -838,6 +838,16 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       ),
       '#description' => t('If enabled, HTML content will be automatically changed to plain text when pasting.'),
   );
+  $form['advanced']['scayt_autoStartup'] = array(
+    '#type' => 'radios',
+    '#title' => t('Spell checker'),
+    '#default_value' => !empty($profile->settings['scayt_autoStartup']) ? $profile->settings['scayt_autoStartup'] : 'f',
+    '#description' => t('If enabled, turns on SCAYT (Spell Check As You Type) automatically after loading the editor.'),
+    '#options' => array(
+      'f' => t('No'),
+      't' => t('Yes')
+    ),
+  );
   $form['advanced']['theme_config_js'] = array(
     '#type' => 'radios',
     '#title' => t('Load ckeditor.config.js from theme path'),
