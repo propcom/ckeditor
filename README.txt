@@ -59,7 +59,7 @@ Note: this instruction assumes that you install CKEditor in
       contain a ckeditor directory.
    2. Download CKEditor from http://ckeditor.com/download. Unzip the
       contents of the ckeditor directory in the
-      sites/all/modules/ckeditor/ckeditor directory.
+      sites/all/modules/ckeditor/ckeditor or sites/all/libraries/ckeditor directory.
       Note: you can skip uploading "_samples" and "_source" folders.
    3. Enable the module as usual from Drupal's admin pages.
    4. Grant permissions for use of CKEditor in
@@ -98,7 +98,7 @@ Installation troubleshooting
 If your CKEditor does not show you must check if all files are
 extracted correctly.
 
-The directory /modules/ckeditor/ckeditor/ should have the following files:
+The directory /modules/ckeditor/ckeditor/ or /libraries/ckeditor should have the following files:
 ckeditor.js, config.js, contents.css 
 and directories: "skins", "themes", "lang", "images"
 
