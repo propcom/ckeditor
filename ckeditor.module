@@ -873,6 +873,7 @@ function ckeditor_process_textarea($element) {
     }
     // add custom stylesheet if configured
     // lets hope it exists but we'll leave that to the site admin
+    $query_string = '?'. substr(variable_get('css_js_query_string', '0'), 0, 1);
     $css_files = array();
     switch ($conf['css_mode']) {
       case 'theme':
@@ -886,7 +887,7 @@ function ckeditor_process_textarea($element) {
                 if ($type != "print") {
                   foreach ($stylesheets as $name => $path) {
                     if (file_exists($path)) {
-                      $css_files[$name] = $host . $path;
+                      $css_files[$name] = $host . $path . $query_string;
                     }
                   }
                 }
@@ -898,7 +899,7 @@ function ckeditor_process_textarea($element) {
               if ($type != "print") {
                 foreach ($stylesheets as $name => $path) {
                   if (file_exists($path)) {
-                    $css_files[$name] = $host . $path;
+                    $css_files[$name] = $host . $path . $query_string;
                   }
                   elseif (!empty($css_files[$name])) {
                     unset($css_files[$name]);
@@ -911,41 +912,41 @@ function ckeditor_process_textarea($element) {
           $color_paths = variable_get('color_'. $theme .'_stylesheets', array());
           if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
             if (!empty($color_paths[1])) {
-              $css_files[] = $host . $color_paths[1];
+              $css_files[] = $host . $color_paths[1] . $query_string;
             }
           }
           elseif (!empty($color_paths[0])) {
-            $css_files[] = $host . $color_paths[0];
+            $css_files[] = $host . $color_paths[0] . $query_string;
           }
         }
         else {
           if (file_exists($themepath .'style.css')) {
-            $css_files[] = $host . $themepath .'style.css';
+            $css_files[] = $host . $themepath .'style.css' . $query_string;
           }
         }
-        $css_files[] = $module_full_path ."/ckeditor.css";
+        $css_files[] = $module_full_path ."/ckeditor.css" . $query_string;
         break;
 
       case 'self':
         if (file_exists($module_drupal_path .'/ckeditor.css')) {
-          $css_files[] = $module_full_path .'/ckeditor.css';
+          $css_files[] = $module_full_path .'/ckeditor.css' . $query_string;
         }
         foreach (explode(',', $conf['css_path']) as $css_path) {
           $css_path = trim(str_replace("%h%t", "%t", $css_path));
-          $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $css_path);
+          $css_files[] = str_replace(array('%h', '%t'), array($host, $host . $themepath), $css_path) . $query_string;
         }
         break;
 
       case 'none':
         if (file_exists($module_drupal_path .'/ckeditor.css')) {
-          $css_files[] = $module_full_path .'/ckeditor.css';
+          $css_files[] = $module_full_path .'/ckeditor.css' . $query_string;
         }
-        $css_files[] = $editor_path .'/contents.css';
+        $css_files[] = $editor_path .'/contents.css' . $query_string;
         break;
     }
     if ($conf['ckeditor_load_method'] == 'ckeditor_source.js') {
       foreach ($css_files as $k => $v) {
-        $css_files[$k] = $v . '?t=' . time();
+        $css_files[$k] = $v . '&t=' . time();
       }
     }
     $settings[$textarea_id]['contentsCss'] = array_values($css_files);
