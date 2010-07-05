@@ -66,10 +66,12 @@ Note: this instruction assumes that you install CKEditor in
       "Administer > User Management > Permissions"
       Note: to enable the file browser, read also the
             "How to enable the file browser" section.
-   5. Under "Administer > Site configuration > CKEditor", adjust
-      the ckeditor profiles. In each profile you can choose which textareas
-      will be replaced by CKEditor, select default toolbar and configure
-      some more advanced settings.
+   5. Under "Administer > Site configuration > CKEditor", adjust the ckeditor profiles.
+      Profiles determine what options are available to users based on system-wide roles. 
+      In each profile you can choose which textareas will be replaced by CKEditor, 
+      select default toolbar and configure some more advanced settings.
+      NOTE: User 1 must be assigned a system role that corresponds to the privileges required.
+      If no role is assigned to User 1, they will have the privileges of "authenticated user" 
    6. For the Rich Text Editing to work you also need to configure your filters
       for the users that may access Rich Text Editing.
       Either grant those users Full HTML access or use the following tags:
@@ -359,6 +361,8 @@ you found an issue, please visit the official project page:
 
 Having problems? Take a look at the list of common problems when installing CKEditor:
   http://drupal.ckeditor.com/troubleshooting
+You might also check TROUBLESHOOTING.txt attached to this module, however 
+the online version is always up to date.
 
 How to tune up CKEditor to your theme and configure spell checker:
   http://drupal.ckeditor.com/tricks
