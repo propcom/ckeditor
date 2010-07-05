@@ -52,13 +52,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
               var realElement = CKEDITOR.dom.element.createFromHtml('<div class="media_embed"></div>');
               realElement.setHtml(content);
               var fakeElement = editor.createFakeElement( realElement , 'cke_mediaembed', 'div', true);
-              var matches = content.match(/width=\"?(\d+)\"?/i);
-              if (matches && matches.length == 2) {
-                fakeElement.setStyle('width', cssifyLength(matches[1]));
+              var matches = content.match(/width=(["']?)(\d+)\1/i);
+              if (matches && matches.length == 3) {
+                fakeElement.setStyle('width', cssifyLength(matches[2]));
               }
-              matches = content.match(/height=\"?(\d+)\"?/i);
-              if (matches && matches.length == 2) {
-                fakeElement.setStyle('height', cssifyLength(matches[1]));
+              matches = content.match(/height=([\"\']?)(\d+)\1/i);
+              if (matches && matches.length == 3) {
+                fakeElement.setStyle('height', cssifyLength(matches[2]));
               }
               editor.insertElement(fakeElement);
             }
