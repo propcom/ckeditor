@@ -41,7 +41,7 @@ Drupal.ckeditorOn = function(textarea_id) {
   if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
     var ch_checked = teaser.checkbox.attr('checked');
     var tv = teaser.textarea.val();
-    if (tv && tv.length > 0) {
+    if (!teaser.textarea.attr("disabled")) {
       $("#" + textarea_id).val(tv + '\n<!--break-->\n' + $("#" + textarea_id).val());
       teaser.textarea.val('');
     }
