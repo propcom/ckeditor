@@ -554,7 +554,7 @@ function ckeditor_process_textarea($element) {
       $height = 400;
     }
     if (!$is_running) {
-      drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', 'footer');
+      drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', variable_get('preprocess_js', FALSE) ? 'header' : 'footer');
       /* In D6 drupal_add_js() can't add external JS, in D7 use drupal_add_js(...,'external') */
       if ( $conf['popup'] != 't' ) {
         if (isset($conf['ckeditor_load_method'])) {

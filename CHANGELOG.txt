@@ -1,4 +1,8 @@
 $Id$
+
+-- 2010-09-15
+- [#772396] by jcisio: Put ckeditor.utils.js in header for better aggregation
+
 -- 2010-06-18
 - [#827238]: README.txt should include the information about sites/all/libraries/
 - [#824918]: Disabling, enabling Scayt
