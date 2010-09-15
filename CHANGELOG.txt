@@ -1,6 +1,7 @@
 $Id$
 
 -- 2010-09-15
+- [#742160] by dczepierga: warning: strtok() expects parameter 1 to be string in ckeditor.page.inc
 - [#772396] by jcisio: Put ckeditor.utils.js in header for better aggregation
 
 -- 2010-06-18

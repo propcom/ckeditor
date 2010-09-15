@@ -189,6 +189,9 @@ function ckeditor_filter_xss() {
   $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
 
   foreach ($_POST['filters'] as $module_delta) {
+    if (!is_string($module_delta)) {
+	  continue;
+	}
     $module = strtok($module_delta, "/");
     $delta = strtok("/");
     $format = strtok("/");
