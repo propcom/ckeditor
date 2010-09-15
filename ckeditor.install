@@ -451,6 +451,25 @@ function _ckeditor_requirements_cookiedomainset() {
 }
 
 /**
+ *	Implementation of hook_update_N().
+ *
+ *	Delete all plus signs from profiles name
+ */
+ 
+function ckeditor_update_6100(){
+	
+	$ret = array();
+	
+	$ret[] = update_sql( "UPDATE {ckeditor_role} SET name = REPLACE(name,'+','')");
+	$ret[] = update_sql( "UPDATE {ckeditor_role} SET name = REPLACE(name,'/','')");
+	$ret[] = update_sql( "UPDATE {ckeditor_settings} SET name = REPLACE(name,'+','')");
+	$ret[] = update_sql( "UPDATE {ckeditor_settings} SET name = REPLACE(name,'/','')");
+	
+	return $ret;
+	
+}
+
+/**
  * Implementation of hook_uninstall().
  */
 function ckeditor_uninstall() {
