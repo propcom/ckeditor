@@ -1,5 +1,8 @@
 $Id$
 
+-- 2010-09-27
+- [#924020] by dczepierga: Add BiDi buttons to toolbar as default
+
 -- 2010-09-15
 - [#738474] by dczepierga: Cannot edit or delete poorly named profile that include forward slashes
 - [#742160] by dczepierga: warning: strtok() expects parameter 1 to be string in ckeditor.page.inc
