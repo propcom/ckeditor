@@ -888,6 +888,13 @@ function ckeditor_process_textarea($element) {
                   foreach ($stylesheets as $name => $path) {
                     if (file_exists($path)) {
                       $css_files[$name] = $host . $path . $query_string;
+                      // Grab rtl stylesheets ( will get rtl css files when thay are named with suffix "-rtl.css" (ex: fusion baased themes) )
+                      if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && substr($path,0,-8) != "-rtl.css") {
+                        $rtl_path = substr($path,0,-4)."-rtl.css";
+                        if (file_exists($rtl_path)) {
+                          $css_files[$name."-rtl"] = $host . $rtl_path . $query_string;
+                        }
+                      }
                     }
                   }
                 }
@@ -900,6 +907,13 @@ function ckeditor_process_textarea($element) {
                 foreach ($stylesheets as $name => $path) {
                   if (file_exists($path)) {
                     $css_files[$name] = $host . $path . $query_string;
+                    // Grab rtl stylesheets ( will get rtl css files when thay are named with suffix "-rtl.css" (ex: fusion baased themes) )
+                    if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && substr($path,0,-8) != "-rtl.css") {
+                      $rtl_path = substr($path,0,-4)."-rtl.css";
+                      if (file_exists($rtl_path)) {
+                        $css_files[$name."-rtl"] = $host . $rtl_path . $query_string;
+                      }
+                    }
                   }
                   elseif (!empty($css_files[$name])) {
                     unset($css_files[$name]);
@@ -908,6 +922,14 @@ function ckeditor_process_textarea($element) {
               }
             }
           }
+          // Grab stylesheets local.css and local-rtl.css if they exist (fusion based themes)
+          if (file_exists($themepath . 'css/local.css')) {
+            $css_files[] = $host . $themepath . 'css/local.css' . $query_string;
+          }
+          if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && file_exists($themepath . 'css/local-rtl.css')) {
+            $css_files[] = $host . $themepath . 'css/local-rtl.css' . $query_string;
+          }
+
           // Grab stylesheets from color module
           $color_paths = variable_get('color_'. $theme .'_stylesheets', array());
           if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
