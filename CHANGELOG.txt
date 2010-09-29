@@ -1,5 +1,10 @@
 $Id$
 
+-----------------------------
+ 2010-09-29
+ New stable release: 6.x-1.2
+-----------------------------
+
 -- 2010-09-27
 - [#924020] by dczepierga: Add BiDi buttons to toolbar as default
 - [#818378] by ahwebd&fmjrey: Not all css files are loaded
