@@ -1,5 +1,8 @@
 $Id$
 
+-- 2010-10-11
+- [#935566] by altavis: Media Embed translation
+
 -----------------------------
  2010-09-29
  New stable release: 6.x-1.2

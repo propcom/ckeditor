@@ -70,7 +70,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
       editor.ui.addButton( 'MediaEmbed',
       {
-        label: 'Embed Media',
+        label: Drupal.t('Embed Media'),
         command: 'MediaEmbed',
         icon: this.path + 'images/icon.gif'
       } );
