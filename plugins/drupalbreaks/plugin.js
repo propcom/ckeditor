@@ -12,6 +12,7 @@ CKEDITOR.plugins.add( 'drupalbreaks',
 
 	init : function( editor )
 	{
+                
 		// Add the styles that renders our fake objects.
 		editor.addCss(
 			'img.cke_drupal_pagebreak,img.cke_drupal_break' +
@@ -33,7 +34,7 @@ CKEDITOR.plugins.add( 'drupalbreaks',
 				'border-bottom: #FF0000 1px dotted;' +
 			'}'
 		);
-
+                
 		// Register the toolbar buttons.
 		if ( Drupal.ckeditorTeaserInfo(editor.name) || Drupal.settings.ckeditor.teaser == editor.name ) {
 			editor.ui.addButton( 'DrupalBreak',
