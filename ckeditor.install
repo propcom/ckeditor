@@ -47,10 +47,10 @@ function ckeditor_install() {
     //searching ckeditor.js
     $editor_path = _ckeditor_script_path();
     //insert default input formats to profiles
-    db_insert('ckeditor_input_format')->fields(array("name" => "CKEditor Global Profile", "format" => 2))->execute();
-    db_insert('ckeditor_input_format')->fields(array("name" => "CKEditor Global Profile", "format" => 3))->execute();
-    db_insert('ckeditor_input_format')->fields(array("name" => "Advanced", "format" => 2))->execute();
-    db_insert('ckeditor_input_format')->fields(array("name" => "Full", "format" => 3))->execute();
+    db_insert('ckeditor_input_format')->fields(array("name" => "CKEditor Global Profile", "format" => 'filtered_html'))->execute();
+    db_insert('ckeditor_input_format')->fields(array("name" => "CKEditor Global Profile", "format" => 'full_html'))->execute();
+    db_insert('ckeditor_input_format')->fields(array("name" => "Advanced", "format" => 'filtered_html'))->execute();
+    db_insert('ckeditor_input_format')->fields(array("name" => "Full", "format" => 'full_html'))->execute();
 
     //insert settings for default role
     $arr = array();
@@ -144,9 +144,10 @@ function ckeditor_schema() {
                 'description' => 'Name of the CKEditor role',
             ),
             'format' => array(
-                'type' => 'int',
+                'type' => 'varchar',
                 'not null' => TRUE,
-                'default' => 0,
+                'default' => '',
+                'length' => 128,
                 'description' => 'Drupal filter format id',
             )
         ),

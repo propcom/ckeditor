@@ -179,6 +179,11 @@ function ckeditor_init() {
  * Implementation of hook_form_alter()
  */
 function ckeditor_form_alter(&$form, $form_state, $form_id) {
+    if ( $form_id == 'user_profile_form'){
+        module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
+
+        ckeditor_user_customize($form, $form_state, $form_id);
+    }
     if (substr($form_id, -10) == '_node_form') {
         $nodetype = $form['type']['#value'];
         if (!empty($form['body_field']['teaser_js']['#teaser'])) {
@@ -266,7 +271,7 @@ function ckeditor_pre_render_text_format($element) {
             $conf = $profile->settings;
             
             if (user_access('customize ckeditor')) {
-                foreach (array('default', 'show_toggle', 'popup', 'skin', 'toolbar', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
+                foreach (array('default', 'show_toggle', 'popup', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
                     $conf[$setting] = ckeditor_user_get_setting($user, $profile, $setting);
                 }
             }
@@ -505,6 +510,8 @@ function ckeditor_pre_render_text_format($element) {
                 if (!empty($profile->settings['UserFilesAbsolutePath'])) {
                     $_SESSION['ckeditor']['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => $user->name));
                 }
+                //@todo DOWNLOAD API
+                /*
                 if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
                     $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
                     if (!empty($private_dir)) {
@@ -515,7 +522,7 @@ function ckeditor_pre_render_text_format($element) {
                         $_SESSION['ckeditor']['UserFilesPath'] = url('system/files') . '/';
                         $_SESSION['ckeditor']['UserFilesAbsolutePath'] = realpath(variable_get('file_public_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR;
                     }
-                }
+                }*/
             }
         }
 
@@ -832,7 +839,6 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
 
             $profiles[$data->name] = $data;
         }
-
         $input_formats = filter_formats();
         $result = db_select('ckeditor_input_format', 'f')->fields('f')->execute();
         foreach ($result as $data) {

@@ -278,6 +278,26 @@ function ckeditor_load_lang_options() {
 }
 
 /**
+ * Get default ckeditor settings
+ *
+ * @return array
+ */
+function ckeditor_user_get_setting_default(){
+    $default = array(
+        'default' => 't',
+        'show_toggle' => 't',
+        'popup' => 'f',
+        'skin' => 'kama',
+        'expand' => 't',
+        'width' => '100%',
+        'lang' => 'en',
+        'auto_lang' => 't',
+    );
+
+    return $default;
+}
+
+/**
  * Return CKEditor settings
  *
  * @param object $user
@@ -286,20 +306,10 @@ function ckeditor_load_lang_options() {
  * @return array
  */
 function ckeditor_user_get_setting($user, $profile, $setting) {
-    $default = array(
-        'default' => 't',
-        'show_toggle' => 't',
-        'popup' => 'f',
-        'skin' => 'kama',
-        'toolbar' => 'default',
-        'expand' => 't',
-        'width' => '100%',
-        'lang' => 'en',
-        'auto_lang' => 't',
-    );
+    $default = ckeditor_user_get_setting_default();
 
     if (user_access('customize ckeditor')) {
-        $status = isset($user->{'ckeditor_' . $setting}) ? $user->{'ckeditor_' . $setting} : (isset($profile->settings[$setting]) ? $profile->settings[$setting] : $default[$setting]);
+        $status = isset($user->data['ckeditor_' . $setting]) ? $user->data['ckeditor_' . $setting] : (isset($profile->settings[$setting]) ? $profile->settings[$setting] : $default[$setting]);
     }
     else {
         $status = isset($profile->settings[$setting]) ? $profile->settings[$setting] : $default[$setting];
