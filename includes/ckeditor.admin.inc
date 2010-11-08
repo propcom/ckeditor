@@ -275,7 +275,7 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
 
     if (!empty($edit['input_formats'])) {
         foreach (array_keys($edit['input_formats']) as $format) {
-            if ($edit['input_formats'][$format] != 0) {
+            if ($edit['input_formats'][$format] != '0') {
                 db_insert('ckeditor_input_format')->fields(array("name" => $edit['name'], "format" => $format))->execute();
             }
         }
@@ -1049,7 +1049,7 @@ function ckeditor_admin_profile_form_submit($form, &$form_state) {
 
     if (!empty($edit['input_formats'])) {
         foreach (array_keys($edit['input_formats']) as $format) {
-            if ($edit['input_formats'][$format] != 0) {
+            if ($edit['input_formats'][$format] != '0') {
                 db_insert('ckeditor_input_format')->fields(array("name" => $edit['name'], "format" => $format))->execute();
             }
         }
