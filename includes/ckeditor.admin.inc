@@ -196,18 +196,16 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         '#maxlength' => 128,
         '#description' => t('The path to the local directory (on the server) which points to the path defined above. Enter either an absolute server path or path relative to "index.php". If empty, CKEditor module will try to find the right path.<br />Current path: !path', array('!path' => ckeditor_path(TRUE))),
     );
-    /* @todo DOWNLOAD API
-    if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
-        $current_private_dir = !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '';
-        $form['ckeditor_advanced_settings']['private_dir'] = array(
-            '#type' => 'textfield',
-            '#title' => t('Location of files uploaded with CKEditor in the private folder'),
-            '#default_value' => !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '',
-            '#size' => 40,
-            '#maxlength' => 255,
-            '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('<strong>Warning:</strong> CKEditor does not implement any kind of access protection on files available in this location. All files stored in the directory defined above might be accessible by unauthenticated users if there is no information about the file in the Drupal\'s database.') . '<br />' . t('System path to the private folder is: !system_path.', array('!system_path' => realpath(variable_get('file_public_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) . '<br />' . t('Available wildcard characters:') . '<br/><strong>%u</strong> - ' . t('User ID') . '<br /><strong>%n</strong> - ' . t('Username') . '<br />' . t('Current path: !path', array('!path' => $current_private_dir . ' (' . file_create_path($current_private_dir) . ')')),
-        );
-    }*/
+    //@todo DOWNLOAD API
+    $current_private_dir = !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '';
+    $form['ckeditor_advanced_settings']['private_dir'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Location of files uploaded with CKEditor in the private folder'),
+        '#default_value' => !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '',
+        '#size' => 40,
+        '#maxlength' => 255,
+        '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><strong>%u</strong> - ' . t('User ID') . '<br /><strong>%n</strong> - ' . t('Username') . '<br />' . t('System path to the private folder is: !system_path.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) . '<br />' . t('<strong>Warning:</strong> CKEditor does not implement any kind of access protection on files available in this location. All files stored in the directory defined above might be accessible by unauthenticated users if there is no information about the file in the Drupal\'s database.'),
+    );
     if (function_exists('linktocontent_node_menu') && function_exists('pathfilter_filter')) {
         $form['ckeditor_advanced_settings']['linktoc'] = array(
             '#type' => 'select',
@@ -819,8 +817,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#description' => t('Select the file browser that you would like to use to upload flash movies.'),
     );
 
-    $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "" : strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
-    $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "" : strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => "UNAME"));
+    $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "" : strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
+    $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "" : strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => "UNAME"));
 
     $form['ckeditor_upload_settings']['UserFilesPath'] = array(
         '#type' => 'textfield',
@@ -838,7 +836,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
                     '!f' => '<br/><strong>%f</strong>',
                     '!b' => '<br/><strong>%b</strong>',
                     '!path' => $current_user_files_path,
-                    '!files' => variable_get('file_public_path', conf_path() . '/files'),
+                    '!files' => variable_get('file_private_path', conf_path() . '/files'),
                     '!base' => base_path()
                 )
         )
@@ -861,7 +859,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
                     '!b' => '<br /><strong>%b</strong>',
                     '!f' => '<br/><strong>%f</strong>',
                     '!path' => $current_user_files_absolute_path,
-                    '!files' => variable_get('file_public_path', conf_path() . '/files'),
+                    '!files' => variable_get('file_private_path', conf_path() . '/files'),
                     '!base' => base_path(),
                     '!root' => $_SERVER['DOCUMENT_ROOT']
                 )
@@ -1007,15 +1005,14 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
             form_set_error('font_format', t('Enter valid, semicolon separated, list of HTML font formats (no semicolon at the end of list expected).'));
         }
     }
-    /* @todo DOWNLOAD API
-    if (variable_get('file_downloads', '') !== FILE_DOWNLOADS_PRIVATE) {
-        if (!empty($edit['UserFilesAbsolutePath']) && empty($edit['UserFilesPath'])) {
-            form_set_error('UserFilesPath', t('Path to uploaded files is required.'));
-        }
-        if (!empty($edit['UserFilesPath']) && empty($edit['UserFilesAbsolutePath'])) {
-            form_set_error('UserFilesPath', t('Absolute path to uploaded files is required.'));
-        }
-    }*/
+    // @todo DOWNLOAD API
+    if (!empty($edit['UserFilesAbsolutePath']) && empty($edit['UserFilesPath'])) {
+        form_set_error('UserFilesPath', t('Path to uploaded files is required.'));
+    }
+    if (!empty($edit['UserFilesPath']) && empty($edit['UserFilesAbsolutePath'])) {
+        form_set_error('UserFilesPath', t('Absolute path to uploaded files is required.'));
+    }
+
     $load_methods = _ckeditor_load_methods();
     if (!isset($load_methods[$edit['ckeditor_load_method']])) {
         form_set_error('ckeditor_load_method', t('Set valid load method.'));

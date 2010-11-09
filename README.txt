@@ -225,7 +225,7 @@ CKFinder is an AJAX based file manager created by CKEditor developers: http://ck
                ckeditor.js
                ...
 
-   3. Grant "allow CKFinder file uploads" permission in "Administer > User Management > Permissions"
+   3. Grant "allow CKFinder file uploads" permission in "Administer > People > Permissions"
       Note: if you don't see such permission then it means that CKEditor didn't find CKFinder
       and you have probably uploaded CKFinder into wrong directory.
    4. Open CKFinder configuration file (sites/all/modules/ckeditor/ckfinder/config.php) and do the following:
@@ -248,15 +248,15 @@ CKFinder is an AJAX based file manager created by CKEditor developers: http://ck
 
         $baseDir = resolveUrl($baseUrl);
 
-   5. Select CKFinder as preferred file browser in "Administer > Site configuration > CKEditor" 
+   5. Open Drupal setting file (sites/default/settings.php) and do the following:
+
+      I) uncomment $base_url variable and set base URL of your website (without trailing slash)
+
+      II) uncomment $cookie_domain variable and set domain name of your website
+
+   6. Select CKFinder as preferred file browser in "Administer > Configuration > CKEditor"
       (in selected CKEditor profile scroll down to "File browser settings" section).
       In the "File browser settings" section you may also change destination folders for files uploaded with CKFinder.
-
-   6. Locate file named settings.php inside your drupal directory
-      (usually sites/default/settings.php) and set $cookie_domain variable to the
-      appropiate domain (remember to uncomment that line). If you don't do this,
-      CKFinder may show an information that the connector is disabled. 
-      As of Drupal 6.17 also the $base_url variable must be set.
 
 Modules: Link to content (EXPERIMENTAL)
 ---------------------------------------

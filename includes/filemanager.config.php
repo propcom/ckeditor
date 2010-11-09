@@ -61,17 +61,21 @@ function CheckAuthentication() {
         if (!isset($bootstrap_file_found) || $bootstrap_file_found) {
             $current_cwd = getcwd();
             chdir($drupal_path);
-            require_once './includes/bootstrap.inc';
-            drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
+            if (!defined('DRUPAL_ROOT')){
+                define('DRUPAL_ROOT', $drupal_path);
+            }
+            require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+            drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL); //var_dump($_SERVER);
             $authenticated = user_access('allow CKFinder file uploads');
+            
             if (isset($_SESSION['ckeditor']['UserFilesPath'], $_SESSION['ckeditor']['UserFilesAbsolutePath'])) {
                 $GLOBALS['ckfinder_user_files_path'] = $_SESSION['ckeditor']['UserFilesPath'];
                 $GLOBALS['ckfinder_user_files_absolute_path'] = $_SESSION['ckeditor']['UserFilesAbsolutePath'];
             }
-            chdir($current_cwd);
+            chdir($current_cwd); 
         }
     }
-
+    
     return $authenticated;
 }
 
@@ -85,5 +89,5 @@ if (!empty($ckfinder_user_files_path)) {
     // Path to user files relative to the document root.
     $baseUrl = strtr(base_path(), array(
                 '/modules/ckeditor/ckfinder/core/connector/php' => '',
-            )) . variable_get('file_public_path', conf_path() . '/files') . '/';
+            )) . variable_get('file_private_path', conf_path() . '/files') . '/';
 }
