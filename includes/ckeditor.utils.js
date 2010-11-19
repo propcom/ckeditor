@@ -106,7 +106,7 @@
                 Drupal.ckeditorInstance = ev.editor;
             }
         };
-
+        Drupal.settings.ckeditor.settings[textarea_id].toolbar = eval(Drupal.settings.ckeditor.settings[textarea_id].toolbar);
         Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
     };
 

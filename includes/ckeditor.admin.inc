@@ -272,7 +272,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
-    $toolbar_options = ckeditor_load_toolbar_options();
     $skin_options = ckeditor_load_skin_options();
     $lang_options = ckeditor_load_lang_options();
 
@@ -508,11 +507,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     );
 
     $form['appearance']['toolbar'] = array(
-        '#type' => 'select',
+        '#type' => 'textarea',
         '#title' => t('Toolbar'),
-        '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : 'default',
-        '#options' => $toolbar_options,
-        '#description' => t('Choose a default toolbar set. To define new toolbar, edit "ckeditor.config.js" located in "!module_path".', array('!module_path' => drupal_get_path('module', 'ckeditor'))),
+        '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
+        '#description' => t('Set the toolbar definition. Instruction you can find in <a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar" target="_blank">Documentation of CKEditor</a>.'),
+        '#wysiwyg' => FALSE,
+        '#rows' => 15
     );
 
     $form['appearance']['expand'] = array(
