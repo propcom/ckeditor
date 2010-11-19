@@ -259,7 +259,7 @@ function ckeditor_pre_render_text_format($element) {
     
     $global_profile = ckeditor_profile_load('CKEditor Global Profile');
     
-    if ( $global_profile && isset($element["#format"]) && array_key_exists($element["#format"], $global_profile->input_formats) ) {
+    if ( $global_profile && isset($element["#format"]) ) {
         $enabled = true;
     }
     

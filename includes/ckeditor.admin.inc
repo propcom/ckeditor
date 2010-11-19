@@ -62,7 +62,6 @@ function ckeditor_admin_main() {
 function ckeditor_profile_overview() {
     $output = '';
     $profiles = ckeditor_profile_load();
-    $global_input_formats = '';
     if ($profiles) {
         $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
         $header = array(t('Profile'), t('Input format'), t('Operations'));
@@ -77,9 +76,6 @@ function ckeditor_profile_overview() {
                         l(t('delete'), 'admin/config/content/ckeditor/delete/' . urlencode($p->name)), 'valign' => 'top'
                     )
                 );
-            }
-            else {
-                $global_input_formats = implode("<br />\n", $p->input_formats);
             }
         }
         $output .= '<h3>' . t('Profiles') . '</h3>';
@@ -98,10 +94,9 @@ function ckeditor_profile_overview() {
         $output .= "<h3>" . t("Global settings") . "</h3>";
         $rows[] = array(
             array('data' => t('CKEditor Global Profile')),
-            array('data' => $global_input_formats),
             array('data' => l(t('edit'), 'admin/config/content/ckeditor/editg') . " " . l(t('delete'), 'admin/config/content/ckeditor/delete/CKEditor Global Profile'), 'valign' => 'top')
         );
-        $output .= theme('table', array("header" => array(t('Profile'), t('Input format'), t('Operations')), "rows" => $rows));
+        $output .= theme('table', array("header" => array(t('Profile'), t('Operations')), "rows" => $rows));
     }
     return $output;
 }
@@ -142,27 +137,11 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         $formats[$format->format] = $format->name;
     }
 
-    $form['ckeditor_formats'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Visibility settings'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#description' => t('The following settings are combined with the visibility settings of the specific profile.'),
-    );
-
-    $form['ckeditor_formats']['input_formats'] = array(
-        '#type' => 'checkboxes',
-        '#title' => t('Input formats'),
-        '#default_value' => !empty($profile->input_formats) ? array_keys((array) $profile->input_formats) : array(),
-        '#options' => $formats,
-        '#description' => t('Choose the input formats where you want to load CKEditor.')
-    );
-
     $form['ckeditor_advanced_settings'] = array(
         '#type' => 'fieldset',
         '#title' => t('Advanced settings'),
         '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
+        '#collapsed' => FALSE,
     );
 
     $module_drupal_path = drupal_get_path('module', 'ckeditor');
@@ -270,14 +249,6 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
                 "settings" => $settings
             ))
             ->execute();
-
-    if (!empty($edit['input_formats'])) {
-        foreach (array_keys($edit['input_formats']) as $format) {
-            if ($edit['input_formats'][$format] != '0') {
-                db_insert('ckeditor_input_format')->fields(array("name" => $edit['name'], "format" => $format))->execute();
-            }
-        }
-    }
 
     drupal_set_message(t('CKEditor global profile has been saved.'));
     $form_state['redirect'] = 'admin/config/content/ckeditor';
@@ -402,11 +373,11 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     $orig_formats = filter_formats();
 
     if (arg(4) == 'edit' && !empty($profile->name)){
-        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", array('CKEditor Global Profile', $profile->name), 'NOT IN')->execute()->fetchAllAssoc('format');
+        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", array($profile->name), 'NOT IN')->execute()->fetchAllAssoc('format');
     }
     else {
         $profile->input_formats = array();
-        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", 'CKEditor Global Profile', '<>')->execute()->fetchAllAssoc('format');
+        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->execute()->fetchAllAssoc('format');
     }
     
     $formats = array();
