@@ -52,7 +52,6 @@ function ckeditor_install() {
 
     //insert settings for default role
     $arr = array();
-    $arr['min_rows'] = variable_get('ckeditor_minimum_rows', 1);
     $arr['filebrowser'] = 'none';
     $arr['quickupload'] = 'f';
 

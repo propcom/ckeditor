@@ -298,7 +298,7 @@ function ckeditor_pre_render_text_format($element) {
         $field['#rows'] = 5;
     }
     // only replace textarea when it has enough rows and it is enabled
-    if ($enabled && (($field['#rows'] > $conf['min_rows']) || ($conf['min_rows'] <= 1 && empty($field['#rows'])))) {
+    if ($enabled) {
         $textarea_id = $field['#id'];
         $class[] = 'ckeditor-mod';
         $_ckeditor_ids[] = $textarea_id;

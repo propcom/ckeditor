@@ -394,13 +394,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#collapsed' => TRUE,
         '#description' => t('The following settings are combined with the visibility settings of the specific profile.'),
     );
-
-    $form['ckeditor_formats']['min_rows'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Minimum rows'),
-        '#default_value' => !empty($profile->settings['min_rows']) ? $profile->settings['min_rows'] : '1',
-        '#description' => t("CKEditor will be triggered if the textarea has more rows than entered here. Enter '1' if you do not want to use this feature."),
-    );
     
     $form['ckeditor_formats']['input_formats'] = array(
         '#type' => 'checkboxes',
