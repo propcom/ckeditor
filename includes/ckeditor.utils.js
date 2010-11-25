@@ -74,7 +74,7 @@
 
         $("#" + textarea_id).next(".grippie").css("display", "none");
         $("#" + textarea_id).addClass("ckeditor-processed");
-
+        
         ckeditor_obj.elements[textarea_id]['on'] =
         {
             configLoaded  : function(ev)
@@ -318,25 +318,6 @@
             }
             if (Drupal.behaviors.textarea && Drupal.behaviors.textarea.attach) {
                 Drupal.behaviors.textarea.attach(context);
-            }
-
-            // Support for Panels [#679976]
-            if ($(context).attr('id') == 'modal-content') {
-                if (CKEDITOR.instances['edit-body'] != 'undefined') {
-                    Drupal.ckeditorOff('edit-body');
-                }
-                $('input#edit-return', context).bind('mouseup', Drupal.ckeditorSubmitAjaxForm);
-                $('.close').bind('mouseup', Drupal.ckeditorSubmitAjaxForm);
-                CKEDITOR.on('dialogDefinition', function (ev) {
-                    var dialogDefinition = ev.data.definition;
-                    var _onShow = dialogDefinition.onShow;
-                    dialogDefinition.onShow = function () {
-                        if ( _onShow ) {
-                            _onShow.apply( this );
-                        }
-                        $('body').unbind('keypress');
-                    };
-                });
             }
 
             $("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
