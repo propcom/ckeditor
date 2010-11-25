@@ -32,13 +32,15 @@
         if ((typeof(Drupal.settings.ckeditor.load_timeout) == 'undefined') && (typeof(CKEDITOR.instances[textarea_id]) != 'undefined')) {
             return;
         }
-        if (typeof(Drupal.settings.ckeditor.settings[textarea_id]) == 'undefined') {
+        if (typeof(Drupal.settings.ckeditor.elements[textarea_id]) == 'undefined') {
             return;
         }
+        var ckeditor_obj = Drupal.settings.ckeditor;
+
         if (!CKEDITOR.env.isCompatible) {
             return;
         }
-
+        
         if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
             var ch_checked = teaser.checkbox.attr('checked');
             var tv = teaser.textarea.val();
@@ -47,7 +49,6 @@
                 teaser.textarea.val('');
             }
 
-            // [#653498]
             if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
                 try {
                     teaser.button.click();
@@ -65,7 +66,7 @@
         if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
             $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
                 text: $('#' + textarea_id).val(),
-                'filters[]': Drupal.settings.ckeditor.settings[textarea_id].filters
+                'filters[]': ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].filters
             }, function(text){
                 $("#" + textarea_id).val(text);
             });
@@ -74,7 +75,7 @@
         $("#" + textarea_id).next(".grippie").css("display", "none");
         $("#" + textarea_id).addClass("ckeditor-processed");
 
-        Drupal.settings.ckeditor.settings[textarea_id]['on'] =
+        ckeditor_obj.elements[textarea_id]['on'] =
         {
             configLoaded  : function(ev)
             {
@@ -83,14 +84,14 @@
             instanceReady : function(ev)
             {
                 var body = $(ev.editor.document.$.body);
-                if (typeof(Drupal.settings.ckeditor.settings[textarea_id].custom_formatting) != 'undefined') {
+                if (typeof(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting) != 'undefined') {
                     var dtd = CKEDITOR.dtd;
                     for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
-                        ev.editor.dataProcessor.writer.setRules( e, Drupal.settings.ckeditor.settings[textarea_id].custom_formatting);
+                        ev.editor.dataProcessor.writer.setRules( e, ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting);
                     }
                     ev.editor.dataProcessor.writer.setRules( 'pre',
                     {
-                        indent: Drupal.settings.ckeditor.settings[textarea_id].output_pre_indent
+                        indent: ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].output_pre_indent
                     });
                 }
 
@@ -106,8 +107,10 @@
                 Drupal.ckeditorInstance = ev.editor;
             }
         };
-        Drupal.settings.ckeditor.settings[textarea_id].toolbar = eval(Drupal.settings.ckeditor.settings[textarea_id].toolbar);
-        Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
+
+
+        ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar = eval(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar);
+        Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]]);
     };
 
 /**
@@ -262,7 +265,7 @@
     };
 
 /**
- * Ajax support [#741572]
+ * Ajax support
  */
     if (typeof(Drupal.Ajax) != 'undefined' && typeof(Drupal.Ajax.plugins) != 'undefined') {
         Drupal.Ajax.plugins.CKEditor = function(hook, args) {
@@ -278,7 +281,6 @@
  * IMCE support
  */
     function ckeditorImceSendTo(file, win){
-        console.log("dasda");
         var cfunc = win.location.href.split('&');
 
         for (var x in cfunc) {
@@ -342,6 +344,15 @@
                 if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
                     Drupal.ckeditorOn(ta_id);
                 }
+                var sel_format = ta_id.substr(0, ta_id.lastIndexOf("-")) + "-format--2";
+                $('#'+sel_format).change(function(){
+                    Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
+                    Drupal.ckeditorOff(ta_id);
+                    if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
+                        Drupal.ckeditorOn(ta_id);
+                    }
+                });
+
             });
         }
     };
