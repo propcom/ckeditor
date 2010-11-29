@@ -501,7 +501,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
     $settings['toolbarStartupExpanded'] = ( $conf['expand'] == 't' );
     $settings['customConfig'] = $ckeditor_config_path;
     $settings['width'] = $conf['width'];
-    $settings['skin'] = $conf['skin'];
+    $settings['skin'] = $conf['skin']; 
     $settings['format_tags'] = $conf['font_format'];
     $settings['popup'] = $conf['popup'];
     $settings['show_toggle'] = $conf['show_toggle'];
@@ -884,11 +884,15 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
 function ckeditor_load_by_field( $field, $format ){
     global $theme;
     static $processed_ids= array();
-    $is_running = FALSE;
+    static $is_running = FALSE;
     $enabled = TRUE;
     $suffix = '';
-
+    
     if (!isset($field['#id'])){
+        return $field;
+    }
+
+    if (isset($processed_ids[$field['#id']])){
         return $field;
     }
 
@@ -907,16 +911,8 @@ function ckeditor_load_by_field( $field, $format ){
     if (isset($field['#attributes']['disabled']) && $field['#attributes']['disabled'] == 'disabled') {
         return $field;
     }
-
-    if (isset($processed_ids[$field['#id']])) {
-        $field['#attributes']['class'][] = $processed_ids[$field['#id']]['class'];
-        if (empty($field['#suffix'])) {
-            $field['#suffix'] = $processed_ids[$field['#id']]['suffix'];
-        } else {
-            $field['#suffix'] .= $processed_ids[$field['#id']]['suffix'];
-        }
-        return $element;
-    } else {
+    
+    if (!isset($processed_ids[$field['#id']])) {
         $processed_ids[$field['#id']] = array();
     }
 
@@ -939,10 +935,10 @@ function ckeditor_load_by_field( $field, $format ){
         $xss_check = 0;
         //it's not a problem when adding new content/comment
         if (arg(1) != "add" && arg(1) != "reply") {
-            $_ckeditor_configuration[$field['#id']] = $conf;
+            //$_ckeditor_configuration[$field['#id']] = $conf;
 
             //let ckeditor know when perform XSS checks auto/manual
-            if ($conf['ss'] == 1) {
+            if ($profile->settings['ss'] == 1) {
                 $xss_class = 'checkxss1';
             } else {
                 $xss_class = 'checkxss2';

@@ -211,16 +211,26 @@ function ckeditor_element_info_alter(&$types) {
  *   The same $element with extra CKEditor markup and initialization
  */
 function ckeditor_pre_render_text_format($element) {
-    
+    static $init = FALSE;
+
     if (!isset($element['#format'])){
         return $element;
     }
     
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-    $input_formats = ckeditor_profiles_compile();
-    drupal_add_js(array('ckeditor' => array('input_formats' => $input_formats)), 'setting');
-
-    $element['value'] = ckeditor_load_by_field($element['value'], $element['#format']);
+    if ( $init === FALSE ){
+        $input_formats = ckeditor_profiles_compile();
+        drupal_add_js(array('ckeditor' => array('input_formats' => $input_formats)), 'setting');
+        $init = TRUE;
+    }
+    
+    if (isset($element['value'])){
+        $element['value'] = ckeditor_load_by_field($element['value'], $element['#format']);
+        //$element['summary'] = ckeditor_load_by_field($element['summary'], $element['#format']);
+    }
+    else {
+        $element = ckeditor_load_by_field($element, $element['#format']);
+    }
 
     return $element;
 }
