@@ -9,17 +9,20 @@
         cache: {}
     };
 
-    Drupal.ckeditorToggle = function(textarea_id, TextTextarea, TextRTE, xss_check){
+    Drupal.ckeditorToggle = function(textarea_ids, TextTextarea, TextRTE){
         if (!CKEDITOR.env.isCompatible) {
             return;
         }
-        if (typeof(CKEDITOR.instances) != 'undefined' && typeof(CKEDITOR.instances[textarea_id]) != 'undefined') {
-            Drupal.ckeditorOff(textarea_id);
-            $('#switch_' + textarea_id).text(TextRTE);
-        }
-        else {
-            Drupal.ckeditorOn(textarea_id);
-            $('#switch_' + textarea_id).text(TextTextarea);
+
+        for (i=0; i<textarea_ids.length; i++){
+            if (typeof(CKEDITOR.instances) != 'undefined' && typeof(CKEDITOR.instances[textarea_ids[i]]) != 'undefined'){
+                Drupal.ckeditorOff(textarea_ids[i]);
+                $('#switch_' + textarea_ids[0]).text(TextRTE);
+            }
+            else {
+                Drupal.ckeditorOn(textarea_ids[i]);
+                $('#switch_' + textarea_ids[0]).text(TextTextarea);
+            }
         }
     };
 
@@ -40,29 +43,6 @@
         if (!CKEDITOR.env.isCompatible) {
             return;
         }
-        
-        if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
-            var ch_checked = teaser.checkbox.attr('checked');
-            var tv = teaser.textarea.val();
-            if (!teaser.textarea.attr("disabled")) {
-                $("#" + textarea_id).val(tv + '\n<!--break-->\n' + $("#" + textarea_id).val());
-                teaser.textarea.val('');
-            }
-
-            if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
-                try {
-                    teaser.button.click();
-                }
-                catch (e) {
-                    teaser.button.val(Drupal.t('Split summary at cursor'));
-                }
-            }
-
-            teaser.buttonContainer.hide();
-            teaser.textareaContainer.hide();
-            teaser.checkboxContainer.show();
-            teaser.checkbox.attr('checked', ch_checked);
-        }
         if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
             $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
                 text: $('#' + textarea_id).val(),
@@ -71,7 +51,7 @@
                 $("#" + textarea_id).val(text);
             });
         }
-
+        
         $("#" + textarea_id).next(".grippie").css("display", "none");
         $("#" + textarea_id).addClass("ckeditor-processed");
         
@@ -333,7 +313,6 @@
                         Drupal.ckeditorOn(ta_id);
                     }
                 });
-
             });
         }
     };

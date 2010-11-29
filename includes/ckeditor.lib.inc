@@ -881,7 +881,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
  * @return object
  *
  */
-function ckeditor_load_by_field( $field, $format ){
+function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fields_to_toggle = FALSE ){
     global $theme;
     static $processed_ids= array();
     static $is_running = FALSE;
@@ -949,13 +949,26 @@ function ckeditor_load_by_field( $field, $format ){
         }
 
         //settings are saved as strings, not booleans
-        if ($settings['show_toggle'] == 't') {
+        if ($settings['show_toggle'] == 't' && $show_toggle) {
+
+            if ( $add_fields_to_toggle !== FALSE ){
+                if ( is_array($add_fields_to_toggle) ){
+                    $toggle_fields = "['" . $textarea_id . "','" . implode("','", $add_fields_to_toggle) . "']";
+                }
+                else {
+                    $toggle_fields = "['" . $textarea_id . "','" . $add_fields_to_toggle . "']";
+                }
+            }
+            else {
+                $toggle_fields = "['{$textarea_id}']";
+            }
+
             $content = '';
             if (isset($field['#value'])) {
                 $content .= $field['#value'];
             }
             $wysiwyg_link = '';
-            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:Drupal.ckeditorToggle('{$textarea_id}','" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "'," . $xss_check . ");\" id=\"switch_{$textarea_id}\">";
+            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:Drupal.ckeditorToggle({$toggle_fields},'" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "'," . $xss_check . ");\" id=\"switch_{$textarea_id}\">";
             $wysiwyg_link .= $ckeditor_on ? t('Switch to plain text editor') : t('Switch to rich text editor');
             $wysiwyg_link .= '</a>';
 
