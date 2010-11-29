@@ -225,8 +225,13 @@ function ckeditor_pre_render_text_format($element) {
     }
     
     if (isset($element['value'])){
-        $element['value'] = ckeditor_load_by_field($element['value'], $element['#format'], true, $element['summary']['#id']);
-        $element['summary'] = ckeditor_load_by_field($element['summary'], $element['#format'], false);
+        if (isset($element['summary'])){
+            $element['value'] = ckeditor_load_by_field($element['value'], $element['#format'], true, $element['summary']['#id']);
+            $element['summary'] = ckeditor_load_by_field($element['summary'], $element['#format'], false);
+        }
+        else {
+            $element['value'] = ckeditor_load_by_field($element['value'], $element['#format']);
+        }
     }
     else {
         $element = ckeditor_load_by_field($element, $element['#format']);
