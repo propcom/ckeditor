@@ -96,7 +96,7 @@ function ckeditor_install() {
     $arr['formatting']['custom_formatting_options'] = array('indent' => 'indent', 'breakBeforeOpen' => 'breakBeforeOpen', 'breakAfterOpen' => 'breakAfterOpen', 'breakAfterClose' => 'breakAfterClose');
 
     //css
-    $arr['css_mode'] = "theme";
+    $arr['css_mode'] = "none";
     $arr['css_path'] = variable_get("ckeditor_stylesheet", "");
 
     //upload
