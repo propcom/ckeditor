@@ -179,7 +179,7 @@ function ckeditor_init() {
  * Implementation of hook_form_alter()
  */
 function ckeditor_form_alter(&$form, $form_state, $form_id) {
-    if ( $form_id == 'user_profile_form'){
+    if ( $form_id == 'user_profile_form') {
         module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
 
         ckeditor_user_customize($form, $form_state, $form_id);
@@ -213,21 +213,21 @@ function ckeditor_element_info_alter(&$types) {
 function ckeditor_pre_render_text_format($element) {
     static $init = FALSE;
 
-    if (!isset($element['#format'])){
+    if (!isset($element['#format'])) {
         return $element;
     }
     
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-    if ( $init === FALSE ){
+    if ( $init === FALSE ) {
         $input_formats = ckeditor_profiles_compile();
         drupal_add_js(array('ckeditor' => array('input_formats' => $input_formats)), 'setting');
         $init = TRUE;
     }
     
-    if (isset($element['value'])){
-        if (isset($element['summary'])){
-            $element['value'] = ckeditor_load_by_field($element['value'], $element['#format'], true, $element['summary']['#id']);
-            $element['summary'] = ckeditor_load_by_field($element['summary'], $element['#format'], false);
+    if (isset($element['value'])) {
+        if (isset($element['summary'])) {
+            $element['value'] = ckeditor_load_by_field($element['value'], $element['#format'], TRUE, $element['summary']['#id']);
+            $element['summary'] = ckeditor_load_by_field($element['summary'], $element['#format'], FALSE);
         }
         else {
             $element['value'] = ckeditor_load_by_field($element['value'], $element['#format']);

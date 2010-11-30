@@ -97,7 +97,7 @@ function ckeditor_help_delegate($path, $arg) {
                     '<br /><code>' . htmlspecialchars('<a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <font> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption>') . '</code><br />';
             $output .= t('If you\'re going to use CKEditor with Filtered HTML input format, please read also "Setting up filters" section in !readme',
                             array(
-                                '!readme' => l('README.txt', drupal_get_path('module', 'ckeditor') . '/README.txt')
+                                '!readme' => l(t('README.txt'), drupal_get_path('module', 'ckeditor') . '/README.txt')
                     )) . '</li>';
             $output .= '<li>' . t('To have a better control over line breaks, you should disable %settingname in the chosen filter (recommended).',
                             array(

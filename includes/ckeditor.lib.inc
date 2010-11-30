@@ -282,7 +282,7 @@ function ckeditor_load_lang_options() {
  *
  * @return array
  */
-function ckeditor_user_get_setting_default(){
+function ckeditor_user_get_setting_default() {
     $default = array(
         'default' => 't',
         'show_toggle' => 't',
@@ -329,7 +329,7 @@ function ckeditor_get_profile($input_format) {
     $select->join('ckeditor_input_format', 'f', 'f.name = s.name');
     $result = $select->fields('s', array("name"))->condition('f.format', $input_format)->condition('f.name', 'CKEditor Global Profile', '<>')->range(0, 1)->execute()->fetchAssoc();
     
-    if ($result && $profile = ckeditor_profile_load($result['name'])){
+    if ($result && $profile = ckeditor_profile_load($result['name'])) {
         return $profile;
     }
 
@@ -339,14 +339,14 @@ function ckeditor_get_profile($input_format) {
 /**
  * Return CKEditor profile list
  */
-function ckeditor_profile_input_formats(){
+function ckeditor_profile_input_formats() {
     $select = db_select('ckeditor_settings', 's');
     $select->join('ckeditor_input_format', 'f', 'f.name = s.name');
     $result = $select->fields('s', array("name"))->fields('f', array("format"))->execute();
 
     $list = array();
-    while( $row = $result->fetchAssoc() ){
-        if (!isset($row['name'])){
+    while ( $row = $result->fetchAssoc() ) {
+        if (!isset($row['name'])) {
             $list[$row['name']] = array();
         }
         $list[$row['name']][] = $row['format'];
@@ -412,15 +412,15 @@ function _ckeditor_requirements_isinstalled() {
  * @param boolean $clear
  * @return array
  */
-function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ){
+function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ) {
     static $compiled = FALSE;
     static $_ckeditor_compiled = array();
 
-    if ( $clear !== FALSE && $compiled !== FALSE ){
+    if ( $clear !== FALSE && $compiled !== FALSE ) {
         $compiled = FALSE;
     }
 
-    if ( $compiled === TRUE ){
+    if ( $compiled === TRUE ) {
         return ( $input_format === FALSE ) ? $_ckeditor_compiled : $_ckeditor_compiled[$input_format];
     }
 
@@ -428,11 +428,11 @@ function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ){
 
     $profiles_list = ckeditor_profile_input_formats();
 
-    foreach ( $profiles_list AS $_profile => $_inputs ){
+    foreach ( $profiles_list AS $_profile => $_inputs ) {
         $profile = ckeditor_profile_load($_profile);
         $setting = ckeditor_profile_settings_compile($global_profile, $profile);
 
-        foreach ( $_inputs AS $_input ){
+        foreach ( $_inputs AS $_input ) {
             $_ckeditor_compiled[$_input] = $setting;
         }
     }
@@ -449,7 +449,7 @@ function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ){
  * @param object $profile
  * @return array
  */
-function ckeditor_profile_settings_compile( $global_profile, $profile ){
+function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     global $user, $language, $theme;
 
     $settings = array();
@@ -489,7 +489,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
 
     if (!empty($conf['theme_config_js']) && $conf['theme_config_js'] == 't' && file_exists($themepath . 'ckeditor.config.js')) {
         $ckeditor_config_path = $host . $themepath . 'ckeditor.config.js?' . @filemtime($themepath . 'ckeditor.config.js');
-    } else {
+    }
+    else {
         $ckeditor_config_path = $module_full_path . "/ckeditor.config.js?" . @filemtime($module_drupal_path . "/ckeditor.config.js");
     }
 
@@ -524,7 +525,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
 
     if (isset($conf['scayt_autoStartup']) && $conf['scayt_autoStartup'] == 't') {
         $settings['scayt_autoStartup'] = TRUE;
-    } else {
+    }
+    else {
         $settings['scayt_autoStartup'] = FALSE;
     }
 
@@ -540,7 +542,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
         foreach ($conf['formatting']['custom_formatting_options'] as $k => $v) {
             if ($v === 0) {
                 $conf['formatting']['custom_formatting_options'][$k] = FALSE;
-            } else {
+            }
+            else {
                 $conf['formatting']['custom_formatting_options'][$k] = TRUE;
             }
         }
@@ -613,7 +616,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
                 $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
                 $_SESSION['ckeditor']['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/' . $private_dir . '/';
                 $_SESSION['ckeditor']['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
-            } else {
+            }
+            else {
                 $_SESSION['ckeditor']['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/';
                 $_SESSION['ckeditor']['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR;
             }
@@ -747,7 +751,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
     if (!empty($conf['css_style'])) {
         if ($conf['css_style'] == 'theme' && file_exists($themepath . 'ckeditor.styles.js')) {
             $settings['stylesCombo_stylesSet'] = "drupal:" . $host . $themepath . 'ckeditor.styles.js';
-        } elseif (!empty($conf['css_style']) && $conf['css_style'] == 'self') {
+        }
+        elseif (!empty($conf['css_style']) && $conf['css_style'] == 'self') {
             $conf['styles_path'] = str_replace("%h%t", "%t", $conf['styles_path']);
             $settings['stylesCombo_stylesSet'] = "drupal:" . str_replace(array('%h', '%t', '%m'), array($host, $host . $themepath, $module_drupal_path), $conf['styles_path']);
         }
@@ -796,7 +801,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
                                             $css_files[$name . "-rtl"] = $host . $rtl_path . $query_string;
                                         }
                                     }
-                                } elseif (!empty($css_files[$name])) {
+                                }
+                                elseif (!empty($css_files[$name])) {
                                     unset($css_files[$name]);
                                 }
                             }
@@ -817,10 +823,12 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
                     if (!empty($color_paths[1])) {
                         $css_files[] = $host . $color_paths[1] . $query_string;
                     }
-                } elseif (!empty($color_paths[0])) {
+                }
+                elseif (!empty($color_paths[0])) {
                     $css_files[] = $host . $color_paths[0] . $query_string;
                 }
-            } else {
+            }
+            else {
                 if (file_exists($themepath . 'style.css')) {
                     $css_files[] = $host . $themepath . 'style.css' . $query_string;
                 }
@@ -881,18 +889,18 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ){
  * @return object
  *
  */
-function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fields_to_toggle = FALSE ){
+function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fields_to_toggle = FALSE ) {
     global $theme;
     static $processed_ids= array();
     static $is_running = FALSE;
     $enabled = TRUE;
     $suffix = '';
     
-    if (!isset($field['#id'])){
+    if (!isset($field['#id'])) {
         return $field;
     }
 
-    if (isset($processed_ids[$field['#id']])){
+    if (isset($processed_ids[$field['#id']])) {
         return $field;
     }
 
@@ -940,7 +948,8 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             //let ckeditor know when perform XSS checks auto/manual
             if ($profile->settings['ss'] == 1) {
                 $xss_class = 'checkxss1';
-            } else {
+            }
+            else {
                 $xss_class = 'checkxss2';
             }
 
@@ -951,8 +960,8 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         //settings are saved as strings, not booleans
         if ($settings['show_toggle'] == 't' && $show_toggle) {
 
-            if ( $add_fields_to_toggle !== FALSE ){
-                if ( is_array($add_fields_to_toggle) ){
+            if ( $add_fields_to_toggle !== FALSE ) {
+                if ( is_array($add_fields_to_toggle) ) {
                     $toggle_fields = "['" . $textarea_id . "','" . implode("','", $add_fields_to_toggle) . "']";
                 }
                 else {
@@ -993,10 +1002,12 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
                         drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $profile->settings['ckeditor_load_time_out'] . ';', 'inline');
                         drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
                     }
-                } else {
+                }
+                else {
                     drupal_add_js($editor_path . '/ckeditor.js', 'file');
                 }
-            } else {
+            }
+            else {
                 drupal_add_js($editor_path . '/ckeditor_basic.js', 'file');
             }
             drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path)), 'setting');
@@ -1036,13 +1047,15 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
 
         if (empty($field['#suffix'])) {
             $field['#suffix'] = $suffix;
-        } else {
+        }
+        else {
             $field['#suffix'] .= $suffix;
         }
 
         if (empty($field['#attributes']['class'])) {
             $field['#attributes']['class'] = $class;
-        } else {
+        }
+        else {
             $field['#attributes']['class'] = array_merge($field['#attributes']['class'], $class);
         }
     }

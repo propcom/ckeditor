@@ -137,7 +137,7 @@ function ckeditor_user_customize(&$form, &$form_state, $form_id) {
 
 }
 
-function ckeditor_user_customize_form_validate(&$form, &$form_state){
+function ckeditor_user_customize_form_validate(&$form, &$form_state) {
 
     if (isset($form_state['values']['ckeditor_default'], $form_state['values']['ckeditor_popup']) && $form_state['values']['ckeditor_default'] == 't' && $form_state['values']['ckeditor_popup'] == 't') {
         form_set_error('ckeditor_popup', t('If CKEditor is enabled by default, popup window must be disabled.'));
@@ -153,7 +153,7 @@ function ckeditor_user_customize_form_validate(&$form, &$form_state){
 
 }
 
-function ckeditor_user_presave(&$edit, $account, $category){
+function ckeditor_user_presave(&$edit, $account, $category) {
     if (user_access('customize ckeditor')) {
         module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
         $default = ckeditor_user_get_setting_default();

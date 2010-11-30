@@ -42,8 +42,8 @@ function ckeditor_admin_main() {
     //check if CKEditor plugin is installed
     if (!_ckeditor_requirements_isinstalled()) {
         drupal_set_message(t('Checking for %filename or %file.', array('%filename' => $ckconfig_file, '%file' => 'sites/all/libraries/ckeditor/ckeditor.js')));
-        drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the <a href="!ckeditorlink">CKEditor homepage</a> to download the latest version. After that you must extract the files to %ckeditorpath or %librarypath and make sure that the file %ckeditorfile or %ckeditorlibrary exist. Refer to the <a href="!readme">readme.txt</a> for more information.', array('!ckeditorlink' => url('http://ckeditor.com/download'), '!readme' => url('admin/help/ckeditor'), '%ckeditorpath' => $editor_path, '%ckeditorsubdir' => $editor_path . '/editor', '%ckeditorfile' => $editor_path . '/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
-        drupal_set_message(t('If you have CKEditor already installed please edit <a href="!editg">CKEditor Global Profile</a> and update CKEditor path.', array('!editg' => url('admin/config/content/ckeditor/editg'))), 'warning');
+        drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the %ckeditorlink to download the latest version. After that you must extract the files to %ckeditorpath or %librarypath and make sure that the file %ckeditorfile or %ckeditorlibrary exist. Refer to the %readme for more information.', array('%ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'), '%readme' => l(t('readme.txt'), url('admin/help/ckeditor')), '%ckeditorpath' => $editor_path, '%ckeditorsubdir' => $editor_path . '/editor', '%ckeditorfile' => $editor_path . '/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
+        drupal_set_message(t('If you have CKEditor already installed please edit %editg and update CKEditor path.', array('%editg' => l(t('CKEditor Global Profile'), url('admin/config/content/ckeditor/editg')))), 'warning');
         return FALSE;
     }
 
@@ -83,12 +83,12 @@ function ckeditor_profile_overview() {
         $output .= '<p>' . l(t('Create new profile'), 'admin/config/content/ckeditor/add') . '</p>';
     }
     else {
-        drupal_set_message(t('No profiles found. Click here to <a href="!create">create a new profile</a>.', array('!create' => url('admin/config/content/ckeditor/add'))));
+        drupal_set_message(t('No profiles found. Click here to %create.', array('%create' => l(t('create a new profile'), url('admin/config/content/ckeditor/add')))));
     }
 
     $rows = array();
     if (!isset($profiles['CKEditor Global Profile'])) {
-        drupal_set_message(t('Global profile not found. Click here to <a href="!create">create the global profile</a>.', array('!create' => url('admin/config/content/ckeditor/addg'))));
+        drupal_set_message(t('Global profile not found. Click here to %create.', array('%create' => l(t('create the global profile'), url('admin/config/content/ckeditor/addg')))));
     }
     else {
         $output .= "<h3>" . t("Global settings") . "</h3>";
@@ -352,9 +352,9 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
         $form['security']['filters'][$id] = array(
             '#type' => 'checkbox',
-            '#title' => $filter['title'],
+            '#title' => t("@data", array('@data' => $filter['title'])),
             '#default_value' => !empty($profile->settings['filters'][$id]),
-            '#description' => $filter['description'],
+            '#description' => t("@data", array('@data' => $filter['description'])),
         );
     }
 
@@ -371,7 +371,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     $orig_formats = filter_formats();
 
-    if (arg(4) == 'edit' && !empty($profile->name)){
+    if (arg(4) == 'edit' && !empty($profile->name)) {
         $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", array($profile->name), 'NOT IN')->execute()->fetchAllAssoc('format');
     }
     else {
@@ -381,7 +381,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     
     $formats = array();
     foreach ($orig_formats AS $format) {
-        if ( (arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats) ){
+        if ( (arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats) ) {
             $formats[$format->format] = $format->name;
         }
     }
@@ -985,7 +985,7 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
         form_set_error('ckeditor_load_time_out', t('Enter valid load timeout in seconds.'));
     }
 
-    if (!preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['toolbar'])){
+    if (!preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['toolbar'])) {
         form_set_error('toolbar', t('Enter valid toolbar configuration.'));
     }
 }
