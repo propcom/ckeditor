@@ -146,41 +146,32 @@ function ckeditor_help_delegate($path, $arg) {
  */
 function ckeditor_filter_xss() {
     $GLOBALS['devel_shutdown'] = FALSE;
-
+    
     if (!isset($_POST['text']) || !is_string($_POST['text']) || !is_array($_POST['filters'])) {
-        exit;
+        //exit;
     }
 
     $text = $_POST['text'];
     $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
-
-    foreach ($_POST['filters'] as $module_delta) {
-        if (!is_string($module_delta)) {
-            continue;
-        }
-        $module = strtok($module_delta, "/");
-        $delta = strtok("/");
-        $format = strtok("/");
-
-        if (!module_hook($module, 'filter')) {
-            continue;
-        }
-
-        //built-in filter module, a special case where we would like to strip XSS and nothing more
-        if ($module == 'filter' && $delta == 0) {
+    $filters = filter_get_filters();
+    
+    foreach ($_POST['filters'] as $name) {
+        if ($name == "default"){
             preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);
             if ($matches[1]) {
                 $tags = array_unique($matches[1]);
                 $text = filter_xss($text, $tags);
             }
+            continue;
         }
-        else {
-            $text = module_invoke($module, 'filter', 'process', $delta, $format, $text);
+
+        if (!isset($filters[$name]) || !isset($filters[$name]['process callback'])){
+            continue;
         }
+        $text = $filters[$name]['process callback']($text, $filters[$name]);
     }
 
     $text = strtr($text, array('__COMMENT__START__' => '<!--', '__COMMENT__END__' => '-->'));
 
     echo $text;
-    exit;
 }

@@ -465,12 +465,13 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         $conf['show_toggle'] = 'f';
     }
 
-    if (!isset($conf['ss'])) {
-        $conf['ss'] = 2;
-        $conf['filters']['filter/0'] = 1;
-    }
     if (!isset($conf['filters'])) {
         $conf['filters'] = array();
+    }
+
+    if (!isset($conf['ss'])) {
+        $conf['ss'] = 2;
+        $conf['filters']['default'] = 1;
     }
 
     $themepath = path_to_theme() . '/';
@@ -506,6 +507,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings['format_tags'] = $conf['font_format'];
     $settings['popup'] = $conf['popup'];
     $settings['show_toggle'] = $conf['show_toggle'];
+    
 
     if (isset($conf['language_direction'])) {
         switch ($conf['language_direction']) {
@@ -536,6 +538,13 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if (isset($conf['forcePasteAsPlainText']) && $conf['forcePasteAsPlainText'] == 't') {
         $settings['forcePasteAsPlainText'] = TRUE;
+    }
+
+    $settings['filters'] = array();
+    foreach ($conf['filters'] as $filter => $filter_val){
+        if ($filter_val == 1){
+            $settings['filters'][] = $filter;
+        }
     }
 
     if (isset($conf['custom_formatting']) && $conf['custom_formatting'] == 't') {
@@ -943,14 +952,12 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         $xss_check = 0;
         //it's not a problem when adding new content/comment
         if (arg(1) != "add" && arg(1) != "reply") {
-            //$_ckeditor_configuration[$field['#id']] = $conf;
-
             //let ckeditor know when perform XSS checks auto/manual
             if ($profile->settings['ss'] == 1) {
-                $xss_class = 'checkxss1';
+                $xss_class = 'filterxss1';
             }
             else {
-                $xss_class = 'checkxss2';
+                $xss_class = 'filterxss2';
             }
 
             $class[]= $xss_class;

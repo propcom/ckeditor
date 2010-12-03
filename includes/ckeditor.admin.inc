@@ -330,7 +330,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     );
 
     $all = filter_get_filters();
-
+    
     $form['security']['filters'] = array(
         '#type' => 'fieldset',
         '#title' => t('Security filters'),
@@ -344,7 +344,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     if (!isset($profile->settings['ss'])) {
         $profile->settings['filters']['filter/0'] = 1;
     }
-
+    
     foreach ($all as $id => $filter) {
         if (in_array(strtolower($filter['module']), $modules_with_filters_to_skip)) {
             continue;

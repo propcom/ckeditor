@@ -26,7 +26,7 @@
         }
     };
 
-/**
+    /**
  * CKEditor starting function
  *
  * @param string textarea_id
@@ -44,12 +44,18 @@
             return;
         }
         if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
-            $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
-                text: $('#' + textarea_id).val(),
-                'filters[]': ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].filters
-            }, function(text){
-                $("#" + textarea_id).val(text);
-            });
+            $.ajax({
+                type: 'POST',
+                url: Drupal.settings.basePath + 'index.php?q=ckeditor/xss',
+                async: false,
+                data: {
+                    text: $('#' + textarea_id).val(),
+                    'filters[]': ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].filters
+                },
+                success: function(text){
+                    $("#" + textarea_id).val(text);
+                }
+            })
         }
         
         $("#" + textarea_id).next(".grippie").css("display", "none");
@@ -93,7 +99,7 @@
         Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]]);
     };
 
-/**
+    /**
  * CKEditor destroy function
  *
  * @param string textarea_id
@@ -147,7 +153,7 @@
         $("#" + textarea_id).removeClass("ckeditor-processed");
     };
 
-/**
+    /**
  * CKEditor popup mode function
  */
     function ckeditorOpenPopup(jsID, textareaID, width){
@@ -162,7 +168,7 @@
         return false;
     };
 
-/**
+    /**
  * Returns true if CKEDITOR.version >= version
  */
     Drupal.ckeditorCompareVersion = function (version){
@@ -179,7 +185,7 @@
         return true;
     };
 
-/**
+    /**
  * This function retrieves information about a possible teaser field associated
  * with the mentioned field.
  *
@@ -244,7 +250,7 @@
         }
     };
 
-/**
+    /**
  * Ajax support
  */
     if (typeof(Drupal.Ajax) != 'undefined' && typeof(Drupal.Ajax.plugins) != 'undefined') {
@@ -257,7 +263,7 @@
         };
     }
 
-/**
+    /**
  * IMCE support
  */
     function ckeditorImceSendTo(file, win){
@@ -281,7 +287,7 @@
         }
     };
 
-/**
+    /**
  * Drupal behaviors
  */
     Drupal.behaviors.ckeditor = {
