@@ -21,15 +21,15 @@
         Drupal.ckeditorUiColorOnChange = function() {
             var color = CKEDITOR.instances["edit-uicolor-textarea"].getUiColor();
             if ($("#edit-uicolor").val() == "custom" && typeof(color) != "undefined") {
-                $('#edit-uicolor-user').val(color);
+                $('input[name$="uicolor_user"]').val(color);
             }
         };
-
+        
         CKEDITOR.replace("edit-uicolor-textarea",
         {
             extraPlugins : 'uicolor',
             height: 60,
-            uiColor: $('#edit-uicolor-user').val() || '#D3D3D3',
+            uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
             width: 400,
             toolbar : [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList'],[ 'UIColor' ]],
             on:
@@ -44,12 +44,12 @@
                 CKEDITOR.instances["edit-uicolor-textarea"].setUiColor(Drupal.settings.ckeditor_uicolor[$(this).val()]);
             }
             if ($(this).val() != "custom") {
-                $('#edit-uicolor-user').val("");
+                $('input[name$="uicolor_user"]').val("");
             }
             else {
                 var color = CKEDITOR.instances["edit-uicolor-textarea"].getUiColor();
                 if (typeof(color) != "undefined") {
-                    $('#edit-uicolor-user').val(color);
+                    $('input[name$="uicolor_user"]').val(color);
                 }
             }
         });
