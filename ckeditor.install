@@ -76,8 +76,7 @@ function ckeditor_install() {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-    ['Link','Unlink','Anchor','LinkToNode', 'LinkToMenu'],
-    ['DrupalBreak', 'DrupalPageBreak']
+    ['Link','Unlink','Anchor','LinkToNode', 'LinkToMenu']
 ]
     ";
     $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
@@ -124,8 +123,7 @@ function ckeditor_install() {
     '/',
     ['Format','Font','FontSize'],
     ['TextColor','BGColor'],
-    ['Maximize', 'ShowBlocks'],
-    ['DrupalBreak', 'DrupalPageBreak']
+    ['Maximize', 'ShowBlocks']
 ]
     ";
     db_insert('ckeditor_settings')->fields(array("name" => "Full", "settings" => serialize($arr)))->execute();
