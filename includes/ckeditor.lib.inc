@@ -569,7 +569,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     if ($filebrowser == 'imce' && !module_exists('imce')) {
         $filebrowser = 'none';
     }
-
+    /* MODULES NOT PORTED TO D7
     if ($filebrowser == 'tinybrowser' && !module_exists('tinybrowser')) {
         $filebrowser = 'none';
     }
@@ -580,11 +580,12 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     if ($filebrowser == 'webfm' && !module_exists('webfm_popup')) {
         $filebrowser = 'none';
     }
-
+    */
     if ($filebrowser_image != $filebrowser) {
         if ($filebrowser_image == 'imce' && !module_exists('imce')) {
             $filebrowser_image = $filebrowser;
         }
+        /* MODULES NOT PORTED TO D7
         if ($filebrowser_image == 'tinybrowser' && !module_exists('tinybrowser')) {
             $filebrowser_image = $filebrowser;
         }
@@ -594,12 +595,14 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         if ($filebrowser_image == 'webfm' && !module_exists('webfm_popup')) {
             $filebrowser_image = $filebrowser;
         }
+        */
     }
 
     if ($filebrowser_flash != $filebrowser) {
         if ($filebrowser_flash == 'imce' && !module_exists('imce')) {
             $filebrowser_flash = $filebrowser;
         }
+        /* MODULES NOT PORTED TO D7
         if ($filebrowser_image == 'tinybrowser' && !module_exists('tinybrowser')) {
             $filebrowser_flash = $filebrowser;
         }
@@ -609,6 +612,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         if ($filebrowser_flash == 'webfm' && !module_exists('webfm_popup')) {
             $filebrowser_flash = $filebrowser;
         }
+        */
     }
 
     if ($filebrowser == 'ckfinder' || $filebrowser_image == 'ckfinder' || $filebrowser_flash == 'ckfinder') {
@@ -632,7 +636,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             }
         }
     }
-
+    /* MODULES NOT PORTED TO D7
     if (in_array('tinybrowser', array($filebrowser, $filebrowser_image, $filebrowser_flash))) {
         $popup_win_size = variable_get('tinybrowser_popup_window_size', '770x480');
         if (!preg_match('#\d+x\d+#is', $popup_win_size)) {
@@ -642,7 +646,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         $popup_win_size = strtolower($popup_win_size);
         $win_size = split('x', $popup_win_size);
     }
-
+    */
     switch ($filebrowser) {
         case 'ckfinder':
             if (user_access('allow CKFinder file uploads')) {
@@ -657,6 +661,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         case 'imce':
             $settings['filebrowserBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditorImceSendTo')));
             break;
+        /* MODULES NOT PORTED TO D7
         case 'webfm':
             if (user_access('access webfm')) {
                 $settings['filebrowserBrowseUrl'] = $host . "index.php?q=webfm_popup";
@@ -674,6 +679,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             $settings['filebrowserWindowWidth'] = (int) $win_size[0] + 15;
             $settings['filebrowserWindowHeight'] = (int) $win_size[1] + 15;
             break;
+        */
     }
 
     if ($filebrowser_image != $filebrowser) {
@@ -687,6 +693,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             case 'imce':
                 $settings['filebrowserImageBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditorImceSendTo')));
                 break;
+            /* MODULES NOT PORTED TO D7
             case 'webfm':
                 if (user_access('access webfm')) {
                     $settings['filebrowserImageBrowseUrl'] = $host . "index.php?q=webfm_popup";
@@ -704,6 +711,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 $settings['filebrowserImageWindowWidth'] = (int) $win_size[0] + 15;
                 $settings['filebrowserImageWindowHeight'] = (int) $win_size[1] + 15;
                 break;
+             */
         }
     }
 
@@ -718,6 +726,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             case 'imce':
                 $settings['filebrowserFlashBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditorImceSendTo')));
                 break;
+            /* MODULES NOT PORTED TO D7
             case 'webfm':
                 if (user_access('access webfm')) {
                     $settings['filebrowserFlashBrowseUrl'] = $host . "index.php?q=webfm_popup";
@@ -735,6 +744,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 $settings['filebrowserFlashWindowWidth'] = (int) $win_size[0] + 15;
                 $settings['filebrowserFlashWindowHeight'] = (int) $win_size[1] + 15;
                 break;
+            */
         }
     }
 

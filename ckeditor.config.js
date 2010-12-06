@@ -25,13 +25,6 @@ CKEDITOR.editorConfig = function(config) {
     config.extraPlugins += (config.extraPlugins ? ',drupalbreaks' : 'drupalbreaks' );
   }
 
-  if (Drupal.settings.ckeditor.linktocontent_node) {
-    config.extraPlugins += (config.extraPlugins ? ',linktonode' : 'linktonode' );
-  }
-  if (Drupal.settings.ckeditor.linktocontent_menu) {
-    config.extraPlugins += (config.extraPlugins ? ',linktomenu' : 'linktomenu' );
-  }
-
   /*
    * Append here extra CSS rules that should be applied into the editing area.
    * Example: 
@@ -66,14 +59,6 @@ CKEDITOR.editorConfig = function(config) {
 
   if (Drupal.ckeditorCompareVersion('3.1')) {
     CKEDITOR.plugins.addExternal('drupalbreaks', Drupal.settings.ckeditor.module_path + '/plugins/drupalbreaks/');
-  }
-  if (Drupal.settings.ckeditor.linktocontent_menu) {
-    CKEDITOR.plugins.addExternal('linktomenu', Drupal.settings.ckeditor.module_path + '/plugins/linktomenu/');
-    Drupal.settings.ckeditor.linktomenu_basepath = Drupal.settings.basePath;
-  }
-  if (Drupal.settings.ckeditor.linktocontent_node) {
-    CKEDITOR.plugins.addExternal('linktonode', Drupal.settings.ckeditor.module_path + '/plugins/linktonode/');
-    Drupal.settings.ckeditor.linktonode_basepath = Drupal.settings.basePath;
   }
 
   // 'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
