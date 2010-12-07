@@ -31,6 +31,7 @@
  * require any kind of installation on the client computer.
  */
 function ckeditor_help_delegate($path, $arg) {
+    global $base_url;
     switch ($path) {
         case 'admin/config/content/help#description':
             $output = t('Enables the usage of CKEditor (WYSIWYG editor) instead of plain text fields.');
@@ -86,20 +87,20 @@ function ckeditor_help_delegate($path, $arg) {
                                 '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') . '/ckeditor/',
                     )) . '</li>';
             $output .= '<li>' . t('Enable the module as usual from Drupal\'s admin pages.') . '</li>';
-            $output .= '<li>' . t('Under !adminpath, adjust the ckeditor profiles. In each profile you can choose which textareas will be replaced by CKEditor, select default toolbar and configure some more advanced settings.',
+            $output .= '<li>' . t('Under !adminpath, adjust the ckeditor profiles. Profiles determine what options are available to users based on input format system. In each profile you can choose which textareas will be replaced by CKEditor.',
                             array(
-                                '!adminpath' => l(t('Administration') . ' > ' . t('Configuration') . ' > ' . t('CKEditor'), 'admin/config/content/ckeditor'),
+                                '!adminpath' => l(t('Administration panel') . ' > ' . t('Configuration') . ' > ' . t('Content Authoring') . ' > ' . t('CKEditor'), 'admin/config/content/ckeditor'),
                     )) . '</li>';
             $output .= '<li>' . t('For the Rich Text Editing to work you also need to configure your !filterlink for the users that may access Rich Text Editing. Either grant those users Full HTML access or use the following list of tags in the HTML filter:',
                             array(
-                                '!filterlink' => l(t('filters'), 'admin/settings/filters'),
+                                '!filterlink' => l(t('filters'), 'admin/config/content/formats'),
                     )) .
                     '<br /><code>' . htmlspecialchars('<a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <font> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption>') . '</code><br />';
             $output .= t('If you\'re going to use CKEditor with Filtered HTML input format, please read also "Setting up filters" section in !readme',
                             array(
-                                '!readme' => l(t('README.txt'), drupal_get_path('module', 'ckeditor') . '/README.txt')
+                                '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE))
                     )) . '</li>';
-            $output .= '<li>' . t('To have a better control over line breaks, you should disable %settingname in the chosen filter (recommended).',
+            $output .= '<li>' . t('To have a better control over line breaks, you should disable %settingname in the chosen Text format (recommended).',
                             array(
                                 '%settingname' => t('Line break converter'),
                     )) . '</li>';
@@ -127,11 +128,9 @@ function ckeditor_help_delegate($path, $arg) {
                             array(
                                 '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
                     )) . '</li>';
-            $output .= '<li>' . t('By using a module like !imcelink, !iblink or !webfmlink.',
+            $output .= '<li>' . t('By using a module like !imcelink.',
                             array(
-                                '!imcelink' => l(t('IMCE'), 'http://drupal.org/project/imce'),
-                                '!iblink' => l(t('Image Browser'), 'http://drupal.org/project/imagebrowser'),
-                                '!webfmlink' => l(t('Web File Manager'), 'http://drupal.org/project/webfm'),
+                                '!imcelink' => l(t('IMCE'), 'http://drupal.org/project/imce')
                     )) . '</li>';
             $output .= '<li>' . t('By using the core upload module.') . '</li>';
             $output .= '</ol>';
