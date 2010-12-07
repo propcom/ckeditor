@@ -57,7 +57,7 @@ function ckeditor_install() {
 
     //security
     $arr['ss'] = "2";
-    $arr['filters']['filter/0'] = 1;
+    $arr['filters']['filter_html'] = 1;
 
     //appearance
     $arr['default'] = "t";
@@ -76,7 +76,7 @@ function ckeditor_install() {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-    ['Link','Unlink','Anchor','LinkToNode', 'LinkToMenu']
+    ['Link','Unlink','Anchor']
 ]
     ";
     $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
@@ -119,7 +119,7 @@ function ckeditor_install() {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-    ['Link','Unlink','Anchor','LinkToNode', 'LinkToMenu'],
+    ['Link','Unlink','Anchor'],
     '/',
     ['Format','Font','FontSize'],
     ['TextColor','BGColor'],

@@ -43,7 +43,8 @@
         if (!CKEDITOR.env.isCompatible) {
             return;
         }
-        if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
+        
+        if (($("#" + textarea_id).val().length > 0) && (($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 && typeof(Drupal.settings.ckeditor.autostart) != 'undefined' && typeof(Drupal.settings.ckeditor.autostart[textarea_id]) != 'undefined') || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
             $.ajax({
                 type: 'POST',
                 url: Drupal.settings.basePath + 'index.php?q=ckeditor/xss',
