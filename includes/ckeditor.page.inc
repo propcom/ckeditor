@@ -155,7 +155,7 @@ function ckeditor_filter_xss() {
     $filters = filter_get_filters();
     
     foreach ($_POST['filters'] as $name) {
-        if ($name == "default"){
+        if ($name == "default") {
             preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);
             if ($matches[1]) {
                 $tags = array_unique($matches[1]);
@@ -164,7 +164,7 @@ function ckeditor_filter_xss() {
             continue;
         }
 
-        if (!isset($filters[$name]) || !isset($filters[$name]['process callback'])){
+        if (!isset($filters[$name]) || !isset($filters[$name]['process callback'])) {
             continue;
         }
         $text = $filters[$name]['process callback']($text, $filters[$name]);

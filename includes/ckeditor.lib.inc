@@ -541,8 +541,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     }
 
     $settings['filters'] = array();
-    foreach ($conf['filters'] as $filter => $filter_val){
-        if ($filter_val == 1){
+    foreach ($conf['filters'] as $filter => $filter_val) {
+        if ($filter_val == 1) {
             $settings['filters'][] = $filter;
         }
     }
