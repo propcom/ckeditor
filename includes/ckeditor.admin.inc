@@ -366,7 +366,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             '2' => t('Always run security filters for CKEditor.'),
             '1' => t('Run security filters only when CKEditor is set to start automatically.'),
         ),
-        '#description' => t('There are two ways of starting CKEditor: automatically and manually (via toggle or in a popup). If you decide to apply security filters only when CKEditor starts automatically, you will not be protected when toggling manually from plain text area to CKEditor or when using CKEditor in a popup mode. So choose this option only, if you can detect various attacks (mainly XSS) by yourself just by looking at the HTML code.'),
+        //'#description' => t('There are two ways of starting CKEditor: automatically and manually (via toggle or in a popup). If you decide to apply security filters only when CKEditor starts automatically, you will not be protected when toggling manually from plain text area to CKEditor or when using CKEditor in a popup mode. So choose this option only, if you can detect various attacks (mainly XSS) by yourself just by looking at the HTML code.'),
+        '#description' => t('There are two ways of starting CKEditor: automatically and manually (via toggle). If you decide to apply security filters only when CKEditor starts automatically, you will not be protected when toggling manually from plain text area to CKEditor. So choose this option only, if you can detect various attacks (mainly XSS) by yourself just by looking at the HTML code.'),
     );
 
     $orig_formats = filter_formats();
@@ -417,7 +418,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             't' => t('Enabled'),
             'f' => t('Disabled')
         ),
-        '#description' => t('Default editor state. If disabled, rich text editor may still be enabled using toggle or popup window.'),
+        //'#description' => t('Default editor state. If disabled, rich text editor may still be enabled using toggle or popup window.'),
+        '#description' => t('Default editor state. If disabled, rich text editor may still be enabled using toggle.'),
     );
 
     $form['appearance']['show_toggle'] = array(
@@ -428,9 +430,10 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             't' => t('Show'),
             'f' => t('Hide')
         ),
-        '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running in a popup window (see below).'),
+        //'#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running in a popup window (see below).'),
+        '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea.'),
     );
-
+    /*
     $form['appearance']['popup'] = array(
         '#type' => 'radios',
         '#title' => t('Use CKEditor in a popup window'),
@@ -441,7 +444,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         ),
         '#description' => t('If this option is enabled a link to a popup window will be used instead of a textarea replace.'),
     );
-
+    */
     $form['appearance']['skin'] = array(
         '#type' => 'select',
         '#title' => t('Skin'),
