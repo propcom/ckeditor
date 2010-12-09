@@ -915,7 +915,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
  */
 function ckeditor_admin_profile_form_validate($form, &$form_state) {
     $edit = & $form_state['values'];
-
+    /*
     if ($edit['default'] == 't' && $edit['popup'] == 't') {
         form_set_error('popup', t('If CKEditor is enabled by default, popup window must be disabled.'));
     }
@@ -923,7 +923,7 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
     if ($edit['show_toggle'] == 't' && $edit['popup'] == 't') {
         form_set_error('popup', t('If toggle is enabled, popup window must be disabled.'));
     }
-
+    */
     if (!$edit['name']) {
         form_set_error('name', t('You must give a profile name.'));
     }
