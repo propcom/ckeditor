@@ -39,6 +39,26 @@
             }
         });
 
+        if ( $("#edit-skin").val() == "kama" ){
+            $("#edit-uicolor").removeAttr('disabled');
+            $("#edit-uicolor").parent().removeClass('form-disabled');
+        }
+        else {
+            $("#edit-uicolor").attr('disabled', 'disabled');
+            $("#edit-uicolor").parent().addClass('form-disabled');
+        }
+
+        $("#edit-skin").bind("change", function() {
+            if ( $("#edit-skin").val() == "kama" ){
+                $("#edit-uicolor").removeAttr('disabled');
+                $("#edit-uicolor").parent().removeClass('form-disabled');
+            }
+            else {
+                $("#edit-uicolor").attr('disabled', 'disabled');
+                $("#edit-uicolor").parent().addClass('form-disabled');
+            }
+        });
+
         $("#edit-uicolor").bind("change", function() {
             if (typeof(Drupal.settings.ckeditor_uicolor) != "undefined") {
                 CKEDITOR.instances["edit-uicolor-textarea"].setUiColor(Drupal.settings.ckeditor_uicolor[$(this).val()]);

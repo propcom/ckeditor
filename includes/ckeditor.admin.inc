@@ -445,7 +445,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     $form['appearance']['skin'] = array(
         '#type' => 'select',
         '#title' => t('Skin'),
-        '#default_value' => !empty($profile->settings['skin']) ? $profile->settings['skin'] : 'default',
+        '#default_value' => !empty($profile->settings['skin']) ? $profile->settings['skin'] : 'kama',
         '#options' => $skin_options,
         '#description' => t('Choose a default skin.'),
     );
