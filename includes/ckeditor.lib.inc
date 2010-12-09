@@ -1055,7 +1055,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         }
 
         if ($settings['popup'] == 't') {
-            $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="return ckeditorOpenPopup(\'' . $textarea_id . '\', \'' . $field['#id'] . '\', \'' . $conf['width'] . '\');">' . t('Open rich text editor') . "</a>)</span>";
+            $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="return Drupal.ckeditorOpenPopup(\'' . $textarea_id . '\', \'' . $field['#id'] . '\', \'' . $settings['width'] . '\');">' . t('Open rich text editor') . "</a>)</span>";
         }
 
         // Remember extra information and reuse it during "Preview"

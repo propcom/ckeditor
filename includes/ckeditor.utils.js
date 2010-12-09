@@ -157,8 +157,9 @@
     /**
  * CKEditor popup mode function
  */
-    function ckeditorOpenPopup(jsID, textareaID, width){
-        popupUrl = Drupal.settings.ckeditor.module_path + '/includes/ckeditor.popup.html?var=' + jsID + '&el=' + textareaID;
+    Drupal.ckeditorOpenPopup = function (jsID, textareaID, width){
+        alert(width);
+        var popupUrl = Drupal.settings.ckeditor.module_path + '/includes/ckeditor.popup.html?var=' + jsID + '&el=' + textareaID;
   
         var percentPos = width.indexOf('%');
         if (percentPos != -1) {
