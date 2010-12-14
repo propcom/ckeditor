@@ -62,8 +62,12 @@
         
         $("#" + textarea_id).next(".grippie").css("display", "none");
         $("#" + textarea_id).addClass("ckeditor-processed");
-        
-        ckeditor_obj.elements[textarea_id]['on'] =
+
+        var textarea_settings = false;
+        ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar = eval(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar);
+        textarea_settings = ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]];
+
+        textarea_settings['on'] =
         {
             configLoaded  : function(ev)
             {
@@ -72,6 +76,7 @@
             instanceReady : function(ev)
             {
                 var body = $(ev.editor.document.$.body);
+                
                 if (typeof(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting) != 'undefined') {
                     var dtd = CKEDITOR.dtd;
                     for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
@@ -96,9 +101,7 @@
             }
         };
 
-
-        ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar = eval(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar);
-        Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]]);
+        Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
     };
 
     /**
@@ -159,7 +162,6 @@
  * CKEditor popup mode function
  */
     Drupal.ckeditorOpenPopup = function (jsID, textareaID, width){
-        alert(width);
         var popupUrl = Drupal.settings.ckeditor.module_path + '/includes/ckeditor.popup.html?var=' + jsID + '&el=' + textareaID;
   
         var percentPos = width.indexOf('%');
