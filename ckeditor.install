@@ -277,6 +277,7 @@ function _ckeditor_requirements_getinstalledversion() {
  * @return string|boolean
  */
 function _ckeditor_requirements_ckfinder_config_check($profile_name) {
+    global $base_url;
     module_load_include('module', 'ckeditor');
     $module_drupal_path = drupal_get_path('module', 'ckeditor');
     $config_path = $module_drupal_path . '/ckfinder/config.php';
@@ -320,12 +321,12 @@ function _ckeditor_requirements_ckfinder_config_check($profile_name) {
     }
 
     if (!$require_once_found) {
-        return t('You are using a feature that requires manual integration into config.php (either built-in filebrowser or quick uploads are enabled in the !profile profile). Read instructions about enabling built-in file browser and add "require_once ..." statement in editor/filemanager/connectors/php/config.php.', array('!profile' => l($profile_name, 'admin/config/content/ckeditor/edit/' . urlencode($profile_name))));
+        return t('You are using a feature that requires manual integration into config.php. Please read the "Installing CKFinder" section in !readme carefully and add "require_once ..." statement in %ckfconfig.', array('%ckfconfig' => drupal_get_path('module', 'ckeditor') . '/ckfinder/config.php', '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE))));
     }
 
     if ($userfiles_absolute_path_line && $force_single_extension_line && (
             $require_once_line < $userfiles_absolute_path_line || $require_once_line > $force_single_extension_line)) {
-        return t('You are using a feature that requires manual integration into config.php (either built-in filebrowser or quick uploads are enabled in the !profile profile). You have added "require_once ..." statement in editor/filemanager/connectors/php/config.php, but in the wrong line.', array('!profile' => l($profile_name, 'admin/config/content/ckeditor/edit/' . urlencode($profile_name))));
+        return t('You are using a feature that requires manual integration into config.php. You have added "require_once ..." statement in %ckfconfig, but in the wrong line.', array('%ckfconfig' => drupal_get_path('module', 'ckeditor') . '/ckfinder/config.php'));
     }
 
     return FALSE;

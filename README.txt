@@ -67,7 +67,6 @@ Note: these instructions assume that you install CKEditor in the
    5. Adjust CKEditor profiles in the
       "Administration panel > Configuration > Content Authoring > CKEditor" section.
       Profiles determine what options are available to users based on the input format system.
-      In each profile you can choose which textareas will be replaced by CKEditor.
    6. For the Rich Text Editing to work you also need to configure your filters
       for the users that may access Rich Text Editing.
       Either grant those users Full HTML access or use the following tags:
