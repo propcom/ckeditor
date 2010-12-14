@@ -27,7 +27,12 @@
  * This file is required by CKEeditor module if you want to enable CKFinder ajax file browser
  *
  */
+
 $GLOBALS['devel_shutdown'] = FALSE;
+
+if (!function_exists('ob_list_handlers') || ob_list_handlers()) {
+    @ob_end_clean();
+}
 
 $ckfinder_user_files_path = '';
 $ckfinder_user_files_absolute_path = '';
@@ -65,7 +70,7 @@ function CheckAuthentication() {
                 define('DRUPAL_ROOT', $drupal_path);
             }
             require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
-            drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL); //var_dump($_SERVER);
+            drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
             $authenticated = user_access('allow CKFinder file uploads');
             
             if (isset($_SESSION['ckeditor']['UserFilesPath'], $_SESSION['ckeditor']['UserFilesAbsolutePath'])) {
