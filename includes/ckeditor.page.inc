@@ -146,13 +146,14 @@ function ckeditor_help_delegate($path, $arg) {
 function ckeditor_filter_xss() {
     $GLOBALS['devel_shutdown'] = FALSE;
     
-    if (!isset($_POST['text']) || !is_string($_POST['text']) || !is_array($_POST['filters'])) {
-        //exit;
+    if (!isset($_POST['text']) || !is_string($_POST['text']) || !is_array($_POST['filters']) || !isset($_POST['input_format']) || !is_string($_POST['input_format'])) {
+        exit;
     }
 
     $text = $_POST['text'];
     $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
     $filters = filter_get_filters();
+    $__filters = filter_list_format($_POST['input_format']);
     
     foreach ($_POST['filters'] as $name) {
         if ($name == "default") {
@@ -167,7 +168,8 @@ function ckeditor_filter_xss() {
         if (!isset($filters[$name]) || !isset($filters[$name]['process callback'])) {
             continue;
         }
-        $text = $filters[$name]['process callback']($text, $filters[$name]);
+        
+        $text = $filters[$name]['process callback']($text, $__filters[$name]);
     }
 
     $text = strtr($text, array('__COMMENT__START__' => '<!--', '__COMMENT__END__' => '-->'));

@@ -51,6 +51,7 @@
                 async: false,
                 data: {
                     text: $('#' + textarea_id).val(),
+                    input_format: ckeditor_obj.elements[textarea_id],
                     'filters[]': ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].filters
                 },
                 success: function(text){
