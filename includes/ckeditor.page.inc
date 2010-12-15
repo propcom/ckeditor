@@ -39,13 +39,13 @@ function ckeditor_help_delegate($path, $arg) {
 
         case 'admin/config/content/ckeditor/edit/%':
         case 'admin/config/content/ckeditor/add':
-            $output = '<p>' . t('CKEditor is highly configurable. The most commonly used features are listed below. You can also customize CKEditor to your needs by changing the configuration file: %ckeditor_module_config. This is also the only way to define new toolbar sets.',
+            $output = '<p>' . t('CKEditor is highly configurable. The most commonly used features are listed below. You can also customize CKEditor to your needs by changing the configuration file: %ckeditor_module_config.',
                             array(
-                                '%ckeditor_module_config' => drupal_get_path('module', 'ckeditor') . '/ckeditor.config.js',
+                                '%ckeditor_module_config' => ckeditor_path(true) . '/ckeditor.config.js',
                     )) . '</p>';
             $output .= '<p>' . t('It is advised to not edit the configuration file that is distributed with CKEditor: %ckeditor_config_file (%ckeditor_config_path) because you may overwrite it accidentally when you update the editor.',
                             array(
-                                '%ckeditor_config_path' => drupal_get_path('module', 'ckeditor') . '/ckeditor/config.js',
+                                '%ckeditor_config_path' => ckeditor_path(true) . '/ckeditor/config.js',
                                 '%ckeditor_config_file' => 'config.js',
                     )) . '</p>';
             break;
@@ -57,37 +57,40 @@ function ckeditor_help_delegate($path, $arg) {
 
         case 'admin/config/content/ckeditor':
             $output =
-                    '<p>' . t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
+                    '<div style="padding:10px;border:1px solid #BEBFB9;margin-bottom:10px;"><p>' . t('The CKEditor module allows Drupal to replace textarea fields with CKEditor. CKEditor is a text editor to be used inside web pages. It\'s a !wysiwyg editor, which means that the text being edited on it looks as similar as possible to the results users have when publishing it. It brings to the web common editing features found on desktop editing applications like Microsoft Word and OpenOffice.',
                             array(
                                 '!wysiwyg' => '<acronym title="' . t('What You See Is What You Get') . '">' . t('WYSIWYG') . '</acronym>',
                     )) . '</p>' .
-                    '<p>' . t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
+                    '<p>' . t('Uuusseful links: !ckeditorlink | !devguidelink | !userguidelink.',
                             array(
-                                '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com'),
-                                '!userguidelink' => l(t('developer guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
-                    )) . '</p>' .
-                    '<p>' . t('Profiles can be defined based on input format types. A CKEditor profile can define which pages receive this CKEditor capability, what buttons or themes are enabled for the editor, how the editor is displayed, and a few other editor functions. It is possible also to define the Global Profile that will hold values that will be appended to all other profiles.') . '</p>';
+                                '!ckeditorlink' => l(t('CKEditor web site'), 'http://ckeditor.com'),
+                                '!devguidelink' => l(t('Developer\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
+                                '!userguidelink' => l(t('User\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide')
+                    )) . '</p></div>' .
+                    '<p>' . t('Profiles are linked with input format types. A CKEditor profile defines what buttons are available in the editor, how the editor is displayed, and a few other editor functions. The Global Profile holds some general information about CKEditor.') . '</p>';
             break;
 
         case 'admin/help#ckeditor':
-            $output = '<p>' . t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
+            $output = '<h3>' . t('Introduction') . '</h3>';
+            $output .= '<p>' . t('The CKEditor module allows Drupal to replace textarea fields with CKEditor. CKEditor is a text editor to be used inside web pages. It\'s a !wysiwyg editor, which means that the text being edited on it looks as similar as possible to the results users have when publishing it. It brings to the web common editing features found on desktop editing applications like Microsoft Word and OpenOffice.',
                             array(
                                 '!wysiwyg' => '<acronym title="' . t('What You See Is What You Get') . '">' . t('WYSIWYG') . '</acronym>',
                     )) . '</p>';
-            $output .= '<p>' . t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
+            $output .= '<p>' . t('Useful links: !ckeditorlink | !devguidelink | !userguidelink.',
                             array(
-                                '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com'),
-                                '!userguidelink' => l(t('developer guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
-                    )) . '</p>' .
-                    $output .= '<h3>' . t('Configuration') . '</h3>';
+                                '!ckeditorlink' => l(t('CKEditor web site'), 'http://ckeditor.com'),
+                                '!devguidelink' => l(t('Developer\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
+                                '!userguidelink' => l(t('User\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide')
+                                )) . '</p>';
+            $output .= '<h4>' . t('Configuration') . '</h4>';
             $output .= '<ol>';
-            $output .= '<li>' . t('Go to the !ckeditorlink and download the latest version of CKEditor. Then uncompress the contents of the ckeditor directory of the downloaded file to %ckeditordir.',
+            $output .= '<li>' . t('Go to the !ckeditorlink and download the latest version of CKEditor. Then uncompress the contents of the ckeditor directory of the downloaded file to %ckeditordir (or into sites/all/libriaries/ckeditor).',
                             array(
                                 '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'),
                                 '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') . '/ckeditor/',
                     )) . '</li>';
             $output .= '<li>' . t('Enable the module as usual from Drupal\'s admin pages.') . '</li>';
-            $output .= '<li>' . t('Under !adminpath, adjust the ckeditor profiles. Profiles determine what options are available to users based on input format system. In each profile you can choose which textareas will be replaced by CKEditor.',
+            $output .= '<li>' . t('Under !adminpath, adjust the ckeditor profiles. Profiles determine what options are available to users based on input format system.',
                             array(
                                 '!adminpath' => l(t('Administration panel') . ' > ' . t('Configuration') . ' > ' . t('Content Authoring') . ' > ' . t('CKEditor'), 'admin/config/content/ckeditor'),
                     )) . '</li>';

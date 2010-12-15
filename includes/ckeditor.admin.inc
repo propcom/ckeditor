@@ -322,6 +322,31 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#required' => TRUE
     );
 
+    $orig_formats = filter_formats();
+
+    if (arg(4) == 'edit' && !empty($profile->name)) {
+        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", array($profile->name), 'NOT IN')->execute()->fetchAllAssoc('format');
+    }
+    else {
+        $profile->input_formats = array();
+        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->execute()->fetchAllAssoc('format');
+    }
+    
+    $formats = array();
+    foreach ($orig_formats AS $format) {
+        if ( (arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats) ) {
+            $formats[$format->format] = $format->name;
+        }
+    }
+
+    $form['basic']['input_formats'] = array(
+        '#type' => 'checkboxes',
+        '#title' => t('Input formats'),
+        '#default_value' => !empty($profile->input_formats) ? array_keys((array) $profile->input_formats) : array(),
+        '#options' => $formats,
+        '#description' => t('Choose the input formats where you want to load CKEditor.')
+    );
+
     $form['security'] = array(
         '#type' => 'fieldset',
         '#title' => t('Security'),
@@ -369,39 +394,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         ),
         //'#description' => t('There are two ways of starting CKEditor: automatically and manually (via toggle or in a popup). If you decide to apply security filters only when CKEditor starts automatically, you will not be protected when toggling manually from plain text area to CKEditor or when using CKEditor in a popup mode. So choose this option only, if you can detect various attacks (mainly XSS) by yourself just by looking at the HTML code.'),
         '#description' => t('There are two ways of starting CKEditor: automatically and manually (via toggle). If you decide to apply security filters only when CKEditor starts automatically, you will not be protected when toggling manually from plain text area to CKEditor. So choose this option only, if you can detect various attacks (mainly XSS) by yourself just by looking at the HTML code.'),
-    );
-
-    $orig_formats = filter_formats();
-
-    if (arg(4) == 'edit' && !empty($profile->name)) {
-        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", array($profile->name), 'NOT IN')->execute()->fetchAllAssoc('format');
-    }
-    else {
-        $profile->input_formats = array();
-        $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->execute()->fetchAllAssoc('format');
-    }
-    
-    $formats = array();
-    foreach ($orig_formats AS $format) {
-        if ( (arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats) ) {
-            $formats[$format->format] = $format->name;
-        }
-    }
-
-    $form['ckeditor_formats'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Visibility settings'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-        '#description' => t('The following settings are combined with the visibility settings of the specific profile.'),
-    );
-    
-    $form['ckeditor_formats']['input_formats'] = array(
-        '#type' => 'checkboxes',
-        '#title' => t('Input formats'),
-        '#default_value' => !empty($profile->input_formats) ? array_keys((array) $profile->input_formats) : array(),
-        '#options' => $formats,
-        '#description' => t('Choose the input formats where you want to load CKEditor.')
     );
 
     $form['appearance'] = array(
@@ -514,7 +506,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#type' => 'textarea',
         '#title' => t('Toolbar'),
         '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
-        '#description' => t('Set the toolbar definition. Instruction you can find in <a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar" target="_blank">Documentation of CKEditor</a>.'),
+        '#description' => t('Set the toolbar definition. The instruction is available in the <a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar" target="_blank">CKEditor documentation</a>.'),
         '#wysiwyg' => FALSE,
         '#rows' => 15
     );
@@ -567,7 +559,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             'ltr' => t('Left-To-Right'), // language (like English)
             'rtl' => t('Right-To-Left') // languages (like Arabic)
         ),
-        '#description' => t('Choose language direction used in the editing area. Even when CKEditor auto detects user language and adjusts it\'s user interface, the editing area is not automatically changed into LTR or RTL mode. To be able to type LTR (like English) and RTL (like Arabic, Hebrew, Persian) content at the same time, please take a look at the <b>Styles</b> combo and <b>Language: RTL</b>, <b>Language: LTR</b> styles available there. Note: this combo box is not available in the default toolbar, the <b>Styles</b> button needs to be added to the toolbar in ckeditor.config.js.')
+        '#description' => t('Choose language direction used in the editing area. Even when CKEditor auto detects user language and adjusts it\'s user interface, the editing area is not automatically changed into LTR or RTL mode. To be able to type LTR (like English) and RTL (like Arabic, Hebrew, Persian) content at the same time, please make sure that the <i>BidiLtr</i> and <i>BidiRtl</i> buttons are anabled in the toolbar.')
     );
 
     $form['output'] = array(
