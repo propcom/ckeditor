@@ -95,7 +95,7 @@ function ckeditor_profile_overview() {
         $output .= "<h3>" . t("Global settings") . "</h3>";
         $rows[] = array(
             array('data' => t('CKEditor Global Profile')),
-            array('data' => l(t('edit'), 'admin/config/content/ckeditor/editg') . " " . l(t('delete'), 'admin/config/content/ckeditor/delete/CKEditor Global Profile'), 'valign' => 'top')
+            array('data' => l(t('edit'), 'admin/config/content/ckeditor/editg'), 'valign' => 'top')
         );
         $output .= theme('table', array("header" => array(t('Profile'), t('Operations')), "rows" => $rows));
     }
