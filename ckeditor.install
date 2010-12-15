@@ -126,6 +126,9 @@ function ckeditor_install() {
     ['Maximize', 'ShowBlocks']
 ]
     ";
+
+    $arr['filters'] = array();
+
     db_insert('ckeditor_settings')->fields(array("name" => "Full", "settings" => serialize($arr)))->execute();
 
     $arr = array();
