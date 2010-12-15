@@ -1,2 +1,5 @@
+-- 2010-12-15
+- Released CKEditor 7.x-1.0 RC
+
 -- 2010-10-26
 - Created initial dev version of the CKEditor module for Drupal 7.x
