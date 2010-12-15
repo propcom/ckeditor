@@ -61,7 +61,7 @@ function ckeditor_help_delegate($path, $arg) {
                             array(
                                 '!wysiwyg' => '<acronym title="' . t('What You See Is What You Get') . '">' . t('WYSIWYG') . '</acronym>',
                     )) . '</p>' .
-                    '<p>' . t('Uuusseful links: !ckeditorlink | !devguidelink | !userguidelink.',
+                    '<p>' . t('Useful links: !ckeditorlink | !devguidelink | !userguidelink.',
                             array(
                                 '!ckeditorlink' => l(t('CKEditor web site'), 'http://ckeditor.com'),
                                 '!devguidelink' => l(t('Developer\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
