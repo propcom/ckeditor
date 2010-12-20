@@ -37,6 +37,39 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 );
                 
             // Register the toolbar buttons.
+            editor.ui.addButton( 'DrupalBreak',
+            {
+                label : Drupal.t('Insert Teaser Break'),
+                icon : this.path + 'images/drupalbreak.gif',
+                command : 'drupalbreak'
+            });
+
+            editor.addCommand( 'drupalbreak',
+            {
+                exec : function()
+                {
+                    // There should be only one <!--break--> in document. So, look
+                    // for an image with class "cke_drupal_break" (the fake element).
+                    var images = editor.document.getElementsByTag( 'img' );
+                    for ( var i = 0, len = images.count() ; i < len ; i++ )
+                    {
+                        var img = images.getItem( i );
+                        if ( img.hasClass( 'cke_drupal_break' ) )
+                        {
+                            if ( confirm( Drupal.t( 'The document already contains a teaser break. Do you want to proceed by removing it first?' ) ) )
+                            {
+                                img.remove();
+                                break;
+                            }
+                            else
+                                return;
+                        }
+                    }
+
+                    insertComment( 'break' );
+                }
+            } );
+
             editor.ui.addButton( 'DrupalPageBreak',
             {
                 label : Drupal.t( 'Insert Page Break' ),
@@ -122,7 +155,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         };
                     }
 				
-                    if ( value == 'pagebreak' )
+                    if ( value == 'break' || value == 'pagebreak' )
                         return editor.createFakeParserElement( new CKEDITOR.htmlParser.comment( value ), 'cke_drupal_' + value, 'hr' );
 
                     return value;

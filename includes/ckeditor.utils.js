@@ -2,13 +2,6 @@
 (function ($) {
     Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
 
-    // this object will store teaser information
-    Drupal.ckeditorTeaser = {
-        lookup: {},
-        lookupSetup: false,
-        cache: {}
-    };
-
     Drupal.ckeditorToggle = function(textarea_ids, TextTextarea, TextRTE){
         if (!CKEDITOR.env.isCompatible) {
             return;
@@ -121,38 +114,6 @@
 
         var data = CKEDITOR.instances[textarea_id].getData();
         CKEDITOR.instances[textarea_id].destroy();
-        if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
-            var brcode = /<!--break-->/;
-            data = data.split(brcode);
-            if (data.length > 1) {
-                teaser.textareaContainer.show();
-                teaser.textarea.attr('disabled', '');
-                if (teaser.button.attr('value') != Drupal.t('Join summary')) {
-                    try {
-                        teaser.button.click();
-                    }
-                    catch (e) {
-                        teaser.button.val(Drupal.t('Join summary'));
-                    }
-                }
-                teaser.textarea.val(data[0]);
-                $("#" + textarea_id).val(data[1]);
-            }
-            else {
-                $("#" + textarea_id).val(data[0]);
-                teaser.textarea.attr('disabled', 'disabled');
-                teaser.checkboxContainer.hide();
-                if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
-                    try {
-                        teaser.button.click();
-                    }
-                    catch (e) {
-                        teaser.button.val(Drupal.t('Split summary at cursor'));
-                    }
-                }
-            }
-            teaser.buttonContainer.show();
-        }
 
         $("#" + textarea_id).next(".grippie").css("display", "block");
         $("#" + textarea_id).removeClass("ckeditor-processed");
@@ -188,57 +149,6 @@
             }
         }
         return true;
-    };
-
-    /**
- * This function retrieves information about a possible teaser field associated
- * with the mentioned field.
- *
- * @param taid
- *            string HTML id of the main text area
- */
-    Drupal.ckeditorTeaserInfo = function(taid) {
-        // if the result is cached, return it
-        if (Drupal.ckeditorTeaser.cache[taid]) {
-            return Drupal.ckeditorTeaser.cache[taid];
-        }
-  
-        // build a lookup table
-        if (!Drupal.ckeditorTeaser.lookupSetup) {
-            Drupal.ckeditorTeaser.lookupSetup = true;
-            for (var x in Drupal.settings.teaser) {
-                Drupal.ckeditorTeaser.lookup[Drupal.settings.teaser[x]] = x;
-            }
-        }
-  
-        // find the elements
-        if (Drupal.ckeditorTeaser.lookup[taid]) {
-            var obj;
-            if (window.opener && window.ckeditor_was_opened_in_popup_window) {
-                obj = {
-                    textarea: window.opener.$('#' + Drupal.ckeditorTeaser.lookup[taid]),
-                    checkbox: window.opener.$('#' + Drupal.settings.teaserCheckbox[Drupal.ckeditorTeaser.lookup[taid]])
-                };
-            } else {
-                obj = {
-                    textarea: $('#' + Drupal.ckeditorTeaser.lookup[taid]),
-                    checkbox: $('#' + Drupal.settings.teaserCheckbox[Drupal.ckeditorTeaser.lookup[taid]])
-                };
-            }
-    
-            obj.textareaContainer = obj.textarea.parent();
-            obj.checkboxContainer = obj.checkbox.parent();
-    
-            obj.button = $('input.teaser-button', obj.checkbox.parents('div.teaser-checkbox').get(0));
-            obj.buttonContainer = obj.button.parent();
-    
-            Drupal.ckeditorTeaser.cache[taid] = obj;
-        }
-        else {
-            Drupal.ckeditorTeaser.cache[taid] = null;
-        }
-  
-        return Drupal.ckeditorTeaser.cache[taid];
     };
 
     Drupal.ckeditorInsertHtml = function(html) {
@@ -303,10 +213,6 @@
             }
             $('.ckeditor_links').show();
             // make sure the textarea behavior is run first, to get a correctly sized grippie
-            // the textarea behavior requires the teaser behavior, so load that one as well
-            if (Drupal.behaviors.teaser && Drupal.behaviors.teaser.attach) {
-                Drupal.behaviors.teaser.attach(context);
-            }
             if (Drupal.behaviors.textarea && Drupal.behaviors.textarea.attach) {
                 Drupal.behaviors.textarea.attach(context);
             }

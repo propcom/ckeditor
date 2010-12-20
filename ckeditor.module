@@ -185,13 +185,6 @@ function ckeditor_form_alter(&$form, $form_state, $form_id) {
 
         ckeditor_user_customize($form, $form_state, $form_id);
     }
-    if (substr($form_id, -10) == '_node_form') {
-        $nodetype = $form['type']['#value'];
-        if (!empty($form['body_field']['teaser_js']['#teaser'])) {
-            $setting['ckeditor']['teaser'] = $form['body_field']['teaser_js']['#teaser'];
-            drupal_add_js($setting, 'setting');
-        }
-    }
 }
 
 /**
