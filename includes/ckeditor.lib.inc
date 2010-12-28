@@ -1013,7 +1013,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
 
         if (!$is_running) {
             drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array( 'type' => 'file', 'scope' => variable_get('preprocess_js', FALSE) ? 'header' : 'footer') );
-            if ($settings['popup'] != 't') {
+            //if ($settings['popup'] != 't') {
                 if (isset($profile->settings['ckeditor_load_method'])) {
                     drupal_add_js( $editor_path . '/' . $profile->settings['ckeditor_load_method'], 'file');
                     if ($profile->settings['ckeditor_load_method'] == 'ckeditor_basic.js') {
@@ -1024,14 +1024,14 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
                 else {
                     drupal_add_js($editor_path . '/ckeditor.js', 'file');
                 }
-            }
+            /*}
             else {
                 drupal_add_js($editor_path . '/ckeditor_basic.js', 'file');
-            }
+            }*/
             drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path)), 'setting');
-            if ($settings['popup'] == 't') {
+            /*if ($settings['popup'] == 't') {
                 drupal_add_js(array('ckeditor' => array('editor_path' => $editor_path)), 'setting');
-            }
+            }*/
             if (module_exists('paging')) {
                 drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
             }
@@ -1054,11 +1054,11 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         if (!empty($ckeditor_on)) {
             drupal_add_js(array('ckeditor' => array('autostart' => array( $textarea_id => $ckeditor_on))), 'setting');
         }
-
+        /*
         if ($settings['popup'] == 't') {
             $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="return Drupal.ckeditorOpenPopup(\'' . $textarea_id . '\', \'' . $field['#id'] . '\', \'' . $settings['width'] . '\');">' . t('Open rich text editor') . "</a>)</span>";
         }
-
+        */
         // Remember extra information and reuse it during "Preview"
         $processed_ids[$field['#id']]['suffix'] = $suffix;
         $processed_ids[$field['#id']]['class'] = $class;
