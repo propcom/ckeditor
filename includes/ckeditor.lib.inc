@@ -457,14 +457,16 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $conf = $profile->settings;
 
     if (user_access('customize ckeditor')) {
-        foreach (array('default', 'show_toggle', 'popup', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
+        //foreach (array('default', 'show_toggle', 'popup', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
+        foreach (array('default', 'show_toggle', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
             $conf[$setting] = ckeditor_user_get_setting($user, $profile, $setting);
         }
     }
+    /*
     if ($conf['popup'] == 't' && $conf['show_toggle'] == 't') {
         $conf['show_toggle'] = 'f';
     }
-
+    */
     if (!isset($conf['filters'])) {
         $conf['filters'] = array();
     }
@@ -505,7 +507,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings['width'] = $conf['width'];
     $settings['skin'] = $conf['skin']; 
     $settings['format_tags'] = $conf['font_format'];
-    $settings['popup'] = $conf['popup'];
+    //$settings['popup'] = $conf['popup'];
     $settings['show_toggle'] = $conf['show_toggle'];
     
 
