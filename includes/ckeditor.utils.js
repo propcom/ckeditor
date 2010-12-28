@@ -178,23 +178,6 @@
         };
     }
 
-    /**
- * IMCE support
- */
-    function ckeditorImceSendTo(file, win){
-        var cfunc = win.location.href.split('&');
-
-        for (var x in cfunc) {
-            if (cfunc[x].match(/^CKEditorFuncNum=\d+$/)) {
-                cfunc = cfunc[x].split('=');
-                break;
-            }
-        }
-
-        CKEDITOR.tools.callFunction(cfunc[1], file.url);
-        win.close();
-    }
-
     //Support for Panels [#679976]
     Drupal.ckeditorSubmitAjaxForm = function () {
         if (typeof(CKEDITOR.instances) != 'undefined' && typeof(CKEDITOR.instances['edit-body']) != 'undefined') {
@@ -234,3 +217,19 @@
         }
     };
 })(jQuery);
+
+/**
+ * IMCE support
+ */
+var ckeditor_imceSendTo = function (file, win){
+    var cfunc = win.location.href.split('&');
+
+    for (var x in cfunc) {
+        if (cfunc[x].match(/^CKEditorFuncNum=\d+$/)) {
+            cfunc = cfunc[x].split('=');
+            break;
+        }
+    }
+    CKEDITOR.tools.callFunction(cfunc[1], file.url);
+    win.close();
+}

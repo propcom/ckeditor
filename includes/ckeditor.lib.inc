@@ -659,7 +659,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             }
             break;
         case 'imce':
-            $settings['filebrowserBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditorImceSendTo')));
+            $settings['filebrowserBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
             break;
         /* MODULES NOT PORTED TO D7
         case 'webfm':
@@ -691,7 +691,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
                 break;
             case 'imce':
-                $settings['filebrowserImageBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditorImceSendTo')));
+                $settings['filebrowserImageBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
                 break;
             /* MODULES NOT PORTED TO D7
             case 'webfm':
@@ -724,7 +724,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
                 break;
             case 'imce':
-                $settings['filebrowserFlashBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditorImceSendTo')));
+                $settings['filebrowserFlashBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
                 break;
             /* MODULES NOT PORTED TO D7
             case 'webfm':
@@ -1011,7 +1011,6 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
 
         if (!$is_running) {
             drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array( 'type' => 'file', 'scope' => variable_get('preprocess_js', FALSE) ? 'header' : 'footer') );
-
             if ($settings['popup'] != 't') {
                 if (isset($profile->settings['ckeditor_load_method'])) {
                     drupal_add_js( $editor_path . '/' . $profile->settings['ckeditor_load_method'], 'file');
