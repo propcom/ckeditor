@@ -24,7 +24,10 @@
  *
  * @param string textarea_id
  */
-    Drupal.ckeditorOn = function(textarea_id) {
+    Drupal.ckeditorOn = function(textarea_id, run_filter) {
+
+        run_filter = typeof(run_filter) != 'undefined' ? run_filter : true;
+        
         if ((typeof(Drupal.settings.ckeditor.load_timeout) == 'undefined') && (typeof(CKEDITOR.instances[textarea_id]) != 'undefined')) {
             return;
         }
@@ -37,7 +40,7 @@
             return;
         }
         
-        if (($("#" + textarea_id).val().length > 0) && (($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 && typeof(Drupal.settings.ckeditor.autostart) != 'undefined' && typeof(Drupal.settings.ckeditor.autostart[textarea_id]) != 'undefined') || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
+        if (run_filter && ($("#" + textarea_id).val().length > 0) && (($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 && typeof(Drupal.settings.ckeditor.autostart) != 'undefined' && typeof(Drupal.settings.ckeditor.autostart[textarea_id]) != 'undefined') || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
             $.ajax({
                 type: 'POST',
                 url: Drupal.settings.basePath + 'index.php?q=ckeditor/xss',
@@ -210,7 +213,7 @@
                     Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
                     Drupal.ckeditorOff(ta_id);
                     if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
-                        Drupal.ckeditorOn(ta_id);
+                        Drupal.ckeditorOn(ta_id, false);
                     }
                 });
             });
