@@ -56,7 +56,7 @@ function ckeditor_menu() {
         'description' => 'XSS Filter.',
         'page callback' => 'ckeditor_filter_xss',
         'file' => 'includes/ckeditor.page.inc',
-        'access arguments' => array(1),
+        'access callback' => TRUE,
         'type' => MENU_CALLBACK,
     );
 
