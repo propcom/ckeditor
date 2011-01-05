@@ -253,6 +253,7 @@ function ckeditor_user($type, $edit, &$user, $category = NULL) {
  */
 function ckeditor_profile_load($name = '', $clear = FALSE) {
     static $profiles = array();
+    global $user;
 
     if (empty($profiles) || $clear === TRUE) {
         $result = db_select('ckeditor_settings', 's')->fields('s')->execute();
@@ -262,10 +263,12 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
 
             $profiles[$data->name] = $data;
         }
-        $input_formats = filter_formats();
+        $input_formats = filter_formats($user);
         $result = db_select('ckeditor_input_format', 'f')->fields('f')->execute();
         foreach ($result as $data) {
-            $profiles[$data->name]->input_formats[$data->format] = $input_formats[$data->format]->name;
+            if (isset($input_formats[$data->format])){
+                $profiles[$data->name]->input_formats[$data->format] = $input_formats[$data->format]->name;
+            }
         }
         
     }
