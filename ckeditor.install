@@ -121,7 +121,7 @@ function ckeditor_install() {
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
     ['Link','Unlink','Anchor'],
-    ['DrupalBreak']
+    ['DrupalBreak'],
     '/',
     ['Format','Font','FontSize'],
     ['TextColor','BGColor'],
@@ -215,19 +215,16 @@ function ckeditor_requirements($phase) {
 
             $requirements['ckeditor']['description'] = t('CKEditor was not found at %sourcepath', array('%sourcepath' => $sourcepath));
             $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
-        }
-        elseif (($installed_version = _ckeditor_requirements_getinstalledversion()) === NULL) {
+        } elseif (($installed_version = _ckeditor_requirements_getinstalledversion()) === NULL) {
             $requirements['ckeditor']['description'] = t('CKEditor version could not be determined');
             $requirements['ckeditor']['severity'] = REQUIREMENT_INFO;
-        }
-        else {
+        } else {
             $profile_name = _ckeditor_requirements_ckfinder_filebrowser_enabled();
             if ($profile_name !== FALSE) {
                 if (!_ckeditor_requirements_cookiedomainset()) {
                     $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
                     $requirements['ckeditor']['description'] = t('You are using a feature that requires $cookie_domain to be set, but it is not set in your settings.php (CKFinder is enabled in the !profile profile).', array('!profile' => l($profile_name, 'admin/config/content/ckeditor/edit/' . urlencode($profile_name))));
-                }
-                elseif ($error = _ckeditor_requirements_ckfinder_config_check($profile_name)) {
+                } elseif ($error = _ckeditor_requirements_ckfinder_config_check($profile_name)) {
                     $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
                     $requirements['ckeditor']['description'] = $error;
                 }
@@ -381,4 +378,39 @@ function _ckeditor_requirements_cookiedomainset() {
     }
 
     return FALSE;
+}
+
+/**
+ * Update broken settings for the 'Full' profile.
+ */
+function ckeditor_update_7000() {
+    $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'Full'))->fetchField();
+    $settings = unserialize($result);
+    $settings['toolbar'] = "
+[
+    ['Source'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+    '/',
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
+    ['Link','Unlink','Anchor'],
+    ['DrupalBreak'],
+    '/',
+    ['Format','Font','FontSize'],
+    ['TextColor','BGColor'],
+    ['Maximize', 'ShowBlocks']
+]
+    ";
+
+    $settings = serialize($settings);
+
+    $update = db_update('ckeditor_settings')
+                    ->fields(array(
+                        'settings' => $settings,
+                    ))
+                    ->condition('name', 'Full', '=')
+                    ->execute();
 }
