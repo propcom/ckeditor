@@ -455,6 +455,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings = array();
     $conf = array();
     $conf = $profile->settings;
+    $profile_name = $profile->name;
 
     if (user_access('customize ckeditor')) {
         //foreach (array('default', 'show_toggle', 'popup', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
@@ -620,21 +621,29 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     if ($filebrowser == 'ckfinder' || $filebrowser_image == 'ckfinder' || $filebrowser_flash == 'ckfinder') {
         if (user_access('allow CKFinder file uploads')) {
             if (!empty($profile->settings['UserFilesPath'])) {
-                $_SESSION['ckeditor']['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
-            }
-            if (!empty($profile->settings['UserFilesAbsolutePath'])) {
-                $_SESSION['ckeditor']['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => $user->name));
-            }
-            //@todo DOWNLOAD API
-            $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
-            if (!empty($private_dir)) {
-                $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
-                $_SESSION['ckeditor']['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/' . $private_dir . '/';
-                $_SESSION['ckeditor']['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
+                $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
             }
             else {
-                $_SESSION['ckeditor']['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/';
-                $_SESSION['ckeditor']['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR;
+                $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
+                if (!empty($private_dir)) {
+                    $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
+                    $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/' . $private_dir . '/';                }
+                else {
+                    $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/';
+                }
+            }
+            if (!empty($profile->settings['UserFilesAbsolutePath'])) {
+                $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => $user->name));
+            }
+            else {
+                $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
+                if (!empty($private_dir)) {
+                    $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
+                    $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
+                }
+                else {
+                    $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR;
+                }
             }
         }
     }
@@ -652,12 +661,12 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     switch ($filebrowser) {
         case 'ckfinder':
             if (user_access('allow CKFinder file uploads')) {
-                $settings['filebrowserBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html';
-                $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images';
-                $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Flash';
-                $settings['filebrowserUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-                $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-                $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
+                $settings['filebrowserBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?id='.$profile_name;
+                $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id='.$profile_name;
+                $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Flash&id='.$profile_name;
+                $settings['filebrowserUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&id='.$profile_name;
+                $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id='.$profile_name;
+                $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash&id='.$profile_name;
             }
             break;
         case 'imce':
@@ -688,8 +697,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         switch ($filebrowser_image) {
             case 'ckfinder':
                 if (user_access('allow CKFinder file uploads')) {
-                    $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images';
-                    $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+                    $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id='.$profile_name;
+                    $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id='.$profile_name;
                 }
                 break;
             case 'imce':
@@ -721,8 +730,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         switch ($filebrowser_flash) {
             case 'ckfinder':
                 if (user_access('allow CKFinder file uploads')) {
-                    $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images';
-                    $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+                    $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id='.$profile_name;
+                    $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id='.$profile_name;
                 }
                 break;
             case 'imce':

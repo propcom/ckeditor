@@ -72,10 +72,9 @@ function CheckAuthentication() {
             require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
             drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
             $authenticated = user_access('allow CKFinder file uploads');
-            
-            if (isset($_SESSION['ckeditor']['UserFilesPath'], $_SESSION['ckeditor']['UserFilesAbsolutePath'])) {
-                $GLOBALS['ckfinder_user_files_path'] = $_SESSION['ckeditor']['UserFilesPath'];
-                $GLOBALS['ckfinder_user_files_absolute_path'] = $_SESSION['ckeditor']['UserFilesAbsolutePath'];
+            if (isset($_GET['id'], $_SESSION['ckeditor'][$_GET['id']]['UserFilesPath'], $_SESSION['ckeditor'][$_GET['id']]['UserFilesAbsolutePath'])){
+                $_SESSION['ckeditor']['UserFilesPath'] = $_SESSION['ckeditor'][$_GET['id']]['UserFilesPath'];
+                $_SESSION['ckeditor']['UserFilesAbsolutePath'] = $_SESSION['ckeditor'][$_GET['id']]['UserFilesAbsolutePath'];
             }
             chdir($current_cwd); 
         }
@@ -86,9 +85,9 @@ function CheckAuthentication() {
 
 CheckAuthentication();
 
-if (!empty($ckfinder_user_files_path)) {
-    $baseUrl = $ckfinder_user_files_path;
-    $baseDir = $ckfinder_user_files_absolute_path;
+if (isset($_SESSION['ckeditor']['UserFilesPath'], $_SESSION['ckeditor']['UserFilesAbsolutePath'])) {
+    $baseUrl = $_SESSION['ckeditor']['UserFilesPath'];
+    $baseDir = $_SESSION['ckeditor']['UserFilesAbsolutePath'];
 } else {
     // Nothing in session? Shouldn't happen... anyway let's try to upload it in the (almost) right place
     // Path to user files relative to the document root.
