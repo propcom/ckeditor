@@ -869,6 +869,11 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         case 'self':
             if (file_exists($module_drupal_path . '/ckeditor.css')) {
                 $css_files[] = $module_full_path . '/ckeditor.css' . $query_string;
+                if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
+                    if (file_exists($module_drupal_path .'/ckeditor-rtl.css')) {
+                        $css_files[] = $module_full_path .'/ckeditor-rtl.css' . $query_string;
+                    }
+                }
             }
             foreach (explode(',', $conf['css_path']) as $css_path) {
                 $css_path = trim(str_replace("%h%t", "%t", $css_path));
@@ -879,6 +884,11 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         case 'none':
             if (file_exists($module_drupal_path . '/ckeditor.css')) {
                 $css_files[] = $module_full_path . '/ckeditor.css' . $query_string;
+                if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
+                    if (file_exists($module_drupal_path .'/ckeditor-rtl.css')) {
+                        $css_files[] = $module_full_path .'/ckeditor-rtl.css' . $query_string;
+                    }
+                }
             }
             $css_files[] = $editor_path . '/contents.css' . $query_string;
             break;
