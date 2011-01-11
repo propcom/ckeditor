@@ -661,12 +661,12 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     switch ($filebrowser) {
         case 'ckfinder':
             if (user_access('allow CKFinder file uploads')) {
-                $settings['filebrowserBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?id='.$profile_name;
-                $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id='.$profile_name;
-                $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Flash&id='.$profile_name;
-                $settings['filebrowserUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&id='.$profile_name;
-                $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id='.$profile_name;
-                $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash&id='.$profile_name;
+                $settings['filebrowserBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?id=' . $profile_name;
+                $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id=' . $profile_name;
+                $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Flash&id=' . $profile_name;
+                $settings['filebrowserUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&id=' . $profile_name;
+                $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
+                $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash&id=' . $profile_name;
             }
             break;
         case 'imce':
@@ -697,8 +697,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         switch ($filebrowser_image) {
             case 'ckfinder':
                 if (user_access('allow CKFinder file uploads')) {
-                    $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id='.$profile_name;
-                    $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id='.$profile_name;
+                    $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id=' . $profile_name;
+                    $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
                 }
                 break;
             case 'imce':
@@ -730,8 +730,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         switch ($filebrowser_flash) {
             case 'ckfinder':
                 if (user_access('allow CKFinder file uploads')) {
-                    $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id='.$profile_name;
-                    $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id='.$profile_name;
+                    $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id=' . $profile_name;
+                    $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
                 }
                 break;
             case 'imce':
@@ -870,8 +870,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             if (file_exists($module_drupal_path . '/ckeditor.css')) {
                 $css_files[] = $module_full_path . '/ckeditor.css' . $query_string;
                 if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
-                    if (file_exists($module_drupal_path .'/ckeditor-rtl.css')) {
-                        $css_files[] = $module_full_path .'/ckeditor-rtl.css' . $query_string;
+                    if (file_exists($module_drupal_path . '/ckeditor-rtl.css')) {
+                        $css_files[] = $module_full_path . '/ckeditor-rtl.css' . $query_string;
                     }
                 }
             }
@@ -885,8 +885,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             if (file_exists($module_drupal_path . '/ckeditor.css')) {
                 $css_files[] = $module_full_path . '/ckeditor.css' . $query_string;
                 if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
-                    if (file_exists($module_drupal_path .'/ckeditor-rtl.css')) {
-                        $css_files[] = $module_full_path .'/ckeditor-rtl.css' . $query_string;
+                    if (file_exists($module_drupal_path . '/ckeditor-rtl.css')) {
+                        $css_files[] = $module_full_path . '/ckeditor-rtl.css' . $query_string;
                     }
                 }
             }

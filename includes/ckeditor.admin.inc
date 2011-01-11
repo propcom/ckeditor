@@ -44,7 +44,7 @@ function ckeditor_admin_main() {
     if (!_ckeditor_requirements_isinstalled()) {
         drupal_set_message(t('Checking for %filename or %file.', array('%filename' => $ckconfig_file, '%file' => 'sites/all/libraries/ckeditor/ckeditor.js')));
         drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the !ckeditorlink to download the latest version. After that you must extract the files to %ckeditorpath or %librarypath and make sure that the file %ckeditorfile or %ckeditorlibrary exist. Refer to the !readme for more information.', array('!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'), '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE)), '%ckeditorpath' => $editor_path, '%ckeditorsubdir' => $editor_path . '/editor', '%ckeditorfile' => $editor_path . '/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
-        drupal_set_message(t('If you have CKEditor already installed please edit !editg and update CKEditor path.', array('!editg' => l(t('CKEditor Global Profile'), 'admin/config/content/ckeditor/editg'))), 'warning');
+        drupal_set_message(t('If you have CKEditor already installed please edit %editg and update CKEditor path.', array('%editg' => l(t('CKEditor Global Profile'), 'admin/config/content/ckeditor/editg'))), 'warning');
         return '';
     }
 

@@ -215,16 +215,19 @@ function ckeditor_requirements($phase) {
 
             $requirements['ckeditor']['description'] = t('CKEditor was not found at %sourcepath', array('%sourcepath' => $sourcepath));
             $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
-        } elseif (($installed_version = _ckeditor_requirements_getinstalledversion()) === NULL) {
+        }
+        elseif (($installed_version = _ckeditor_requirements_getinstalledversion()) === NULL) {
             $requirements['ckeditor']['description'] = t('CKEditor version could not be determined');
             $requirements['ckeditor']['severity'] = REQUIREMENT_INFO;
-        } else {
+        }
+        else {
             $profile_name = _ckeditor_requirements_ckfinder_filebrowser_enabled();
             if ($profile_name !== FALSE) {
                 if (!_ckeditor_requirements_cookiedomainset()) {
                     $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
                     $requirements['ckeditor']['description'] = t('You are using a feature that requires $cookie_domain to be set, but it is not set in your settings.php (CKFinder is enabled in the !profile profile).', array('!profile' => l($profile_name, 'admin/config/content/ckeditor/edit/' . urlencode($profile_name))));
-                } elseif ($error = _ckeditor_requirements_ckfinder_config_check($profile_name)) {
+                }
+                elseif ($error = _ckeditor_requirements_ckfinder_config_check($profile_name)) {
                     $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
                     $requirements['ckeditor']['description'] = $error;
                 }

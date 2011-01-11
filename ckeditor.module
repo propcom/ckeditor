@@ -266,7 +266,7 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
         $input_formats = filter_formats($user);
         $result = db_select('ckeditor_input_format', 'f')->fields('f')->execute();
         foreach ($result as $data) {
-            if (isset($input_formats[$data->format])){
+            if (isset($input_formats[$data->format])) {
                 $profiles[$data->name]->input_formats[$data->format] = $input_formats[$data->format]->name;
             }
         }
