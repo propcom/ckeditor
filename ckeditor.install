@@ -76,8 +76,7 @@ function ckeditor_install() {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
-    ['Link','Unlink','Anchor'],
-    ['DrupalBreak']
+    ['Link','Unlink','Anchor']
 ]
     ";
     $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
@@ -384,7 +383,7 @@ function _ckeditor_requirements_cookiedomainset() {
 }
 
 /**
- * Update broken settings for the 'Full' profile.
+ * Update broken settings for the 'Full' profile. (Reset toolbar to default)
  */
 function ckeditor_update_7000() {
     $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'Full'))->fetchField();
@@ -415,5 +414,37 @@ function ckeditor_update_7000() {
                         'settings' => $settings,
                     ))
                     ->condition('name', 'Full', '=')
+                    ->execute();
+}
+
+/**
+ * Remove 'DrupalBreak' button from the 'Advanced' profile. (Reset toolbar to default)
+ */
+function ckeditor_update_7001() {
+    $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'Advanced'))->fetchField();
+    $settings = unserialize($result);
+    $settings['toolbar'] = "
+[
+    ['Source'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+    ['Maximize', 'ShowBlocks'],
+    '/',
+    ['Format'],
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
+    ['Link','Unlink','Anchor']
+]
+    ";
+
+    $settings = serialize($settings);
+
+    $update = db_update('ckeditor_settings')
+                    ->fields(array(
+                        'settings' => $settings,
+                    ))
+                    ->condition('name', 'Advanced', '=')
                     ->execute();
 }
