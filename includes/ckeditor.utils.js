@@ -104,6 +104,7 @@ Drupal.ckeditorOn = function(textarea_id) {
     focus : function(ev)
     {
       Drupal.ckeditorInstance = ev.editor;
+      Drupal.ckeditorActiveId = ev.editor.name;
     }
   };
 
