@@ -16,7 +16,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       {
         label: 'IMCE',
         command: 'IMCEWindow',
-        icon: this.path + 'images/icon.gif'
+        icon: this.path + 'images/icon.png'
       });
     
       //opening imce window
