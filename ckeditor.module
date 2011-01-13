@@ -306,7 +306,7 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
                 $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => base_path() . $mod_path));
                 $tmp_path = str_replace('\\', '/', $tmp_path);
                 $tmp_path = str_replace('//', '/', $tmp_path);
-                $tmp_path = trim($tmp_path, ' \/'); //the path should not start or end with spaces, slashes or backslashes
+                //$tmp_path = trim($tmp_path, ' \/'); //the path should not start or end with spaces, slashes or backslashes
                 $cke_path = $tmp_path;
 
                 if (empty($gs['ckeditor_local_path'])) {
