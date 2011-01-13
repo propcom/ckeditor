@@ -280,7 +280,7 @@ It is up to you to decide which one to use. Just make sure that you will only al
 inline styles, tags, and attributes.
 See also http://drupal.ckeditor.com/filters for the latest version of this instruction.
 
-Upgrading Instructions (CKEditor)
+Updating Instructions (CKEditor)
 ---------------------------------
 This instruction assumes that you are upgrading the CKEditor module [M] and CKEditor (the editor) [E] at the same time. 
 Instructions specific for module upgrades are tagged with [M]. Steps that must be taken when upgrading CKEditor (the editor) are marked with [E].
