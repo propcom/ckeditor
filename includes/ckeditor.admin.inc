@@ -378,9 +378,9 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
         $form['security']['filters'][$id] = array(
             '#type' => 'checkbox',
-            '#title' => t("@data", array('@data' => $filter['title'])),
+            '#title' => t("!data", array('!data' => $filter['title'])),
             '#default_value' => !empty($profile->settings['filters'][$id]),
-            '#description' => t("@data", array('@data' => $filter['description'])),
+            '#description' => t("!data", array('!data' => $filter['description'])),
         );
     }
 
