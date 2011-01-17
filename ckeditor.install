@@ -57,6 +57,7 @@ function ckeditor_install() {
 
   switch ($f_sv) {
     case 6201:
+    case 6202:
       db_query("INSERT INTO {ckeditor_role}(name, rid) SELECT name, rid FROM {fckeditor_role}");
       $rs=db_query("SELECT * FROM {fckeditor_settings}");
       while ($row=db_fetch_array($rs)) {
