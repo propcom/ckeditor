@@ -193,7 +193,11 @@ Drupal.ckeditorCompareVersion = function (version){
     if (ckver[x]<version[x]) {
       return false;
     }
+    else if (ckver[x]>version[x]) {
+      return true;
+    }
   }
+
   return true;
 };
 
