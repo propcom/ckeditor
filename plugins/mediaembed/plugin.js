@@ -72,7 +72,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       {
         label: Drupal.t('Embed Media'),
         command: 'MediaEmbed',
-        icon: this.path + 'images/icon.gif'
+        icon: this.path + 'images/icon.png'
       } );
     },
     afterInit : function( editor )

@@ -39,7 +39,7 @@ CKEDITOR.plugins.add( 'drupalbreaks',
 			editor.ui.addButton( 'DrupalBreak',
 				{
 					label : Drupal.t('Insert Teaser Break'),
-					icon : this.path + 'images/drupalbreak.gif',
+					icon : this.path + 'images/drupalbreak.png',
 					command : 'drupalbreak'
 				});
 
@@ -47,7 +47,7 @@ CKEDITOR.plugins.add( 'drupalbreaks',
 				editor.ui.addButton( 'DrupalPageBreak',
 						{
 							label : Drupal.t( 'Insert Page Break' ),
-							icon : this.path + 'images/drupalpagebreak.gif',
+							icon : this.path + 'images/drupalpagebreak.png',
 							command : 'drupalpagebreak'
 						});
 			}
