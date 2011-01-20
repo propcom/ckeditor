@@ -421,7 +421,7 @@ function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ) {
     }
 
     if ( $compiled === TRUE ) {
-        return ( $input_format === FALSE ) ? $_ckeditor_compiled : $_ckeditor_compiled[$input_format];
+        return ( $input_format === FALSE ) ? $_ckeditor_compiled : ( isset( $_ckeditor_compiled[$input_format] ) ? $_ckeditor_compiled[$input_format] : array() );
     }
 
     $global_profile = ckeditor_profile_load('CKEditor Global Profile');
@@ -972,9 +972,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         $enabled = FALSE;
     }
 
-    $settings = ckeditor_profiles_compile($format);
-
-    if ($enabled && $settings) {
+    if ($enabled && $settings = ckeditor_profiles_compile($format)) {
         $textarea_id = $field['#id'];
         $class[] = 'ckeditor-mod';
         $_ckeditor_ids[] = $textarea_id;
