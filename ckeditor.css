@@ -43,3 +43,7 @@ table.cke_editor fieldset {
 .cke_editor,#ie#bug {
   display: inline-table !important;
 }
+/* remove top border from tbody - overwrite system.css - [#751672] */
+tbody {
+    border: 0;
+}
