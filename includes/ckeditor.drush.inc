@@ -13,7 +13,7 @@
 function ckeditor_drush_command() {
     $items['ckeditor-download'] = array(
         'callback' => 'ckeditor_drush_download',
-        'description' => dt('Downloads the required CKEditor library from svn.fckeditor.net.'),
+        'description' => dt('Downloads the required CKEditor library from svn.ckeditor.com.'),
         'arguments' => array(
             'path' => dt('Optional. A path to the download folder. If omitted Drush will use the default location (sites/all/libraries/ckeditor).'),
         ),
@@ -33,7 +33,7 @@ function ckeditor_drush_download() {
         $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries/ckeditor';
     }
 
-    if (drush_shell_exec('svn checkout http://http://svn.ckeditor.com/CKEditor/releases/stable/ ' . $path)) {
+    if (drush_shell_exec('svn checkout http://svn.ckeditor.com/CKEditor/releases/stable/ ' . $path)) {
         drush_log(dt('CKEditor has been downloaded to @path.', array('@path' => $path)), 'success');
     }
     else {
