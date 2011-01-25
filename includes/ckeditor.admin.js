@@ -1,19 +1,19 @@
-CKEDITOR.on( 'dialogDefinition', function( ev )
-{
-  var dialogName = ev.data.name;
-  var dialogDefinition = ev.data.definition;
-
-  if ( dialogName == 'uicolor' )
-  {
-    // Get a reference to the configBox and hide it (cannot be removed).
-    var configBox = dialogDefinition.getContents( 'tab1' ).get( 'configBox' );
-    configBox.style = 'display:none';
-  }
-});
-
 $(document).ready(function() {
   if (typeof(CKEDITOR) == "undefined")
     return;
+
+  CKEDITOR.on( 'dialogDefinition', function( ev )
+  {
+    var dialogName = ev.data.name;
+    var dialogDefinition = ev.data.definition;
+
+    if ( dialogName == 'uicolor' )
+    {
+      // Get a reference to the configBox and hide it (cannot be removed).
+      var configBox = dialogDefinition.getContents( 'tab1' ).get( 'configBox' );
+      configBox.style = 'display:none';
+    }
+  });
 
   $('#edit-uicolor-textarea').show();
 
