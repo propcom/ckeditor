@@ -764,7 +764,7 @@ function ckeditor_process_textarea($element) {
         break;
       case 'webfm':
         if (user_access('access webfm')) {
-          $settings[$textarea_id]['filebrowserBrowseUrl'] = $host ."index.php?q=webfm_popup";
+          $settings[$textarea_id]['filebrowserBrowseUrl'] = $host ."index.php?q=webfm_popup&caller=ckeditor";
         }
         break;
       case 'ib':
@@ -794,7 +794,7 @@ function ckeditor_process_textarea($element) {
           break;
         case 'webfm':
           if (user_access('access webfm')) {
-            $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $host ."index.php?q=webfm_popup";
+            $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $host ."index.php?q=webfm_popup&caller=ckeditor";
           }
           break;
         case 'ib':
@@ -825,7 +825,7 @@ function ckeditor_process_textarea($element) {
           break;
         case 'webfm':
           if (user_access('access webfm')) {
-            $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $host ."index.php?q=webfm_popup";
+            $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $host ."index.php?q=webfm_popup&caller=ckeditor";
           }
           break;
         case 'ib':
