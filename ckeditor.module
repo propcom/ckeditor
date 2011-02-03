@@ -210,12 +210,7 @@ function ckeditor_pre_render_text_format($element) {
     if (!isset($element['#format'])) {
         return $element;
     }
-
-    //[#1037390] Cannot use CKEditor module to create header/footer in Views - Disable ckeditor in Views module
-    if (arg(2) == "views"){
-        return $element;
-    }
-
+    
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     if ( $init === FALSE ) {
         $input_formats = ckeditor_profiles_compile();
