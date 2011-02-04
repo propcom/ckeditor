@@ -120,7 +120,6 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         CKEDITOR.instances[textarea_id].destroy();
 
         $("#" + textarea_id).next(".grippie").css("display", "block");
-        $("#" + textarea_id).removeClass("ckeditor-processed");
     };
 
     /**
