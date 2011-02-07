@@ -116,8 +116,7 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         if (Drupal.ckeditorInstance && Drupal.ckeditorInstance.name == textarea_id)
             delete Drupal.ckeditorInstance;
 
-        var data = CKEDITOR.instances[textarea_id].getData();
-        CKEDITOR.instances[textarea_id].destroy();
+        CKEDITOR.instances[textarea_id].destroy(true);
 
         $("#" + textarea_id).next(".grippie").css("display", "block");
     };
@@ -208,6 +207,9 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
 
             $("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
                 var ta_id=$(this).attr("id");
+                if (typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
+                    Drupal.ckeditorOff(ta_id);
+                }
                 if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
                     Drupal.ckeditorOn(ta_id);
                 }
@@ -219,6 +221,15 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
                         Drupal.ckeditorOn(ta_id, false);
                     }
                 });
+            });
+        },
+        detach:
+        function(){
+            $("textarea.ckeditor-processed").each(function () {
+                var ta_id=$(this).attr("id");
+                if (typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
+                    Drupal.ckeditorOff(ta_id);
+                }
             });
         }
     };
