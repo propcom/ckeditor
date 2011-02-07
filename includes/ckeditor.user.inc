@@ -59,7 +59,7 @@ function ckeditor_user_customize(&$form, &$form_state, $form_id) {
                 't' => t('Enabled'),
                 'f' => t('Disabled')
             ),
-            '#description' => t('Should rich-text editing be enabled or disabled by default in textarea fields? If disabled, rich text editor may still be enabled using toggle or popup window.'),
+            '#description' => t('Should rich-text editing be enabled or disabled by default in textarea fields? If disabled, rich text editor may still be enabled using toggle.'),
         );
 
         $form['ckeditor']['ckeditor_show_toggle'] = array(
@@ -70,7 +70,7 @@ function ckeditor_user_customize(&$form, &$form_state, $form_id) {
                 't' => t('Yes'),
                 'f' => t('No')
             ),
-            '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running a popup window (see below).'),
+            '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea.'),
         );
 /*
         $form['ckeditor']['ckeditor_popup'] = array(
