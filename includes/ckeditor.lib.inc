@@ -572,6 +572,11 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     if ($filebrowser == 'imce' && !module_exists('imce')) {
         $filebrowser = 'none';
     }
+
+    if ($filebrowser == 'elfinder' && !module_exists('elfinder')) {
+        $filebrowser = 'none';
+    }
+
     /* MODULES NOT PORTED TO D7
     if ($filebrowser == 'tinybrowser' && !module_exists('tinybrowser')) {
         $filebrowser = 'none';
@@ -586,6 +591,10 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     */
     if ($filebrowser_image != $filebrowser) {
         if ($filebrowser_image == 'imce' && !module_exists('imce')) {
+            $filebrowser_image = $filebrowser;
+        }
+
+        if ($filebrowser_image == 'elfinder' && !module_exists('elfinder')) {
             $filebrowser_image = $filebrowser;
         }
         /* MODULES NOT PORTED TO D7
@@ -603,6 +612,10 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if ($filebrowser_flash != $filebrowser) {
         if ($filebrowser_flash == 'imce' && !module_exists('imce')) {
+            $filebrowser_flash = $filebrowser;
+        }
+
+        if ($filebrowser_image == 'elfinder' && !module_exists('elfinder')) {
             $filebrowser_flash = $filebrowser;
         }
         /* MODULES NOT PORTED TO D7
@@ -672,6 +685,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         case 'imce':
             $settings['filebrowserBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
             break;
+        case 'elfinder':
+            $settings['filebrowserBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
+            break;
         /* MODULES NOT PORTED TO D7
         case 'webfm':
             if (user_access('access webfm')) {
@@ -704,6 +720,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             case 'imce':
                 $settings['filebrowserImageBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
                 break;
+            case 'elfinder':
+		$settings['filebrowserImageBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
+		break;
             /* MODULES NOT PORTED TO D7
             case 'webfm':
                 if (user_access('access webfm')) {
@@ -737,6 +756,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             case 'imce':
                 $settings['filebrowserFlashBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
                 break;
+            case 'elfinder':
+		$settings['filebrowserFlashBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
+		break;
             /* MODULES NOT PORTED TO D7
             case 'webfm':
                 if (user_access('access webfm')) {

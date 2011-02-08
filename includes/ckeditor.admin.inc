@@ -721,7 +721,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
         //'#description' => t('Set file browser settings. A file browser will allow you to explore the files contained on the server and embed them as links, images or flash movies. CKEditor is compatible with contributed modules like <a href="!imce">IMCE</a>, <a href="!ib">Image Browser</a> or <a href="!webfm">Web File Manager</a>. CKEditor can be also integrated with <a href="!ckfinder">CKFinder</a>.', array('!imce' => url('http://drupal.org/project/imce'), '!ib' => url('http://drupal.org/project/imagebrowser'), '!webfm' => url('http://drupal.org/project/webfm'), '!readme' => url('admin/help/ckeditor'), '!ckfinder' => url('http://ckfinder.com')))
-        '#description' => t('Set file browser settings. A file browser will allow you to explore the files contained on the server and embed them as links, images or flash movies. CKEditor is compatible with contributed modules like <a href="!imce">IMCE</a>. CKEditor can be also integrated with <a href="!ckfinder">CKFinder</a>.', array('!imce' => url('http://drupal.org/project/imce'), '!readme' => url('admin/help/ckeditor'), '!ckfinder' => url('http://ckfinder.com')))
+        '#description' => t('Set file browser settings. A file browser will allow you to explore the files contained on the server and embed them as links, images or flash movies. CKEditor is compatible with contributed modules like <a href="!imce">IMCE</a>, <a href="!elfinder">elFinder</a>. CKEditor can be also integrated with <a href="!ckfinder">CKFinder</a>.', array('!imce' => url('http://drupal.org/project/imce'), '!elfinder' => url('http://drupal.org/project/elfinder'), '!readme' => url('admin/help/ckeditor'), '!ckfinder' => url('http://ckfinder.com')))
     );
 
     $filebrowsers = array(
@@ -738,6 +738,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         $filebrowsers['imce'] = t('IMCE');
         $filebrowsers_dialogs['imce'] = t('IMCE');
     }
+
+   if (module_exists('elfinder')) {
+	$filebrowsers['elfinder'] = t('elFinder');
+	$filebrowsers_dialogs['elfinder'] = t('elFinder');
+    }
+
     /* MODULES NOT PORTED TO D7
     if (module_exists('tinybrowser')) {
         $filebrowsers['tinybrowser'] = t('TinyBrowser');
