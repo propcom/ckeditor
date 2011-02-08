@@ -225,12 +225,10 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         },
         detach:
         function(){
-            $("textarea.ckeditor-processed").each(function () {
+            $("textarea.ckeditor-mod.ckeditor-processed").each(function () {
                 var ta_id=$(this).attr("id");
-                if (typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
-                    Drupal.ckeditorOff(ta_id);
-                }
-            });
+                Drupal.ckeditorOff(ta_id);
+            }).removeClass('ckeditor-processed');
         }
     };
 })(jQuery);
