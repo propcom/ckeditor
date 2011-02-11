@@ -1067,7 +1067,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             else {
                 drupal_add_js($editor_path . '/ckeditor_basic.js', 'file');
             }*/
-            drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path . '/')), 'setting');
+            drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => base_path() . $editor_path . '/')), 'setting');
             /*if ($settings['popup'] == 't') {
                 drupal_add_js(array('ckeditor' => array('editor_path' => $editor_path)), 'setting');
             }*/

@@ -155,13 +155,12 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         '#maxlength' => 128,
         '#description' => t('Path to CKEditor (the HTML editor, downloaded from <a href="!ckeditorcom">ckeditor.com</a>) relative to the document root.') .
         '<br />' .
-        t('Available placeholders:!b - base URL path of the Drupal installation (!base).!m - base URL path where CKEditor module is stored (!files).<br />Current path: !path',
+        t('Available placeholders:!m - path where CKEditor module is stored (!files).!l - path to libraries dir (sites/all/libraries)<br />Current path: !path',
                 array(
-                    '!b' => '<br /><strong>%b</strong>',
                     '!m' => '<br /><strong>%m</strong>',
+                    '!l' => '<br /><strong>%l</strong>',
                     '!path' => ckeditor_path(FALSE),
-                    '!base' => base_path(),
-                    '!files' => base_path() . $module_drupal_path,
+                    '!files' => $module_drupal_path,
                     '!ckeditorcom' => 'http://ckeditor.com/download'
                 )
         ),

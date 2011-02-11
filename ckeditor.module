@@ -292,7 +292,7 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
 
         //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
         //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
-        $cke_path = base_path() . $mod_path . '/ckeditor';
+        $cke_path = $mod_path . '/ckeditor';
 
         //default: path to ckeditor subdirectory in the ckeditor module directory (relative to index.php)
         //e.g.: sites/all/modules/ckeditor/ckeditor
@@ -303,7 +303,7 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
 
             if (isset($gs['ckeditor_path'])) {
                 $tmp_path = $gs['ckeditor_path'];
-                $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => base_path() . $mod_path));
+                $tmp_path = strtr($tmp_path, array("%m" => $mod_path, "%l" => 'sites/all/libraries'));
                 $tmp_path = str_replace('\\', '/', $tmp_path);
                 $tmp_path = str_replace('//', '/', $tmp_path);
                 $cke_path = $tmp_path;
@@ -313,12 +313,12 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
                     if (FALSE !== strpos($gs['ckeditor_path'], "%m")) {
                         $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%m" => $mod_path));
                     }
-                    if (FALSE !== strpos($gs['ckeditor_path'], "%b")) {
-                        $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%b" => "."));
+                    if (FALSE !== strpos($gs['ckeditor_path'], "%l")) {
+                        $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%l" => 'sites/all/libraries'));
                     }
                 }
             }
-
+            
             //ckeditor_path is defined, but wildcards are not used, we need to try to find out where is
             //the document root located and append ckeditor_path to it.
             if (!empty($gs['ckeditor_local_path'])) {
