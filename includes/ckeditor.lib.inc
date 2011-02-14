@@ -1051,7 +1051,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         $files_path = $host . variable_get('file_private_path', conf_path() . '/files');
         
         if (!$is_running) {
-            drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array( 'type' => 'file', 'scope' => variable_get('preprocess_js', FALSE) ? 'header' : 'footer') );
+            drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer') );
             //if ($settings['popup'] != 't') {
                 if (isset($profile->settings['ckeditor_load_method'])) {
                     drupal_add_js($editor_path . '/' . $profile->settings['ckeditor_load_method'], array('type' => 'file', 'scope' => 'footer', 'preprocess' => FALSE));
