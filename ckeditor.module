@@ -685,6 +685,10 @@ function ckeditor_process_textarea($element) {
       $filebrowser = 'none';
     }
 
+    if ($filebrowser == 'elfinder' && !module_exists('elfinder')) {
+      $filebrowser = 'none';
+    }
+
     if ($filebrowser_image != $filebrowser) {
       if ($filebrowser_image == 'imce' && !module_exists('imce')) {
         $filebrowser_image = $filebrowser;
@@ -696,6 +700,9 @@ function ckeditor_process_textarea($element) {
         $filebrowser_image = $filebrowser;
       }
       if ($filebrowser_image == 'webfm' && !module_exists('webfm_popup')) {
+        $filebrowser_image = $filebrowser;
+      }
+      if ($filebrowser_image == 'elfinder' && !module_exists('elfinder')) {
         $filebrowser_image = $filebrowser;
       }
     }
@@ -711,6 +718,9 @@ function ckeditor_process_textarea($element) {
         $filebrowser_flash = $filebrowser;
       }
       if ($filebrowser_flash == 'webfm' && !module_exists('webfm_popup')) {
+        $filebrowser_flash = $filebrowser;
+      }
+      if ($filebrowser_flash == 'elfinder' && !module_exists('elfinder')) {
         $filebrowser_flash = $filebrowser;
       }
     }
@@ -779,6 +789,9 @@ function ckeditor_process_textarea($element) {
         $settings[$textarea_id]['filebrowserWindowWidth'] = (int)$win_size[0] + 15;
         $settings[$textarea_id]['filebrowserWindowHeight'] = (int)$win_size[1] + 15;
         break;
+      case 'elfinder':
+        $settings[$textarea_id]['filebrowserBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
+        break;
     }
 
     if ($filebrowser_image != $filebrowser) {
@@ -808,6 +821,9 @@ function ckeditor_process_textarea($element) {
           $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $host . drupal_get_path('module','tinybrowser') . "/tinybrowser/tinybrowser.php?type=image";
           $settings[$textarea_id]['filebrowserImageWindowWidth'] = (int)$win_size[0] + 15;
           $settings[$textarea_id]['filebrowserImageWindowHeight'] = (int)$win_size[1] + 15;
+          break;
+        case 'elfinder':
+          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
           break;
       }
     }
@@ -839,6 +855,9 @@ function ckeditor_process_textarea($element) {
           $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $host . drupal_get_path('module','tinybrowser') . "/tinybrowser/tinybrowser.php?type=media";
           $settings[$textarea_id]['filebrowserFlashWindowWidth'] = (int)$win_size[0] + 15;
           $settings[$textarea_id]['filebrowserFlashWindowHeight'] = (int)$win_size[1] + 15;
+          break;
+        case 'elfinder':
+          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
           break;
       }
     }
