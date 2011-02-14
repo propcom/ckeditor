@@ -180,9 +180,8 @@ function ckeditor_init() {
  * Implementation of hook_form_alter()
  */
 function ckeditor_form_alter(&$form, $form_state, $form_id) {
+    module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
     if ( $form_id == 'user_profile_form') {
-        module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
-
         ckeditor_user_customize($form, $form_state, $form_id);
     }
 }
