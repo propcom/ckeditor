@@ -1,5 +1,29 @@
 $Id$
 
+-- 2011-02-14
+- [#969486] by dczepierga: Add elFinder file manager support
+
+-- 2011-02-04
+- [#1011178] by dczepierga: Support the 'drush make' command
+
+-- 2011-01-25
+- [#1019950] by dczepierga: CKEditor Will Not Load - remove CKEditor is not defined
+- [#1022208] by dczepierga: 'Send to rich text editor' fails with latest WebFM
+
+-- 2011-01-24
+- [#751672] by dczepierga: table top border creates unwanted borderline
+
+-- 2011-01-20
+- [#1015822] by dczepierga: IMCE button in not visible in toolbar (but is here) with CK 3.5
+
+-- 2011-01-17
+- [#940376] by dczepierga: Migration from fck schema_version 6202
+- [#964556] by jcisio: Drupal.ckeditorCompareVersion does not check properly version number
+
+-- 2011-01-13
+- [#921826] by dczepierga: CKEditor indenting and aligning problems
+- [#865710] by dczepierga: Provide a "ckActiveId" variable for tracking the active editor
+
 -- 2010-10-11
 - [#935566] by altavis: Media Embed translation
 
