@@ -1,5 +1,8 @@
 $Id$
 
+-- 2011-02-17
+- [#1064422] by dczepierga: Remove all changes from text on input format change
+
 -- 2011-02-14
 - [#1037390] by dczepierga: Duplicate text editor area
 - [#1037390] by dczepierga: Cannot use CKEditor module to create header/footer in Views
