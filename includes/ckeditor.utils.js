@@ -1,6 +1,9 @@
 // $Id$
 Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
 
+// State of textareas
+Drupal.ckeditorInitialized = {};
+
 // this object will store teaser information
 Drupal.ckeditorTeaser = {
   lookup: {},
@@ -17,6 +20,10 @@ Drupal.ckeditorToggle = function(textarea_id, TextTextarea, TextRTE, xss_check){
     $('#switch_' + textarea_id).text(TextRTE);
   }
   else {
+    if (typeof(Drupal.ckeditorInitialized[textarea_id]) == 'undefined') {
+      Drupal.ckeditorInitialized[textarea_id] = true;
+      $("#" + textarea_id).val(Drupal.ckeditorLinebreakConvert($("#" + textarea_id).val()));
+    }
     Drupal.ckeditorOn(textarea_id);
     $('#switch_' + textarea_id).text(TextTextarea);
   }
@@ -267,6 +274,17 @@ Drupal.ckeditorInsertHtml = function(html) {
 };
 
 /**
+ * Converts \n to <br />
+ * It in no way tries to compete with Line break converter filter
+ */
+Drupal.ckeditorLinebreakConvert = function(text) {
+  if (!text.match(/<(p|br)\s*\/?>/) && text) {
+    text = '<p>' + text.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br />') + '</p>';
+  }
+  return text;
+}
+
+/**
  * Ajax support [#741572]
  */
 if (typeof(Drupal.Ajax) != 'undefined' && typeof(Drupal.Ajax.plugins) != 'undefined') {
@@ -343,6 +361,13 @@ Drupal.behaviors.ckeditor = function (context) {
     var ta_id=$(this).attr("id");
     if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
       Drupal.ckeditorOn(ta_id);
+    }
+    else {
+      $(this).parents('form').bind('submit', function() {
+        $(this).find('textarea').each(function() {
+          $(this).val(Drupal.ckeditorLinebreakConvert($(this).val()));
+        });
+      });
     }
   });
 };
