@@ -216,6 +216,7 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
                 var sel_format = ta_id.substr(0, ta_id.lastIndexOf("-")) + "-format--2";
                 $('#'+sel_format).change(function(){
                     Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
+                    $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
                     Drupal.ckeditorOff(ta_id);
                     if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
                         Drupal.ckeditorOn(ta_id, false);
