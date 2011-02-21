@@ -127,6 +127,10 @@ CKEDITOR.editorConfig = function(config) {
     config.extraPlugins += (config.extraPlugins) ? ',swf' : 'swf';
     CKEDITOR.plugins.addExternal('swf', Drupal.settings.ckeditor_swf.module_path + '/plugins/swf/');
   }
+  if (Drupal.settings.ckeditor_link) {
+    config.extraPlugins += (config.extraPlugins) ? ',drupal_path' : 'drupal_path';
+    CKEDITOR.plugins.addExternal('drupal_path', Drupal.settings.ckeditor_link.module_path + '/plugins/link/');
+  }
   // 'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
   //config.extraPlugins += (config.extraPlugins ? ',mediaembed' : 'mediaembed' );
   //CKEDITOR.plugins.addExternal('mediaembed', Drupal.settings.ckeditor.module_path + '/plugins/mediaembed/');
