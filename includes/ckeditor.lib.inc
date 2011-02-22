@@ -885,7 +885,12 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                     $css_files[] = $host . $themepath . 'style.css' . $query_string;
                 }
             }
-            $css_files[] = $module_full_path . "/ckeditor.css" . $query_string;
+            if (file_exists($module_drupal_path .'/ckeditor.css')) {
+                $css_files[] = $module_full_path .'/ckeditor.css' . $query_string;
+            }
+            if (file_exists($themepath . 'ckeditor.css')) {
+                $css_files[] = $host . $themepath .'ckeditor.css' . $query_string;
+            }
             break;
 
         case 'self':
