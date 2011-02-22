@@ -372,7 +372,7 @@ function _ckeditor_script_path() {
         $jspath = '%m/ckeditor/ckeditor';
     }
     elseif (file_exists('sites/all/libraries/ckeditor/ckeditor.js')) {
-        $jspath = '%b/sites/all/libraries/ckeditor';
+        $jspath = '%l/ckeditor';
     }
     return $jspath;
 }
