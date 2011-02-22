@@ -448,3 +448,28 @@ function ckeditor_update_7001() {
                     ->condition('name', 'Advanced', '=')
                     ->execute();
 }
+
+/**
+ * Rewrite 'Path to CKEditor' to new flags
+ */
+function ckeditor_update_7002() {
+    $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'CKEditor Global Profile'))->fetchField();
+    $settings = unserialize($result);
+    if ($settings['ckeditor_path'] == '%b/sites/all/libraries/ckeditor'){
+        $settings['ckeditor_path'] = '%l/ckeditor';
+    }
+    else {
+        $settings['ckeditor_path'] = str_replace('%b/', '', $settings['ckeditor_path']);
+        $settings['ckeditor_path'] = str_replace('%b', '', $settings['ckeditor_path']);
+    }
+
+    $settings = serialize($settings);
+
+    $update = db_update('ckeditor_settings')
+                    ->fields(array(
+                        'settings' => $settings,
+                    ))
+                    ->condition('name', 'CKEditor Global Profile', '=')
+                    ->execute();
+
+}
