@@ -1,5 +1,12 @@
 $Id$
 
+-- 2011-02-22
+- [#960576] by dczepierga: Custom editor css styles - automatically pull from theme's ckeditor.css file
+- [#1069012] by dczepierga: CKEditor version could not be determined
+
+-- 2011-02-21
+- [#1068186] by dczepierga: Add CKEditor SWF and CKEditor Link support
+
 -- 2011-02-17
 - [#1064422] by dczepierga: Remove all changes from text on input format change
 
