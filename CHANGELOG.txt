@@ -1,5 +1,12 @@
 $Id$
 
+-- 2011-02-22
+- [#960576] by rjacobs: Custom editor css styles - automatically pull from theme's ckeditor.css file
+
+-- 2011-02-21
+- [#1068026] by dczepierga: CKEditor Link support
+- [#695264] by dczepierga: New module enhancing CKEditor's Flash plugin
+
 -- 2011-02-17
 - [#1037882] by dczepierga: Check views administration section with CKEditor module enabled
 - [#1050118] by jcisio: Consistent markup with CKEditor on/off (or "convert new lines to <br /> or <p>")
