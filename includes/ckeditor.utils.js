@@ -1,4 +1,3 @@
-// $Id$
 Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
 
 // this object will store teaser information

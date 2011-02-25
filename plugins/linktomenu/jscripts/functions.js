@@ -1,4 +1,3 @@
-// $Id$
 
 function selectRow(row) {
 	if (!row) {

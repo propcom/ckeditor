@@ -1,4 +1,3 @@
-$Id$
 
 -- 2009-12-05 version 6.x-1.x-dev
 - First public (beta) release
