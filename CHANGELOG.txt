@@ -1,4 +1,3 @@
-$Id$
 
 -- 2011-02-22
 - [#960576] by dczepierga: Custom editor css styles - automatically pull from theme's ckeditor.css file

@@ -1,4 +1,3 @@
-// $Id$
 
 /*
  WARNING: clear browser's cache after you modify this file.

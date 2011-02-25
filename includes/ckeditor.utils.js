@@ -1,4 +1,3 @@
-// $Id$
 var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
 (function ($) {
     Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');

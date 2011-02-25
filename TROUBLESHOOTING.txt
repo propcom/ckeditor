@@ -1,4 +1,3 @@
-$Id$
 
 Note: the HTML version of this file (always up-to-date) is available online: http://drupal.ckeditor.com/troubleshooting
 
