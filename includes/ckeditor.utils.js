@@ -1,4 +1,3 @@
-// $Id$
 Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
 
 // State of textareas
