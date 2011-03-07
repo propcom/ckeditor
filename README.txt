@@ -33,7 +33,7 @@ http://ckeditor.com/
 
 More information and licence
 ----------------------------
-CKEditor - The text editor for internet
+CKEditor - The text editor for the Internet
 Copyright (C) 2003-2010 CKSource - Frederico Knabben
 
 Licensed under the terms of the GNU Lesser General Public License:
@@ -376,6 +376,6 @@ Credits
  - CKEditor for Drupal is currently maintained by CKEditor team and Jorrit Schippers.
      http://ckeditor.com/
 
- - CKEditor - The text editor for internet
+ - CKEditor - The text editor for the Internet
      Copyright (C) 2003-2009 CKSource - Frederico Knabben
      http://cksource.com/
