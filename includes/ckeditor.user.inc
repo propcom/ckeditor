@@ -1,8 +1,8 @@
 <?php
 
 /**
- * CKEditor - The text editor for Internet - http://ckeditor.com
- * Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+ * CKEditor - The text editor for the Internet - http://ckeditor.com
+ * Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
  *
  * == BEGIN LICENSE ==
  *
@@ -29,6 +29,7 @@
  * of known desktop editors like Word. It's really  lightweight and doesn't
  * require any kind of installation on the client computer.
  */
+
 function ckeditor_user_customize(&$form, &$form_state, $form_id) {
 
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
