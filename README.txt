@@ -34,7 +34,7 @@ http://ckeditor.com/
 More information and licence
 ----------------------------
 CKEditor - The text editor for the Internet
-Copyright (C) 2003-2010 CKSource - Frederico Knabben
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 
 Licensed under the terms of the GNU Lesser General Public License:
     http://www.opensource.org/licenses/lgpl-license.php
@@ -377,5 +377,5 @@ Credits
      http://ckeditor.com/
 
  - CKEditor - The text editor for the Internet
-     Copyright (C) 2003-2009 CKSource - Frederico Knabben
+     Copyright (C) 2003-2011 CKSource - Frederico Knabben
      http://cksource.com/
