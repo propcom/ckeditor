@@ -197,4 +197,4 @@ config.entities = false;
 
 It is also possible to disable processing HTML entities for selected CKEditor profile, by adding this line in "Advanced Options" -> "Custom javascript configuration":
 
-entities = false ;
+entities = false;
