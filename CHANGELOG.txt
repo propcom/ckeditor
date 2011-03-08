@@ -1,13 +1,17 @@
+-----------------------------
+ 2011-03-08
+ Released CKEditor 7.x-1.1
+-----------------------------
 
 -- 2011-02-22
-- [#960576] by dczepierga: Custom editor css styles - automatically pull from theme's ckeditor.css file
+- [#960576] by dczepierga:  Add loading ckeditor.css from theme.
 - [#1069012] by dczepierga: CKEditor version could not be determined
 
 -- 2011-02-21
-- [#1068186] by dczepierga: Add CKEditor SWF and CKEditor Link support
+- [#1068186] by dczepierga: Add <a href="http://drupal.org/project/ckeditor_swf">CKEditor SWF</a> and <a href="http://drupal.org/project/ckeditor_link">CKEditor Link</a> support
 
 -- 2011-02-17
-- [#1064422] by dczepierga: Remove all changes from text on input format change
+- [#1064422] by dczepierga:  All changes to the text are lost when input format is changed
 
 -- 2011-02-14
 - [#1053222] by dczepierga: Duplicate text editor area
@@ -15,18 +19,18 @@
 - [#1052604] by dczepierga: Call to undefined function ckeditor_user_customize_form_validate
 
 -- 2011-02-11
-- [#1056068] by dczepierga: Warning: file_get_contents(/drupal7/sites/all/libraries/ckeditor/ckeditor.js)
+- [#1056068] by dczepierga: Fix Warning: file_get_contents(/drupal7/sites/all/libraries/ckeditor/ckeditor.js)
 
 -- 2011-02-08
-- [#1054414] by dczepierga: Added elFinder file manager support - (D7 version)
-- [#1054606] by dczepierga: no detach in Drupal.behaviors.ckeditor
+- [#1054414] by dczepierga: Added <a href="http://drupal.org/project/elfinder">elFinder</a> file manager support - (D7 version)
+- [#1054606] by dczepierga: No detach method in Drupal.behaviors.ckeditor
 
 -- 2011-02-07
 - [#1037390] by dczepierga: Cannot use CKEditor module to create header/footer in Views
-- [#1053358] by dczepierga: Disable popup support in user customize panel of CKEditor
+- [#1053358] by dczepierga: Removed option to "Use CKEditor in a popup window" in "My account" settings
 
 -- 2011-02-04
-- [#1050034] by dczepierga: disabled editor gets enabled again after ajax calls
+- [#1050034] by dczepierga: Disabled editor gets enabled again after ajax calls
 
 -- 2011-02-03
 - [#1037390] by dczepierga: Cannot use CKEditor module to create header/footer in Views
@@ -35,10 +39,10 @@
 - [#1037390] by dczepierga: Cannot use CKEditor module to create header/footer in Views
 
 -- 2011-01-24
-- [#1035544] by dczepierga: drush ckeditor-download error
+- [#1035544] by dczepierga: Remove double http:// in ckeditor.drush.inc
 
 -- 2011-01-20
-- [#1006770] by OnkelTem: Notice: Undefined index: filtered_html in ckeditor_profile_load()
+- [#1006770] by OnkelTem: Fix Notice: Undefined index: filtered_html in ckeditor_profile_load()
 
 -----------------------------
  2011-01-13
