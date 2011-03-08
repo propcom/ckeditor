@@ -8,13 +8,13 @@
 - [#1069012] by dczepierga: CKEditor version could not be determined
 
 -- 2011-02-21
-- [#1068186] by dczepierga: Add <a href="http://drupal.org/project/ckeditor_swf">CKEditor SWF</a> and <a href="http://drupal.org/project/ckeditor_link">CKEditor Link</a> support
+- [#1068186] by dczepierga: Added support for CKEditor SWF (http://drupal.org/project/ckeditor_swf) and CKEditor Link (http://drupal.org/project/ckeditor_link) 
 
 -- 2011-02-17
 - [#1064422] by dczepierga:  All changes to the text are lost when input format is changed
 
 -- 2011-02-14
-- [#1053222] by dczepierga: Duplicate text editor area
+- [#1053222] by dczepierga: Two editors appeared when JavaScript Aggregation was enabled
 - [#1037390] by dczepierga: Cannot use CKEditor module to create header/footer in Views
 - [#1052604] by dczepierga: Call to undefined function ckeditor_user_customize_form_validate
 
@@ -22,7 +22,7 @@
 - [#1056068] by dczepierga: Fix Warning: file_get_contents(/drupal7/sites/all/libraries/ckeditor/ckeditor.js)
 
 -- 2011-02-08
-- [#1054414] by dczepierga: Added <a href="http://drupal.org/project/elfinder">elFinder</a> file manager support - (D7 version)
+- [#1054414] by dczepierga: Added support for  elFinder (http://drupal.org/project/elfinder) file manager support 
 - [#1054606] by dczepierga: No detach method in Drupal.behaviors.ckeditor
 
 -- 2011-02-07
