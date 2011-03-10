@@ -917,7 +917,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
             }
             if (file_exists($editor_path . '/contents.css')) {
-                $css_files[] = $host . $editor_path . '/contents.css';
+                $css_files[] = $host . $editor_path . '/contents.css' . $query_string;
             }
             break;
     }
