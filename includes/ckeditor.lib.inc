@@ -880,7 +880,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
             }
             else {
-                if (file_exists($themepath . 'style.css')) {
+                if (!file_exists($themepath . 'ckeditor.css') && file_exists($themepath . 'style.css')) {
                     $css_files[] = $host . $themepath . 'style.css' . $query_string;
                 }
             }
