@@ -273,7 +273,7 @@ To create such an input format, you will need an HTML filter.
 The most popular module that provide a HTML filter:
 
  - HTML Purifier - the most popular and powerful, although according to some claims it might be a bit slow
-   http://drupal.org/project/htmlpurifier (no Dupal 7 support yet)
+   http://drupal.org/project/htmlpurifier (no Drupal 7 support yet)
 
 It is up to you to decide which one to use. Just make sure that you will only allow to use proper 
 inline styles, tags, and attributes.
