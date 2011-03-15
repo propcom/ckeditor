@@ -1,3 +1,5 @@
+-- 2011-03-15
+- [#1050118] by dczepierga: Linebreaks converter for CKEditor toggle mode
 
 -- 2011-02-22
 - [#960576] by rjacobs: Custom editor css styles - automatically pull from theme's ckeditor.css file
