@@ -294,7 +294,7 @@ Drupal.ckeditorLinebreakConvert = function(textarea_id, text) {
   var enterMode = Drupal.ckeditorEnterModeConvert(Drupal.settings.ckeditor.settings[textarea_id].enterMode);
   var shiftEnterMode = Drupal.ckeditorEnterModeConvert(Drupal.settings.ckeditor.settings[textarea_id].shiftEnterMode);
 
-  if (!text.match(/<(p|br)\s*\/?>/) && text) {
+  if (!text.match(/<(div|p|br)\s*\/?>/) && text) {
     text = enterMode.startTag + shiftEnterMode.startTag + text.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, enterMode.endTag+enterMode.startTag).replace(/\n/g, shiftEnterMode.endTag+shiftEnterMode.startTag) + shiftEnterMode.endTag + enterMode.endTag;
   }
   return text;
