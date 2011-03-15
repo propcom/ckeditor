@@ -21,7 +21,7 @@ Drupal.ckeditorToggle = function(textarea_id, TextTextarea, TextRTE, xss_check){
   else {
     if (typeof(Drupal.ckeditorInitialized[textarea_id]) == 'undefined') {
       Drupal.ckeditorInitialized[textarea_id] = true;
-      $("#" + textarea_id).val(Drupal.ckeditorLinebreakConvert($("#" + textarea_id).val()));
+      $("#" + textarea_id).val(Drupal.ckeditorLinebreakConvert(textarea_id, $("#" + textarea_id).val()));
     }
     Drupal.ckeditorOn(textarea_id);
     $('#switch_' + textarea_id).text(TextTextarea);
@@ -276,9 +276,22 @@ Drupal.ckeditorInsertHtml = function(html) {
  * Converts \n to <br />
  * It in no way tries to compete with Line break converter filter
  */
-Drupal.ckeditorLinebreakConvert = function(text) {
+Drupal.ckeditorEnterModeConvert = function(enterMode){
+  if (enterMode == 1)
+    return {startTag: '<p>', endTag: '</p>'};
+  if (enterMode == 2)
+    return {startTag: '', endTag: '<br/>'};
+  if (enterMode == 3)
+    return {startTag: '<div>', endTag: '</div>'};
+  return {startTag: '', endTag: ''}
+}
+
+Drupal.ckeditorLinebreakConvert = function(textarea_id, text) {
+  var enterMode = Drupal.ckeditorEnterModeConvert(Drupal.settings.ckeditor.settings[textarea_id].enterMode);
+  var shiftEnterMode = Drupal.ckeditorEnterModeConvert(Drupal.settings.ckeditor.settings[textarea_id].shiftEnterMode);
+
   if (!text.match(/<(p|br)\s*\/?>/) && text) {
-    text = '<p>' + text.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br />') + '</p>';
+    text = enterMode.startTag + shiftEnterMode.startTag + text.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, enterMode.endTag+enterMode.startTag).replace(/\n/g, shiftEnterMode.endTag+shiftEnterMode.startTag) + shiftEnterMode.endTag + enterMode.endTag;
   }
   return text;
 }
@@ -364,7 +377,7 @@ Drupal.behaviors.ckeditor = function (context) {
     else {
       $(this).parents('form').bind('submit', function() {
         $(this).find('textarea').each(function() {
-          $(this).val(Drupal.ckeditorLinebreakConvert($(this).val()));
+          $(this).val(Drupal.ckeditorLinebreakConvert(ta_id, $(this).val()));
         });
       });
     }
