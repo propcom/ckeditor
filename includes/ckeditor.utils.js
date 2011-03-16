@@ -4,9 +4,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
 
-// State of textareas
-Drupal.ckeditorInitialized = {};
-
 // this object will store teaser information
 Drupal.ckeditorTeaser = {
   lookup: {},
@@ -23,10 +20,7 @@ Drupal.ckeditorToggle = function(textarea_id, TextTextarea, TextRTE, xss_check){
     $('#switch_' + textarea_id).text(TextRTE);
   }
   else {
-    if (typeof(Drupal.ckeditorInitialized[textarea_id]) == 'undefined') {
-      Drupal.ckeditorInitialized[textarea_id] = true;
-      $("#" + textarea_id).val(Drupal.ckeditorLinebreakConvert(textarea_id, $("#" + textarea_id).val()));
-    }
+    $("#" + textarea_id).val(Drupal.ckeditorLinebreakConvert(textarea_id, $("#" + textarea_id).val()));
     Drupal.ckeditorOn(textarea_id);
     $('#switch_' + textarea_id).text(TextTextarea);
   }
@@ -292,10 +286,8 @@ Drupal.ckeditorEnterModeConvert = function(enterMode){
 
 Drupal.ckeditorLinebreakConvert = function(textarea_id, text) {
   var enterMode = Drupal.ckeditorEnterModeConvert(Drupal.settings.ckeditor.settings[textarea_id].enterMode);
-  var shiftEnterMode = Drupal.ckeditorEnterModeConvert(Drupal.settings.ckeditor.settings[textarea_id].shiftEnterMode);
-
-  if (!text.match(/<(div|p|br)\s*\/?>/) && text) {
-    text = enterMode.startTag + shiftEnterMode.startTag + text.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, enterMode.endTag+enterMode.startTag).replace(/\n/g, shiftEnterMode.endTag+shiftEnterMode.startTag) + shiftEnterMode.endTag + enterMode.endTag;
+  if (!text.match(/<(div|p|br).*\/?>/i) && text) {
+    text = enterMode.startTag +  text.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, enterMode.endTag+enterMode.startTag).replace(/\n/g, '<br />')  + enterMode.endTag;
   }
   return text;
 }
