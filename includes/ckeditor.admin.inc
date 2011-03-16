@@ -581,7 +581,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   );
 
   if (!empty($profile->settings['formatting']['custom_formatting_options']))
-  foreach( $profile->settings['formatting']['custom_formatting_options'] as $k => $v ) {
+  foreach ($profile->settings['formatting']['custom_formatting_options'] as $k => $v) {
     if ($v === 0) {
       unset($profile->settings['formatting']['custom_formatting_options'][$k]);
     }
@@ -912,7 +912,7 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
     form_set_error('name', t('You must give a profile name.'));
   }
   elseif (!preg_match('/^[A-Za-z0-9_]+$/', $edit['name'])) {
-	form_set_error('name', t('Enter valid profile name. Only alphanumeric and underscore characters are allowed.'));
+    form_set_error('name', t('Enter valid profile name. Only alphanumeric and underscore characters are allowed.'));
   }
   elseif ($edit['name'] == 'CKEditor Global Profile') {
     form_set_error('name', t('This profile name is reserved. Please choose a different name.'));

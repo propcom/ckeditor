@@ -189,8 +189,8 @@ function ckeditor_filter_xss() {
 
   foreach ($_POST['filters'] as $module_delta) {
     if (!is_string($module_delta)) {
-	  continue;
-	}
+      continue;
+    }
     $module = strtok($module_delta, "/");
     $delta = strtok("/");
     $format = strtok("/");

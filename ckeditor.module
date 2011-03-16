@@ -494,7 +494,7 @@ function ckeditor_process_textarea($element) {
 
   $themepath = path_to_theme() .'/';
   $host = base_path();
-  if (!isset($element['#rows'])){
+  if (!isset($element['#rows'])) {
     $element['#rows'] = 5;
   }
   // only replace textarea when it has enough rows and it is enabled
@@ -549,7 +549,8 @@ function ckeditor_process_textarea($element) {
     // sensible default for small toolbars
     if (isset($element['#rows'])) {
       $height = intval($element['#rows']) * 14 + 140;
-    } else {
+    }
+    else {
       $height = 400;
     }
     if (!$is_running) {
@@ -643,7 +644,8 @@ function ckeditor_process_textarea($element) {
     }
     if (isset($conf['scayt_autoStartup']) && $conf['scayt_autoStartup'] == 't') {
       $settings[$textarea_id]['scayt_autoStartup'] = TRUE;
-    } else {
+    }
+    else {
       $settings[$textarea_id]['scayt_autoStartup'] = FALSE;
     }
     if ($conf['auto_lang']=="f") {
@@ -656,7 +658,8 @@ function ckeditor_process_textarea($element) {
       foreach ($conf['formatting']['custom_formatting_options'] as $k => $v) {
         if ($v === 0) {
           $conf['formatting']['custom_formatting_options'][$k] = FALSE;
-        } else {
+        }
+        else {
           $conf['formatting']['custom_formatting_options'][$k] = TRUE;
         }
       }
@@ -784,7 +787,7 @@ function ckeditor_process_textarea($element) {
         }
         break;
       case 'tinybrowser':
-        $settings[$textarea_id]['filebrowserBrowseUrl'] = $host . drupal_get_path('module','tinybrowser') . "/tinybrowser/tinybrowser.php?type=file";
+        $settings[$textarea_id]['filebrowserBrowseUrl'] = $host . drupal_get_path('module', 'tinybrowser') . "/tinybrowser/tinybrowser.php?type=file";
         $settings[$textarea_id]['filebrowserWindowWidth'] = (int)$win_size[0] + 15;
         $settings[$textarea_id]['filebrowserWindowHeight'] = (int)$win_size[1] + 15;
         break;
@@ -817,7 +820,7 @@ function ckeditor_process_textarea($element) {
           }
           break;
         case 'tinybrowser':
-          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $host . drupal_get_path('module','tinybrowser') . "/tinybrowser/tinybrowser.php?type=image";
+          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $host . drupal_get_path('module', 'tinybrowser') . "/tinybrowser/tinybrowser.php?type=image";
           $settings[$textarea_id]['filebrowserImageWindowWidth'] = (int)$win_size[0] + 15;
           $settings[$textarea_id]['filebrowserImageWindowHeight'] = (int)$win_size[1] + 15;
           break;
@@ -851,7 +854,7 @@ function ckeditor_process_textarea($element) {
           }
           break;
         case 'tinybrowser':
-          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $host . drupal_get_path('module','tinybrowser') . "/tinybrowser/tinybrowser.php?type=media";
+          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $host . drupal_get_path('module', 'tinybrowser') . "/tinybrowser/tinybrowser.php?type=media";
           $settings[$textarea_id]['filebrowserFlashWindowWidth'] = (int)$win_size[0] + 15;
           $settings[$textarea_id]['filebrowserFlashWindowHeight'] = (int)$win_size[1] + 15;
           break;
@@ -907,10 +910,10 @@ function ckeditor_process_textarea($element) {
                     if (file_exists($path)) {
                       $css_files[$name] = $host . $path . $query_string;
                       // Grab rtl stylesheets ( will get rtl css files when thay are named with suffix "-rtl.css" (ex: fusion baased themes) )
-                      if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && substr($path,0,-8) != "-rtl.css") {
-                        $rtl_path = substr($path,0,-4)."-rtl.css";
+                      if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && substr($path, 0, -8) != "-rtl.css") {
+                        $rtl_path = substr($path, 0, -4) . "-rtl.css";
                         if (file_exists($rtl_path)) {
-                          $css_files[$name."-rtl"] = $host . $rtl_path . $query_string;
+                          $css_files[$name . "-rtl"] = $host . $rtl_path . $query_string;
                         }
                       }
                     }
@@ -926,10 +929,10 @@ function ckeditor_process_textarea($element) {
                   if (file_exists($path)) {
                     $css_files[$name] = $host . $path . $query_string;
                     // Grab rtl stylesheets ( will get rtl css files when thay are named with suffix "-rtl.css" (ex: fusion baased themes) )
-                    if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && substr($path,0,-8) != "-rtl.css") {
-                      $rtl_path = substr($path,0,-4)."-rtl.css";
+                    if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL && substr($path, 0, -8) != "-rtl.css") {
+                      $rtl_path = substr($path, 0, -4) . "-rtl.css";
                       if (file_exists($rtl_path)) {
-                        $css_files[$name."-rtl"] = $host . $rtl_path . $query_string;
+                        $css_files[$name . "-rtl"] = $host . $rtl_path . $query_string;
                       }
                     }
                   }

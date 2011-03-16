@@ -457,17 +457,14 @@ function _ckeditor_requirements_cookiedomainset() {
  *	Delete all plus signs from profiles name
  */
  
-function ckeditor_update_6100(){
-	
-	$ret = array();
-	
-	$ret[] = update_sql( "UPDATE {ckeditor_role} SET name = REPLACE(name,'+','')");
-	$ret[] = update_sql( "UPDATE {ckeditor_role} SET name = REPLACE(name,'/','')");
-	$ret[] = update_sql( "UPDATE {ckeditor_settings} SET name = REPLACE(name,'+','')");
-	$ret[] = update_sql( "UPDATE {ckeditor_settings} SET name = REPLACE(name,'/','')");
-	
-	return $ret;
-	
+function ckeditor_update_6100() {
+  $ret = array();
+  $ret[] = update_sql( "UPDATE {ckeditor_role} SET name = REPLACE(name,'+','')");
+  $ret[] = update_sql( "UPDATE {ckeditor_role} SET name = REPLACE(name,'/','')");
+  $ret[] = update_sql( "UPDATE {ckeditor_settings} SET name = REPLACE(name,'+','')");
+  $ret[] = update_sql( "UPDATE {ckeditor_settings} SET name = REPLACE(name,'/','')");
+  
+  return $ret;
 }
 
 /**
