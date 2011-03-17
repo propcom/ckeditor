@@ -1041,7 +1041,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
                 $content .= $field['#value'];
             }
             $wysiwyg_link = '';
-            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:Drupal.ckeditorToggle({$toggle_fields},'" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "'," . $xss_check . ");\" id=\"switch_{$textarea_id}\">";
+            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:void(0);\" onclick=\"javascript:Drupal.ckeditorToggle({$toggle_fields},'" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "'," . $xss_check . ");\" id=\"switch_{$textarea_id}\">";
             $wysiwyg_link .= $ckeditor_on ? t('Switch to plain text editor') : t('Switch to rich text editor');
             $wysiwyg_link .= '</a>';
 
