@@ -41,8 +41,8 @@ Drupal.ckeditorOn = function(textarea_id) {
   if (!CKEDITOR.env.isCompatible) {
     return;
   }
-
-  if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
+  var teaser = Drupal.ckeditorTeaserInfo(textarea_id);
+  if (teaser) {
     var ch_checked = teaser.checkbox.attr('checked');
     var tv = teaser.textarea.val();
     if (!teaser.textarea.attr("disabled")) {
@@ -132,7 +132,8 @@ Drupal.ckeditorOff = function(textarea_id) {
 
   var data = CKEDITOR.instances[textarea_id].getData();
   CKEDITOR.instances[textarea_id].destroy();
-  if (teaser = Drupal.ckeditorTeaserInfo(textarea_id)) {
+  var teaser = Drupal.ckeditorTeaserInfo(textarea_id);
+  if (teaser) {
     var brcode = /<!--break-->/;
     data = data.split(brcode);
     if (data.length > 1) {
