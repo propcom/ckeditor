@@ -1,7 +1,11 @@
 -----------------------------
- 2011-03-15
+ 2011-03-17
  New stable release: 6.x-1.3
 -----------------------------
+-- 2011-03-16
+- [#1050118] by dczepierga: Added better support for Line break converter. CKEditor is now able to load properly content where new line characters were used to create new lines
+  Improve syntax with Coder module
+  
 -- 2011-03-15
 - [#1050118] by dczepierga: Added better support for Line break converter. CKEditor is now able to load properly content where new line characters were used to create new lines
 
