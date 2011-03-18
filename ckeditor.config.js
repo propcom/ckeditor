@@ -92,11 +92,15 @@ CKEDITOR.editorConfig = function(config) {
   /**
    * Sample extraCss code for the "marinelli" theme.
    */
-  if (Drupal.settings.ckeditor.theme == "marinelli") {
+  var themeName = Drupal.settings.ckeditor.theme;
+  if (typeof themeName == "object") {
+    themeName = Drupal.settings.ckeditor.theme[0];
+  }
+  if (themeName == "marinelli") {
     config.extraCss += "body{background:#FFF;text-align:left;font-size:0.8em;}";
     config.extraCss += "#primary ol, #primary ul{margin:10px 0 10px 25px;}";
   }
-  if (Drupal.settings.ckeditor.theme == "newsflash") {
+  if (themeName == "newsflash") {
     config.extraCss = "body{min-width:400px}";
   }
 
@@ -110,7 +114,7 @@ CKEDITOR.editorConfig = function(config) {
   /**
    * Sample bodyClass and BodyId for the "marinelli" theme.
    */
-  if (Drupal.settings.ckeditor.theme == "marinelli") {
+  if (themeName == "marinelli") {
     config.bodyClass = 'singlepage';
     config.bodyId = 'primary';
   }
