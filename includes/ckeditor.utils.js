@@ -371,12 +371,11 @@ Drupal.behaviors.ckeditor = function (context) {
     if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
       Drupal.ckeditorOn(ta_id);
     }
-    else {
-      $(this).parents('form').bind('submit', function() {
-        $(this).find('textarea').each(function() {
-          $(this).val(Drupal.ckeditorLinebreakConvert(ta_id, $(this).val()));
-        });
-      });
-    }
+  });
+
+  $("form").bind('submit', function() {
+    $(this).find('textarea.ckeditor-processed').each(function() {
+      $(this).val(Drupal.ckeditorLinebreakConvert($(this).attr("id"), $(this).val()));
+    });
   });
 };
