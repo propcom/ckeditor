@@ -43,6 +43,10 @@ function ckeditor_admin_main() {
     return FALSE;
   }
 
+  if (module_exists('wysiwyg')){
+    drupal_set_message(t('WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (!wysiwygdisablelink).', array('!wysiwygdisablelink' => l(t('click here to disable'), 'ckeditor/disable/wysiwyg'))), 'warning');
+  }
+
   $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
   if (!$access_ckeditor_roles) {
     drupal_set_message(t('There is currently no role with the "access ckeditor" permission. Visit <a href="!acl">permissions</a> administration section.', array('!acl' => url('admin/user/permissions'))), 'warning');
@@ -1429,4 +1433,14 @@ function _ckeditor_load_methods() {
     $result['ckeditor_source.js'] =  'ckeditor_source.js (' . t('for developers only') . ')';
   }
   return $result;
+}
+
+/*
+ * Disable WYSIWYG module
+ */
+function ckeditor_disable_wysiwyg(){
+  module_disable(array('wysiwyg'));
+  drupal_set_message(t('WYSIWYG module disabled.'));
+
+  drupal_goto('admin/settings/ckeditor');
 }
