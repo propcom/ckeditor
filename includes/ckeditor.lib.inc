@@ -367,12 +367,14 @@ function ckeditor_sorted_roles($clear = FALSE) {
  *    returns true if CKEditor is enabled
  */
 function ckeditor_is_enabled($excl_mode, $excl_regex, $element_id, $get_q) {
+  global $theme;
+
   $front = variable_get('site_frontpage', 'node');
   $excl_regex = str_replace('<front>', $front, $excl_regex);
   $nodetype = ckeditor_get_nodetype($get_q);
   $element_id = str_replace('.', '\.', $element_id);
 
-  $match = !empty($excl_regex) && preg_match($excl_regex, $nodetype .'@'. $get_q .'.'. $element_id);
+  $match = !empty($excl_regex) && preg_match($excl_regex, $theme . ':' . $nodetype .'@'. $get_q .'.'. $element_id);
 
   return ($excl_mode == '0' xor $match);
 }
