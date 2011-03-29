@@ -367,7 +367,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#prefix' => '<div style="margin-left:20px">',
     '#suffix' => '</div>',
     '#default_value' => !empty($profile->settings['excl']) ? $profile->settings['excl'] : '',
-    '#description' => t('Enter the paths to the textarea fields on which you want to enable or disable CKEditor.') .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Short instruction is available below.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))) .' <ul><li>'. t('Path structure: <strong>content_type@path.element_id</strong>') .'</li><li>'. t('The following wildcards are available: "*", "?".') .'</li><li>'. t('Content type is optional. You may even specify only path or field id.') .'</li><li>'. t('Examples:') .'<ul><li><em>blog@*.edit-body</em> - '. t('matches all fields of type "blog" called edit-body, on any page.') .'<li><em>node/add/*.edit-user-*</em> - '. t('matches fields starting with "edit-user-" on pages starting with "node/add/') .'</li></ul></li></ul>',
+    '#description' => t('Enter the paths to the textarea fields on which you want to enable or disable CKEditor.') .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Short instruction is available below.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))) .' <ul><li>'. t('Path structure: <strong>theme_name:content_type@path.element_id</strong>') .'</li><li>'. t('The following wildcards are available: "*", "?".') .'</li><li>'. t('Content type and theme name is optional. You may even specify only path or field id.') .'</li><li>'. t('Examples:') .'<ul><li><em>garland:blog@*.edit-body</em> - '. t('matches all fields of type "blog" called edit-body in garland theme, on any page.') .'<li><em>node/add/*.edit-user-*</em> - '. t('matches fields starting with "edit-user-" on pages starting with "node/add/') .'</li></ul></li></ul>',
     '#wysiwyg' => FALSE,
   );
 
@@ -1089,7 +1089,7 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#prefix' => '<div style="margin-left:20px">',
     '#suffix' => '</div>',
     '#default_value' => !empty($profile->settings['excl']) ? $profile->settings['excl'] : '',
-    '#description' => t('Enter the paths to the textarea fields on which you want to enable or disable CKEditor.') .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Short instruction is available below.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))) .' <ul><li>'. t('Path structure: <strong>content_type@path.element_id</strong>') .'</li><li>'. t('The following wildcards are available: "*", "?".') .'</li><li>'. t('Content type is optional. You may even specify only path or field id.') .'</li><li>'. t('Examples:') .'<ul><li><em>blog@*.edit-body</em> - '. t('matches all fields of type "blog" called edit-body, on any page.') .'<li><em>node/add/*.edit-user-*</em> - '. t('matches fields starting with "edit-user-" on pages starting with "node/add/') .'</li></ul></li></ul>',
+    '#description' => t('Enter the paths to the textarea fields on which you want to enable or disable CKEditor.') .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Short instruction is available below.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))) .' <ul><li>'. t('Path structure: <strong>theme_name:content_type@path.element_id</strong>') .'</li><li>'. t('The following wildcards are available: "*", "?".') .'</li><li>'. t('Content type and theme name is optional. You may even specify only path or field id.') .'</li><li>'. t('Examples:') .'<ul><li><em>garland:blog@*.edit-body</em> - '. t('matches all fields of type "blog" called edit-body in garland theme, on any page.') .'<li><em>node/add/*.edit-user-*</em> - '. t('matches fields starting with "edit-user-" on pages starting with "node/add/') .'</li></ul></li></ul>',
     '#wysiwyg' => FALSE,
   );
 
@@ -1352,16 +1352,28 @@ function ckeditor_rebuild_selectors($name = NULL) {
 }
 
 function ckeditor_rule_create($nodetype = '*', $path = '*', $fieldname = '*') {
+  global $theme;
+
   $rule = new stdClass();
   $rule->nodetype = $nodetype;
   $rule->path = $path;
   $rule->field = $fieldname;
+  $rule->theme = $theme;
 
   return $rule;
 }
 
 function ckeditor_parse_rule($rule) {
   $ruleobj = new stdClass();
+
+  $colonpos = strpos($rule, ':');
+  if ($colonpos !== FALSE) {
+    $ruleobj->theme = substr($rule, 0, $colonpos);
+    $rule = substr($rule, $colonpos + 1);
+  }
+  else {
+    $ruleobj->theme = '*';
+  }
 
   $atpos = strpos($rule, '@');
   if ($atpos !== FALSE) {
@@ -1400,7 +1412,7 @@ function ckeditor_rule_to_regex($rule) {
   static $replace = array('\*' => '.*', '\?' => '.');
 
   $field = str_replace('.', '\.', $rule->field);
-  $regex = '^'. preg_quote($rule->nodetype, '#') .'@'. preg_quote($rule->path, '#') .'\.'. preg_quote($field, '#') .'$';
+  $regex = '^'. preg_quote($rule->theme, '#') . ':' . preg_quote($rule->nodetype, '#') .'@'. preg_quote($rule->path, '#') .'\.'. preg_quote($field, '#') .'$';
   $regex = strtr($regex, $replace);
 
   return $regex;
@@ -1408,7 +1420,7 @@ function ckeditor_rule_to_regex($rule) {
 
 function ckeditor_rule_to_string($rule) {
   $field = str_replace('.', '\.', $rule->field);
-  $rulestr = '';
+  $rulestr = $rule->theme . ':';
   if ($rule->nodetype != '*') {
     $rulestr .= $rule->nodetype .'@';
   }
