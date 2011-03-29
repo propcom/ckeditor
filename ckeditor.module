@@ -60,8 +60,8 @@ function ckeditor_menu() {
     );
 
     $items['ckeditor/disable/wysiwyg'] = array(
-        'title' => 'XSS Filter',
-        'description' => 'XSS Filter.',
+        'title' => 'Disable WYSIWYG module',
+        'description' => 'Disable WYSIWYG module.',
         'page callback' => 'ckeditor_disable_wysiwyg',
         'file' => 'includes/ckeditor.admin.inc',
         'access arguments' => array('administer ckeditor'),
