@@ -210,7 +210,7 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             
             $(context).find("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
                 var ta_id=$(this).attr("id");
-                if (typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
+                if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
                     Drupal.ckeditorOff(ta_id);
                 }
                 if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
