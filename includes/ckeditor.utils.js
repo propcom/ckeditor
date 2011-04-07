@@ -118,7 +118,8 @@ var CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         }
         if (Drupal.ckeditorInstance && Drupal.ckeditorInstance.name == textarea_id)
             delete Drupal.ckeditorInstance;
-
+        
+        $("#" + textarea_id).val(CKEDITOR.instances[textarea_id].getData());
         CKEDITOR.instances[textarea_id].destroy(true);
 
         $("#" + textarea_id).next(".grippie").css("display", "block");
