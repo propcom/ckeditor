@@ -846,6 +846,16 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       ),
       '#description' => t('If enabled, HTML content will be automatically changed to plain text when pasting.'),
   );
+  $form['advanced']['html_entities'] = array(
+    '#type' => 'radios',
+    '#title' => t('HTML Entities'),
+    '#default_value' => !empty($profile->settings['html_entities']) ? $profile->settings['html_entities'] : 't',
+    '#description' => t('Convert all applicable characters to HTML entities.'),
+    '#options' => array(
+      'f' => t('No'),
+      't' => t('Yes')
+    ),
+  );
   $form['advanced']['scayt_autoStartup'] = array(
     '#type' => 'radios',
     '#title' => t('Spell checker'),

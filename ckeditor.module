@@ -653,6 +653,11 @@ function ckeditor_process_textarea($element) {
           break;
       }
     }
+    if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
+      $settings[$textarea_id]['entities'] = FALSE;
+      $settings[$textarea_id]['entities_greek'] = FALSE;
+      $settings[$textarea_id]['entities_latin'] = FALSE;
+    }
     if (isset($conf['scayt_autoStartup']) && $conf['scayt_autoStartup'] == 't') {
       $settings[$textarea_id]['scayt_autoStartup'] = TRUE;
     }
