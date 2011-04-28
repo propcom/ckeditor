@@ -24,9 +24,6 @@ CKEDITOR.editorConfig = function(config) {
     // (as does Drupal), so just leave this line as is.
     config.protectedSource.push(/<\?[\s\S]*?\?>/g); // PHP Code
     config.extraPlugins = '';
-    if (Drupal.ckeditorCompareVersion('3.1')) {
-        config.extraPlugins += (config.extraPlugins ? ',drupalbreaks' : 'drupalbreaks' );
-    }
 
     /*
    * Append here extra CSS rules that should be applied into the editing area.
@@ -59,24 +56,4 @@ CKEDITOR.editorConfig = function(config) {
         config.bodyClass = 'singlepage';
         config.bodyId = 'primary';
     }
-
-    if (Drupal.ckeditorCompareVersion('3.1')) {
-        CKEDITOR.plugins.addExternal('drupalbreaks', Drupal.settings.ckeditor.module_path + '/plugins/drupalbreaks/');
-    }
-
-    if (Drupal.settings.ckeditor_swf) {
-        config.extraPlugins += (config.extraPlugins) ? ',swf' : 'swf';
-        CKEDITOR.plugins.addExternal('swf', Drupal.settings.ckeditor_swf.module_path + '/plugins/swf/');
-    }
-    if (Drupal.settings.ckeditor_link) {
-        config.extraPlugins += (config.extraPlugins) ? ',drupal_path' : 'drupal_path';
-        CKEDITOR.plugins.addExternal('drupal_path', Drupal.settings.ckeditor_link.module_path + '/plugins/link/');
-    }
-// 'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
-//config.extraPlugins += (config.extraPlugins ? ',mediaembed' : 'mediaembed' );
-//CKEDITOR.plugins.addExternal('mediaembed', Drupal.settings.ckeditor.module_path + '/plugins/mediaembed/');
-
-// 'IMCE' plugin. If IMCE module is enabled, you may uncomment lines below and add an 'IMCE' button to selected toolbar. 
-//config.extraPlugins += (config.extraPlugins ? ',imce' : 'imce' );
-//CKEDITOR.plugins.addExternal('imce', Drupal.settings.ckeditor.module_path + '/plugins/imce/');
-};
+}

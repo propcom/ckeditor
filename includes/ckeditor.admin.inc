@@ -512,6 +512,31 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#wysiwyg' => FALSE,
         '#rows' => 15
     );
+    
+    $pluginList = ckeditor_load_plugins();
+    $plugins = array();
+    if (isset($profile->settings['loadPlugins'])){
+        foreach ($pluginList AS $key => $val) {
+            $plugins[$key] = $val['desc'];
+        }
+    }
+    else {
+        $defaultPlugins = array();
+        foreach ($pluginList AS $key => $val) {
+            $plugins[$key] = $val['desc'];
+            if ($val['default'] == 't'){
+                $defaultPlugins[] = $key;
+            }
+        }
+    }
+
+    $form['appearance']['loadPlugins'] = array(
+        '#type' => 'checkboxes',
+        '#title' => t('Plugins'),
+        '#default_value' => isset($profile->settings['loadPlugins']) ? array_keys((array) $profile->settings['loadPlugins']) : $defaultPlugins,
+        '#options' => $plugins,
+        '#description' => t('Choose the plugins which u want to load into CKEditor.')
+    );
 
     $form['appearance']['expand'] = array(
         '#type' => 'radios',
@@ -1117,7 +1142,20 @@ function ckeditor_admin_profile_delete_form_submit($form, &$form_state) {
  * contain Drupal Form API values
  */
 function ckeditor_admin_values_to_settings($values) {
-    unset($values['name'], $values['input_formats'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id']);
+    $plugins = $values['loadPlugins'];
+    unset($values['name'], $values['input_formats'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id'], $values['loadPlugins']);
+    
+    module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+    $pluginList = ckeditor_load_plugins();
+    $values['loadPlugins'] = array();
+    if (!empty($plugins)) {
+        foreach (array_keys($plugins) as $plugin) {
+            if ($plugins[$plugin] != '0') {
+                $values['loadPlugins'][$plugin] = $pluginList[$plugin];
+            }
+        }
+    }
+
     return serialize($values);
 }
 

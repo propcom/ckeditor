@@ -216,18 +216,17 @@ function ckeditor_element_info_alter(&$types) {
  */
 function ckeditor_pre_render_text_format($element) {
     static $init = FALSE;
-
     if (!isset($element['#format'])) {
         return $element;
     }
-    
+
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     if ( $init === FALSE ) {
         $input_formats = ckeditor_profiles_compile();
-        drupal_add_js(array('ckeditor' => array('input_formats' => $input_formats)), 'setting');
+        drupal_add_js(array('ckeditor' => array('input_formats' => $input_formats, 'plugins' => array())), 'setting');
         $init = TRUE;
     }
-    
+
     if (isset($element['value'])) {
         if (isset($element['summary'])) {
             $element['value'] = ckeditor_load_by_field($element['value'], $element['#format'], TRUE, $element['summary']['#id']);
@@ -280,7 +279,7 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
                 $profiles[$data->name]->input_formats[$data->format] = $input_formats[$data->format]->name;
             }
         }
-        
+
     }
 
     return ($name ? (isset($profiles[urldecode($name)]) ? $profiles[urldecode($name)] : FALSE) : $profiles);
@@ -328,7 +327,7 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
                     }
                 }
             }
-            
+
             //ckeditor_path is defined, but wildcards are not used, we need to try to find out where is
             //the document root located and append ckeditor_path to it.
             if (!empty($gs['ckeditor_local_path'])) {

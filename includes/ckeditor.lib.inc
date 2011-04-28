@@ -277,6 +277,81 @@ function ckeditor_load_lang_options() {
 }
 
 /**
+ * List of CKEditor plugins
+ *
+ * @return array
+ */
+function ckeditor_load_plugins() {
+    $arr = array();
+    $ckeditor_path = drupal_get_path('module', 'ckeditor');
+    $plugin_dir = $ckeditor_path . '/plugins/';
+
+    /*
+     * Modules
+     */
+    if (module_exists('ckeditor_swf') && file_exists(drupal_get_path('module', 'ckeditor_swf') . 'plugins/swf/plugin.js')) {
+        $arr['ckeditor_swf'] = array(
+            'name' => 'swf',
+            'desc' => t('Support for CKEditor SWF module'),
+            'path' => base_path() . drupal_get_path('module', 'ckeditor_swf') . 'plugins/swf/plugin.js',
+            'default' => 't'
+        );
+    }
+    
+    if (module_exists('ckeditor_link') && file_exists(drupal_get_path('module', 'ckeditor_link') . 'plugins/link/plugin.js')) {
+        $arr['ckeditor_link'] = array(
+            'name' => 'drupal_path',
+            'desc' => t('Support for CKEditor SWF module'),
+            'path' => base_path() . drupal_get_path('module', 'ckeditor_link') . 'plugins/link/plugin.js',
+            'default' => 't'
+        );
+    }
+
+    /*
+     * Buttons
+     */
+    if (file_exists($plugin_dir . 'drupalbreaks/plugin.js')) {
+        $arr['drupalbreaks'] = array(
+            'name' => 'drupalbreaks',
+            'desc' => t('Teaser Break button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'drupalbreaks/',
+            'default' => 't'
+        );
+    }
+
+    if (file_exists($plugin_dir . 'mediaembed/plugin.js')) {
+        $arr['mediaembed'] = array(
+            'name' => 'mediaembed',
+            'desc' => t('MediaEmbed button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'mediaembed/',
+            'default' => 't'
+        );
+    }
+
+    if (module_exists('imce') && file_exists($plugin_dir . 'imce/plugin.js')) {
+        $arr['imce'] = array(
+            'name' => 'imce',
+            'desc' => t('IMCE Window button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'imce/',
+            'default' => 'f'
+        );
+    }
+
+     if (module_exists('media') && file_exists($plugin_dir . 'media/plugin.js')) {
+        $arr['media'] = array(
+            'name' => 'media',
+            'desc' => t('Media Window button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'media/',
+            'default' => 'f'
+        );
+    }
+
+    ksort($arr);
+
+    return $arr;
+}
+
+/**
  * Get default ckeditor settings
  *
  * @return array
@@ -526,7 +601,17 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 break;
         }
     }
-
+    
+    if (isset($conf['loadPlugins'])) {
+        $settings['loadPlugins'] = $conf['loadPlugins'];
+        
+        if (array_key_exists('media', $settings['loadPlugins'])){
+            module_load_include('inc', 'media', 'media.browser');
+            media_include_browser_js();
+            drupal_add_js(drupal_get_path('module', 'ckeditor').'/plugins/media/library.js', array('scope' => 'footer', 'weight' => -20));
+        }
+    }
+    
     if (isset($conf['scayt_autoStartup']) && $conf['scayt_autoStartup'] == 't') {
         $settings['scayt_autoStartup'] = TRUE;
     }
