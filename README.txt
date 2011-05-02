@@ -169,7 +169,7 @@ To enable the IMCE plugin, do the following:
 
 Uploading Images and Files
 --------------------------
-There are three ways of uploading files: by using a commercial file browser like CKFinder (http://ckfinder.com), by using modules like IMCE, or by using the core upload module.
+There are two ways of uploading files: by using a commercial file browser like CKFinder (http://ckfinder.com) or by using modules like IMCE.
 
 To select a preferred file browser, adjust
 CKEditor profiles in the "Administration panel > Configuration > Content Authoring > CKEditor" section. 
