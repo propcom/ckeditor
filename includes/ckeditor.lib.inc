@@ -617,7 +617,11 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             drupal_add_js(drupal_get_path('module', 'ckeditor').'/plugins/media/library.js', array('scope' => 'footer', 'weight' => -20));
         }
     }
-    
+    if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
+        $settings['entities'] = FALSE;
+        $settings['entities_greek'] = FALSE;
+        $settings['entities_latin'] = FALSE;
+    }
     if (isset($conf['scayt_autoStartup']) && $conf['scayt_autoStartup'] == 't') {
         $settings['scayt_autoStartup'] = TRUE;
     }
