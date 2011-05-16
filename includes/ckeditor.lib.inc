@@ -1155,14 +1155,14 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer') );
             //if ($settings['popup'] != 't') {
                 if (isset($profile->settings['ckeditor_load_method'])) {
-                    drupal_add_js($editor_path . '/' . $profile->settings['ckeditor_load_method'], array('type' => 'file', 'scope' => 'footer', 'preprocess' => FALSE));
+                    drupal_add_js($editor_path . '/' . $profile->settings['ckeditor_load_method'], array('type' => 'file', 'scope' => 'footer'));
                     if ($profile->settings['ckeditor_load_method'] == 'ckeditor_basic.js') {
                         drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $profile->settings['ckeditor_load_time_out'] . ';', array('type' => 'inline', 'scope' => 'footer'));
                         drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
                     }
                 }
                 else {
-                    drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer', 'preprocess' => FALSE));
+                    drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer'));
                 }
             /*}
             else {

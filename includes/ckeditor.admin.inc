@@ -478,6 +478,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     $editor_path = ckeditor_path(FALSE);
     $module_drupal_path = drupal_get_path('module', 'ckeditor');
+    drupal_add_js('window.CKEDITOR_BASEPATH = "' . base_path() . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
     drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
     drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
 
