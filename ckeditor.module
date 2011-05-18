@@ -557,6 +557,8 @@ function ckeditor_process_textarea($element) {
     // get the default drupal files path
     $files_path         = $host . file_directory_path();
 
+    drupal_set_html_head('<script type="text/javascript">window.CKEDITOR_BASEPATH = "'.$editor_path.'/";</script>');
+
     // sensible default for small toolbars
     if (isset($element['#rows'])) {
       $height = intval($element['#rows']) * 14 + 140;
