@@ -102,11 +102,12 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         };
 
         textarea_settings.extraPlugins = '';
-        for (var plugin in textarea_settings['loadPlugins']){
-            textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
-            CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
+        if (typeof CKEDITOR.plugins != 'undefined'){
+            for (var plugin in textarea_settings['loadPlugins']){
+                textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
+                CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
+            }
         }
-
         Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
     };
 
