@@ -551,7 +551,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         $conf['filters']['default'] = 1;
     }
 
-    $themepath = $themepath = drupal_get_path('theme', $theme) . '/';
+    $themepath = drupal_get_path('theme', $theme) . '/';
     $host = base_path();
 
     // setting some variables
