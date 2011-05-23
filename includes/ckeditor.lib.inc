@@ -289,20 +289,20 @@ function ckeditor_load_plugins() {
     /*
      * Modules
      */
-    if (module_exists('ckeditor_swf') && file_exists(drupal_get_path('module', 'ckeditor_swf') . 'plugins/swf/plugin.js')) {
+    if (module_exists('ckeditor_swf') && file_exists(drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/plugin.js')) {
         $arr['ckeditor_swf'] = array(
             'name' => 'swf',
             'desc' => t('Support for CKEditor SWF module'),
-            'path' => base_path() . drupal_get_path('module', 'ckeditor_swf') . 'plugins/swf/plugin.js',
+            'path' => base_path() . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
             'default' => 't'
         );
     }
     
-    if (module_exists('ckeditor_link') && file_exists(drupal_get_path('module', 'ckeditor_link') . 'plugins/link/plugin.js')) {
+    if (module_exists('ckeditor_link') && file_exists(drupal_get_path('module', 'ckeditor_link') . '/plugins/link/plugin.js')) {
         $arr['ckeditor_link'] = array(
             'name' => 'drupal_path',
-            'desc' => t('Support for CKEditor SWF module'),
-            'path' => base_path() . drupal_get_path('module', 'ckeditor_link') . 'plugins/link/plugin.js',
+            'desc' => t('Support for CKEditor Link module'),
+            'path' => base_path() . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
             'default' => 't'
         );
     }
