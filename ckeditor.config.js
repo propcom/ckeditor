@@ -59,7 +59,7 @@ CKEDITOR.editorConfig = function(config) {
   * if you change the name of DrupalBasic, you have to update
   * CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME in ckeditor.module
   */
-  config.toolbar_DrupalBasic = [ [ 'Format', '-', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ];
+  config.toolbar_DrupalBasic = [ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ];
 
   /*
    * This toolbar is dedicated to users with "Full HTML" access some of commands
