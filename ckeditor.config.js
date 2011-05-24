@@ -27,7 +27,9 @@ CKEDITOR.editorConfig = function(config) {
   if (Drupal.ckeditorCompareVersion('3.1')) {
     config.extraPlugins += (config.extraPlugins ? ',drupalbreaks' : 'drupalbreaks' );
   }
-
+  if (Drupal.ckeditorCompareVersion('3.6')) {
+    config.extraPlugins += (config.extraPlugins ? ',tableresize' : 'tableresize' );
+  }
   if (Drupal.settings.ckeditor.linktocontent_node) {
     config.extraPlugins += (config.extraPlugins ? ',linktonode' : 'linktonode' );
   }
@@ -121,6 +123,9 @@ CKEDITOR.editorConfig = function(config) {
 
   if (Drupal.ckeditorCompareVersion('3.1')) {
     CKEDITOR.plugins.addExternal('drupalbreaks', Drupal.settings.ckeditor.module_path + '/plugins/drupalbreaks/');
+  }
+  if (Drupal.ckeditorCompareVersion('3.6')) {
+    CKEDITOR.plugins.addExternal('tableresize', Drupal.settings.ckeditor.editor_path + '/plugins/tableresize/');
   }
   if (Drupal.settings.ckeditor.linktocontent_menu) {
     CKEDITOR.plugins.addExternal('linktomenu', Drupal.settings.ckeditor.module_path + '/plugins/linktomenu/');
