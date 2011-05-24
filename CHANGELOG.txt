@@ -1,4 +1,5 @@
 --2011-05-24
+- [#1167034] by dczepierga: Add tableresize plugin support for CKEditor library >= 3.6
 - [#1166984] by dczepierga: Remove '-' sign before Bold button in Basic toolbar
 - [#1166972] by dczepierga: Remove bullets from lists (Format, Font, etc.) in CKEditor on Garland theme
 - [#1166936] by dczepierga: Update user guide link
