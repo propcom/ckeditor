@@ -584,10 +584,7 @@ function ckeditor_process_textarea($element) {
       else {
         drupal_set_html_head('<script type="text/javascript" src="'. $editor_path .'/ckeditor_basic.js?I"></script>');
       }
-      drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path)), 'setting');
-      if ($conf['popup'] == 't') {
-        drupal_add_js(array('ckeditor' => array('editor_path' => $editor_path)), 'setting');
-      }
+      drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path)), 'setting');
       if (module_exists('paging')) {
         drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
       }
