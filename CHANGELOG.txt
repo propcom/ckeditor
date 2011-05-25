@@ -1,8 +1,3 @@
------------------------------
- 2011-05-25
- Released CKEditor 7.x-1.2
------------------------------
-
 -- 2011-05-23
 - [#1165864] by dczepierga: Improve manual selection of the user interface color
 - [#1093038] by marhak: CKEDITOR is not defined when using ckeditor_basic.js - Editor is not loading
