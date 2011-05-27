@@ -283,6 +283,7 @@ function ckeditor_load_lang_options() {
  */
 function ckeditor_load_plugins() {
     $arr = array();
+    $editor_path = ckeditor_path(FALSE) . '/';
     $ckeditor_path = drupal_get_path('module', 'ckeditor');
     $plugin_dir = $ckeditor_path . '/plugins/';
 
@@ -304,6 +305,27 @@ function ckeditor_load_plugins() {
             'desc' => t('Support for CKEditor Link module'),
             'path' => base_path() . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
             'default' => 't'
+        );
+    }
+
+    /*
+     * Plugins
+     */
+    if (file_exists($editor_path . 'plugins/tableresize/plugin.js')) {
+        $arr['tableresize'] = array(
+            'name' => 'tableresize',
+            'desc' => t('Tableresize plugin'),
+            'path' => base_path() . $editor_path . 'plugins/tableresize/',
+            'default' => 't'
+        );
+    }
+
+    if (file_exists($editor_path . 'plugins/autogrow/plugin.js')) {
+        $arr['autogrow'] = array(
+            'name' => 'autogrow',
+            'desc' => t('Autogrow plugin'),
+            'path' => base_path() . $editor_path . 'plugins/autogrow/',
+            'default' => 'f'
         );
     }
 
