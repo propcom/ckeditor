@@ -1,5 +1,5 @@
 -- 2011-05-26
-- [#1169402] by dczepierga: Duplicated path on error message when CKEditor is not installed correctly
+- [#1169402] by dczepierga:  Fix duplicated path in the error message displayed when CKEditor is not installed correctly
 
 -- 2011-05-23
 - [#1165864] by dczepierga: Improve manual selection of the user interface color
