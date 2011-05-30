@@ -28,7 +28,7 @@
 - [#1142600] by taite11: Readme file edit - there is no core upload module in Drupal 7
 
 -- 2011-04-28
-- [#1022986] by dczepierga: Add integration with Media Module
+- [#1022986] by dczepierga: Add integration with Media Module  (http://drupal.org/project/media)
 
 -- 2011-04-11
 - [#1116516] by weboide: Fix to CKEditor and Profile2 - remove call to undefined function ckeditor_user_customize_form_validate() on uid=1
