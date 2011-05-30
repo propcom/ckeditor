@@ -1,3 +1,6 @@
+-- 2011-05-27
+- [#1170612] by dczepierga: Add support for autogrow and tableresize plugin 
+
 -- 2011-05-26
 - [#1169402] by dczepierga:  Fix duplicated path in the error message displayed when CKEditor is not installed correctly
 
