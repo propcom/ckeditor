@@ -1,3 +1,8 @@
+-----------------------------
+ 2011-05-30
+ Released CKEditor 7.x-1.2
+-----------------------------
+
 -- 2011-05-27
 - [#1170612] by dczepierga: Add support for autogrow and tableresize plugin 
 
