@@ -387,7 +387,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-
+  
   $form['appearance']['default'] = array(
     '#type' => 'radios',
     '#title' => t('Default state'),
@@ -493,6 +493,31 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : 'default',
     '#options' => $toolbar_options,
     '#description' => t('Choose a default toolbar set. To define new toolbar, edit "ckeditor.config.js" located in "!module_path".', array('!module_path' => drupal_get_path('module', 'ckeditor'))),
+  );
+
+  $pluginList = ckeditor_load_plugins();
+  $plugins = array();
+  if (isset($profile->settings['loadPlugins'])){
+    foreach ($pluginList AS $key => $val) {
+      $plugins[$key] = $val['desc'];
+    }
+  }
+  else {
+    $defaultPlugins = array();
+    foreach ($pluginList AS $key => $val) {
+      $plugins[$key] = $val['desc'];
+        if ($val['default'] == 't'){
+          $defaultPlugins[] = $key;
+        }
+    }
+  }
+
+  $form['appearance']['loadPlugins'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Plugins'),
+    '#default_value' => isset($profile->settings['loadPlugins']) ? array_keys((array) $profile->settings['loadPlugins']) : $defaultPlugins,
+    '#options' => $plugins,
+    '#description' => t('Choose the plugins which u want to load into CKEditor.')
   );
 
   $form['appearance']['expand'] = array(
@@ -1254,7 +1279,20 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
  * contain Drupal Form API values
  */
 function ckeditor_admin_values_to_settings($values) {
-  unset($values['name'], $values['rids'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id']);
+  $plugins = $values['loadPlugins'];
+  unset($values['name'], $values['rids'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id'], $values['loadPlugins']);
+  
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+  $pluginList = ckeditor_load_plugins();
+  $values['loadPlugins'] = array();
+  if (!empty($plugins)) {
+    foreach (array_keys($plugins) as $plugin) {
+      if ($plugins[$plugin] != '0') {
+        $values['loadPlugins'][$plugin] = $pluginList[$plugin];
+      }
+    }
+  }
+
   return serialize($values);
 }
 

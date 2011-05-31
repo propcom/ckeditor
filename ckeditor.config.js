@@ -120,29 +120,6 @@ CKEDITOR.editorConfig = function(config) {
     config.bodyClass = 'singlepage';
     config.bodyId = 'primary';
   }
-
-  if (Drupal.ckeditorCompareVersion('3.1')) {
-    CKEDITOR.plugins.addExternal('drupalbreaks', Drupal.settings.ckeditor.module_path + '/plugins/drupalbreaks/');
-  }
-  if (Drupal.ckeditorCompareVersion('3.6')) {
-    CKEDITOR.plugins.addExternal('tableresize', Drupal.settings.ckeditor.editor_path + '/plugins/tableresize/');
-  }
-  if (Drupal.settings.ckeditor.linktocontent_menu) {
-    CKEDITOR.plugins.addExternal('linktomenu', Drupal.settings.ckeditor.module_path + '/plugins/linktomenu/');
-    Drupal.settings.ckeditor.linktomenu_basepath = Drupal.settings.basePath;
-  }
-  if (Drupal.settings.ckeditor.linktocontent_node) {
-    CKEDITOR.plugins.addExternal('linktonode', Drupal.settings.ckeditor.module_path + '/plugins/linktonode/');
-    Drupal.settings.ckeditor.linktonode_basepath = Drupal.settings.basePath;
-  }
-  if (Drupal.settings.ckeditor_swf) {
-    config.extraPlugins += (config.extraPlugins) ? ',swf' : 'swf';
-    CKEDITOR.plugins.addExternal('swf', Drupal.settings.ckeditor_swf.module_path + '/plugins/swf/');
-  }
-  if (Drupal.settings.ckeditor_link) {
-    config.extraPlugins += (config.extraPlugins) ? ',drupal_path' : 'drupal_path';
-    CKEDITOR.plugins.addExternal('drupal_path', Drupal.settings.ckeditor_link.module_path + '/plugins/link/');
-  }
   // 'MediaEmbed' plugin. To enable it, uncomment lines below and add 'MediaEmbed' button to selected toolbars.
   //config.extraPlugins += (config.extraPlugins ? ',mediaembed' : 'mediaembed' );
   //CKEDITOR.plugins.addExternal('mediaembed', Drupal.settings.ckeditor.module_path + '/plugins/mediaembed/');

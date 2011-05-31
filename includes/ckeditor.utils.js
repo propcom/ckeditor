@@ -78,7 +78,10 @@ Drupal.ckeditorOn = function(textarea_id) {
   $("#" + textarea_id).next(".grippie").css("display", "none");
   $("#" + textarea_id).addClass("ckeditor-processed");
 
-  Drupal.settings.ckeditor.settings[textarea_id]['on'] = 
+  var textarea_settings = false;
+  textarea_settings = Drupal.settings.ckeditor.settings[textarea_id];
+
+  textarea_settings['on'] =
   {
     configLoaded  : function(ev)
     {
@@ -87,14 +90,14 @@ Drupal.ckeditorOn = function(textarea_id) {
     instanceReady : function(ev)
     {
       var body = $(ev.editor.document.$.body);
-      if (typeof(Drupal.settings.ckeditor.settings[textarea_id].custom_formatting) != 'undefined') {
+      if (typeof(textarea_settings.custom_formatting) != 'undefined') {
         var dtd = CKEDITOR.dtd;
         for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
-          ev.editor.dataProcessor.writer.setRules( e, Drupal.settings.ckeditor.settings[textarea_id].custom_formatting);
+          ev.editor.dataProcessor.writer.setRules( e, textarea_settings.custom_formatting);
 		}
         ev.editor.dataProcessor.writer.setRules( 'pre',
         {
-          indent: Drupal.settings.ckeditor.settings[textarea_id].output_pre_indent
+          indent: textarea_settings.output_pre_indent
         });
       }
 
@@ -112,7 +115,15 @@ Drupal.ckeditorOn = function(textarea_id) {
     }
   };
 
-  Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
+  textarea_settings.extraPlugins = '';
+  if (typeof CKEDITOR.plugins != 'undefined'){
+    for (var plugin in textarea_settings['loadPlugins']){
+      textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
+      CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
+    }
+  }
+
+  Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
 };
 
 /**

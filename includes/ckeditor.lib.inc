@@ -260,6 +260,137 @@ function ckeditor_load_lang_options() {
   return $arr;
 }
 
+/**
+ * List of CKEditor plugins
+ *
+ * @return array
+ */
+function ckeditor_load_plugins() {
+  $arr = array();
+  $editor_path = ckeditor_path(TRUE) . '/';
+  $ckeditor_path = drupal_get_path('module', 'ckeditor');
+  $plugin_dir = $ckeditor_path . '/plugins/';
+
+  /*
+   * External plugins
+   */
+  if (module_exists('ckeditor_swf') && file_exists(drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/plugin.js')) {
+    $arr['ckeditor_swf'] = array(
+      'name' => 'swf',
+      'desc' => t('Support for CKEditor SWF module'),
+      'path' => base_path() . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
+      'default' => 't'
+      );
+  }
+
+  if (module_exists('ckeditor_link') && file_exists(drupal_get_path('module', 'ckeditor_link') . '/plugins/link/plugin.js')) {
+    $arr['ckeditor_link'] = array(
+      'name' => 'drupal_path',
+      'desc' => t('Support for CKEditor Link module'),
+      'path' => base_path() . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
+      'default' => 't'
+    );
+  }
+
+  /*
+   * CKEditor build-in plugins
+   */
+  if (file_exists($editor_path . 'plugins/tableresize/plugin.js')) {
+    $arr['tableresize'] = array(
+      'name' => 'tableresize',
+      'desc' => t('Tableresize plugin'),
+      'path' => base_path() . $editor_path . 'plugins/tableresize/',
+      'default' => 't'
+    );
+  }
+
+  if (file_exists($editor_path . 'plugins/autogrow/plugin.js')) {
+    $arr['autogrow'] = array(
+      'name' => 'autogrow',
+      'desc' => t('Autogrow plugin'),
+      'path' => base_path() . $editor_path . 'plugins/autogrow/',
+      'default' => 'f'
+    );
+  }
+
+  /*
+   * CKEditor module plugins
+   */
+  if ($handle = opendir($plugin_dir)) {
+    while (false !== ($file = readdir($handle))) {
+      if (is_dir($plugin_dir . $file) && file_exists($plugin_dir . $file . '/plugin.js')){
+        $source = file_get_contents($plugin_dir . $file . '/plugin.js');
+        $buttons = false;
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+            $buttons = implode(', ', $matches[1]);
+        }
+        if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
+          $arr[$file] = array(
+            'name' => $file,
+            'desc' => t($matches[1]),
+            'path' => base_path() . $plugin_dir . $file . '/',
+            'default' => 'f'
+          );
+        }
+        else {
+          $arr[$file] = array(
+            'name' => $file,
+            'desc' => t('Plugin file: ' . $file),
+            'path' => base_path() . $plugin_dir . $file . '/',
+            'default' => 'f'
+          );
+        }
+        if ($buttons){
+            $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
+        }
+      }
+    }
+
+    closedir($handle);
+  }
+  /*
+    if (file_exists($plugin_dir . 'drupalbreaks/plugin.js')) {
+        $arr['drupalbreaks'] = array(
+            'name' => 'drupalbreaks',
+            'desc' => t('Teaser Break button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'drupalbreaks/',
+            'default' => 't'
+        );
+    }
+
+    if (file_exists($plugin_dir . 'mediaembed/plugin.js')) {
+        $arr['mediaembed'] = array(
+            'name' => 'mediaembed',
+            'desc' => t('MediaEmbed button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'mediaembed/',
+            'default' => 't'
+        );
+    }
+
+    if (module_exists('imce') && file_exists($plugin_dir . 'imce/plugin.js')) {
+        $arr['imce'] = array(
+            'name' => 'imce',
+            'desc' => t('IMCE Window button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'imce/',
+            'default' => 'f'
+        );
+    }
+
+     if (module_exists('media') && file_exists($plugin_dir . 'media/plugin.js')) {
+        $arr['media'] = array(
+            'name' => 'media',
+            'desc' => t('Media Window button in toolbar'),
+            'path' => base_path() . $plugin_dir . 'media/',
+            'default' => 'f'
+        );
+    }
+*/
+  ksort($arr);
+
+  return $arr;
+}
+
+
 function ckeditor_user_get_setting($user, $profile, $setting) {
   $default = array(
     'default' => 't',
