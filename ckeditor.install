@@ -75,7 +75,7 @@ function ckeditor_install() {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
-    ['Link','Unlink','Anchor']
+    ['Link','Unlink','Anchor', 'Linkit']
 ]
     ";
     $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
@@ -118,7 +118,7 @@ function ckeditor_install() {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
-    ['Link','Unlink','Anchor'],
+    ['Link','Unlink','Anchor', 'Linkit'],
     ['DrupalBreak'],
     '/',
     ['Format','Font','FontSize'],

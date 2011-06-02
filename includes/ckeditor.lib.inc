@@ -308,6 +308,15 @@ function ckeditor_load_plugins() {
         );
     }
 
+    if (module_exists('linkit') && file_exists(drupal_get_path('module', 'linkit') . '/editors/ckeditor/plugin.js')) {
+        $arr['linkit'] = array(
+            'name' => 'Linkit',
+            'desc' => t('Support for Linkit module <i>(buttons: Linkit)</i>'),
+            'path' => base_path() . drupal_get_path('module', 'linkit') . '/editors/ckeditor/',
+            'default' => 't'
+        );
+    }
+
     /*
      * CKEditor build-in plugins
      */
