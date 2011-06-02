@@ -585,26 +585,6 @@ function ckeditor_process_textarea($element) {
         drupal_set_html_head('<script type="text/javascript" src="'. $editor_path .'/ckeditor_basic.js?I"></script>');
       }
       drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path)), 'setting');
-      if (module_exists('paging')) {
-        drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
-      }
-      if (module_exists('linktocontent_node')) {
-        drupal_add_js(array('ckeditor' => array('linktocontent_node' => TRUE)), 'setting');
-      }
-      if (module_exists('linktocontent_menu')) {
-        drupal_add_js(array('ckeditor' => array('linktocontent_menu' => TRUE)), 'setting');
-      }
-      if (module_exists('pagebreak')) {
-        drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
-      }
-      if (function_exists('linktocontent_node_menu')) {
-        if (!empty($global_conf['linktoc']) && $global_conf['linktoc']!='p') {
-          drupal_add_js(array('ckeditor' => array('linktocontent_node_path_filter' => TRUE)), 'setting');
-          if ($global_conf['linktoc'] == 'pn') {
-            drupal_add_js(array('ckeditor' => array('linktocontent_node_select_type' => TRUE)), 'setting');
-          }
-        }
-      }
       $is_running = TRUE;
     }
 
