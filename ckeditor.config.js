@@ -52,7 +52,7 @@ CKEDITOR.editorConfig = function(config) {
     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-    ['Link','Unlink','Anchor','LinkToNode', 'LinkToMenu'],
+    ['Link','Unlink','Anchor','Linkit','LinkToNode','LinkToMenu'],
     ['DrupalBreak', 'DrupalPageBreak']
    ];
 
@@ -77,7 +77,7 @@ CKEDITOR.editorConfig = function(config) {
       ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
       ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
       ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-      ['Link','Unlink','Anchor','LinkToNode', 'LinkToMenu'],
+      ['Link','Unlink','Anchor','Linkit','LinkToNode', 'LinkToMenu'],
       '/',
       ['Format','Font','FontSize'],
       ['TextColor','BGColor'],
