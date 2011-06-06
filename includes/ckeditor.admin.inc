@@ -1153,7 +1153,10 @@ function ckeditor_admin_profile_delete_form_submit($form, &$form_state) {
  * contain Drupal Form API values
  */
 function ckeditor_admin_values_to_settings($values) {
-    $plugins = $values['loadPlugins'];
+    $plugins = array();
+    if (isset($values['loadPlugins'])){
+        $plugins = $values['loadPlugins'];
+    }
     unset($values['name'], $values['input_formats'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id'], $values['loadPlugins']);
     
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
