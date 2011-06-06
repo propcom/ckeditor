@@ -357,43 +357,33 @@ function ckeditor_load_plugins() {
 
     closedir($handle);
   }
+
   /*
-    if (file_exists($plugin_dir . 'drupalbreaks/plugin.js')) {
-        $arr['drupalbreaks'] = array(
-            'name' => 'drupalbreaks',
-            'desc' => t('Teaser Break button in toolbar'),
-            'path' => base_path() . $plugin_dir . 'drupalbreaks/',
-            'default' => 't'
-        );
-    }
+   * CKEditor plugins registered by hook
+   */
+  $plugins = module_invoke_all('ckeditor_plugin');
 
-    if (file_exists($plugin_dir . 'mediaembed/plugin.js')) {
-        $arr['mediaembed'] = array(
-            'name' => 'mediaembed',
-            'desc' => t('MediaEmbed button in toolbar'),
-            'path' => base_path() . $plugin_dir . 'mediaembed/',
-            'default' => 't'
-        );
+  foreach ($plugins as $i => $plugin){
+    if (file_exists($plugin['path'] . 'plugin.js')){
+      $source = file_get_contents($plugin['path'] . 'plugin.js');
+      $plugins[$i]['path'] = base_path() . $plugin['path'];
+      $buttons = false;
+      if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+        $buttons = implode(', ', $matches[1]);
+      }
+      if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0){
+        $plugin['desc'] = t('Plugin file: ' . $plugin['name']);
+      }
+      if ($buttons){
+        $plugin['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
+      }
     }
+    else {
+      unset($plugins[$i]);
+    }
+  }
+  $arr = array_merge($arr, $plugins);
 
-    if (module_exists('imce') && file_exists($plugin_dir . 'imce/plugin.js')) {
-        $arr['imce'] = array(
-            'name' => 'imce',
-            'desc' => t('IMCE Window button in toolbar'),
-            'path' => base_path() . $plugin_dir . 'imce/',
-            'default' => 'f'
-        );
-    }
-
-     if (module_exists('media') && file_exists($plugin_dir . 'media/plugin.js')) {
-        $arr['media'] = array(
-            'name' => 'media',
-            'desc' => t('Media Window button in toolbar'),
-            'path' => base_path() . $plugin_dir . 'media/',
-            'default' => 'f'
-        );
-    }
-*/
   ksort($arr);
 
   return $arr;
