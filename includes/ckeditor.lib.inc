@@ -373,6 +373,32 @@ function ckeditor_load_plugins() {
         closedir($handle);
     }
 
+    /*
+     * CKEditor plugins registered by hook
+     */
+    $plugins = module_invoke_all('ckeditor_plugin');
+
+    foreach ($plugins as $i => $plugin){
+        if (file_exists($plugin['path'] . 'plugin.js')){
+            $source = file_get_contents($plugin['path'] . 'plugin.js');
+            $plugins[$i]['path'] = base_path() . $plugin['path'];
+            $buttons = false;
+            if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+                $buttons = implode(', ', $matches[1]);
+            }
+            if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0){
+                $plugin['desc'] = t('Plugin file: ' . $plugin['name']);
+            }
+            if ($buttons){
+                $plugin['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
+            }
+        }
+        else {
+            unset($plugins[$i]);
+        }
+    }
+    $arr = array_merge($arr, $plugins);
+
     ksort($arr);
 
     return $arr;
