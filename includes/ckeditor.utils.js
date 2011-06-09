@@ -77,6 +77,10 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             {
                 var body = $(ev.editor.document.$.body);
 
+                ev.editor.dataProcessor.writer.setRules('p', {
+                    breakAfterOpen: false
+                });
+
                 if (typeof(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting) != 'undefined') {
                     var dtd = CKEDITOR.dtd;
                     for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
