@@ -90,6 +90,10 @@ Drupal.ckeditorOn = function(textarea_id) {
     instanceReady : function(ev)
     {
       var body = $(ev.editor.document.$.body);
+      // Don't enter line breaks after paragraph so we can be friendly to drupal's line break filter.
+      ev.editor.dataProcessor.writer.setRules('p', {
+        breakAfterOpen: false
+      });
       if (typeof(textarea_settings.custom_formatting) != 'undefined') {
         var dtd = CKEDITOR.dtd;
         for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
