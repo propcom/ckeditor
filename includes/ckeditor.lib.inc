@@ -929,19 +929,17 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     }
 
     if (!empty($conf['js_conf'])) {
-        $lines = preg_split("/[\n\r]+/", $conf['js_conf']);
-        foreach ($lines as $l) {
-            //parsing lines with custom configuration
-            preg_match_all('#(config\.)?(\w+)[ ]*=(.+)[;]?#is', $l, $matches);
-            if (!empty($matches[0])) {
-                $value = trim($matches[3][0], " ;'\"\n\r\t\0\x0B");
-                if (strcasecmp($value, 'true') == 0) {
-                    $value = TRUE;
+        preg_match_all('#config\.(\w+)[\s]*=[\s]*(.+?);#is', preg_replace("/[\n\r]+/", "", $conf['js_conf']), $matches);
+        foreach ($matches[2] as $i => $match) {
+            if (!empty($match)) {
+                $value=trim($match, " ;'\"\n\r\t\0\x0B");
+                if ( strcasecmp($value, 'true') == 0 ) {
+                    $value=TRUE;
                 }
-                if (strcasecmp($value, 'false') == 0) {
-                    $value = FALSE;
+                if ( strcasecmp($value, 'false') == 0 ) {
+                    $value=FALSE;
                 }
-                $settings[$matches[2][0]] = $value;
+                $settings["js_conf"][$matches[1][$i]]=$value;
             }
         }
     }

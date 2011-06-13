@@ -105,6 +105,12 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             }
         };
 
+        if (typeof textarea_settings['js_conf'] != 'undefined'){
+            for (var add_conf in textarea_settings['js_conf']){
+                textarea_settings[add_conf] = eval(textarea_settings['js_conf'][add_conf]);
+            }
+        }
+
         textarea_settings.extraPlugins = '';
         if (typeof CKEDITOR.plugins != 'undefined'){
             for (var plugin in textarea_settings['loadPlugins']){
