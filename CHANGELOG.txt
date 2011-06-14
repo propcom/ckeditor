@@ -1,3 +1,22 @@
+--2011-06-14
+- [#1080270] by RolandK: Not formatting text between code tags
+
+--2011-06-13
+- [#975746] by dczepierga: Handling arrays in the "Custom javascript configuration"
+
+--2011-06-10
+- [#1184792] by anrikun: Move CKEditor module to "User interface" package
+
+--2011-06-09
+- [#1177062] by neclimdul: Teasers for long paragraphs broken
+
+--2011-06-06
+- [#1179912] by dczepierga: Hook to register plugin - it would be displayed in plugins list on profile setting page
+- [#1179766] by dczepierga: Undefined index: loadPlugins in ckeditor_admin_values_to_settings()
+
+--2011-06-02
+- [#1174144] by dczepierga: Plugins managment in profile settings
+
 --2011-05-24
 - [#1167034] by dczepierga: Add tableresize plugin support for CKEditor library >= 3.6
 - [#1166984] by dczepierga: Correct CKEditor simple toolbar
