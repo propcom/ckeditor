@@ -23,6 +23,7 @@ CKEDITOR.editorConfig = function(config) {
   // side
   // (as does Drupal), so just leave this line as is.
   config.protectedSource.push(/<\?[\s\S]*?\?>/g); // PHP Code
+  config.protectedSource.push(/<code>[\s\S]*?<\/code>/gi); // Code tags
   config.extraPlugins = '';
   if (Drupal.ckeditorCompareVersion('3.1')) {
     config.extraPlugins += (config.extraPlugins ? ',drupalbreaks' : 'drupalbreaks' );
