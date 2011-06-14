@@ -1,3 +1,20 @@
+-- 2011-06-14
+- [#1187808] by RolandK: Not formatting text between code tags
+
+-- 2011-06-13
+- [#1186880] by dczepierga: Handling arrays in the "Custom javascript configuration"
+
+-- 2011-06-09
+- [#1183218] by neclimdul: Teasers for long paragraphs broken
+
+-- 2011-06-06
+- [#1179880] by dczepierga: Hook to register plugin - it would be displayed in plugins list on profile setting page
+- [#1063646] by dczepierga: Undefined index: loadPlugins in ckeditor_admin_values_to_settings()
+
+-- 2011-06-02
+- [#1176212] by dczepierga: Remove not supported linktomenu and linktonode plugins
+- [#1176208] by dczepierga: Plugins managment in profile settings
+
 -----------------------------
  2011-05-30
  Released CKEditor 7.x-1.2
