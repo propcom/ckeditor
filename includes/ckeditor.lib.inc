@@ -362,7 +362,6 @@ function ckeditor_load_plugins() {
   /*
    * CKEditor module plugins - additional directory
    */
-  var_dump($plugin_dir);var_dump($plugin_dir_additional);
   if ($plugin_dir != $plugin_dir_additional && is_dir($plugin_dir_additional) && $handle = opendir($plugin_dir_additional)) {
     while (false !== ($file = readdir($handle))) {
       if (is_dir($plugin_dir_additional . $file) && file_exists($plugin_dir_additional . $file . '/plugin.js')){
