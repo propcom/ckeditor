@@ -270,6 +270,7 @@ function ckeditor_load_plugins() {
   $editor_path = ckeditor_path(TRUE) . '/';
   $ckeditor_path = drupal_get_path('module', 'ckeditor');
   $plugin_dir = $ckeditor_path . '/plugins/';
+  $plugin_dir_additional = ckeditor_plugins_path(TRUE, TRUE) . '/';
 
   /*
    * External plugins
@@ -325,7 +326,7 @@ function ckeditor_load_plugins() {
   /*
    * CKEditor module plugins
    */
-  if ($handle = opendir($plugin_dir)) {
+  if (is_dir($plugin_dir) && $handle = opendir($plugin_dir)) {
     while (false !== ($file = readdir($handle))) {
       if (is_dir($plugin_dir . $file) && file_exists($plugin_dir . $file . '/plugin.js')){
         $source = file_get_contents($plugin_dir . $file . '/plugin.js');
@@ -346,6 +347,43 @@ function ckeditor_load_plugins() {
             'name' => $file,
             'desc' => t('Plugin file: ' . $file),
             'path' => base_path() . $plugin_dir . $file . '/',
+            'default' => 'f'
+          );
+        }
+        if ($buttons){
+            $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
+        }
+      }
+    }
+
+    closedir($handle);
+  }
+
+  /*
+   * CKEditor module plugins - additional directory
+   */
+  var_dump($plugin_dir);var_dump($plugin_dir_additional);
+  if ($plugin_dir != $plugin_dir_additional && is_dir($plugin_dir_additional) && $handle = opendir($plugin_dir_additional)) {
+    while (false !== ($file = readdir($handle))) {
+      if (is_dir($plugin_dir_additional . $file) && file_exists($plugin_dir_additional . $file . '/plugin.js')){
+        $source = file_get_contents($plugin_dir_additional . $file . '/plugin.js');
+        $buttons = false;
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+            $buttons = implode(', ', $matches[1]);
+        }
+        if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
+          $arr[$file] = array(
+            'name' => $file,
+            'desc' => t($matches[1]),
+            'path' => base_path() . $plugin_dir_additional . $file . '/',
+            'default' => 'f'
+          );
+        }
+        else {
+          $arr[$file] = array(
+            'name' => $file,
+            'desc' => t('Plugin file: ' . $file),
+            'path' => base_path() . $plugin_dir_additional . $file . '/',
             'default' => 'f'
           );
         }

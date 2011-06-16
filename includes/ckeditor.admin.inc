@@ -1157,13 +1157,15 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#maxlength' => 128,
     '#description' => t('Path to CKEditor (the HTML editor, downloaded from <a href="!ckeditorcom">ckeditor.com</a>) relative to the document root.') .
       '<br />'.
-      t('Available placeholders:!b - base URL path of the Drupal installation (!base).!m - base URL path where CKEditor module is stored (!files).<br />Current path: !path',
+      t('Available placeholders:!b - base URL path of the Drupal installation (!base).!m - base URL path where CKEditor module is stored (!files).!l - base URL path to libraries dir (!library).<br />Current path: !path',
       array(
         '!b' => '<br /><strong>%b</strong>',
         '!m' => '<br /><strong>%m</strong>',
+        '!l' => '<br /><strong>%l</strong>',
         '!path' => ckeditor_path(FALSE),
         '!base' => base_path(),
         '!files' => base_path() . $module_drupal_path ,
+        '!library' => base_path() . 'sites/all/libraries/',
         '!ckeditorcom' => 'http://ckeditor.com/download'
      )),
     '#required' => TRUE
@@ -1176,6 +1178,35 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#size' => 40,
     '#maxlength' => 128,
     '#description' => t('The path to the local directory (on the server) which points to the path defined above. Enter either an absolute server path or path relative to "index.php". If empty, CKEditor module will try to find the right path.<br />Current path: !path', array('!path' => ckeditor_path(TRUE))),
+  );
+
+  $form['ckeditor_advanced_settings']['ckeditor_plugins_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Path to CKEditor plugins dir'),
+    '#default_value' =>  !empty($profile->settings['ckeditor_plugins_path']) ? $profile->settings['ckeditor_plugins_path'] : '%m/plugins',
+    '#size' => 40,
+    '#maxlength' => 128,
+    '#description' => t('Path to CKEditor plugins dir relative to the document root.') .
+      '<br />'.
+      t('Available placeholders:!b - base URL path of the Drupal installation (!base).!m - base URL path where CKEditor module is stored (!files).!l - base URL path to libraries dir (!library).<br />Current path: !path',
+      array(
+        '!b' => '<br /><strong>%b</strong>',
+        '!m' => '<br /><strong>%m</strong>',
+        '!l' => '<br /><strong>%l</strong>',
+        '!path' => ckeditor_plugins_path(),
+        '!base' => base_path(),
+        '!files' => base_path() . $module_drupal_path ,
+        '!library' => base_path() . 'sites/all/libraries/'
+     ))
+  );
+
+  $form['ckeditor_advanced_settings']['ckeditor_plugins_local_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Local path to CKEditor plugins dir'),
+    '#default_value' =>  isset($profile->settings['ckeditor_plugins_local_path'])?$profile->settings['ckeditor_plugins_local_path']:'',
+    '#size' => 40,
+    '#maxlength' => 128,
+    '#description' => t('The path to the local directory (on the server) which points to the path defined above. Enter either an absolute server path or path relative to "index.php". If empty, CKEditor module will try to find the right path.<br />Current path: !path', array('!path' => ckeditor_plugins_path(TRUE))),
   );
 
   $form['ckeditor_advanced_settings']['show_fieldnamehint'] = array(
@@ -1265,6 +1296,26 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
   }
   //no slash at the end
   $edit['ckeditor_local_path'] = trim(rtrim($edit['ckeditor_local_path'], "/"));
+
+  //strip whitespaces
+  if (empty($edit['ckeditor_plugins_local_path'])) {
+    $edit['ckeditor_plugins_local_path'] = '';
+  }
+  else {
+    $edit['ckeditor_plugins_local_path'] = trim($edit['ckeditor_plugins_local_path']);
+  }
+
+  //strip slash from the end
+  if (empty($edit['ckeditor_plugins_path'])) {
+    $edit['ckeditor_plugins_path'] = '';
+  }
+  $edit['ckeditor_plugins_path'] = trim(rtrim($edit['ckeditor_plugins_path'], "/"));
+  if ($edit['ckeditor_plugins_path'] && 0 !== strpos($edit['ckeditor_plugins_path'], "/") && 0 !== strpos($edit['ckeditor_plugins_path'], "%")) {
+    //ensure that slash is at the beginning
+    $edit['ckeditor_plugins_path'] = "/". $edit['ckeditor_plugins_path'];
+  }
+  //no slash at the end
+  $edit['ckeditor_plugins_path'] = trim(rtrim($edit['ckeditor_plugins_path'], "/"));
 
   $settings = ckeditor_admin_values_to_settings($edit);
   db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", $edit['name'], $settings);
