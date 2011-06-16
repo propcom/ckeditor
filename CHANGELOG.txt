@@ -1,3 +1,6 @@
+--2011-06-16
+- [#1190280] by dczepierga: Configurable CKEditor plugins directory for users plugins
+
 --2011-06-14
 - [#1080270] by RolandK: Not formatting text between code tags
 
