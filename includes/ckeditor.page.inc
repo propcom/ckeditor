@@ -166,7 +166,7 @@ function ckeditor_filter_xss() {
             continue;
         }
 
-        if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || array_key_exists($name, $formatFilters)) {
+        if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || (array_key_exists($name, $formatFilters)) && $formatFilters[$name]->status) {
             continue;
         }
 
