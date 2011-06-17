@@ -357,8 +357,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#collapsed' => TRUE
     );
 
-    $all = filter_get_filters();
-    
     $form['security']['filters'] = array(
         '#type' => 'fieldset',
         '#title' => t('Security filters'),
@@ -366,23 +364,27 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#tree' => TRUE,
     );
 
-    //don't bother administrator with filters that definitely are not security filters
-    $modules_with_filters_to_skip = array('amazon_filter', 'asy', 'bbcode', 'biblio', 'blockquote', 'bookpost', 'chessboard', 'citation_filter', 'codefilter', 'collapse_text', 'contextlinks', 'coolfilter', 'dialectic', 'dript', 'dme', 'drutex', 'embedfilter', 'ext_link_page', 'extlink', 'elf', 'flickr', 'flickrstickr', 'footnotes', 'formdefaults', 'freelinking', 'gallery', 'geogebra', 'geshifilter', 'gotwo', 'googtube', 'gotcha', 'gtspam', 'hidden_content', 'img_assist', 'image_filter', 'imagebrowser', 'inlinetags', 'insert_view', 'insertframe', 'insertnode', 'interwiki', 'jlightbox', 'jsmath', 'language_sections', 'link_node', 'lootz', 'markdown', 'marksmarty', 'mobile_codes', 'mykml', 'nofollowlist', 'oagwt', 'paging', 'pathfilter', 'pearwiki_filter', 'php', 'pirate', 'reptag', 'scrippet', 'scripturefilter', 'signwriter', 'slideshowpro', 'smartlinebreakconverter', 'smartypants', 'smileys', 'spamspan', 'spam_tokens', 'spoiler', 'table_altrow', 'tablemanager', 'tableofcontents', 'textile', 'tooltips', 'twikifilter', 'typogrify', 'unwrap', 'urlclass', 'urlicon', 'url_replace_filter', 'username_highlighter', 'video_filter', 'quote');
+    $allFilters = filter_get_filters();
 
     if (!isset($profile->settings['ss'])) {
         $profile->settings['filters']['filter/0'] = 1;
     }
-    
-    foreach ($all as $id => $filter) {
-        if (in_array(strtolower($filter['module']), $modules_with_filters_to_skip)) {
-            continue;
-        }
 
-        $form['security']['filters'][$id] = array(
+    if (array_key_exists('filter_htmlcorrector', $allFilters)) {
+        $form['security']['filters']['filter_htmlcorrector'] = array(
             '#type' => 'checkbox',
-            '#title' => t("!data", array('!data' => $filter['title'])),
-            '#default_value' => !empty($profile->settings['filters'][$id]),
-            '#description' => t("!data", array('!data' => $filter['description'])),
+            '#title' => t("!data", array('!data' => $allFilters['filter_htmlcorrector']['title'])),
+            '#default_value' => !empty($profile->settings['filters']['filter_htmlcorrector']),
+            '#description' => t("!data", array('!data' => $allFilters['filter_htmlcorrector']['description'])),
+        );
+    }
+
+    if (array_key_exists('filter_html', $allFilters)) {
+        $form['security']['filters']['filter_html'] = array(
+            '#type' => 'checkbox',
+            '#title' => t("!data", array('!data' => $allFilters['filter_html']['title'])),
+            '#default_value' => !empty($profile->settings['filters']['filter_html']),
+            '#description' => t("!data", array('!data' => $allFilters['filter_html']['description'])),
         );
     }
 
