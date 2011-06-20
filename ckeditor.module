@@ -1109,8 +1109,8 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
           if (FALSE !== strpos($gs['ckeditor_path'], "%b")) {
             $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%b" => "."));
           }
-          if (FALSE !== strpos($gs['ckeditor_plugins_path'], "%l")) {
-            $gs['ckeditor_plugins_local_path'] = strtr($gs['ckeditor_plugins_path'], array("%l" => "sites/all/libraries"));
+          if (FALSE !== strpos($gs['ckeditor_path'], "%l")) {
+            $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%l" => "sites/all/libraries"));
           }
         }
       }
@@ -1152,9 +1152,13 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
     $lib_path = 'sites/all/libraries';
     $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
 
-    //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
-    //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
+    //default: path to plugins subdirectory in the ckeditor module directory (starting from the document root)
+    //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/plugins
     $cke_plugins_path = base_path() . $mod_path .'/plugins';
+
+    //default: path to plugins subdirectory in the ckeditor module directory (relative to index.php)
+    //e.g.: sites/all/modules/ckeditor/plugins
+    $cke_plugins_local_path = $mod_path .'/plugins';
 
     if ($global_profile) {
       $gs = $global_profile->settings;
@@ -1186,7 +1190,7 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
 
       //ckeditor_plugins_path is defined, but wildcards are not used, we need to try to find out where is
       //the document root located and append ckeditor_plugins_path to it.
-      if (!empty($gs['ckeditor_plugins_local_path'])) {
+      if (!is_null($gs['ckeditor_plugins_local_path']) && !empty($gs['ckeditor_plugins_local_path'])) {
         $cke_plugins_local_path = $gs['ckeditor_plugins_local_path'];
       }
       elseif (!empty($gs['ckeditor_plugins_path'])) {
