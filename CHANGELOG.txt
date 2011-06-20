@@ -1,3 +1,7 @@
+-----------------------------
+ 2011-06-16
+ New stable release: 6.x-1.4
+-----------------------------
 --2011-06-16
 - [#1190280] by dczepierga: Add configuration option for setting CKEditor's plugins directory
 
