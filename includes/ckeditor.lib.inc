@@ -932,7 +932,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         preg_match_all('#config\.(\w+)[\s]*=[\s]*(.+?);#is', preg_replace("/[\n\r]+/", "", $conf['js_conf']), $matches);
         foreach ($matches[2] as $i => $match) {
             if (!empty($match)) {
-                $value=trim($match, " ;'\"\n\r\t\0\x0B");
+                $value=trim($match, " ;\n\r\t\0\x0B");
                 if ( strcasecmp($value, 'true') == 0 ) {
                     $value=TRUE;
                 }
