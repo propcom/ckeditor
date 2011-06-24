@@ -34,26 +34,42 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       
       //function which receive imce response
       window.ckeditor_setFile = function (file, win) {
-        var cfunc = win.location.href.split('&');
       
+        var cfunc = win.location.href.split('&');      
         for (var x in cfunc) {
           if (cfunc[x].match(/^CKEditorFuncNum=\d+$/)) {
             cfunc = cfunc[x].split('=');
             break;
           }
         }
-        
+         
+         
         CKEDITOR.tools.callFunction(cfunc[1], file);
         win.close();
       };
+      
     }
   } );
   function setFile(file) {
+  		var sel = this.getSelection(),
+			text = sel.getSelectedText();
     //checking if it is image
     if (file.width != 0 && file.height != 0) {
+       if (text)
+       {
+      	this.insertHtml('<a href="' + document.location.protocol + '//'+ document.location.host +  file.url + '">' + text + '</a>');
+       //this.insertHtml('<img src="' + file.url + '" style="width:' + file.width + 'px;height:' + file.height + 'px;" alt="' + file.name + '" />');
+			 }else{
       this.insertHtml('<img src="' + file.url + '" style="width:' + file.width + 'px;height:' + file.height + 'px;" alt="' + file.name + '" />');
-    } else {
-      this.insertHtml('<a href="' + file.url + '">' + file.name + '</a>');
+      }
+    } else {    
+			if (text)
+			{
+				this.insertHtml('<a href="' +document.location.protocol + '//'+ document.location.host + file.url + '">' + text + '</a>');
+			}else
+			{
+	      this.insertHtml('<a href="' + document.location.protocol + '//'+ document.location.host +  file.url + '">' + file.name + '</a>');
+      }
     }
   }
 } )();
