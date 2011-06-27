@@ -277,6 +277,37 @@ function ckeditor_load_lang_options() {
 }
 
 /**
+ * Get the language locale code supported by Scayt for the specified language
+ */
+function ckeditor_scayt_langcode($lang) {
+    $scayt_langs = array(
+        'en' => 'en_US',
+        'es' => 'es_ES',
+        'fr' => 'fr_FR',
+        'de' => 'de_DE',
+        'it' => 'it_IT',
+        'el' => 'el_EL',
+        'pt' => 'pt_PT',
+        'da' => 'da_DA',
+        'sv' => 'sv_SE',
+        'nl' => 'nl_NL',
+        'nb' => 'no_NO',
+        'fi' => 'fi_FI',
+    );
+    if (array_key_exists($lang, $scayt_langs)) {
+        return $scayt_langs[$lang];
+    }
+
+    $default = language_default();
+    $default = $default->language;
+    if (array_key_exists($default, $scayt_langs)) {
+        return $scayt_langs[$default];
+    }
+
+    return 'en_US';
+}
+
+/**
  * List of CKEditor plugins
  *
  * @return array
@@ -1244,6 +1275,9 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         }
         if (!empty($ckeditor_on)) {
             drupal_add_js(array('ckeditor' => array('autostart' => array( $textarea_id => $ckeditor_on))), 'setting');
+        }
+        if (!empty($field["#language"])){
+            drupal_add_js(array('ckeditor' => array('scayt_language' => ckeditor_scayt_langcode($field["#language"]))), 'setting');
         }
         /*
         if ($settings['popup'] == 't') {

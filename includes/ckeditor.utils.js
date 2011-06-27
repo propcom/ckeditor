@@ -105,6 +105,10 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             }
         };
 
+        if (typeof Drupal.settings.ckeditor.scayt_language != 'undefined'){
+            textarea_settings['scayt_sLang'] = Drupal.settings.ckeditor.scayt_language;
+        }
+
         if (typeof textarea_settings['js_conf'] != 'undefined'){
             for (var add_conf in textarea_settings['js_conf']){
                 textarea_settings[add_conf] = eval(textarea_settings['js_conf'][add_conf]);
