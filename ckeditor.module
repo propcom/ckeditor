@@ -50,7 +50,9 @@ $_ckeditor_ids = array();
 function ckeditor_form_alter(&$form, $form_state, $form_id) {
   // [#659278], [#666560], [#666616]
   if (substr($form_id, -10) == '_node_form') {
-    $nodetype = $form['type']['#value'];
+    if (!empty($form['#node']->language)){
+        $form['body_field']['body']['#scayt_language'] = _ckeditor_scayt_langcode($form['#node']->language);
+    }
     if (!empty($form['body_field']['teaser_js']['#teaser'])) {
       $setting['ckeditor']['teaser'] = $form['body_field']['teaser_js']['#teaser'];
       drupal_add_js($setting, 'setting');
@@ -648,6 +650,9 @@ function ckeditor_process_textarea($element) {
     }
     if ($conf['auto_lang']=="f") {
       $settings[$textarea_id]['language'] = $conf['lang'];
+    }
+    if ($element['#scayt_language']) {
+      $settings[$textarea_id]['scayt_sLang'] = $element['#scayt_language'];
     }
     if (isset($conf['forcePasteAsPlainText']) && $conf['forcePasteAsPlainText'] == 't') {
       $settings[$textarea_id]['forcePasteAsPlainText'] = TRUE;
@@ -1252,4 +1257,34 @@ function ckeditor_features_api() {
       'file' => drupal_get_path('module', 'ckeditor') .'/includes/ckeditor.features.inc',
     )
   );
+}
+
+/**
+ * Get the language locale code supported by Scayt for the specified language
+ */
+function _ckeditor_scayt_langcode($lang) {
+  $scayt_langs = array(
+    'en' => 'en_US',
+    'es' => 'es_ES',
+    'fr' => 'fr_FR',
+    'de' => 'de_DE',
+    'it' => 'it_IT',
+    'el' => 'el_EL',
+    'pt' => 'pt_PT',
+    'da' => 'da_DA',
+    'sv' => 'sv_SE',
+    'nl' => 'nl_NL',
+    'nb' => 'no_NO',
+    'fi' => 'fi_FI',
+  );
+  if (array_key_exists($lang, $scayt_langs)) {
+    return $scayt_langs[$lang];
+  }
+
+  $default = language_default();
+  if (array_key_exists($default, $scayt_langs)) {
+    return $scayt_langs[$default];
+  }
+
+  return 'en_US';
 }
