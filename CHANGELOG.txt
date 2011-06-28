@@ -1,3 +1,10 @@
+--2011-06-27
+- [#1177132] by tangent: Scayt spelling language does not match node language
+
+--2011-06-20
+- [#1192676] by dczepierga: is_dir() error, and pagebreak button doesn't appear
+- [#1193978] by dczepierga: Cleanup CKEditor config file from plugins definitions
+
 -----------------------------
  2011-06-16
  New stable release: 6.x-1.4
