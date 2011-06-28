@@ -651,7 +651,7 @@ function ckeditor_process_textarea($element) {
     if ($conf['auto_lang']=="f") {
       $settings[$textarea_id]['language'] = $conf['lang'];
     }
-    if ($element['#scayt_language']) {
+    if (isset($element['#scayt_language'])) {
       $settings[$textarea_id]['scayt_sLang'] = $element['#scayt_language'];
     }
     if (isset($conf['forcePasteAsPlainText']) && $conf['forcePasteAsPlainText'] == 't') {
@@ -1281,7 +1281,7 @@ function _ckeditor_scayt_langcode($lang) {
     return $scayt_langs[$lang];
   }
 
-  $default = language_default();
+  $default = language_default('language');
   if (array_key_exists($default, $scayt_langs)) {
     return $scayt_langs[$default];
   }
