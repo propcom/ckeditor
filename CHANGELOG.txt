@@ -1,6 +1,6 @@
 -----------------------------
  2011-06-28
- New stable release: 6.x-1.4.1
+ New stable release: 6.x-1.5
 -----------------------------
 --2011-06-27
 - [#1177132] by tangent: Add Scayt spelling language to match node language
