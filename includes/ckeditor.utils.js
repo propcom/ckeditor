@@ -102,6 +102,7 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             focus : function(ev)
             {
                 Drupal.ckeditorInstance = ev.editor;
+                Drupal.ckeditorActiveId = ev.editor.name;
             }
         };
 
