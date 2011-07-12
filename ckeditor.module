@@ -869,7 +869,7 @@ function ckeditor_process_textarea($element) {
 
     if (!empty($conf['js_conf'])) {
       //parsing lines with custom configuration
-      preg_match_all('#config\.(\w+)[\s]*=[\s]*(.+?);#is', preg_replace("/[\n\r]+/", "", $conf['js_conf']), $matches);
+      preg_match_all('#config\.(\w+)[\s]*=[\s]*(.+?);[\s]*(?=config\.|$)#is', preg_replace("/[\n\r]+/", "", $conf['js_conf']), $matches);
       foreach ($matches[2] as $i => $match) {
         if (!empty($match)) {
           $value=trim($match, " ;\n\r\t\0\x0B");
