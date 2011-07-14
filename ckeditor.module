@@ -766,12 +766,12 @@ function ckeditor_process_textarea($element) {
     switch ($filebrowser) {
       case 'ckfinder':
         if (user_access('allow CKFinder file uploads')) {
-          $settings[$textarea_id]['filebrowserBrowseUrl'] = $module_full_path .'/ckeditor/ckfinder/ckfinder.html';
-          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $module_full_path .'/ckeditor/ckfinder/ckfinder.html?Type=Images';
-          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $module_full_path .'/ckeditor/ckfinder/ckfinder.html?Type=Flash';
-          $settings[$textarea_id]['filebrowserUploadUrl'] = $module_full_path .'/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-          $settings[$textarea_id]['filebrowserImageUploadUrl'] = $module_full_path .'/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-          $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $module_full_path .'/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
+          $settings[$textarea_id]['filebrowserBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html';
+          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Images';
+          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Flash';
+          $settings[$textarea_id]['filebrowserUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
+          $settings[$textarea_id]['filebrowserImageUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+          $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
         }
         break;
       case 'imce':
@@ -803,7 +803,7 @@ function ckeditor_process_textarea($element) {
       switch ($filebrowser_image) {
         case 'ckfinder':
           if (user_access('allow CKFinder file uploads')) {
-            $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $module_full_path .'/ckeditor/ckfinder/ckfinder.html?Type=Images';
+            $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Images';
             $settings[$textarea_id]['filebrowserImageUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
           }
           break;
@@ -837,8 +837,8 @@ function ckeditor_process_textarea($element) {
       switch ($filebrowser_flash) {
         case 'ckfinder':
           if (user_access('allow CKFinder file uploads')) {
-            $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $module_full_path .'/ckeditor/ckfinder/ckfinder.html?Type=Images';
-            $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $module_full_path .'/ckeditor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+            $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Images';
+            $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
           }
           break;
         case 'imce':
