@@ -573,18 +573,18 @@ function ckeditor_process_textarea($element) {
       /* In D6 drupal_add_js() can't add external JS, in D7 use drupal_add_js(...,'external') */
       if ( $conf['popup'] != 't' ) {
         if (isset($conf['ckeditor_load_method'])) {
-          drupal_set_html_head('<script type="text/javascript" src="'. $editor_path . '/' . $conf['ckeditor_load_method'] . '?I"></script>');
+          drupal_add_js($editor_local_path . '/' . $conf['ckeditor_load_method'], 'module');
           if ($conf['ckeditor_load_method'] == 'ckeditor_basic.js') {
-            drupal_set_html_head('<script type="text/javascript">CKEDITOR.loadFullCoreTimeout = ' . $conf['ckeditor_load_time_out'] . ';</script>');
+            drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $conf['ckeditor_load_time_out'] . ';', 'inline');
             drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
           }
         }
         else {
-          drupal_set_html_head('<script type="text/javascript" src="'. $editor_path .'/ckeditor.js?I"></script>');
+          drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module');
         }
       }
       else {
-        drupal_set_html_head('<script type="text/javascript" src="'. $editor_path .'/ckeditor_basic.js?I"></script>');
+        drupal_add_js($editor_local_path . '/ckeditor_basic.js?I', 'module', 'header', FALSE, TRUE, FALSE);
       }
       drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path)), 'setting');
       $is_running = TRUE;
