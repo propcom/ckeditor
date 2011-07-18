@@ -573,14 +573,14 @@ function ckeditor_process_textarea($element) {
       /* In D6 drupal_add_js() can't add external JS, in D7 use drupal_add_js(...,'external') */
       if ( $conf['popup'] != 't' ) {
         if (isset($conf['ckeditor_load_method'])) {
-          drupal_add_js($editor_local_path . '/' . $conf['ckeditor_load_method'], 'module');
+          drupal_add_js($editor_local_path . '/' . $conf['ckeditor_load_method'], 'module', 'header', FALSE, TRUE, FALSE);
           if ($conf['ckeditor_load_method'] == 'ckeditor_basic.js') {
             drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $conf['ckeditor_load_time_out'] . ';', 'inline');
             drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
           }
         }
         else {
-          drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module');
+          drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module', 'header', FALSE, TRUE, FALSE);
         }
       }
       else {
