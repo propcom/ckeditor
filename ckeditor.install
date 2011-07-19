@@ -353,7 +353,7 @@ function _ckeditor_requirements_getinstalledversion() {
  */
 function _ckeditor_requirements_ckfinder_config_check($profile_name) {
   module_load_include('module', 'ckeditor');
-  $lib_path = dirname(ckeditor_path(TRUE));
+  $lib_path = drupal_get_path('module', 'ckeditor');
   $config_path = $lib_path .'/ckfinder/config.php';
 
   if (!file_exists($config_path)) {
