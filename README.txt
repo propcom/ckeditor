@@ -198,7 +198,7 @@ CKFinder is an AJAX-based file manager created by CKEditor developers: http://ck
                ckeditor.js
                ...
 
-   3. Grant "Allow CKFinder file uploads" permission in the "Administration panel > People > Permissions" section.
+   3. Grant "CKFinder access" permission in the "Administration panel > People > Permissions" section.
       Note: if you do not see this permission, it means that CKEditor did not find CKFinder
       and you have probably uploaded CKFinder into wrong directory.
    4. Open the CKFinder configuration file (sites/all/modules/ckeditor/ckfinder/config.php) and do the following:
