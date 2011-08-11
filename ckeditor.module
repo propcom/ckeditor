@@ -1244,7 +1244,7 @@ function ckeditor_get_nodetype($get_q) {
       }
     }
   }
-
+  $nodetype = str_replace('-', '_', $nodetype);
   return $nodetype;
 }
 
