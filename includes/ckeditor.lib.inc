@@ -610,6 +610,8 @@ function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ) {
 function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     global $user, $language, $theme;
 
+    $currentTheme = variable_get('theme_default', $theme); 
+    
     $settings = array();
     $conf = array();
     $conf = $profile->settings;
@@ -635,7 +637,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         $conf['filters']['default'] = 1;
     }
 
-    $themepath = drupal_get_path('theme', $theme) . '/';
+    $themepath = drupal_get_path('theme', $currentTheme) . '/';
     $host = base_path();
 
     // setting some variables
@@ -992,8 +994,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $css_files = array();
     switch ($conf['css_mode']) {
         case 'theme':
-            global $language, $theme_info, $base_theme_info;
-
+            global $language, $base_theme_info;
+            $themes = list_themes();
+            $theme_info = $themes[$currentTheme];
             if (!empty($theme_info->stylesheets)) {
                 $editorcss = "\"";
                 foreach ($base_theme_info as $base) { // Grab stylesheets from base theme
@@ -1046,7 +1049,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
 
                 // Grab stylesheets from color module
-                $color_paths = variable_get('color_' . $theme . '_stylesheets', array());
+                $color_paths = variable_get('color_' . $currentTheme . '_stylesheets', array());
                 if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
                     if (!empty($color_paths[1])) {
                         $css_files[] = $host . $color_paths[1] . $query_string;
@@ -1113,7 +1116,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if (!empty($conf['uicolor']) && strpos($conf['uicolor'], "color_") === 0) {
         if (function_exists('color_get_palette')) {
-            $palette = @color_get_palette($theme, FALSE); //[#652274]
+            $palette = @color_get_palette($currentTheme, FALSE); //[#652274]
             $color = str_replace("color_", "", $conf['uicolor']);
             if (!empty($palette[$color])) {
                 $settings['uiColor'] = $palette[$color];
