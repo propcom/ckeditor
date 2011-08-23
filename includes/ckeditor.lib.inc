@@ -352,7 +352,8 @@ function ckeditor_load_plugins($render = FALSE) {
     /*
      * CKEditor build-in plugins
      */
-    if (file_exists($editor_path . 'plugins/tableresize/plugin.js')) {
+    $_editor_path = ckeditor_path(FALSE) . '/';
+    if (file_exists($_editor_path . 'plugins/tableresize/plugin.js')) {
         $arr['tableresize'] = array(
             'name' => 'tableresize',
             'desc' => t('Tableresize plugin'),
@@ -361,7 +362,7 @@ function ckeditor_load_plugins($render = FALSE) {
         );
     }
 
-    if (file_exists($editor_path . 'plugins/autogrow/plugin.js')) {
+    if (file_exists($_editor_path . 'plugins/autogrow/plugin.js')) {
         $arr['autogrow'] = array(
             'name' => 'autogrow',
             'desc' => t('Autogrow plugin'),
@@ -373,7 +374,7 @@ function ckeditor_load_plugins($render = FALSE) {
     /*
      * CKEditor module plugins
      */
-    $_plugin_dir = ckeditor_path(FALSE) . '/plugins/';
+    $_plugin_dir = $_editor_path . 'plugins/';
     if ($handle = opendir($_plugin_dir)) {
         while (false !== ($file = readdir($handle))) {
             if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')){
