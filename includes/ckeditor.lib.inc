@@ -308,15 +308,16 @@ function ckeditor_scayt_langcode($lang) {
 }
 
 /**
- * List of CKEditor plugins
+ * List of CKEditor plugins;
  *
  * @return array
  */
-function ckeditor_load_plugins() {
+function ckeditor_load_plugins($render = FALSE) {
     $arr = array();
-    $editor_path = ckeditor_path(FALSE) . '/';
-    $ckeditor_path = drupal_get_path('module', 'ckeditor');
-    $plugin_dir = $ckeditor_path . '/plugins/';
+    $base_path = '%base_path%';
+    $editor_path = '%editor_path%';
+    $ckeditor_path = '%ckeditor_path%';
+    $plugin_dir = '%plugin_dir%';
 
     /*
      * External plugins
@@ -325,7 +326,7 @@ function ckeditor_load_plugins() {
         $arr['ckeditor_swf'] = array(
             'name' => 'swf',
             'desc' => t('Support for CKEditor SWF module'),
-            'path' => base_path() . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
+            'path' => $base_path . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
             'default' => 't'
         );
     }
@@ -334,7 +335,7 @@ function ckeditor_load_plugins() {
         $arr['ckeditor_link'] = array(
             'name' => 'drupal_path',
             'desc' => t('Support for CKEditor Link module'),
-            'path' => base_path() . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
+            'path' => $base_path . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
             'default' => 't'
         );
     }
@@ -343,7 +344,7 @@ function ckeditor_load_plugins() {
         $arr['linkit'] = array(
             'name' => 'Linkit',
             'desc' => t('Support for Linkit module <i>(buttons: Linkit)</i>'),
-            'path' => base_path() . drupal_get_path('module', 'linkit') . '/editors/ckeditor/',
+            'path' => $base_path . drupal_get_path('module', 'linkit') . '/editors/ckeditor/',
             'default' => 't'
         );
     }
@@ -355,7 +356,7 @@ function ckeditor_load_plugins() {
         $arr['tableresize'] = array(
             'name' => 'tableresize',
             'desc' => t('Tableresize plugin'),
-            'path' => base_path() . $editor_path . 'plugins/tableresize/',
+            'path' => $base_path . $editor_path . 'plugins/tableresize/',
             'default' => 't'
         );
     }
@@ -364,7 +365,7 @@ function ckeditor_load_plugins() {
         $arr['autogrow'] = array(
             'name' => 'autogrow',
             'desc' => t('Autogrow plugin'),
-            'path' => base_path() . $editor_path . 'plugins/autogrow/',
+            'path' => $base_path . $editor_path . 'plugins/autogrow/',
             'default' => 'f'
         );
     }
@@ -372,10 +373,11 @@ function ckeditor_load_plugins() {
     /*
      * CKEditor module plugins
      */
-    if ($handle = opendir($plugin_dir)) {
+    $_plugin_dir = ckeditor_path(FALSE) . '/plugins/';
+    if ($handle = opendir($_plugin_dir)) {
         while (false !== ($file = readdir($handle))) {
-            if (is_dir($plugin_dir . $file) && file_exists($plugin_dir . $file . '/plugin.js')){
-                $source = file_get_contents($plugin_dir . $file . '/plugin.js');
+            if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')){
+                $source = file_get_contents($_plugin_dir . $file . '/plugin.js');
                 $buttons = false;
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
                     $buttons = implode(', ', $matches[1]);
@@ -384,7 +386,7 @@ function ckeditor_load_plugins() {
                     $arr[$file] = array(
                         'name' => $file,
                         'desc' => t($matches[1]),
-                        'path' => base_path() . $plugin_dir . $file . '/',
+                        'path' => $base_path . $plugin_dir . $file . '/',
                         'default' => 'f'
                     );
                 }
@@ -392,7 +394,7 @@ function ckeditor_load_plugins() {
                     $arr[$file] = array(
                         'name' => $file,
                         'desc' => t('Plugin file: ' . $file),
-                        'path' => base_path() . $plugin_dir . $file . '/',
+                        'path' => $base_path . $plugin_dir . $file . '/',
                         'default' => 'f'
                     );
                 }
@@ -412,7 +414,7 @@ function ckeditor_load_plugins() {
     foreach ($plugins as $i => $plugin){
         if (file_exists($plugin['path'] . 'plugin.js')){
             $source = file_get_contents($plugin['path'] . 'plugin.js');
-            $plugins[$i]['path'] = base_path() . $plugin['path'];
+            $plugins[$i]['path'] = $base_path . $plugin['path'];
             $buttons = false;
             if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
                 $buttons = implode(', ', $matches[1]);
@@ -431,9 +433,31 @@ function ckeditor_load_plugins() {
     $arr = array_merge($arr, $plugins);
 
     ksort($arr);
-
+    
+    if ($render === TRUE){
+        $arr = ckeditor_plugins_render($arr);
+    }
+    
     return $arr;
 }
+
+/**
+ * Render CKEditor plugins path
+ */
+function ckeditor_plugins_render($plugins) {
+    $render = array();
+    $render["%base_path%"] = base_path();
+    $render["%editor_path%"] = ckeditor_path(FALSE) . '/';
+    $render["%ckeditor_path%"] = drupal_get_path('module', 'ckeditor');
+    $render["%plugin_dir%"] = $render["%editor_path%"] . 'plugins/';
+
+    foreach ((array) $plugins as $i => $plugin){
+        $plugins[$i]['path'] = str_replace(array_keys($render), array_values($render), $plugin['path']);
+    }
+    
+    return $plugins;
+}
+
 
 /**
  * Get default ckeditor settings
@@ -664,7 +688,6 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings['enterMode'] = constant("CKEDITOR_ENTERMODE_" . strtoupper($conf['enter_mode']));
     $settings['shiftEnterMode'] = constant("CKEDITOR_ENTERMODE_" . strtoupper($conf['shift_enter_mode']));
     $settings['toolbarStartupExpanded'] = ( $conf['expand'] == 't' );
-    $settings['customConfig'] = $ckeditor_config_path;
     $settings['width'] = $conf['width'];
     $settings['skin'] = $conf['skin']; 
     $settings['format_tags'] = $conf['font_format'];
@@ -689,7 +712,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     }
     
     if (isset($conf['loadPlugins'])) {
-        $settings['loadPlugins'] = $conf['loadPlugins'];
+        $settings['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
         
         if (array_key_exists('media', $settings['loadPlugins'])){
             module_load_include('inc', 'media', 'includes/media.browser');
