@@ -374,7 +374,7 @@ function ckeditor_load_plugins($render = FALSE) {
     /*
      * CKEditor module plugins
      */
-    $_plugin_dir = $_editor_path . 'plugins/';
+    $_plugin_dir = drupal_get_path('module', 'ckeditor') . '/plugins/';
     if ($handle = opendir($_plugin_dir)) {
         while (false !== ($file = readdir($handle))) {
             if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')){
