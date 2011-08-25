@@ -482,6 +482,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     $module_drupal_path = drupal_get_path('module', 'ckeditor');
     drupal_add_js('window.CKEDITOR_BASEPATH = "' . base_path() . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
     drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
+    drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
     drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
 
     $form['appearance']['uicolor'] = array(
@@ -511,7 +512,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#type' => 'textarea',
         '#title' => t('Toolbar'),
         '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
-        '#description' => t('Set the toolbar definition. The instruction is available in the <a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar" target="_blank">CKEditor documentation</a>.'),
+        '#description' => t('Set the toolbar definition. The instruction is available in the <a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar" target="_blank">CKEditor documentation</a>.<br /> Load sample toolbar: <a href="#" id="cke_toolbar_DrupalBasic" class="cke_load_toolbar">Basic</a> | <a href="#" id="cke_toolbar_DrupalAdvanced" class="cke_load_toolbar">Advanced</a> | <a href="#" id="cke_toolbar_DrupalFull" class="cke_load_toolbar">Full</a>'),
         '#wysiwyg' => FALSE,
         '#rows' => 15
     );
