@@ -635,7 +635,7 @@ function ckeditor_process_textarea($element) {
       }
     }
     if (isset($conf['loadPlugins'])) {
-      $settings[$textarea_id]['loadPlugins'] = $conf['loadPlugins'];
+      $settings[$textarea_id]['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
     }
     if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
       $settings[$textarea_id]['entities'] = FALSE;
@@ -1096,7 +1096,7 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
     //default: path to ckeditor subdirectory in the ckeditor module directory (relative to index.php)
     //e.g.: sites/all/modules/ckeditor/ckeditor
     $cke_local_path = $mod_path .'/ckeditor';
-
+    
     if ($global_profile) {
       $gs = $global_profile->settings;
 
