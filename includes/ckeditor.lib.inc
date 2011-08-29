@@ -378,10 +378,10 @@ function ckeditor_load_plugins($render = FALSE) {
     $_plugin_dir = drupal_get_path('module', 'ckeditor') . '/plugins/';
     if ($handle = opendir($_plugin_dir)) {
         while (false !== ($file = readdir($handle))) {
-            if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')){
+            if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')) {
                 $source = file_get_contents($_plugin_dir . $file . '/plugin.js');
-                $buttons = false;
-                if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+                $buttons = FALSE;
+                if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
                     $buttons = implode(', ', $matches[1]);
                 }
                 if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
@@ -400,7 +400,7 @@ function ckeditor_load_plugins($render = FALSE) {
                         'default' => 'f'
                     );
                 }
-                if ($buttons){
+                if ($buttons) {
                     $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
                 }
             }
@@ -414,10 +414,10 @@ function ckeditor_load_plugins($render = FALSE) {
     $_plugin_dir_additional = ckeditor_plugins_path(TRUE) . '/';
     if ($_plugin_dir != $_plugin_dir_additional && is_dir($_plugin_dir_additional) && $handle = opendir($_plugin_dir_additional)) {
         while (false !== ($file = readdir($handle))) {
-          if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')){
+          if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')) {
             $source = file_get_contents($_plugin_dir_additional . $file . '/plugin.js');
-            $buttons = false;
-            if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+            $buttons = FALSE;
+            if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
                 $buttons = implode(', ', $matches[1]);
             }
             if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
@@ -436,7 +436,7 @@ function ckeditor_load_plugins($render = FALSE) {
                 'default' => 'f'
               );
             }
-            if ($buttons){
+            if ($buttons) {
                 $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
             }
           }
@@ -450,18 +450,18 @@ function ckeditor_load_plugins($render = FALSE) {
      */
     $plugins = module_invoke_all('ckeditor_plugin');
 
-    foreach ($plugins as $i => $plugin){
-        if (file_exists($plugin['path'] . 'plugin.js')){
+    foreach ($plugins as $i => $plugin) {
+        if (file_exists($plugin['path'] . 'plugin.js')) {
             $source = file_get_contents($plugin['path'] . 'plugin.js');
             $plugins[$i]['path'] = $base_path . $plugin['path'];
-            $buttons = false;
-            if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+            $buttons = FALSE;
+            if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
                 $buttons = implode(', ', $matches[1]);
             }
-            if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0){
+            if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0) {
                 $plugin['desc'] = t('Plugin file: ' . $plugin['name']);
             }
-            if ($buttons){
+            if ($buttons) {
                 $plugin['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
             }
         }
@@ -473,7 +473,7 @@ function ckeditor_load_plugins($render = FALSE) {
 
     ksort($arr);
     
-    if ($render === TRUE){
+    if ($render === TRUE) {
         $arr = ckeditor_plugins_render($arr);
     }
     
@@ -491,7 +491,7 @@ function ckeditor_plugins_render($plugins) {
     $render["%plugin_dir%"] = $render["%editor_path%"] . 'plugins/';
     $render["%plugin_dir_extra%"] = ckeditor_plugins_path(TRUE) . '/';
 
-    foreach ((array) $plugins as $i => $plugin){
+    foreach ((array) $plugins as $i => $plugin) {
         $plugins[$i]['path'] = str_replace(array_keys($render), array_values($render), $plugin['path']);
     }
     
@@ -674,7 +674,7 @@ function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ) {
 function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     global $user, $language, $theme;
 
-    $currentTheme = variable_get('theme_default', $theme); 
+    $current_theme = variable_get('theme_default', $theme); 
     
     $settings = array();
     $conf = array();
@@ -701,7 +701,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         $conf['filters']['default'] = 1;
     }
 
-    $themepath = drupal_get_path('theme', $currentTheme) . '/';
+    $themepath = drupal_get_path('theme', $current_theme) . '/';
     $host = base_path();
 
     // setting some variables
@@ -754,7 +754,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     if (isset($conf['loadPlugins'])) {
         $settings['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
         
-        if (array_key_exists('media', $settings['loadPlugins'])){
+        if (array_key_exists('media', $settings['loadPlugins'])) {
             module_load_include('inc', 'media', 'includes/media.browser');
             $javascript = media_browser_js();
             foreach ($javascript as $key => $definitions) {
@@ -763,7 +763,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                   call_user_func_array($function, $definition);
                 }
             }
-            drupal_add_js(drupal_get_path('module', 'ckeditor').'/plugins/media/library.js', array('scope' => 'footer', 'weight' => -20));
+            drupal_add_js(drupal_get_path('module', 'ckeditor') . '/plugins/media/library.js', array('scope' => 'footer', 'weight' => -20));
         }
     }
     if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
@@ -929,7 +929,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             $settings['filebrowserBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
             break;
         case 'elfinder':
-            $settings['filebrowserBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
+            $settings['filebrowserBrowseUrl'] = $host . "index.php?q=elfinder&app=ckeditor";
             break;
         /* MODULES NOT PORTED TO D7
         case 'webfm':
@@ -964,8 +964,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 $settings['filebrowserImageBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
                 break;
             case 'elfinder':
-		$settings['filebrowserImageBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
-		break;
+                $settings['filebrowserImageBrowseUrl'] = $host . "index.php?q=elfinder&app=ckeditor";
+                break;
             /* MODULES NOT PORTED TO D7
             case 'webfm':
                 if (user_access('access webfm')) {
@@ -1000,8 +1000,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 $settings['filebrowserFlashBrowseUrl'] = url('imce', array('query' => array('app' => 'ckeditor|sendto@ckeditor_imceSendTo|')));
                 break;
             case 'elfinder':
-		$settings['filebrowserFlashBrowseUrl'] = $host ."index.php?q=elfinder&app=ckeditor";
-		break;
+                $settings['filebrowserFlashBrowseUrl'] = $host . "index.php?q=elfinder&app=ckeditor";
+                break;
             /* MODULES NOT PORTED TO D7
             case 'webfm':
                 if (user_access('access webfm')) {
@@ -1059,7 +1059,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         case 'theme':
             global $language, $base_theme_info;
             $themes = list_themes();
-            $theme_info = $themes[$currentTheme];
+            $theme_info = $themes[$current_theme];
             if (!empty($theme_info->stylesheets)) {
                 $editorcss = "\"";
                 foreach ($base_theme_info as $base) { // Grab stylesheets from base theme
@@ -1112,7 +1112,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
 
                 // Grab stylesheets from color module
-                $color_paths = variable_get('color_' . $currentTheme . '_stylesheets', array());
+                $color_paths = variable_get('color_' . $current_theme . '_stylesheets', array());
                 if (defined('LANGUAGE_RTL') && $language->direction == LANGUAGE_RTL) {
                     if (!empty($color_paths[1])) {
                         $css_files[] = $host . $color_paths[1] . $query_string;
@@ -1127,11 +1127,11 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                     $css_files[] = $host . $themepath . 'style.css' . $query_string;
                 }
             }
-            if (file_exists($module_drupal_path .'/ckeditor.css')) {
-                $css_files[] = $module_full_path .'/ckeditor.css' . $query_string;
+            if (file_exists($module_drupal_path . '/ckeditor.css')) {
+                $css_files[] = $module_full_path . '/ckeditor.css' . $query_string;
             }
             if (file_exists($themepath . 'ckeditor.css')) {
-                $css_files[] = $host . $themepath .'ckeditor.css' . $query_string;
+                $css_files[] = $host . $themepath . 'ckeditor.css' . $query_string;
             }
             break;
 
@@ -1179,7 +1179,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if (!empty($conf['uicolor']) && strpos($conf['uicolor'], "color_") === 0) {
         if (function_exists('color_get_palette')) {
-            $palette = @color_get_palette($currentTheme, FALSE); //[#652274]
+            $palette = @color_get_palette($current_theme, FALSE); //[#652274]
             $color = str_replace("color_", "", $conf['uicolor']);
             if (!empty($palette[$color])) {
                 $settings['uiColor'] = $palette[$color];
@@ -1342,7 +1342,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         if (!empty($ckeditor_on)) {
             drupal_add_js(array('ckeditor' => array('autostart' => array( $textarea_id => $ckeditor_on))), 'setting');
         }
-        if (!empty($field["#language"])){
+        if (!empty($field["#language"])) {
             drupal_add_js(array('ckeditor' => array('scayt_language' => ckeditor_scayt_langcode($field["#language"]))), 'setting');
         }
         /*

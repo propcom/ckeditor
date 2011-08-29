@@ -154,7 +154,7 @@ function ckeditor_filter_xss() {
 
     $text = check_markup($_POST['text'], $_POST['input_format']);
     $filters = filter_get_filters();
-    $formatFilters = filter_list_format($_POST['input_format']);
+    $format_filters = filter_list_format($_POST['input_format']);
 
     foreach ($_POST['filters'] as $name) {
         if ($name == "default") {
@@ -166,11 +166,11 @@ function ckeditor_filter_xss() {
             continue;
         }
 
-        if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || (array_key_exists($name, $formatFilters)) && $formatFilters[$name]->status) {
+        if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || (array_key_exists($name, $format_filters)) && $format_filters[$name]->status) {
             continue;
         }
 
-        $text = $filters[$name]['process callback']($text, $formatFilters[$name]);
+        $text = $filters[$name]['process callback']($text, $format_filters[$name]);
     }
 
     echo $text;

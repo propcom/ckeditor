@@ -43,12 +43,12 @@ function ckeditor_admin_main() {
     if (!_ckeditor_requirements_isinstalled()) {
         drupal_set_message(t('Checking for %filename or %file.', array('%filename' => $ckconfig_file, '%file' => 'sites/all/libraries/ckeditor/ckeditor.js')));
         drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the !ckeditorlink to download the latest version. After that you must extract the files to %ckeditorpath or %librarypath and make sure that the file %ckeditorfile or %ckeditorlibrary exist. Refer to the !readme for more information.', array('!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'), '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE)), '%ckeditorpath' => 'sites/all/modules/ckeditor/ckeditor', '%ckeditorsubdir' => $editor_path . '/editor', '%ckeditorfile' => 'sites/all/modules/ckeditor/ckeditor/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
-        drupal_set_message(t('If you have CKEditor already installed please edit !editg and update CKEditor path.', array('!editg' => l(t('CKEditor Global Profile'), 'admin/config/content/ckeditor/editg'))), 'warning');
+        drupal_set_message(t('If you have CKEditor already installed please edit @editg and update CKEditor path.', array('@editg' => l(t('CKEditor Global Profile'), 'admin/config/content/ckeditor/editg'))), 'warning');
         return '';
     }
 
-    if (module_exists('wysiwyg')){
-        drupal_set_message(t('WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (!wysiwygdisablelink).', array('!wysiwygdisablelink' => l(t('click here to disable'), 'ckeditor/disable/wysiwyg'))), 'warning');
+    if (module_exists('wysiwyg')) {
+        drupal_set_message(t('WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (@wysiwygdisablelink).', array('@wysiwygdisablelink' => l(t('click here to disable'), 'ckeditor/disable/wysiwyg'))), 'warning');
     }
 
     //find profile other than Global
@@ -287,7 +287,7 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
     $edit['ckeditor_plugins_path'] = trim(rtrim($edit['ckeditor_plugins_path'], "/"));
     if ($edit['ckeditor_plugins_path'] && 0 !== strpos($edit['ckeditor_plugins_path'], "/") && 0 !== strpos($edit['ckeditor_plugins_path'], "%")) {
         //ensure that slash is at the beginning
-        $edit['ckeditor_plugins_path'] = "/". $edit['ckeditor_plugins_path'];
+        $edit['ckeditor_plugins_path'] = "/" . $edit['ckeditor_plugins_path'];
     }
     //no slash at the end
     $edit['ckeditor_plugins_path'] = trim(rtrim($edit['ckeditor_plugins_path'], "/"));
@@ -411,27 +411,27 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#tree' => TRUE,
     );
 
-    $allFilters = filter_get_filters();
+    $all_filters = filter_get_filters();
 
     if (!isset($profile->settings['ss'])) {
         $profile->settings['filters']['filter/0'] = 1;
     }
 
-    if (array_key_exists('filter_htmlcorrector', $allFilters)) {
+    if (array_key_exists('filter_htmlcorrector', $all_filters)) {
         $form['security']['filters']['filter_htmlcorrector'] = array(
             '#type' => 'checkbox',
-            '#title' => t("!data", array('!data' => $allFilters['filter_htmlcorrector']['title'])),
+            '#title' => t("@data", array('@data' => $all_filters['filter_htmlcorrector']['title'])),
             '#default_value' => !empty($profile->settings['filters']['filter_htmlcorrector']),
-            '#description' => t("!data", array('!data' => $allFilters['filter_htmlcorrector']['description'])),
+            '#description' => t("@data", array('@data' => $all_filters['filter_htmlcorrector']['description'])),
         );
     }
 
-    if (array_key_exists('filter_html', $allFilters)) {
+    if (array_key_exists('filter_html', $all_filters)) {
         $form['security']['filters']['filter_html'] = array(
             '#type' => 'checkbox',
-            '#title' => t("!data", array('!data' => $allFilters['filter_html']['title'])),
+            '#title' => t("@data", array('@data' => $all_filters['filter_html']['title'])),
             '#default_value' => !empty($profile->settings['filters']['filter_html']),
-            '#description' => t("!data", array('!data' => $allFilters['filter_html']['description'])),
+            '#description' => t("@data", array('@data' => $all_filters['filter_html']['description'])),
         );
     }
 
@@ -564,19 +564,19 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#rows' => 15
     );
     
-    $pluginList = ckeditor_load_plugins();
+    $plugin_list = ckeditor_load_plugins();
     $plugins = array();
-    if (isset($profile->settings['loadPlugins'])){
-        foreach ($pluginList AS $key => $val) {
+    if (isset($profile->settings['loadPlugins'])) {
+        foreach ($plugin_list AS $key => $val) {
             $plugins[$key] = $val['desc'];
         }
     }
     else {
-        $defaultPlugins = array();
-        foreach ($pluginList AS $key => $val) {
+        $default_plugins = array();
+        foreach ($plugin_list AS $key => $val) {
             $plugins[$key] = $val['desc'];
-            if ($val['default'] == 't'){
-                $defaultPlugins[] = $key;
+            if ($val['default'] == 't') {
+                $default_plugins[] = $key;
             }
         }
     }
@@ -584,7 +584,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     $form['appearance']['loadPlugins'] = array(
         '#type' => 'checkboxes',
         '#title' => t('Plugins'),
-        '#default_value' => isset($profile->settings['loadPlugins']) ? array_keys((array) $profile->settings['loadPlugins']) : $defaultPlugins,
+        '#default_value' => isset($profile->settings['loadPlugins']) ? array_keys((array) $profile->settings['loadPlugins']) : $default_plugins,
         '#options' => $plugins,
         '#description' => t('Choose the plugins which u want to load into CKEditor.')
     );
@@ -818,8 +818,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     }
 
    if (module_exists('elfinder')) {
-	$filebrowsers['elfinder'] = t('elFinder');
-	$filebrowsers_dialogs['elfinder'] = t('elFinder');
+        $filebrowsers['elfinder'] = t('elFinder');
+        $filebrowsers_dialogs['elfinder'] = t('elFinder');
     }
 
     /* MODULES NOT PORTED TO D7
@@ -1204,18 +1204,18 @@ function ckeditor_admin_profile_delete_form_submit($form, &$form_state) {
  */
 function ckeditor_admin_values_to_settings($values) {
     $plugins = array();
-    if (isset($values['loadPlugins'])){
+    if (isset($values['loadPlugins'])) {
         $plugins = $values['loadPlugins'];
     }
     unset($values['name'], $values['input_formats'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id'], $values['loadPlugins']);
     
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-    $pluginList = ckeditor_load_plugins();
+    $plugin_list = ckeditor_load_plugins();
     $values['loadPlugins'] = array();
     if (!empty($plugins)) {
         foreach (array_keys($plugins) as $plugin) {
             if ($plugins[$plugin] != '0') {
-                $values['loadPlugins'][$plugin] = $pluginList[$plugin];
+                $values['loadPlugins'][$plugin] = $plugin_list[$plugin];
             }
         }
     }
@@ -1253,7 +1253,7 @@ function _ckeditor_load_methods() {
 /*
  * Disable WYSIWYG module
  */
-function ckeditor_disable_wysiwyg(){
+function ckeditor_disable_wysiwyg() {
     module_disable(array('wysiwyg'));
     drupal_set_message(t('WYSIWYG module disabled.'));
 

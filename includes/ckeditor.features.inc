@@ -72,7 +72,7 @@ function ckeditor_profile_features_export_render($module_name, $data) {
 
     $profiles[$name] = $profile;
   }
-  $code = '  $data = '. features_var_export($profiles, '  ') .';'. PHP_EOL;
+  $code = '  $data = ' . features_var_export($profiles, '  ') . ';' . PHP_EOL;
   $code .= '  return $data;';
 
   return array('ckeditor_profile_defaults' => $code);

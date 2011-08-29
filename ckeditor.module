@@ -402,7 +402,8 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
             //the document root located and append ckeditor_plugins_path to it.
             if (!empty($gs['ckeditor_plugins_local_path'])) {
                 $cke_plugins_local_path = $gs['ckeditor_plugins_local_path'];
-            } elseif (!empty($gs['ckeditor_plugins_path'])) {
+            } 
+            elseif (!empty($gs['ckeditor_plugins_path'])) {
                 module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
                 $local_path = ckeditor_resolve_url($gs['ckeditor_plugins_path'] . "/");
                 if (FALSE !== $local_path) {
@@ -414,7 +415,8 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
 
     if ($local) {
         return $cke_plugins_local_path;
-    } else {
+    } 
+    else {
         return $cke_plugins_path;
     }
 }
@@ -430,7 +432,7 @@ function ckeditor_features_api() {
       'name' => t('CKEditor profiles'),
       'default_hook' => 'ckeditor_profile_defaults',
       'default_file' => FEATURES_DEFAULTS_INCLUDED,
-      'file' => drupal_get_path('module', 'ckeditor') .'/includes/ckeditor.features.inc',
+      'file' => drupal_get_path('module', 'ckeditor') . '/includes/ckeditor.features.inc',
     )
   );
 }

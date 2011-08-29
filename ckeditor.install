@@ -454,7 +454,7 @@ function ckeditor_update_7001() {
 function ckeditor_update_7002() {
     $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'CKEditor Global Profile'))->fetchField();
     $settings = unserialize($result);
-    if ($settings['ckeditor_path'] == '%b/sites/all/libraries/ckeditor'){
+    if ($settings['ckeditor_path'] == '%b/sites/all/libraries/ckeditor') {
         $settings['ckeditor_path'] = '%l/ckeditor';
     }
     else {
@@ -487,11 +487,11 @@ function ckeditor_update_7003() {
     
     $result = db_query("SELECT * FROM {ckeditor_settings} WHERE name <> :name", array(':name' => 'CKEditor Global Profile'))->fetchAllAssoc('name');
     
-    foreach ((array) $result as $profile){
+    foreach ((array) $result as $profile) {
         $name = $profile->name;
         $settings = unserialize($profile->settings);
         
-        foreach ((array) $settings['loadPlugins'] as $i => $plugin){
+        foreach ((array) $settings['loadPlugins'] as $i => $plugin) {
             $settings['loadPlugins'][$i]['path'] = str_replace(array_values($render), array_keys($render), $plugin['path']);
         }
         
