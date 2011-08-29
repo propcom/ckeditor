@@ -488,7 +488,7 @@ function ckeditor_plugins_render($plugins) {
     $render["%base_path%"] = base_path();
     $render["%editor_path%"] = ckeditor_path(FALSE) . '/';
     $render["%ckeditor_path%"] = drupal_get_path('module', 'ckeditor');
-    $render["%plugin_dir%"] = $render["%editor_path%"] . 'plugins/';
+    $render["%plugin_dir%"] = $render["%ckeditor_path%"] . '/plugins/';
     $render["%plugin_dir_extra%"] = ckeditor_plugins_path(TRUE) . '/';
 
     foreach ((array) $plugins as $i => $plugin) {
