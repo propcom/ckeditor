@@ -318,6 +318,7 @@ function ckeditor_load_plugins($render = FALSE) {
     $editor_path = '%editor_path%';
     $ckeditor_path = '%ckeditor_path%';
     $plugin_dir = '%plugin_dir%';
+    $plugin_dir_additional = '%plugin_dir_extra%';
 
     /*
      * External plugins
@@ -408,6 +409,43 @@ function ckeditor_load_plugins($render = FALSE) {
     }
 
     /*
+     * CKEditor module plugins - additional directory
+     */
+    $_plugin_dir_additional = ckeditor_plugins_path(TRUE) . '/';
+    if ($_plugin_dir != $_plugin_dir_additional && is_dir($_plugin_dir_additional) && $handle = opendir($_plugin_dir_additional)) {
+        while (false !== ($file = readdir($handle))) {
+          if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')){
+            $source = file_get_contents($_plugin_dir_additional . $file . '/plugin.js');
+            $buttons = false;
+            if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+                $buttons = implode(', ', $matches[1]);
+            }
+            if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
+              $arr[$file] = array(
+                'name' => $file,
+                'desc' => t($matches[1]),
+                'path' => $base_path . $plugin_dir_additional . $file . '/',
+                'default' => 'f'
+              );
+            }
+            else {
+              $arr[$file] = array(
+                'name' => $file,
+                'desc' => t('Plugin file: ' . $file),
+                'path' => $base_path . $plugin_dir_additional . $file . '/',
+                'default' => 'f'
+              );
+            }
+            if ($buttons){
+                $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
+            }
+          }
+        }
+
+        closedir($handle);
+    }
+    
+    /*
      * CKEditor plugins registered by hook
      */
     $plugins = module_invoke_all('ckeditor_plugin');
@@ -451,6 +489,7 @@ function ckeditor_plugins_render($plugins) {
     $render["%editor_path%"] = ckeditor_path(FALSE) . '/';
     $render["%ckeditor_path%"] = drupal_get_path('module', 'ckeditor');
     $render["%plugin_dir%"] = $render["%editor_path%"] . 'plugins/';
+    $render["%plugin_dir_extra%"] = ckeditor_plugins_path(TRUE) . '/';
 
     foreach ((array) $plugins as $i => $plugin){
         $plugins[$i]['path'] = str_replace(array_keys($render), array_values($render), $plugin['path']);
