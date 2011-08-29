@@ -1,3 +1,45 @@
+-- 2011-08-29
+- [#1260892] by dczepierga: Add regex to work with new CKEditor's toolbar system (groups for WAI-ARIA)
+- [#1258326] by dczepierga: Add configuration option for setting CKEditor's plugins directory
+
+-- 2011-08-25
+- [#1257308] by dczepierga: Add loading sample toolbar in profile config
+- [#1192622] by dczepierga: Static paths to plugins in database
+
+-- 2011-08-16
+- [#1250496] by dczepierga: 'CKEDITOR' is not defined - problem with ckeditor.styles.js
+
+-- 2011-08-11
+- [#1231130] by dczepierga: Using the setting "Use theme style" always uses the "seven" theme (admin menu theme)
+
+-- 2011-08-10
+- [#1245306] by dczepierga: "Custom javascript configuration" field description is wrong
+
+-- 2011-08-08
+- [#1231338] by dczepierga: Features Support for Drupal 7 (Exporting Profiles)
+
+-- 2011-08-02
+- [#1235142] by madmanmax: README.TXT - Installing CKFinder - wrong permission name
+
+-- 2011-07-12
+- [#1216104] by dczepierga: Bug in custom javascript configuration - semicolon problem
+- [#1215032] by dczepierga: Bad location of config file in description of CKEditor profile
+
+-- 2011-07-04
+- [#1190278] by dczepierga: CKEditor does not work with Insert module
+
+-- 2011-06-28
+- [#1198068] by michal_cksource: Confusing behavior with IMCE button implimentation
+
+-- 2011-06-27
+- [#1201180] by dczepierga: Scayt spelling language does not match node language
+
+-- 2011-06-22
+- [#1196166] by dczepierga: Bug in custom javascript configuration - editor not showing on some cases
+
+-- 2011-06-17
+- [#1032120] by dczepierga: Drops formatting when editing a node
+
 -- 2011-06-14
 - [#1187808] by RolandK: Not formatting text between code tags
 
