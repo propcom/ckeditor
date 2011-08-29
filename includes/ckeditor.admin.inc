@@ -1076,7 +1076,7 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
         form_set_error('ckeditor_load_time_out', t('Enter valid load timeout in seconds.'));
     }
 
-    if (!preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['toolbar'])) {
+    if (!preg_match('#^\s*\[(?:\s*(?:\{\s*[\w:\'" ,]*\s*\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]\s*\}|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#U', $edit['toolbar']) && !preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['toolbar'])) {
         form_set_error('toolbar', t('Enter valid toolbar configuration.'));
     }
 }
