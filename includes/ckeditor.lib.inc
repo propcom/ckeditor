@@ -331,10 +331,10 @@ function ckeditor_load_plugins($render = FALSE) {
   $_plugin_dir = drupal_get_path('module', 'ckeditor') . '/plugins/';
   if (is_dir($_plugin_dir) && $handle = opendir($_plugin_dir)) {
     while (false !== ($file = readdir($handle))) {
-      if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')){
+      if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')) {
         $source = file_get_contents($_plugin_dir . $file . '/plugin.js');
-        $buttons = false;
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+        $buttons = FALSE;
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
             $buttons = implode(', ', $matches[1]);
         }
         if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
@@ -353,7 +353,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'default' => 'f'
           );
         }
-        if ($buttons){
+        if ($buttons) {
             $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
         }
       }
@@ -368,10 +368,10 @@ function ckeditor_load_plugins($render = FALSE) {
   $_plugin_dir_additional = ckeditor_plugins_path(TRUE) . '/';
   if ($_plugin_dir != $_plugin_dir_additional && is_dir($_plugin_dir_additional) && $handle = opendir($_plugin_dir_additional)) {
     while (false !== ($file = readdir($handle))) {
-      if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')){
+      if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')) {
         $source = file_get_contents($_plugin_dir_additional . $file . '/plugin.js');
-        $buttons = false;
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+        $buttons = FALSE;
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
             $buttons = implode(', ', $matches[1]);
         }
         if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
@@ -390,7 +390,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'default' => 'f'
           );
         }
-        if ($buttons){
+        if ($buttons) {
             $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
         }
       }
@@ -404,18 +404,18 @@ function ckeditor_load_plugins($render = FALSE) {
    */
   $plugins = module_invoke_all('ckeditor_plugin');
 
-  foreach ($plugins as $i => $plugin){
-    if (file_exists($plugin['path'] . 'plugin.js')){
+  foreach ($plugins as $i => $plugin) {
+    if (file_exists($plugin['path'] . 'plugin.js')) {
       $source = file_get_contents($plugin['path'] . 'plugin.js');
       $plugins[$i]['path'] = $base_path . $plugin['path'];
-      $buttons = false;
-      if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)){
+      $buttons = FALSE;
+      if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
         $buttons = implode(', ', $matches[1]);
       }
-      if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0){
+      if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0) {
         $plugin['desc'] = t('Plugin file: ' . $plugin['name']);
       }
-      if ($buttons){
+      if ($buttons) {
         $plugin['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
       }
     }
@@ -427,7 +427,7 @@ function ckeditor_load_plugins($render = FALSE) {
 
   ksort($arr);
 
-  if ($render === TRUE){
+  if ($render === TRUE) {
     $arr = ckeditor_plugins_render($arr);
   }
   
@@ -445,7 +445,7 @@ function ckeditor_plugins_render($plugins) {
   $render["%plugin_dir%"] = $render["%ckeditor_path%"] . 'plugins/';
   $render["%plugin_dir_extra%"] = ckeditor_plugins_path(TRUE) . '/';
   
-  foreach ((array) $plugins as $i => $plugin){
+  foreach ((array) $plugins as $i => $plugin) {
     $plugins[$i]['path'] = str_replace(array_keys($render), array_values($render), $plugin['path']);
   }
     
