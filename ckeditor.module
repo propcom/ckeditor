@@ -369,7 +369,11 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
         //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
         //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
         $cke_plugins_path = base_path() . $mod_path . '/plugins';
-
+        
+        //default: path to plugins subdirectory in the ckeditor module directory (relative to index.php)
+        //e.g.: sites/all/modules/ckeditor/plugins
+        $cke_plugins_local_path = $mod_path . '/plugins';
+        
         if ($global_profile) {
             $gs = $global_profile->settings;
 
