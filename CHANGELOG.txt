@@ -1,61 +1,66 @@
+-----------------------------
+ 2011-08-29
+ Released CKEditor 7.x-1.3
+-----------------------------
+
 -- 2011-08-29
-- [#1260892] by dczepierga: Add regex to work with new CKEditor's toolbar system (groups for WAI-ARIA)
-- [#1258326] by dczepierga: Add configuration option for setting CKEditor's plugins directory
+- [#1260892] by dczepierga: Add regex to work with new CKEditor toolbar format (toolbar groups compatible with WAI-ARIA)
+- [#1258326] by dczepierga: Add configuration option for setting CKEditor plugins directory
 
 -- 2011-08-25
-- [#1257308] by dczepierga: Add loading sample toolbar in profile config
-- [#1192622] by dczepierga: Static paths to plugins in database
+- [#1257308] by dczepierga: Add loading sample toolbar to profile configuration
+- [#1192622] by dczepierga: Replace static paths to plugins in the database with dynamic paths
 
 -- 2011-08-16
 - [#1250496] by dczepierga: 'CKEDITOR' is not defined - problem with ckeditor.styles.js
 
 -- 2011-08-11
-- [#1231130] by dczepierga: Using the setting "Use theme style" always uses the "seven" theme (admin menu theme)
+- [#1231130] by dczepierga: The "Use theme style" setting now always uses the "seven" theme (admin menu theme)
 
 -- 2011-08-10
-- [#1245306] by dczepierga: "Custom javascript configuration" field description is wrong
+- [#1245306] by dczepierga: "Custom JavaScript configuration" field description is wrong
 
 -- 2011-08-08
-- [#1231338] by dczepierga: Features Support for Drupal 7 (Exporting Profiles)
+- [#1231338] by dczepierga: Features module support for Drupal 7 (exporting profiles)
 
 -- 2011-08-02
 - [#1235142] by madmanmax: README.TXT - Installing CKFinder - wrong permission name
 
 -- 2011-07-12
-- [#1216104] by dczepierga: Bug in custom javascript configuration - semicolon problem
-- [#1215032] by dczepierga: Bad location of config file in description of CKEditor profile
+- [#1216104] by dczepierga: Bug in custom JavaScript configuration - semicolon problem
+- [#1215032] by dczepierga: Bad location of the configuration file in the description of CKEditor profile
 
 -- 2011-07-04
-- [#1190278] by dczepierga: CKEditor does not work with Insert module
+- [#1190278] by dczepierga: CKEditor does not work with the Insert module
 
 -- 2011-06-28
-- [#1198068] by michal_cksource: Confusing behavior with IMCE button implimentation
+- [#1198068] by michal_cksource: Confusing behavior with IMCE button implementation
 
 -- 2011-06-27
-- [#1201180] by dczepierga: Scayt spelling language does not match node language
+- [#1201180] by dczepierga: SCAYT spelling language does not match node language
 
 -- 2011-06-22
-- [#1196166] by dczepierga: Bug in custom javascript configuration - editor not showing on some cases
+- [#1196166] by dczepierga: Bug in custom JavaScript configuration - editor not showing in some cases
 
 -- 2011-06-17
-- [#1032120] by dczepierga: Drops formatting when editing a node
+- [#1032120] by dczepierga: Formatting is lost when editing a node
 
 -- 2011-06-14
 - [#1187808] by RolandK: Not formatting text between code tags
 
 -- 2011-06-13
-- [#1186880] by dczepierga: Handling arrays in the "Custom javascript configuration"
+- [#1186880] by dczepierga: Handling arrays in the "Custom JavaScript configuration"
 
 -- 2011-06-09
 - [#1183218] by neclimdul: Fix broken teasers for long paragraphs
 
 -- 2011-06-06
-- [#1179880] by dczepierga: Add hook to register plugin
+- [#1179880] by dczepierga: Add hook to register a plugin
 - [#1063646] by dczepierga: Fix calling Undefined index: "loadPlugins" in ckeditor_admin_values_to_settings()
 
 -- 2011-06-02
 - [#1176212] by dczepierga: Remove not supported linktomenu and linktonode plugins
-- [#1176208] by dczepierga: Add plugins managment in profile settings
+- [#1176208] by dczepierga: Add plugins management in profile settings
 
 -----------------------------
  2011-05-30
