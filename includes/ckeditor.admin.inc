@@ -531,6 +531,10 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
     drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
     drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
+    drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
+    drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
+    drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+    drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
 
     $form['appearance']['uicolor'] = array(
         '#type' => 'select',
@@ -559,9 +563,21 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#type' => 'textarea',
         '#title' => t('Toolbar'),
         '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
-        '#description' => t('Set the toolbar definition. The instruction is available in the <a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar" target="_blank">CKEditor documentation</a>.<br /> Load sample toolbar: <a href="#" id="cke_toolbar_DrupalBasic" class="cke_load_toolbar">Basic</a> | <a href="#" id="cke_toolbar_DrupalAdvanced" class="cke_load_toolbar">Advanced</a> | <a href="#" id="cke_toolbar_DrupalFull" class="cke_load_toolbar">Full</a>'),
+        '#description' => t('Load sample toolbar: <a href="#" id="cke_toolbar_DrupalBasic" class="cke_load_toolbar">Basic</a> | <a href="#" id="cke_toolbar_DrupalAdvanced" class="cke_load_toolbar">Advanced</a> | <a href="#" id="cke_toolbar_DrupalFull" class="cke_load_toolbar">Full</a>'),
         '#wysiwyg' => FALSE,
         '#rows' => 15
+    );
+    
+    $form['appearance']['toolbar_wizzard_used'] = array(
+        '#markup' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
+        '#description' => t('Currently used buttons'),
+    );
+    
+    drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all()), 'setting');
+    
+    $form['appearance']['toolbar_wizzard_all'] = array(
+        '#markup' => '<div>' . t('All buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
+        '#description' => t('All available buttons'),
     );
     
     $plugin_list = ckeditor_load_plugins();
@@ -1258,4 +1274,93 @@ function ckeditor_disable_wysiwyg() {
     drupal_set_message(t('WYSIWYG module disabled.'));
 
     drupal_goto('admin/config/content/ckeditor');
+}
+
+/*
+ * Get all available toolbar buttons
+ */
+function ckeditor_toolbar_buttons_all() {
+    $path = base_path() . drupal_get_path('module', 'ckeditor');
+    
+    //CKEditor default buttons
+    $buttons = array(
+        'Source' => array('name' => 'Source', 'icon' => $path . '/images/buttons/source.png', 'title' => 'Source', 'row' => 1),
+        'Save' => array('name' => 'Save', 'icon' => $path . '/images/buttons/save.png', 'title' => 'Save', 'row' => 1),
+        'NewPage' => array('name' => 'NewPage', 'icon' => $path . '/images/buttons/newPage.png', 'title' => 'New Page', 'row' => 1),
+        'Preview' => array('name' => 'Preview', 'icon' => $path . '/images/buttons/preview.png', 'title' => 'Preview', 'row' => 1),
+        'Templates' => array('name' => 'Templates', 'icon' => $path . '/images/buttons/templates.png', 'title' => 'Templates', 'row' => 1),
+        'Cut' => array('name' => 'Cut', 'icon' => $path . '/images/buttons/cut.png', 'title' => 'Cut', 'row' => 1),
+        'Copy' => array('name' => 'Copy', 'icon' => $path . '/images/buttons/copy.png', 'title' => 'Copy', 'row' => 1),
+        'Paste' => array('name' => 'Paste', 'icon' => $path . '/images/buttons/paste.png', 'title' => 'Paste', 'row' => 1),
+        'PasteText' => array('name' => 'PasteText', 'icon' => $path . '/images/buttons/pastePlainText.png', 'title' => 'Paste as plain text', 'row' => 1),
+        'PasteFromWord' => array('name' => 'PasteFromWord', 'icon' => $path . '/images/buttons/pasteWord.png', 'title' => 'Paste from Word', 'row' => 1),
+        'Print' => array('name' => 'Print', 'icon' => $path . '/images/buttons/print.png', 'title' => 'Print', 'row' => 1),
+        'SpellChecker' => array('name' => 'SpellChecker', 'icon' => $path . '/images/buttons/checkSpelling.png', 'title' => 'Check Spelling', 'row' => 1),
+        'Scayt' => array('name' => 'Scayt', 'icon' => $path . '/images/buttons/checkSpelling.png', 'title' => 'Spell Check As you Type', 'row' => 1), //TODO sprawdzic ta opcje
+        'Undo' => array('name' => 'Undo', 'icon' => $path . '/images/buttons/undo.png', 'title' => 'Undo', 'row' => 1),
+        'Redo' => array('name' => 'Redo', 'icon' => $path . '/images/buttons/redo.png', 'title' => 'Redo', 'row' => 1),
+        'Find' => array('name' => 'Find', 'icon' => $path . '/images/buttons/find.png', 'title' => 'Find', 'row' => 1),
+        'Replace' => array('name' => 'Replace', 'icon' => $path . '/images/buttons/replace.png', 'title' => 'Replace', 'row' => 1),
+        'SelectAll' => array('name' => 'SelectAll', 'icon' => $path . '/images/buttons/selectAll.png', 'title' => 'Select All', 'row' => 1),
+        'RemoveFormat' => array('name' => 'RemoveFormat', 'icon' => $path . '/images/buttons/removeFormat.png', 'title' => 'Remove Format', 'row' => 1),
+        'Form' => array('name' => 'Form', 'icon' => $path . '/images/buttons/form.png', 'title' => 'Form', 'row' => 1),
+        'Checkbox' => array('name' => 'Checkbox', 'icon' => $path . '/images/buttons/checkbox.png', 'title' => 'Checkbox', 'row' => 1),
+        'Radio' => array('name' => 'Radio', 'icon' => $path . '/images/buttons/radioButton.png', 'title' => 'Radio Button', 'row' => 1),
+        'TextField' => array('name' => 'TextField', 'icon' => $path . '/images/buttons/textField.png', 'title' => 'Text Field', 'row' => 1),
+        'Textarea' => array('name' => 'Textarea', 'icon' => $path . '/images/buttons/textarea.png', 'title' => 'Textarea', 'row' => 1),
+        'Select' => array('name' => 'Select', 'icon' => $path . '/images/buttons/selectionField.png', 'title' => 'Selection Field', 'row' => 1),
+        'Button' => array('name' => 'Button', 'icon' => $path . '/images/buttons/button.png', 'title' => 'Button', 'row' => 1),
+        'ImageButton' => array('name' => 'ImageButton', 'icon' => $path . '/images/buttons/imageButton.png', 'title' => 'Image Button', 'row' => 1),
+        'HiddenField' => array('name' => 'HiddenField', 'icon' => $path . '/images/buttons/hiddenField.png', 'title' => 'Hidden Field', 'row' => 1),
+        'Bold' => array('name' => 'Bold', 'icon' => $path . '/images/buttons/bold.png', 'title' => 'Bold', 'row' => 2),
+        'Italic' => array('name' => 'Italic', 'icon' => $path . '/images/buttons/italic.png', 'type' => 'command' , 'title' => 'Italic', 'row' => 2),
+        'Underline' => array('name' => 'Underline', 'icon' => $path . '/images/buttons/underline.png', 'title' => 'Underline', 'row' => 2),
+        'Strike' => array('name' => 'Strike', 'icon' => $path . '/images/buttons/strike.png', 'title' => 'Strike Through', 'row' => 2),
+        'Subscript' => array('name' => 'Subscript', 'icon' => $path . '/images/buttons/subscript.png', 'title' => 'Subscript', 'row' => 2),
+        'Superscript' => array('name' => 'Superscript', 'icon' => $path . '/images/buttons/superscript.png', 'title' => 'Superscript', 'row' => 2),
+        'NumberedList' => array('name' => 'NumberedList', 'icon' => $path . '/images/buttons/numberedList.png', 'title' => 'Insert/Remove Numbered List', 'row' => 2),
+        'BulletedList' => array('name' => 'BulletedList', 'icon' => $path . '/images/buttons/bulletedList.png', 'title' => 'Insert/Remove Bulleted List', 'row' => 2),
+        'Outdent' => array('name' => 'Outdent', 'icon' => $path . '/images/buttons/decreaseIndent.png', 'title' => 'Decrease Indent', 'row' => 2),
+        'Indent' => array('name' => 'Indent', 'icon' => $path . '/images/buttons/increaseIndent.png', 'title' => 'Increase Indent', 'row' => 2),
+        'Blockquote' => array('name' => 'Blockquote', 'icon' => $path . '/images/buttons/blockQuote.png', 'title' => 'Block Quote', 'row' => 2),
+        'CreateDiv' => array('name' => 'CreateDiv', 'icon' => $path . '/images/buttons/createDivContainer.png', 'title' => 'Create Div Container', 'row' => 2),
+        'JustifyLeft' => array('name' => 'JustifyLeft', 'icon' => $path . '/images/buttons/leftJustify.png', 'title' => 'Left Justify', 'row' => 2),
+        'JustifyCenter' => array('name' => 'JustifyCenter', 'icon' => $path . '/images/buttons/centerJustify.png', 'title' => 'Center Justify', 'row' => 2),
+        'JustifyRight' => array('name' => 'JustifyRight', 'icon' => $path . '/images/buttons/rightJustify.png', 'title' => 'Right Justify', 'row' => 2),
+        'JustifyBlock' => array('name' => 'JustifyBlock', 'icon' => $path . '/images/buttons/blockJustify.png', 'title' => 'Block Justify', 'row' => 2),
+        'BidiLtr' => array('name' => 'BidiLtr', 'icon' => $path . '/images/buttons/bidiLeft.png', 'title' => 'Text direction from left to right', 'row' => 2),
+        'BidiRtl' => array('name' => 'BidiRtl', 'icon' => $path . '/images/buttons/bidiRight.png', 'title' => 'Text direction from right to left', 'row' => 2),
+        'Link' => array('name' => 'Link', 'icon' => $path . '/images/buttons/link.png', 'title' => 'Link', 'row' => 2),
+        'Unlink' => array('name' => 'Unlink', 'icon' => $path . '/images/buttons/unlink.png', 'title' => 'Unlink', 'row' => 2),
+        'Anchor' => array('name' => 'Anchor', 'icon' => $path . '/images/buttons/anchor.png', 'title' => 'Anchor', 'row' => 2),
+        'Image' => array('name' => 'Image', 'icon' => $path . '/images/buttons/image.png', 'title' => 'Image', 'row' => 2),
+        'Flash' => array('name' => 'Flash', 'icon' => $path . '/images/buttons/flash.png', 'title' => 'Flash', 'row' => 2),
+        'Table' => array('name' => 'Table', 'icon' => $path . '/images/buttons/table.png', 'title' => 'Table', 'row' => 2),
+        'HorizontalRule' => array('name' => 'HorizontalRule', 'icon' => $path . '/images/buttons/horizontalLine.png', 'title' => 'Insert Horizontal Line', 'row' => 2),
+        'Smiley' => array('name' => 'Smiley', 'icon' => $path . '/images/buttons/smiley.png', 'title' => 'Smiley', 'row' => 2),
+        'SpecialChar' => array('name' => 'SpecialChar', 'icon' => $path . '/images/buttons/specialCharacter.png', 'title' => 'Inseert Special Character', 'row' => 2),
+        'PageBreak' => array('name' => 'PageBreak', 'icon' => $path . '/images/buttons/pageBreakPrinting.png', 'title' => 'Insert Page Break for Printing', 'row' => 2),
+        'Styles' => array('name' => 'Styles', 'icon' => $path . '/images/buttons/styles.png', 'title' => 'Formatting Styles', 'row' => 3),
+        'Format' => array('name' => 'Format', 'icon' => $path . '/images/buttons/format.png', 'title' => 'Paragraph Format', 'row' => 3),
+        'Font' => array('name' => 'Font', 'icon' => $path . '/images/buttons/font.png', 'title' => 'Font Name', 'row' => 3),
+        'FontSize' => array('name' => 'FontSize', 'icon' => $path . '/images/buttons/fontSize.png', 'title' => 'Font Size', 'row' => 3),
+        'TextColor' => array('name' => 'TextColor', 'icon' => $path . '/images/buttons/textColor.png', 'title' => 'Text Color', 'row' => 3),
+        'BGColor' => array('name' => 'BGColor', 'icon' => $path . '/images/buttons/backgroundColor.png', 'title' => 'Background Color', 'row' => 3),
+        'Maximize' => array('name' => 'Maximize', 'icon' => $path . '/images/buttons/maximize.png', 'title' => 'Maximize', 'row' => 3),
+        'ShowBlocks' => array('name' => 'ShowBlocks', 'icon' => $path . '/images/buttons/showBlocks.png', 'title' => 'Show Blocks', 'row' => 3),
+        'Iframe' => array('name' => 'Iframe', 'icon' => $path . '/images/buttons/iframe.png', 'title' => 'Read more', 'row' => 3),
+        'About' => array('name' => 'About', 'icon' => $path . '/images/buttons/about.png', 'title' => 'About', 'row' => 3),
+        '__spacer' => array('name' => false, 'icon' => $path . '/images/buttons/spacer.png', 'title' => 'Spacer', 'row' => 4),
+        '__group' => array('name' => false, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
+    );
+    
+    $plugins = ckeditor_load_plugins(TRUE);
+    foreach ($plugins as $plugin_name => $plugin) {
+        if ($plugin['buttons'] == FALSE) continue;
+        foreach ((array) $plugin['buttons'] as $button_name => $button) {
+            $buttons[$button_name] = array('name' => $button_name, 'icon' => $plugin['path'] . $button['icon'], 'title' => t($button['label']), 'row' => 4);
+        }
+    }
+    
+    return $buttons;
 }
