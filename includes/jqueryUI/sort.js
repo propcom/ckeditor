@@ -89,11 +89,11 @@ jQuery(document).ready(function() {
                     group = true;
                 }
                 else {
-                    html += '<li class="sortableItem group"><img src="' + '/drupal7/sites/all/modules/ckeditor/images/buttons/group.png' + '" alt="group" title="group" /></li>';
+                    html += '<li class="sortableItem group"><img src="' + Drupal.settings.cke_toolbar_buttons_all['__group']['icon'] + '" alt="group" title="group" /></li>';
                 }
                 for (var button in toolbar[row]) {
                     if (toolbar[row][button] == '-') {
-                        html += '<li class="sortableItem spacer"><img src="' + '/drupal7/sites/all/modules/ckeditor/images/buttons/spacer.png' + '" alt="spacer" title="spacer" /></li>';
+                        html += '<li class="sortableItem spacer"><img src="' + Drupal.settings.cke_toolbar_buttons_all['__spacer']['icon'] + '" alt="spacer" title="spacer" /></li>';
                     }
                     else if (Drupal.settings.cke_toolbar_buttons_all[toolbar[row][button]]) {
                         html += '<li class="sortableItem" id="' + Drupal.settings.cke_toolbar_buttons_all[toolbar[row][button]]['name'] + '"><img src="' + Drupal.settings.cke_toolbar_buttons_all[toolbar[row][button]]['icon'] + '" alt="' + Drupal.settings.cke_toolbar_buttons_all[toolbar[row][button]]['title'] + '" title="' + Drupal.settings.cke_toolbar_buttons_all[toolbar[row][button]]['title'] + '" /></li>';
