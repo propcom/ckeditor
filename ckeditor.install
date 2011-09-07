@@ -474,6 +474,7 @@ function ckeditor_update_6100() {
  */
  
 function ckeditor_update_6101() {
+  module_load_include('module', 'ckeditor');
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     
   $render = array();
