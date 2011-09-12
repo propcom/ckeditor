@@ -32,7 +32,7 @@
 }
 
 /* CKEditor padding in IE */
-table.cke_editor fieldset { 
+table.cke_editor fieldset {
     padding: 0 !important;
 }
 /* hack with ie and garland editing area size fix - [#733512] */
@@ -114,4 +114,12 @@ li.sortableItem {
 }
 ul {
     list-style-type: none;
+}
+
+/* Ffix for fieldset for-edit-apperance in Firefox*/
+fieldset#edit-appearance div#groupLayout, div#allButtons  {
+  border: 0;
+  padding: 0 0 0 0;
+  position: relative;
+  margin: 1em 0;
 }

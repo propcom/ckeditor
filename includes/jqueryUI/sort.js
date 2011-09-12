@@ -27,7 +27,7 @@ jQuery(document).ready(function() {
             if (jQuery("li" ,rowValue).length > 0) {
                 if (rowIndex < (rows -1)) {
                     tools = tools + "],\n    '/',\n";
-                } 
+                }
                 else {
                     tools = tools + "]\n";
                 }
@@ -35,13 +35,14 @@ jQuery(document).ready(function() {
         });
         tools = tools + "]";
         tools = tools.replace(/\[,/g, '[');
+        tools = tools.replace(/\[],/g, '');
         jQuery("#edit-toolbar").attr('value', tools);
     }
 
     Drupal.ckeditorToolbaInit = function() {
         Drupal.ckeditorToolbarUsedRender();
         Drupal.ckeditorToolbarAllRender();
-        
+
         jQuery(".sortableList").sortable({
             connectWith: ".sortableList",
             items: "div.sortableListDiv",
@@ -49,7 +50,7 @@ jQuery(document).ready(function() {
                 Tools(event, ui);
             }
         }).disableSelection();
-        
+
         jQuery(".sortableRow").sortable({
             connectWith: ".sortableRow",
             items: "li.sortableItem",
@@ -57,7 +58,7 @@ jQuery(document).ready(function() {
                 Tools(event, ui);
             }
         }).disableSelection();
-        
+
         jQuery("li.sortableItem").mouseover(function(){
             jQuery(".sortableList").sortable("disable");
         });
@@ -65,14 +66,14 @@ jQuery(document).ready(function() {
             jQuery(".sortableList").sortable("enable");
         });
     }
-    
+
     Drupal.ckeditorToolbarReload = function() {
         jQuery(".sortableList").sortable('destroy');
         jQuery(".sortableRow").sortable('destroy');
         jQuery("li.sortableItem").unbind();
         Drupal.ckeditorToolbaInit();
     }
-    
+
     Drupal.ckeditorToolbarUsedRender = function() {
         var toolbar = jQuery('#edit-toolbar').val();
         toolbar = eval(toolbar);
@@ -133,6 +134,6 @@ jQuery(document).ready(function() {
         }
         jQuery('#allButtons').empty().append(html);
     }
-    
+
     Drupal.ckeditorToolbaInit();
 });
