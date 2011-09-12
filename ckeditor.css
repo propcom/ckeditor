@@ -122,4 +122,5 @@ fieldset#edit-appearance div#groupLayout, div#allButtons  {
   padding: 0 0 0 0;
   position: relative;
   margin: 1em 0;
+  overflow-y: hidden;
 }
