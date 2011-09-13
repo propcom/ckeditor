@@ -939,7 +939,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 }
             }
             if (!empty($profile->settings['UserFilesAbsolutePath'])) {
-                $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => $user->name));
+                $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
             }
             else {
                 $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
