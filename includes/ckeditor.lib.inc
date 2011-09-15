@@ -783,7 +783,6 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings['format_tags'] = $conf['font_format'];
     //$settings['popup'] = $conf['popup'];
     $settings['show_toggle'] = $conf['show_toggle'];
-    
 
     if (isset($conf['language_direction'])) {
         switch ($conf['language_direction']) {
@@ -843,6 +842,13 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         }
     }
 
+    if (!isset($conf['textformat_filters']) || $conf['textformat_filters'] == 't') {
+        $settings['textformat_filters'] = TRUE;
+    }
+    else {
+        $settings['textformat_filters'] = FALSE;
+    }
+    
     if (isset($conf['custom_formatting']) && $conf['custom_formatting'] == 't') {
         foreach ($conf['formatting']['custom_formatting_options'] as $k => $v) {
             if ($v === 0) {

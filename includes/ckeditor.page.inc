@@ -152,7 +152,13 @@ function ckeditor_filter_xss() {
         exit;
     }
 
-    $text = check_markup($_POST['text'], $_POST['input_format']);
+    if (!isset($_POST['textformat_filters']) || $_POST['textformat_filters'] == 'true') {
+        $text = check_markup($_POST['text'], $_POST['input_format']);
+    }
+    else {
+        $text = $_POST['text'];
+    }
+    
     $filters = filter_get_filters();
     $format_filters = filter_list_format($_POST['input_format']);
 

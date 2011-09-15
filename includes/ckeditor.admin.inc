@@ -435,6 +435,17 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         );
     }
 
+    $form['security']['textformat_filters'] = array(
+        '#type' => 'radios',
+        '#title' => t('Use Drupal text format filters'),
+        '#default_value' => !empty($profile->settings['textformat_filters']) ? $profile->settings['textformat_filters'] : 't',
+        '#options' => array(
+            't' => t('Enabled'),
+            'f' => t('Disabled')
+        ),
+        '#description' => t('If this option is selected (checked), the content displayed in the editor when you are editing the page will be filtered through the filters associated with a given "text format". When the option is unchecked, the editor will show the full, unfiltered page content.'),
+    );
+    
     $form['security']['ss'] = array(
         '#type' => 'radios',
         '#title' => t('Security settings'),
@@ -997,7 +1008,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     );
     $form['advanced']['js_conf'] = array(
         '#type' => 'textarea',
-        '#title' => t('Custom javascript configuration'),
+        '#title' => t('Custom JavaScript configuration'),
         '#default_value' => !empty($profile->settings['js_conf']) ? $profile->settings['js_conf'] : "",
         '#cols' => 60,
         '#rows' => 5,
