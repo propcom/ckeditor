@@ -38,7 +38,7 @@ function ckeditor_admin_main() {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     $editor_path = ckeditor_path(TRUE);
     $ckconfig_file = $editor_path . '/config.js';
-    
+
     //check if CKEditor plugin is installed
     if (!_ckeditor_requirements_isinstalled()) {
         drupal_set_message(t('Checking for %filename or %file.', array('%filename' => $ckconfig_file, '%file' => 'sites/all/libraries/ckeditor/ckeditor.js')));
@@ -178,7 +178,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         '#maxlength' => 128,
         '#description' => t('The path to the local directory (on the server) which points to the path defined above. Enter either an absolute server path or path relative to "index.php". If empty, CKEditor module will try to find the right path.<br />Current path: !path', array('!path' => ckeditor_path(TRUE))),
     );
-    
+
     $form['ckeditor_advanced_settings']['ckeditor_plugins_path'] = array(
         '#type' => 'textfield',
         '#title' => t('Path to CKEditor plugins dir'),
@@ -204,7 +204,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         '#maxlength' => 128,
         '#description' => t('The path to the local directory (on the server) which points to the path defined above. Enter either an absolute server path or path relative to "index.php". If empty, CKEditor module will try to find the right path.<br />Current path: !path', array('!path' => ckeditor_plugins_path(TRUE))),
     );
-    
+
     //@todo DOWNLOAD API
     $current_private_dir = !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '';
     $form['ckeditor_advanced_settings']['private_dir'] = array(
@@ -291,7 +291,7 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
     }
     //no slash at the end
     $edit['ckeditor_plugins_path'] = trim(rtrim($edit['ckeditor_plugins_path'], "/"));
-    
+
     $settings = ckeditor_admin_values_to_settings($edit);
     db_insert('ckeditor_settings')
             ->fields(array(
@@ -380,7 +380,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         $profile->input_formats = array();
         $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->execute()->fetchAllAssoc('format');
     }
-    
+
     $formats = array();
     foreach ($orig_formats AS $format) {
         if ( (arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats) ) {
@@ -443,9 +443,9 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             't' => t('Enabled'),
             'f' => t('Disabled')
         ),
-        '#description' => t('If this option is selected (checked), the content displayed in the editor when you are editing the page will be filtered through the filters associated with a given "text format". When the option is unchecked, the editor will show the full, unfiltered page content.'),
+        '#description' => t('If this option is selected (enabled), the content displayed in the editor when you are editing the page will be filtered through the filters associated with a given "text format". When the option is disabled, the editor will show the full, unfiltered page content.'),
     );
-    
+
     $form['security']['ss'] = array(
         '#type' => 'radios',
         '#title' => t('Security settings'),
@@ -578,19 +578,19 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#wysiwyg' => FALSE,
         '#rows' => 15
     );
-    
+
     $form['appearance']['toolbar_wizzard_used'] = array(
         '#markup' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
         '#description' => t('Currently used buttons'),
     );
-    
+
     drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all()), 'setting');
-    
+
     $form['appearance']['toolbar_wizzard_all'] = array(
         '#markup' => '<div>' . t('All buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
         '#description' => t('All available buttons'),
     );
-    
+
     $plugin_list = ckeditor_load_plugins();
     $plugins = array();
     if (isset($profile->settings['loadPlugins'])) {
@@ -1176,7 +1176,7 @@ function ckeditor_admin_profile_clone_form_submit($form, &$form_state) {
             }
         }
     }
-    
+
     $form_state['redirect'] = 'admin/config/content/ckeditor';
 }
 
@@ -1235,7 +1235,7 @@ function ckeditor_admin_values_to_settings($values) {
         $plugins = $values['loadPlugins'];
     }
     unset($values['name'], $values['input_formats'], $values['_profile'], $values['op'], $values['submit'], $values['form_build_id'], $values['form_token'], $values['form_id'], $values['loadPlugins']);
-    
+
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     $plugin_list = ckeditor_load_plugins();
     $values['loadPlugins'] = array();
@@ -1292,7 +1292,7 @@ function ckeditor_disable_wysiwyg() {
  */
 function ckeditor_toolbar_buttons_all() {
     $path = base_path() . drupal_get_path('module', 'ckeditor');
-    
+
     //CKEditor default buttons
     $buttons = array(
         'Source' => array('name' => 'Source', 'icon' => $path . '/images/buttons/source.png', 'title' => 'Source', 'row' => 1),
@@ -1364,7 +1364,7 @@ function ckeditor_toolbar_buttons_all() {
         '__spacer' => array('name' => false, 'icon' => $path . '/images/buttons/spacer.png', 'title' => 'Spacer', 'row' => 4),
         '__group' => array('name' => false, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
     );
-    
+
     $plugins = ckeditor_load_plugins(TRUE);
     foreach ($plugins as $plugin_name => $plugin) {
         if ($plugin['buttons'] == FALSE) continue;
@@ -1372,6 +1372,6 @@ function ckeditor_toolbar_buttons_all() {
             $buttons[$button_name] = array('name' => $button_name, 'icon' => $plugin['path'] . $button['icon'], 'title' => t($button['label']), 'row' => 4);
         }
     }
-    
+
     return $buttons;
 }
