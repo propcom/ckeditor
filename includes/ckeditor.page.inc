@@ -176,7 +176,7 @@ function ckeditor_filter_xss() {
             continue;
         }
 
-        $text = $filters[$name]['process callback']($text, $format_filters[$name]);
+        $text = $filters[$name]['process callback']($text, $format_filters[$name], $_POST['input_format']);
     }
 
     echo $text;
