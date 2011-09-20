@@ -1367,7 +1367,7 @@ function ckeditor_toolbar_buttons_all() {
 
     $plugins = ckeditor_load_plugins(TRUE);
     foreach ($plugins as $plugin_name => $plugin) {
-        if ($plugin['buttons'] == FALSE) continue;
+        if (!isset($plugin['buttons']) || $plugin['buttons'] == FALSE) continue;
         foreach ((array) $plugin['buttons'] as $button_name => $button) {
             $buttons[$button_name] = array('name' => $button_name, 'icon' => $plugin['path'] . $button['icon'], 'title' => t($button['label']), 'row' => 4);
         }
