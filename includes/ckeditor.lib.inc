@@ -425,6 +425,18 @@ function ckeditor_load_plugins($render = FALSE) {
   }
   $arr = array_merge($arr, $plugins);
 
+  if (isset($arr['linktomenu']) && module_exists('linktocontent') == FALSE) {
+    unset($arr['linktomenu']);
+  } 
+  
+  if (isset($arr['linktonode']) && module_exists('linktocontent') == FALSE) {
+    unset($arr['linktonode']);
+  }    
+    
+  if (isset($arr['imce']) && module_exists('imce') == FALSE) {
+    unset($arr['imce']);
+  }
+  
   ksort($arr);
 
   if ($render === TRUE) {
