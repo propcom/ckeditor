@@ -229,8 +229,8 @@ function ckeditor_pre_render_text_format($element) {
 
     if (isset($element['value'])) {
         if (isset($element['summary'])) {
-            $element['value'] = ckeditor_load_by_field($element['value'], $element['#format'], TRUE, $element['summary']['#id']);
-            $element['summary'] = ckeditor_load_by_field($element['summary'], $element['#format'], FALSE);
+            $element['value'] = ckeditor_load_by_field($element['value'], $element['format']['format'], TRUE, $element['summary']['#id']);
+            $element['summary'] = ckeditor_load_by_field($element['summary'], $element['format']['format'], FALSE);
         }
         else {
             $element['value'] = ckeditor_load_by_field($element['value'], $element['#format']);
