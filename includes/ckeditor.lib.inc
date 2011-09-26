@@ -521,6 +521,14 @@ function ckeditor_load_plugins($render = FALSE) {
     }
     $arr = array_merge($arr, $plugins);
 
+    if (isset($arr['media']) && module_exists('media') == FALSE) {
+        unset($arr['media']);
+    }    
+    
+    if (isset($arr['imce']) && module_exists('imce') == FALSE) {
+        unset($arr['imce']);
+    }
+    
     ksort($arr);
     
     if ($render === TRUE) {
@@ -803,7 +811,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     if (isset($conf['loadPlugins'])) {
         $settings['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
         
-        if (array_key_exists('media', $settings['loadPlugins'])) {
+        if (array_key_exists('media', $settings['loadPlugins']) && module_exists('media')) {
             module_load_include('inc', 'media', 'includes/media.browser');
             $javascript = media_browser_js();
             foreach ($javascript as $key => $definitions) {
