@@ -3,7 +3,6 @@ Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
-
 // this object will store teaser information
 Drupal.ckeditorTeaser = {
   lookup: {},
@@ -54,7 +53,7 @@ Drupal.ckeditorOn = function(textarea_id) {
     if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
       try {
         teaser.button.click();
-      } 
+      }
       catch (e) {
         teaser.button.val(Drupal.t('Split summary at cursor'));
       }
@@ -99,7 +98,7 @@ Drupal.ckeditorOn = function(textarea_id) {
         var dtd = CKEDITOR.dtd;
         for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
           ev.editor.dataProcessor.writer.setRules( e, textarea_settings.custom_formatting);
-		}
+    }
         ev.editor.dataProcessor.writer.setRules( 'pre',
         {
           indent: textarea_settings.output_pre_indent
@@ -164,7 +163,7 @@ Drupal.ckeditorOff = function(textarea_id) {
       if (teaser.button.attr('value') != Drupal.t('Join summary')) {
         try {
           teaser.button.click();
-        } 
+        }
         catch (e) {
           teaser.button.val(Drupal.t('Join summary'));
         }
@@ -179,7 +178,7 @@ Drupal.ckeditorOff = function(textarea_id) {
       if (teaser.button.attr('value') != Drupal.t('Split summary at cursor')) {
         try {
           teaser.button.click();
-        } 
+        }
         catch (e) {
           teaser.button.val(Drupal.t('Split summary at cursor'));
         }
@@ -197,7 +196,6 @@ Drupal.ckeditorOff = function(textarea_id) {
  */
 function ckeditorOpenPopup(jsID, textareaID, width){
   popupUrl = Drupal.settings.ckeditor.module_path + '/includes/ckeditor.popup.html?var=' + jsID + '&el=' + textareaID;
-  
   var percentPos = width.indexOf('%');
   if (percentPos != -1) {
     width = width.substr(0, percentPos);
@@ -240,7 +238,6 @@ Drupal.ckeditorTeaserInfo = function(taid) {
   if (Drupal.ckeditorTeaser.cache[taid]) {
     return Drupal.ckeditorTeaser.cache[taid];
   }
-  
   // build a lookup table
   if (!Drupal.ckeditorTeaser.lookupSetup) {
     Drupal.ckeditorTeaser.lookupSetup = true;
@@ -248,7 +245,6 @@ Drupal.ckeditorTeaserInfo = function(taid) {
       Drupal.ckeditorTeaser.lookup[Drupal.settings.teaser[x]] = x;
     }
   }
-  
   // find the elements
   if (Drupal.ckeditorTeaser.lookup[taid]) {
     var obj;
@@ -263,19 +259,16 @@ Drupal.ckeditorTeaserInfo = function(taid) {
         checkbox: $('#' + Drupal.settings.teaserCheckbox[Drupal.ckeditorTeaser.lookup[taid]])
       };
     }
-    
     obj.textareaContainer = obj.textarea.parent();
     obj.checkboxContainer = obj.checkbox.parent();
-    
     obj.button = $('input.teaser-button', obj.checkbox.parents('div.teaser-checkbox').get(0));
     obj.buttonContainer = obj.button.parent();
-    
     Drupal.ckeditorTeaser.cache[taid] = obj;
   }
   else {
     Drupal.ckeditorTeaser.cache[taid] = null;
   }
-  
+
   return Drupal.ckeditorTeaser.cache[taid];
 };
 
@@ -369,6 +362,28 @@ Drupal.behaviors.ckeditor = function (context) {
     Drupal.behaviors.textarea(context);
   }
 
+  //Added for support [#1288664] Views
+  if ($(context).attr('id') === 'views-ajax-pad')
+  {
+    views_textarea_id = $("textarea", $(context)).attr('id');
+    if (views_textarea_id)
+    {
+      path = document.location.href.replace(document.location.pathname, '');
+      $.ajax({
+        url: path + '/admin/ckeditor/get_settings',
+        dataType: 'json',
+        data: { 'id': views_textarea_id },
+        type: 'POST',
+        success: function( data ) {
+            Drupal.settings.ckeditor.settings[views_textarea_id] = data;
+            Drupal.ckeditorOff(views_textarea_id);
+            Drupal.ckeditorOn(views_textarea_id);
+          },
+          error: function(xhr) { }
+      });
+    }
+  }
+
   // Support for Panels [#679976]
   if ($(context).attr('id') == 'modal-content') {
     if (CKEDITOR.instances['edit-body'] != 'undefined') {
@@ -386,7 +401,7 @@ Drupal.behaviors.ckeditor = function (context) {
         $('body').unbind('keypress');
       };
     });
-  }  
+  }
 
   $("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
     var ta_id=$(this).attr("id");

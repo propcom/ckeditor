@@ -234,7 +234,6 @@ function ckeditor_process_form(&$form) {
     }
     drupal_add_js(array('ckeditor' => $arr), 'setting');
   }
-
   return $form;
 }
 
@@ -341,6 +340,14 @@ function ckeditor_menu() {
     'type' => MENU_CALLBACK,
   );
 
+    $items['admin/ckeditor/get_settings'] = array(
+    'title' => 'Get settings for ckeditor instance',
+    'description' => 'Get settings for ckeditor instance',
+    'page callback' => 'ckeditor_get_settings',
+    'access arguments' => array('access ckeditor'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -349,6 +356,16 @@ function ckeditor_menu() {
  */
 function ckeditor_init() {
   drupal_add_css(drupal_get_path('module', 'ckeditor') .'/ckeditor.css');
+
+  // Added for support [#1288664] Views
+  if (module_exists('views') && preg_match('/admin\/build\/views/', $_GET['q']))
+  {
+    $module_drupal_path = drupal_get_path('module', 'ckeditor');
+    $editor_local_path  = ckeditor_path(TRUE);
+    drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module', 'footer', FALSE, TRUE, FALSE);
+    drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', 'footer' );
+    drupal_add_js(array('ckeditor' => array('settings' =>array('edit-footer','edit-header'))), 'setting');
+    }
 }
 
 /**
@@ -432,7 +449,6 @@ function ckeditor_process_textarea($element) {
   if (isset($element['#access']) && !$element['#access']) {
     return $element;
   }
-
   //skip this one, surely nobody wants WYSIWYG here
   switch ($element['#id']) {
     case 'edit-log':
@@ -473,7 +489,6 @@ function ckeditor_process_textarea($element) {
       $enabled = ckeditor_is_enabled(empty($global_conf['excl_mode']) ? '0' : $global_conf['excl_mode'], empty($global_conf['excl_regex']) ? '' : $global_conf['excl_regex'], $element['#id'], $_GET['q']);
     }
   }
-
   if ($enabled) {
     $profile = ckeditor_user_get_profile($user, $element['#id']);
     if ($profile) {
@@ -514,7 +529,6 @@ function ckeditor_process_textarea($element) {
     $class = 'ckeditor-mod';
     $_ckeditor_ids[] = $textarea_id;
     $ckeditor_on = ($conf['default']=='t') ? 1 : 0 ;
-
     $xss_check = 0;
     //it's not a problem when adding new content/comment
     if (arg(1) != "add" && arg(1) != "reply") {
@@ -1035,6 +1049,7 @@ function ckeditor_process_textarea($element) {
 
     drupal_add_js(array('ckeditor' => array( 'theme' => $theme )), 'setting');
     if (!empty($settings)) {
+      $_SESSION['cke_get_settings'] = $settings;
       drupal_add_js(array('ckeditor' => array('settings' => $settings)), 'setting');
     }
     if (!empty($autostart)) {
@@ -1070,7 +1085,6 @@ function ckeditor_process_textarea($element) {
     $element['#attributes']['class'] .= ' '. $class;
   }
   //hack with patch jquery-ui dialog
-
   return $element;
 }
 
@@ -1096,7 +1110,6 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
     //default: path to ckeditor subdirectory in the ckeditor module directory (relative to index.php)
     //e.g.: sites/all/modules/ckeditor/ckeditor
     $cke_local_path = $mod_path .'/ckeditor';
-    
     if ($global_profile) {
       $gs = $global_profile->settings;
 
@@ -1292,4 +1305,40 @@ function _ckeditor_scayt_langcode($lang) {
   }
 
   return 'en_US';
+}
+/*
+ * Get settings for ckeditor
+ * Added for support [#1288664] Views
+ */
+function ckeditor_get_settings()
+{
+  global $user;
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+  if (empty($_POST['id']))	echo json_encode(array());
+  unset($_SESSION['cke_get_settings']);
+  $enabled = FALSE;
+
+  $global_profile = ckeditor_profile_load('CKEditor Global Profile');
+  if ($global_profile) {
+    $global_conf = $global_profile->settings;
+    if ($global_conf) {
+      $enabled = ckeditor_is_enabled(empty($global_conf['excl_mode']) ? '0' : $global_conf['excl_mode'], empty($global_conf['excl_regex']) ? '' : $global_conf['excl_regex'], $_POST['id'], 'admin/build/views');
+    }
+  }
+  if ($enabled) {
+    $profile = ckeditor_user_get_profile($user, $_POST['#id']);
+    if ($profile) {
+      $conf = array();
+      $conf = $profile->settings;
+      $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $_POST['id'], 'admin/build/views');
+    }
+    else {
+      $enabled = FALSE;
+    }
+  }
+  if (!$enabled) echo json_encode(array());
+  $element = ckeditor_process_textarea(array('#id' => $_POST['id']));
+  if (empty($_SESSION['cke_get_settings'][$_POST['id']])) echo  json_encode(array());
+  echo  json_encode($_SESSION['cke_get_settings'][$_POST['id']]);
+  die();
 }
