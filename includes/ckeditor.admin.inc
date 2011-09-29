@@ -182,7 +182,6 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
 
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
-  $toolbar_options = ckeditor_load_toolbar_options();
   $skin_options = ckeditor_load_skin_options();
   $lang_options = ckeditor_load_lang_options();
 
@@ -459,6 +458,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
 
   $editor_path = ckeditor_path(FALSE);
   $module_drupal_path = drupal_get_path('module', 'ckeditor');
+  drupal_add_js($module_drupal_path .'/ckeditor.config.js');
   drupal_add_js($module_drupal_path .'/includes/ckeditor.admin.js');
 
   drupal_set_html_head('<script type="text/javascript">window.CKEDITOR_BASEPATH = "' . $editor_path . '/";</script>');
@@ -488,11 +488,12 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   );
 
   $form['appearance']['toolbar'] = array(
-    '#type' => 'select',
+    '#type' => 'textarea',
     '#title' => t('Toolbar'),
-    '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : 'default',
-    '#options' => $toolbar_options,
-    '#description' => t('Choose a default toolbar set. To define new toolbar, edit "ckeditor.config.js" located in "!module_path".', array('!module_path' => drupal_get_path('module', 'ckeditor'))),
+    '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
+    '#description' => t('Load sample toolbar: <a href="#" id="cke_toolbar_DrupalBasic" class="cke_load_toolbar">Basic</a> | <a href="#" id="cke_toolbar_DrupalAdvanced" class="cke_load_toolbar">Advanced</a> | <a href="#" id="cke_toolbar_DrupalFull" class="cke_load_toolbar">Full</a>'),
+    '#wysiwyg' => FALSE,
+    '#rows' => 15
   );
 
   $plugin_list = ckeditor_load_plugins();
@@ -1013,6 +1014,10 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
   }
   if (!preg_match('#\d+#', $edit['ckeditor_load_time_out'])) {
     form_set_error('ckeditor_load_time_out', t('Enter valid load timeout in seconds.'));
+  }
+  
+  if (!preg_match('#^\s*\[(?:\s*(?:\{\s*[\w:\'" ,]*\s*\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]\s*\}|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#U', $edit['toolbar']) && !preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['toolbar'])) {
+    form_set_error('toolbar', t('Enter valid toolbar configuration.'));
   }
 }
 

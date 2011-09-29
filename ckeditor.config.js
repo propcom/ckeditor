@@ -26,54 +26,6 @@ CKEDITOR.editorConfig = function(config) {
   config.protectedSource.push(/<code>[\s\S]*?<\/code>/gi); // Code tags
   config.extraPlugins = '';
 
-  // Define as many toolbars as you need, you can change toolbar names and remove or add buttons.
-  // List of all buttons is here: http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.toolbar_Full
-
-  // This toolbar should work fine with "Filtered HTML" filter
-  config.toolbar_DrupalFiltered = [
-    ['Source'],
-    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
-    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
-    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-    ['Maximize', 'ShowBlocks'],
-    '/',
-    ['Format'],
-    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-    ['Link','Unlink','Anchor','Linkit','LinkToNode','LinkToMenu'],
-    ['DrupalBreak', 'DrupalPageBreak']
-   ];
-
- /*
-  * DrupalBasic will be forced on some smaller textareas (if enabled)
-  * if you change the name of DrupalBasic, you have to update
-  * CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME in ckeditor.module
-  */
-  config.toolbar_DrupalBasic = [ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ];
-
-  /*
-   * This toolbar is dedicated to users with "Full HTML" access some of commands
-   * used here (like 'FontName') use inline styles, which unfortunately are
-   * stripped by "Filtered HTML" filter
-   */
-  config.toolbar_DrupalFull = [
-      ['Source'],
-      ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
-      ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
-      ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
-      '/',
-      ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-      ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-      ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
-      ['Link','Unlink','Anchor','Linkit','LinkToNode', 'LinkToMenu'],
-      '/',
-      ['Format','Font','FontSize'],
-      ['TextColor','BGColor'],
-      ['Maximize', 'ShowBlocks'],
-      ['DrupalBreak', 'DrupalPageBreak']
-     ];
-
   /*
    * Append here extra CSS rules that should be applied into the editing area.
    * Example: 
@@ -110,3 +62,44 @@ CKEDITOR.editorConfig = function(config) {
     config.bodyId = 'primary';
   }
 };
+
+/*
+ * Sample toolbars
+ */
+
+//Toolbar definition for basic buttons
+Drupal.settings.cke_toolbar_DrupalBasic = [ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ];
+
+//Toolbar definition for Advanced buttons
+Drupal.settings.cke_toolbar_DrupalAdvanced = [
+    ['Source'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+    ['Maximize', 'ShowBlocks'],
+    '/',
+    ['Format'],
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
+    ['Link','Unlink','Anchor','Linkit','LinkToNode','LinkToMenu'],
+    ['DrupalBreak', 'DrupalPageBreak']
+];
+
+// Toolbar definiton for all buttons
+Drupal.settings.cke_toolbar_DrupalFull = [
+    ['Source'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+    '/',
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
+    ['Link','Unlink','Anchor','Linkit','LinkToNode', 'LinkToMenu'],
+    '/',
+    ['Format','Font','FontSize'],
+    ['TextColor','BGColor'],
+    ['Maximize', 'ShowBlocks'],
+    ['DrupalBreak', 'DrupalPageBreak']
+];

@@ -79,6 +79,7 @@ Drupal.ckeditorOn = function(textarea_id) {
   $("#" + textarea_id).addClass("ckeditor-processed");
 
   var textarea_settings = false;
+  Drupal.settings.ckeditor.settings[textarea_id].toolbar = eval(Drupal.settings.ckeditor.settings[textarea_id].toolbar);
   textarea_settings = Drupal.settings.ckeditor.settings[textarea_id];
 
   textarea_settings['on'] =

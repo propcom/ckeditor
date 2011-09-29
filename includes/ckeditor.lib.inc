@@ -99,51 +99,6 @@ function ckeditor_resolve_url($path) {
   return FALSE;
 }
 
-function ckeditor_load_toolbar_options() {
-  $arr = array('Basic' => 'Basic', 'Full' => 'Full');
-  $module_drupal_path = drupal_get_path('module', 'ckeditor');
-  $editor_local_path  = ckeditor_path(TRUE);
-  $ckconfig_js = $editor_local_path .'/config.js';
-  $ckeditor_config_js = $module_drupal_path .'/ckeditor.config.js';
-  if (file_exists($ckconfig_js) && is_readable($ckconfig_js)) {
-    $fp = @fopen($ckconfig_js, "r");
-    if ($fp) {
-      while (!feof($fp)) {
-        $line = fgets($fp, 1024);
-        $matches = array();
-        if (preg_match('/config.toolbar_([a-z0-9_]+)/i', $line, $matches)) {
-          $arr[$matches[1]] = drupal_ucfirst($matches[1]);
-        }
-      }
-      fclose($fp);
-    }
-  }
-  if (file_exists($ckeditor_config_js) && is_readable($ckeditor_config_js)) {
-    $fp = @fopen($ckeditor_config_js, "r");
-    if ($fp) {
-      while (!feof($fp)) {
-        $line = fgets($fp, 1024);
-        $matches = array();
-        if (preg_match('/config.toolbar_([a-z0-9_]+)/i', $line, $matches)) {
-          $arr[$matches[1]] = drupal_ucfirst($matches[1]);
-        }
-      }
-      fclose($fp);
-    }
-  }
-
-  //oops, we have no information about toolbars, let's use hardcoded array
-  if (empty($arr)) {
-    $arr = array(
-      'Basic' => 'Basic',
-      'Default' => 'Default',
-    );
-  }
-  asort($arr);
-
-  return $arr;
-}
-
 function ckeditor_load_skin_options() {
   $arr = array();
   $editor_local_path  = ckeditor_path(TRUE);

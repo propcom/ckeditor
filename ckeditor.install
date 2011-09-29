@@ -510,6 +510,96 @@ function ckeditor_update_6101() {
 }
 
 /**
+ *	Implementation of hook_update_N().
+ *
+ *	Move toolbar definition from config file to database - toolbar definition is now set in CKEditor profile.
+ */
+ 
+function ckeditor_update_6102() {
+  module_load_include('module', 'ckeditor');
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+  
+  $ret = array();
+  
+  $result = db_query("SELECT * FROM {ckeditor_settings} WHERE name <> 'CKEditor Global Profile'");
+    
+  while (($profile = db_fetch_object($result))) {
+    $name = $profile->name;
+    $settings = unserialize($profile->settings);
+        
+    if ($settings['toolbar'] == 'DrupalBasic'){
+      $settings['toolbar'] = "
+[
+    [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ]
+]
+      ";  
+      
+      $settings = serialize($settings);
+    
+      $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
+      $ret[] = array('success' => $return !== FALSE, 'query' => "UPDATE PROFILE - {$name}");
+    }
+    else if ($settings['toolbar'] == 'DrupalFiltered'){
+      $settings['toolbar'] = "
+[
+    ['Source'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+    ['Maximize', 'ShowBlocks'],
+    '/',
+    ['Format'],
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
+    ['Link','Unlink','Anchor','Linkit','LinkToNode','LinkToMenu'],
+    ['DrupalBreak', 'DrupalPageBreak']
+]
+      ";  
+      
+      $settings = serialize($settings);
+    
+      $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
+      $ret[] = array('success' => $return !== FALSE, 'query' => "UPDATE PROFILE - {$name}");
+    }
+    else if ($settings['toolbar'] == 'DrupalFull'){
+      $settings['toolbar'] = "
+[
+      ['Source'],
+      ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+      ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+      ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+      '/',
+      ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+      ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+      ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
+      ['Link','Unlink','Anchor','Linkit','LinkToNode', 'LinkToMenu'],
+      '/',
+      ['Format','Font','FontSize'],
+      ['TextColor','BGColor'],
+      ['Maximize', 'ShowBlocks'],
+      ['DrupalBreak', 'DrupalPageBreak']
+]
+      "; 
+      
+      $settings = serialize($settings);
+    
+      $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
+      $ret[] = array('success' => $return !== FALSE, 'query' => "UPDATE PROFILE - {$name}");
+    }
+    else {
+      $settings['toolbar'] = "";
+      $settings = serialize($settings);
+    
+      $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
+      $ret[] = array('success' => $return !== FALSE, 'query' => "[!!] UPDATE PROFILE - {$name} - Custom toolbar cannot be converted, pls set this toolbar manually in CKEditor profile!");
+    }
+  }
+  
+  return $ret;
+}
+
+/**
  * Implementation of hook_uninstall().
  */
 function ckeditor_uninstall() {
