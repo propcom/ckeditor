@@ -362,6 +362,37 @@ Drupal.behaviors.ckeditor = function (context) {
     Drupal.behaviors.textarea(context);
   }
 
+  //Support for imageField [#1286192]
+  if(Drupal.behaviors.filefieldButtons)
+  {
+    url = document.location.pathname;
+    if (url.indexOf('/') == 0 ) url =  url.substr(1);
+    imagefield = $('textarea',$(context).html());
+    if (imagefield.length == 1)
+    {
+      imagefield_id = imagefield.attr('id')
+      path = document.location.href.replace(document.location.pathname, '');
+      //Drupal.settings.ckeditor.settings[imagefield_id] = [];
+       $.ajax({
+        url: path + '/admin/ckeditor/get_settings',
+        dataType: 'json',
+        data: { 'id': imagefield_id, 'url': url },
+        type: 'POST',
+        success: function( data ) {
+            Drupal.settings.ckeditor.settings[imagefield_id] = data;
+            Drupal.ckeditorOff(imagefield_id);
+            Drupal.ckeditorOn(imagefield_id);
+          },
+          error: function(xhr) { }
+      });
+
+
+//      Drupal.ckeditorOn(imagefield_id);
+    }
+  }
+
+
+
   //Added for support [#1288664] Views
   if ($(context).attr('id') === 'views-ajax-pad')
   {
