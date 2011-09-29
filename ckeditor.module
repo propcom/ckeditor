@@ -1322,7 +1322,7 @@ function ckeditor_get_settings()
   if ($global_profile) {
     $global_conf = $global_profile->settings;
     if ($global_conf) {
-      $enabled = ckeditor_is_enabled(empty($global_conf['excl_mode']) ? '0' : $global_conf['excl_mode'], empty($global_conf['excl_regex']) ? '' : $global_conf['excl_regex'], $_POST['id'], 'admin/build/views');
+      $enabled = ckeditor_is_enabled(empty($global_conf['excl_mode']) ? '0' : $global_conf['excl_mode'], empty($global_conf['excl_regex']) ? '' : $global_conf['excl_regex'], $_POST['id'], $_POST['url']);
     }
   }
   if ($enabled) {
@@ -1330,7 +1330,7 @@ function ckeditor_get_settings()
     if ($profile) {
       $conf = array();
       $conf = $profile->settings;
-      $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $_POST['id'], 'admin/build/views');
+      $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $_POST['id'], $_POST['url']);
     }
     else {
       $enabled = FALSE;

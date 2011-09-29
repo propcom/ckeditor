@@ -372,7 +372,7 @@ Drupal.behaviors.ckeditor = function (context) {
       $.ajax({
         url: path + '/admin/ckeditor/get_settings',
         dataType: 'json',
-        data: { 'id': views_textarea_id },
+        data: { 'id': views_textarea_id, 'url': 'admin/build/views' },
         type: 'POST',
         success: function( data ) {
             Drupal.settings.ckeditor.settings[views_textarea_id] = data;
