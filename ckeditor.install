@@ -123,7 +123,11 @@ function ckeditor_install() {
       $arr['show_toggle'] = "t";
       $arr['popup'] = variable_get('ckeditor_popup', 0) ? "t" : "f";
       $arr['skin'] = "kama";
-      $arr['toolbar'] = variable_get('ckeditor_default_toolbar', 'DrupalBasic');
+      $arr['toolbar'] = "
+[
+    [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ]
+]
+      "; 
       $arr['expand'] = variable_get('ckeditor_toolbar_start_expanded', 1) ? "t" : "f";
       $arr['width'] = variable_get("ckeditor_width", "100%");
       $arr['lang'] = "en";
@@ -155,7 +159,23 @@ function ckeditor_install() {
       db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Default", serialize($arr));
 
       //insert settings for advanced role
-      $arr['toolbar'] = variable_get('ckeditor_advanced_toolbar', 'DrupalFiltered');
+      $arr['toolbar'] = "
+[
+    ['Source'],
+    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker', 'Scayt'],
+    ['Undo','Redo','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+    ['Maximize', 'ShowBlocks'],
+    '/',
+    ['Format'],
+    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
+    ['Link','Unlink','Anchor','Linkit','LinkToNode','LinkToMenu'],
+    ['DrupalBreak', 'DrupalPageBreak']
+]
+      "; 
+      
       db_query("INSERT INTO {ckeditor_settings} (name, settings) VALUES ('%s', '%s')", "Advanced", serialize($arr));
 
       $arr = array();
