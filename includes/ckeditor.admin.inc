@@ -52,7 +52,7 @@ function ckeditor_admin_main() {
     drupal_set_message(t('There is currently no role with the "access ckeditor" permission. Visit <a href="!acl">permissions</a> administration section.', array('!acl' => url('admin/user/permissions'))), 'warning');
   }
   else {
-    $result = db_query_range("SELECT name FROM {ckeditor_settings} WHERE name<>'CKEditor Global Profile'", 0, 1);
+    $result = db_query_range("SELECT name FROM {ckeditor_settings} WHERE name<>'CKEditor Global Profile' ORDER BY name", 0, 1);
     $has_profiles = FALSE;
     //find profile other than Global
     if (($obj = db_fetch_object($result))) {
