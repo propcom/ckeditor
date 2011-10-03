@@ -1023,7 +1023,7 @@ function ckeditor_process_textarea($element) {
         $css_files[] = $editor_path .'/contents.css' . $query_string;
         break;
     }
-    if ($conf['ckeditor_load_method'] == 'ckeditor_source.js') {
+    if (isset($conf['ckeditor_load_method']) && $conf['ckeditor_load_method'] == 'ckeditor_source.js') {
       foreach ($css_files as $k => $v) {
         $css_files[$k] = $v . '&t=' . time();
       }
@@ -1213,7 +1213,7 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
 
       //ckeditor_plugins_path is defined, but wildcards are not used, we need to try to find out where is
       //the document root located and append ckeditor_plugins_path to it.
-      if (!is_null($gs['ckeditor_plugins_local_path']) && !empty($gs['ckeditor_plugins_local_path'])) {
+      if (!empty($gs['ckeditor_plugins_local_path']) && !is_null($gs['ckeditor_plugins_local_path'])) {
         $cke_plugins_local_path = $gs['ckeditor_plugins_local_path'];
       }
       elseif (!empty($gs['ckeditor_plugins_path'])) {
