@@ -236,6 +236,7 @@ function ckeditor_load_plugins($render = FALSE) {
       'name' => 'swf',
       'desc' => t('Support for CKEditor SWF module'),
       'path' => $base_path . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
+      'buttons' => false,
       'default' => 't'
       );
   }
@@ -245,6 +246,7 @@ function ckeditor_load_plugins($render = FALSE) {
       'name' => 'drupal_path',
       'desc' => t('Support for CKEditor Link module'),
       'path' => $base_path . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
+      'buttons' => false,
       'default' => 't'
     );
   }
@@ -254,6 +256,7 @@ function ckeditor_load_plugins($render = FALSE) {
       'name' => 'Linkit',
       'desc' => t('Support for Linkit module <i>(buttons: Linkit)</i>'),
       'path' => $base_path . drupal_get_path('module', 'linkit') . '/editors/ckeditor/',
+      'buttons' => false,
       'default' => 't'
     );
   }
@@ -267,6 +270,7 @@ function ckeditor_load_plugins($render = FALSE) {
       'name' => 'tableresize',
       'desc' => t('Tableresize plugin'),
       'path' => $base_path . $editor_path . 'plugins/tableresize/',
+      'buttons' => false,
       'default' => 't'
     );
   }
@@ -276,6 +280,7 @@ function ckeditor_load_plugins($render = FALSE) {
       'name' => 'autogrow',
       'desc' => t('Autogrow plugin'),
       'path' => $base_path . $editor_path . 'plugins/autogrow/',
+      'buttons' => false,
       'default' => 'f'
     );
   }
@@ -288,15 +293,31 @@ function ckeditor_load_plugins($render = FALSE) {
     while (false !== ($file = readdir($handle))) {
       if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')) {
         $source = file_get_contents($_plugin_dir . $file . '/plugin.js');
-        $buttons = FALSE;
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
-            $buttons = implode(', ', $matches[1]);
-        }
+        $buttons = array();
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
+          foreach ($matches[1] as $i => $button_name){
+            if (preg_match_all('#(label|icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+              $buttons[$button_name] = array();
+              foreach($matches2[1] as $j => $val){
+                $matches2[2][$j] = $matches2[2][$j] . ';';
+                if ($val == 'label'){
+                  $matches2[2][$j] = str_replace('Drupal.t', 't', $matches2[2][$j]);
+                }
+                elseif ($val == 'icon'){
+                  $matches2[2][$j] = str_replace(array('this.path', '+'), array('', ''), $matches2[2][$j]);
+                }
+
+                $buttons[$button_name][$val] = eval("return ".$matches2[2][$j]);
+              }
+            }
+          }
+        } 
         if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
           $arr[$file] = array(
             'name' => $file,
             'desc' => t($matches[1]),
             'path' => $base_path . $plugin_dir . $file . '/',
+            'buttons' => (count($buttons) > 0) ? $buttons : FALSE,
             'default' => 'f'
           );
         }
@@ -305,11 +326,9 @@ function ckeditor_load_plugins($render = FALSE) {
             'name' => $file,
             'desc' => t('Plugin file: ' . $file),
             'path' => $base_path . $plugin_dir . $file . '/',
+            'buttons' => (count($buttons) > 0) ? $buttons : FALSE,
             'default' => 'f'
           );
-        }
-        if ($buttons) {
-            $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
         }
       }
     }
@@ -325,15 +344,31 @@ function ckeditor_load_plugins($render = FALSE) {
     while (false !== ($file = readdir($handle))) {
       if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')) {
         $source = file_get_contents($_plugin_dir_additional . $file . '/plugin.js');
-        $buttons = FALSE;
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
-            $buttons = implode(', ', $matches[1]);
-        }
+        $buttons = array();
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
+          foreach ($matches[1] as $i => $button_name){
+            if (preg_match_all('#(label|icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+              $buttons[$button_name] = array();
+              foreach($matches2[1] as $j => $val){
+                $matches2[2][$j] = $matches2[2][$j] . ';';
+                if ($val == 'label'){
+                  $matches2[2][$j] = str_replace('Drupal.t', 't', $matches2[2][$j]);
+                }
+                elseif ($val == 'icon'){
+                  $matches2[2][$j] = str_replace(array('this.path', '+'), array('', ''), $matches2[2][$j]);
+                }
+
+                $buttons[$button_name][$val] = eval("return ".$matches2[2][$j]);
+              }
+            }
+          }
+        } 
         if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
           $arr[$file] = array(
             'name' => $file,
             'desc' => t($matches[1]),
             'path' => $base_path . $plugin_dir_additional . $file . '/',
+            'buttons' => (count($buttons) > 0) ? $buttons : FALSE,
             'default' => 'f'
           );
         }
@@ -342,11 +377,9 @@ function ckeditor_load_plugins($render = FALSE) {
             'name' => $file,
             'desc' => t('Plugin file: ' . $file),
             'path' => $base_path . $plugin_dir_additional . $file . '/',
+            'buttons' => (count($buttons) > 0) ? $buttons : FALSE,
             'default' => 'f'
           );
-        }
-        if ($buttons) {
-            $arr[$file]['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
         }
       }
     }
@@ -363,15 +396,27 @@ function ckeditor_load_plugins($render = FALSE) {
     if (file_exists($plugin['path'] . 'plugin.js')) {
       $source = file_get_contents($plugin['path'] . 'plugin.js');
       $plugins[$i]['path'] = $base_path . $plugin['path'];
-      $buttons = FALSE;
-      if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'#', $source, $matches)) {
-        $buttons = implode(', ', $matches[1]);
-      }
-      if (!isset($plugin['desc']) || strlen(trim($plugin['desc'])) == 0) {
-        $plugin['desc'] = t('Plugin file: ' . $plugin['name']);
-      }
-      if ($buttons) {
-        $plugin['desc'] .= ' <i>(buttons: ' . $buttons . ')</i>';
+      if (!isset($plugin['buttons']) || count($plugin['buttons']) == 0) {
+        $buttons = array();
+        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
+          foreach ($matches[1] as $i => $button_name){
+            if (preg_match_all('#(label|icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+              $buttons = array();
+              foreach($matches2[1] as $j => $val){
+                $matches2[2][$j] = $matches2[2][$j] . ';';
+                if ($val == 'label'){
+                  $matches2[2][$j] = str_replace('Drupal.t', 't', $matches2[2][$j]);
+                }
+                elseif ($val == 'icon'){
+                  $matches2[2][$j] = str_replace(array('this.path', '+'), array('', ''), $matches2[2][$j]);
+                }
+
+                $buttons[$button_name][$val] = eval("return ".$matches2[2][$j]);
+              }
+            }
+          }
+        }
+        $plugin['buttons'] = (count($buttons) > 0) ? $buttons : FALSE;
       }
     }
     else {

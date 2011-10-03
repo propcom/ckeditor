@@ -90,6 +90,7 @@ $(document).ready(function() {
     text = text + "]";
     text = text.replace(/\['\/'\]/g,"'/'");
     $("#edit-toolbar").attr('value',text);
+    Drupal.ckeditorToolbarReload();
     return false;
   });
 });
