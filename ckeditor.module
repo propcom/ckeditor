@@ -406,7 +406,7 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
   static $profiles = array();
 
   if (empty($profiles) || $clear === TRUE) {
-    $result = db_query("SELECT * FROM {ckeditor_settings}");
+    $result = db_query("SELECT * FROM {ckeditor_settings} ORDER BY name");
     while (($data = db_fetch_object($result))) {
       $data->settings = unserialize($data->settings);
       $data->rids = array();
