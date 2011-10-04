@@ -6,7 +6,7 @@
  *
  * == BEGIN LICENSE ==
  *
- * Licensed under the terms of any of the following licenses at your
+ * Licensed under the terms of any of the following licenses of your
  * choice:
  *
  *  - GNU General Public License Version 2 or later (the "GPL")
@@ -25,9 +25,13 @@
  *
  * This module allows Drupal to replace textarea fields with CKEditor.
  *
- * This HTML text editor brings to the web many of the powerful functionalities
- * of known desktop editors like Word. It's really  lightweight and doesn't
- * require any kind of installation on the client computer.
+ * CKEditor is an online rich text editor that can be embedded inside web pages.
+ * It is a WYSIWYG (What You See Is What You Get) editor which means that the
+ * text edited in it looks as similar as possible to the results end users will
+ * see after the document gets published. It brings to the Web popular editing
+ * features found in desktop word processors such as Microsoft Word and
+ * OpenOffice.org Writer. CKEditor is truly lightweight and does not require any
+ * kind of installation on the client computer.
  */
 
 /**
@@ -326,7 +330,7 @@ function ckeditor_load_plugins($render = FALSE) {
     if (module_exists('ckeditor_swf') && file_exists(drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/plugin.js')) {
         $arr['ckeditor_swf'] = array(
             'name' => 'swf',
-            'desc' => t('Support for CKEditor SWF module'),
+            'desc' => t('Support for the CKEditor SWF module'),
             'path' => $base_path . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
             'buttons' => false,
             'default' => 't'
@@ -336,7 +340,7 @@ function ckeditor_load_plugins($render = FALSE) {
     if (module_exists('ckeditor_link') && file_exists(drupal_get_path('module', 'ckeditor_link') . '/plugins/link/plugin.js')) {
         $arr['ckeditor_link'] = array(
             'name' => 'drupal_path',
-            'desc' => t('Support for CKEditor Link module'),
+            'desc' => t('Support for the CKEditor Link module'),
             'path' => $base_path . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
             'buttons' => false,
             'default' => 't'
@@ -346,7 +350,7 @@ function ckeditor_load_plugins($render = FALSE) {
     if (module_exists('linkit') && file_exists(drupal_get_path('module', 'linkit') . '/editors/ckeditor/plugin.js')) {
         $arr['linkit'] = array(
             'name' => 'Linkit',
-            'desc' => t('Support for Linkit module <i>(buttons: Linkit)</i>'),
+            'desc' => t('Support for the Linkit module <em>(buttons: Linkit)</em>'),
             'path' => $base_path . drupal_get_path('module', 'linkit') . '/editors/ckeditor/',
             'buttons' => array(
                 'Linkit' => array(
@@ -365,7 +369,7 @@ function ckeditor_load_plugins($render = FALSE) {
     if (file_exists($_editor_path . 'plugins/tableresize/plugin.js')) {
         $arr['tableresize'] = array(
             'name' => 'tableresize',
-            'desc' => t('Tableresize plugin'),
+            'desc' => t('Table Resize plugin'),
             'path' => $base_path . $editor_path . 'plugins/tableresize/',
             'buttons' => false,
             'default' => 't'
@@ -375,7 +379,7 @@ function ckeditor_load_plugins($render = FALSE) {
     if (file_exists($_editor_path . 'plugins/autogrow/plugin.js')) {
         $arr['autogrow'] = array(
             'name' => 'autogrow',
-            'desc' => t('Autogrow plugin'),
+            'desc' => t('Auto Grow plugin'),
             'path' => $base_path . $editor_path . 'plugins/autogrow/',
             'buttons' => false,
             'default' => 'f'
