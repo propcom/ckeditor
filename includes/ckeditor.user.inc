@@ -34,7 +34,6 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
     $profile = ckeditor_user_get_profile($user);
-    $toolbar_options = ckeditor_load_toolbar_options();
     $skin_options = ckeditor_load_skin_options();
     $lang_options = ckeditor_load_lang_options();
 
@@ -99,14 +98,6 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
         '#default_value' => isset($user->ckeditor_skin) ? $user->ckeditor_skin : (isset($profile->settings['skin']) ? $profile->settings['skin'] : 'default'),
         '#options' => $skin_options,
         '#description' => t('Choose a CKEditor skin.'),
-      );
-
-      $form['ckeditor']['ckeditor_toolbar'] = array(
-        '#type' => 'select',
-        '#title' => t('Toolbar'),
-        '#default_value' => isset($user->ckeditor_toolbar) ? $user->ckeditor_toolbar : (isset($profile->settings['toolbar']) ? $profile->settings['toolbar'] : 'default'),
-        '#options' => $toolbar_options,
-        '#description' => t('Choose a CKEditor toolbar set.'),
       );
 
       $form['ckeditor']['ckeditor_expand'] = array(

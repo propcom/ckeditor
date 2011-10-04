@@ -496,7 +496,7 @@ function ckeditor_process_textarea($element) {
       $conf = $profile->settings;
 
       if ($conf['allow_user_conf']=='t') {
-        foreach (array('default', 'show_toggle', 'popup', 'skin', 'toolbar', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
+        foreach (array('default', 'show_toggle', 'popup', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
           $conf[$setting] = ckeditor_user_get_setting($user, $profile, $setting);
         }
       }
