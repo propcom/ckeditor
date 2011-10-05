@@ -5,7 +5,7 @@
  *
  * == BEGIN LICENSE ==
  *
- * Licensed under the terms of any of the following licenses at your
+ * Licensed under the terms of any of the following licenses of your
  * choice:
  *
  *  - GNU General Public License Version 2 or later (the "GPL")
@@ -42,7 +42,7 @@ function ckeditor_drush_command() {
     'callback' => 'ckeditor_drush_download',
     'description' => dt('Downloads the required CKEditor library from svn.fckeditor.net.'),
     'arguments' => array(
-      'path' => dt('Optional. A path to the download folder. If omitted Drush will use the default location (sites/all/libraries/ckeditor).'),
+      'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/ckeditor</code>).'),
     ),
   );
   return $items;
@@ -61,7 +61,7 @@ function ckeditor_drush_download() {
   }
 
   if (drush_shell_exec('svn checkout http://svn.fckeditor.net/CKEditor/releases/stable/ ' . $path)) {
-    drush_log(dt('CKEditor has been downloaded to @path.', array('@path' => $path)), 'success');
+    drush_log(dt('CKEditor was downloaded to @path.', array('@path' => $path)), 'success');
   }
   else {
     drush_log(dt('Drush was unable to download the CKEditor to @path.', array('@path' => $path)), 'error');

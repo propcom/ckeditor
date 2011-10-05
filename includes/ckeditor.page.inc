@@ -5,7 +5,7 @@
  *
  * == BEGIN LICENSE ==
  *
- * Licensed under the terms of any of the following licenses at your
+ * Licensed under the terms of any of the following licenses of your
  * choice:
  *
  *  - GNU General Public License Version 2 or later (the "GPL")
@@ -24,24 +24,28 @@
  *
  * This module allows Drupal to replace textarea fields with CKEditor.
  *
- * This HTML text editor brings to the web many of the powerful functionalities
- * of known desktop editors like Word. It's really  lightweight and doesn't
- * require any kind of installation on the client computer.
+ * CKEditor is an online rich text editor that can be embedded inside web pages.
+ * It is a WYSIWYG (What You See Is What You Get) editor which means that the
+ * text edited in it looks as similar as possible to the results end users will
+ * see after the document gets published. It brings to the Web popular editing
+ * features found in desktop word processors such as Microsoft Word and
+ * OpenOffice.org Writer. CKEditor is truly lightweight and does not require any
+ * kind of installation on the client computer.
  */
 
 function ckeditor_help_delegate($path, $arg) {
   switch ($path) {
     case 'admin/settings/help#description':
-      $output = t('Enables the usage of CKEditor (WYSIWYG editor) instead of plain text fields.');
+      $output = t('Enables the use of CKEditor (a rich text WYSIWYG editor) instead of plain text fields.');
       break;
 
     case 'admin/settings/ckeditor/edit/%':
     case 'admin/settings/ckeditor/add':
-      $output = '<p>'. t('CKEditor is highly configurable. The most commonly used features are listed below. You can also customize CKEditor to your needs by changing the configuration file: %ckeditor_module_config. This is also the only way to define new toolbar sets.',
+      $output = '<p>'. t('CKEditor is highly configurable. The most commonly used features are listed below. You can also adjust CKEditor to your needs by changing the configuration file: <code>%ckeditor_module_config</code> configuration file.',
         array(
           '%ckeditor_module_config' => drupal_get_path('module', 'ckeditor') .'/ckeditor.config.js',
         )) .'</p>';
-      $output .= '<p>'. t('It is advised to not edit the configuration file that is distributed with CKEditor: %ckeditor_config_file (%ckeditor_config_path) because you may overwrite it accidentally when you update the editor.',
+      $output .= '<p>'. t('It is advised to not edit the <code>%ckeditor_config_file</code> (<code>%ckeditor_config_path</code>) configuration file that is distributed with CKEditor, because you may overwrite it accidentally when you update the editor.',
         array(
           '%ckeditor_config_path' => drupal_get_path('module', 'ckeditor') .'/ckeditor/config.js',
           '%ckeditor_config_file' => 'config.js',
@@ -50,7 +54,7 @@ function ckeditor_help_delegate($path, $arg) {
 
     case 'admin/settings/ckeditor/editg':
     case 'admin/settings/ckeditor/add':
-      $output = '<p>'. t('The Global Profile allows you to define settings that are common for all profiles. Values defined in other profiles will be appended to the global configuration. This way you can avoid repeating some of the settings that are usually the same in each profile.') .'</p>';
+      $output = '<p>'. t('The Global Profile allows you to define settings that are common for all profiles. Values defined in other profiles will be appended to the global configuration. This way you can avoid repeating some of the settings that are usually the same for each profile.') .'</p>';
       break;
 
     case 'admin/settings/ckeditor':
@@ -61,7 +65,7 @@ function ckeditor_help_delegate($path, $arg) {
           )) .'</p>'.
         '<p>'. t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
           array(
-            '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com'),
+            '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com'),
             '!userguidelink' => l(t('user guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide'),
           )) .'</p>'.
         '<p>'. t('Profiles can be defined based on user roles. A CKEditor profile can define which pages receive this CKEditor capability, what buttons or themes are enabled for the editor, how the editor is displayed, and a few other editor functions. It is possible also to define the Global Profile that will hold values that will be appended to all other profiles.') .'</p>'.
@@ -89,12 +93,12 @@ function ckeditor_help_delegate($path, $arg) {
           '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'),
           '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/',
         )) .'</li>';
-      $output .= '<li>'. t('Enable the module as usual from Drupal\'s admin pages.') .'</li>';
+      $output .= '<li>'. t('Enable the module as usual from within Drupal\'s administration pages.') .'</li>';
       $output .= '<li>'. t('Grant permissions for use of CKEditor in !adminpath.',
         array(
           '!adminpath' => l(t('Administer') .' > '. t('User management') .' > '. t('Permissions'), 'admin/user/permissions'),
         )) .'</li>';
-      $output .= '<li>'. t('Under !adminpath, adjust the ckeditor profiles. In each profile you can choose which textareas will be replaced by CKEditor, select default toolbar and configure some more advanced settings.',
+      $output .= '<li>'. t('Under !adminpath, adjust the CKEditor profiles. In each profile you can choose which textareas will be replaced by CKEditor, select default toolbar and configure some more advanced settings.',
         array(
           '!adminpath' => l(t('Administer') .' > '. t('Site configuration') .' > '. t('CKEditor'), 'admin/settings/ckeditor'),
         )) .'</li>';
@@ -103,15 +107,15 @@ function ckeditor_help_delegate($path, $arg) {
           '!filterlink' => l(t('filters'), 'admin/settings/filters'),
         )) .
         '<br /><code>'. htmlspecialchars('<a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <font> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption>') .'</code><br />';
-      $output .= t('If you\'re going to use CKEditor with Filtered HTML input format, please read also "Setting up filters" section in !readme',
+      $output .= t('If you are going to use CKEditor with the <strong>Filtered HTML</strong> input format, please read  the "Setting up filters" section in the <code>!readme</code> file.',
         array(
         '!readme' => l('README.txt', drupal_get_path('module', 'ckeditor') .'/README.txt')
         )) .'</li>';
-      $output .= '<li>'. t('To have a better control over line breaks, you should disable %settingname in the chosen filter (recommended).',
+      $output .= '<li>'. t('To have better control over line breaks, you should disable <strong>%settingname</strong> setting in the chosen filter (recommended).',
         array(
           '%settingname' => t('Line break converter'),
         )) .'</li>';
-      $output .= '<li>'. t('Modify the %ckconfig file to your custom needs (optional). Available configuration settings are available in the !apidocs.',
+      $output .= '<li>'. t('Modify the <code>%ckconfig</code> file to  adjust CKEditor configuration to your needs (optional). Available configuration settings are available in the !apidocs.',
         array(
           '%ckconfig' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/ckeditor.config.js',
           '!apidocs' => l(t('API documentation'), 'http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html')
@@ -149,8 +153,8 @@ function ckeditor_help_delegate($path, $arg) {
           '!listlink' => l(t('the list of common problems'), 'http://drupal.ckeditor.com/troubleshooting'),
           '!troubleshooting' => l('TROUBLESHOOTING.txt', drupal_get_path('module', 'ckeditor') .'/TROUBLESHOOTING.txt')
         ));
-      $output .= ' '. t('If you are looking for more information, have any trouble in configuration or if you found an issue, please visit the !officiallink.', array('!officiallink' => l(t('official project page'), 'http://drupal.org/project/ckeditor')));
-      $output .= ' '. t('More information about how to tune up CKEditor for your theme can be found !herelink.', array('!herelink' => l(t('here'), 'http://drupal.fckeditor.net/tricks')));
+      $output .= ' '. t('If you are looking for more information, have any trouble with the configuration, or found an issue with the CKEditor module, please visit the !officiallink.', array('!officiallink' => l(t('official project page'), 'http://drupal.org/project/ckeditor')));
+      $output .= ' '. t('More information about how to customize CKEditor for your theme can be found !herelink.', array('!herelink' => l(t('here'), 'http://drupal.fckeditor.net/tricks')));
       $output .= '</p>';
 
       $output .= '<h3>'. t('Uploading images and files') .'</h3>';
@@ -160,7 +164,7 @@ function ckeditor_help_delegate($path, $arg) {
         array(
           '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
         )) .'</li>';
-      $output .= '<li>'. t('By using a module like !imcelink, !iblink or !webfmlink.',
+      $output .= '<li>'. t('By using a dedicated module like !imcelink, !iblink or !webfmlink.',
         array(
           '!imcelink' => l(t('IMCE'), 'http://drupal.org/project/imce'),
           '!iblink' => l(t('Image Browser'), 'http://drupal.org/project/imagebrowser'),

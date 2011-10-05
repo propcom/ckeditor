@@ -5,7 +5,7 @@
  *
  * == BEGIN LICENSE ==
  *
- * Licensed under the terms of any of the following licenses at your
+ * Licensed under the terms of any of the following licenses of your
  * choice:
  *
  *  - GNU General Public License Version 2 or later (the "GPL")
@@ -24,14 +24,18 @@
  *
  * This module allows Drupal to replace textarea fields with CKEditor.
  *
- * This HTML text editor brings to the web many of the powerful functionalities
- * of known desktop editors like Word. It's really  lightweight and doesn't
- * require any kind of installation on the client computer.
+  * CKEditor is an online rich text editor that can be embedded inside web pages.
+ * It is a WYSIWYG (What You See Is What You Get) editor which means that the
+ * text edited in it looks as similar as possible to the results end users will
+ * see after the document gets published. It brings to the Web popular editing
+ * features found in desktop word processors such as Microsoft Word and
+ * OpenOffice.org Writer. CKEditor is truly lightweight and does not require any
+ * kind of installation on the client computer.
  */
 
 /**
- * The name of simplified toolbar which should be forced
- * Be sure that this toolbar is defined in ckeditor.config.js or fckconfig.js
+ * The name of the simplified toolbar that should be forced.
+ * Make sure that this toolbar is defined in ckeditor.config.js or fckconfig.js.
  */
 define('CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME', 'DrupalBasic') ;
 define('CKEDITOR_ENTERMODE_P', 1);
@@ -63,8 +67,8 @@ function ckeditor_form_alter(&$form, $form_state, $form_id) {
 /**
  * Implementation of hook_help().
  *
- * This function delegates execution to ckeditor_help_delegate() in includes/ckeditor.page.inc to
- * lower the amount of code in ckeditor.module
+ * This function delegates the execution to ckeditor_help_delegate() in includes/ckeditor.page.inc to
+ * lower the amount of code in ckeditor.module.
  */
 function ckeditor_help($path, $arg) {
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.page');
@@ -74,8 +78,8 @@ function ckeditor_help($path, $arg) {
 /**
  * Implementation of hook_user().
  *
- * This function delegates execution to ckeditor_user_delegate() in includes/ckeditor.user.inc to
- * lower the amount of code in ckeditor.module
+ * This function delegates the execution to ckeditor_user_delegate() in includes/ckeditor.user.inc to
+ * lower the amount of code in ckeditor.module.
  */
 function ckeditor_user($type, $edit, &$user, $category = NULL) {
   if (($type == 'form' && $category == 'account' && user_access('access ckeditor')) || $type == 'validate') {
@@ -99,7 +103,7 @@ function ckeditor_perm() {
 
 /**
  * Implementation of hook_elements().
- * Replace textarea with CKEditor using callback function (ckeditor_process_textarea)
+ *  Replace the textarea with CKEditor using a callback function (ckeditor_process_textarea)
  */
 function ckeditor_elements() {
   $type = array();
@@ -264,7 +268,7 @@ function ckeditor_menu() {
 
   $items['ckeditor/disable/wysiwyg'] = array(
     'title' => 'Disable WYSIWYG module',
-    'description' => 'Disable WYSIWYG module.',
+    'description' => 'Disable the WYSIWYG module.',
     'page callback' => 'ckeditor_disable_wysiwyg',
     'file' => 'includes/ckeditor.admin.inc',
     'access arguments' => array('administer ckeditor'),
@@ -281,7 +285,7 @@ function ckeditor_menu() {
   );
 
   $items['admin/settings/ckeditor/add'] = array(
-    'title' => 'Add new CKEditor profile',
+    'title' => 'Add a new CKEditor profile',
     'description' => 'Configure the rich text editor.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ckeditor_admin_profile_form'),
@@ -291,7 +295,7 @@ function ckeditor_menu() {
   );
 
   $items['admin/settings/ckeditor/clone/%ckeditor_profile'] = array(
-    'title' => 'Clone CKEditor profile',
+    'title' => 'Clone the CKEditor profile',
     'description' => 'Configure the rich text editor.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ckeditor_admin_profile_clone_form', 4),
@@ -301,7 +305,7 @@ function ckeditor_menu() {
   );
 
   $items['admin/settings/ckeditor/edit/%ckeditor_profile'] = array(
-    'title' => 'Edit CKEditor profile',
+    'title' => 'Edit the CKEditor profile',
     'description' => 'Configure the rich text editor.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ckeditor_admin_profile_form', 4),
@@ -311,7 +315,7 @@ function ckeditor_menu() {
   );
 
   $items['admin/settings/ckeditor/delete/%ckeditor_profile'] = array(
-    'title' => 'Delete CKEditor profile',
+    'title' => 'Delete the CKEditor profile',
     'description' => 'Configure the rich text editor.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ckeditor_admin_profile_delete_form', 4),
@@ -321,7 +325,7 @@ function ckeditor_menu() {
   );
 
   $items['admin/settings/ckeditor/addg'] = array(
-    'title' => 'Add CKEditor Global profile',
+    'title' => 'Add the CKEditor Global profile',
     'description' => 'Configure the rich text editor.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ckeditor_admin_global_profile_form', 'add'),
@@ -331,7 +335,7 @@ function ckeditor_menu() {
   );
 
   $items['admin/settings/ckeditor/editg'] = array(
-    'title' => 'Edit CKEditor Global profile',
+    'title' => 'Edit the CKEditor Global profile',
     'description' => 'Configure the rich text editor.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ckeditor_admin_global_profile_form', 'edit'),
@@ -425,12 +429,12 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
 }
 
 /**
- * This function create the HTML objects required for the CKEditor
+ * This function creates the HTML objects required for CKEditor.
  *
  * @param $element
- *   A fully populated form elment to add the editor to
+ *   A fully populated form elment to add the editor to.
  * @return
- *   The same $element with extra CKEditor markup and initialization
+ *   The same $element with extra CKEditor markup and initialization.
  */
 function ckeditor_process_textarea($element) {
   static $is_running = FALSE;
@@ -1089,10 +1093,10 @@ function ckeditor_process_textarea($element) {
 }
 
 /**
- * Read CKEditor path from Global profile
+ * Read the CKEditor path from the Global profile.
  *
  * @return
- *   path to CKEditor folder
+ *   Path to CKEditor folder.
  */
 function ckeditor_path($local = FALSE, $refresh = FALSE) {
   static $cke_path;
@@ -1161,10 +1165,10 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
 }
 
 /**
- * Read CKEditor plugins path from Global profile
+ * Read the CKEditor plugins path from the Global profile.
  *
  * @return
- *   path to CKEditor plugins folder
+ *   Path to CKEditor plugins folder.
  */
 function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
   static $cke_plugins_path;
@@ -1262,9 +1266,9 @@ function ckeditor_get_nodetype($get_q) {
 }
 
 /**
- * Implementation of hook_features_api()
+ * Implementation of hook_features_api().
  *
- * Allow exporting of CKEditor profiles by the Features module
+ * Allow exporting of CKEditor profiles by the Features module.
  */
 function ckeditor_features_api() {
   return array(

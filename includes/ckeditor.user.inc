@@ -5,7 +5,7 @@
  *
  * == BEGIN LICENSE ==
  *
- * Licensed under the terms of any of the following licenses at your
+ * Licensed under the terms of any of the following licenses of your
  * choice:
  *
  *  - GNU General Public License Version 2 or later (the "GPL")
@@ -22,11 +22,16 @@
  * @file
  * CKEditor Module for Drupal 6.x
  *
+ * CKEditor is an online rich text editor that can be embedded inside web pages.
+ * It is a WYSIWYG (What You See Is What You Get) editor which means that the
+ * text edited in it looks as similar as possible to the results end users will
+ * see after the document gets published. It brings to the Web popular editing
+ * features found in desktop word processors such as Microsoft Word and
+ * OpenOffice.org Writer. CKEditor is truly lightweight and does not require any
+ * kind of installation on the client computer.
  * This module allows Drupal to replace textarea fields with CKEditor.
  *
- * This HTML text editor brings to the web many of the powerful functionalities
- * of known desktop editors like Word. It's really  lightweight and doesn't
- * require any kind of installation on the client computer.
+ *
  */
 
 function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
@@ -55,12 +60,12 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
           't' => t('Enabled'),
           'f' => t('Disabled')
         ),
-        '#description' => t('Should rich-text editing be enabled or disabled by default in textarea fields? If disabled, rich text editor may still be enabled using toggle or popup window.'),
+        '#description' => t('Should rich text editing be enabled or disabled by default in textarea fields? If disabled, the rich text editor may still be enabled by using toggle or popup window.'),
       );
 
       $form['ckeditor']['ckeditor_show_toggle'] = array(
         '#type' => 'radios',
-        '#title' => t('Show disable/enable rich text editor toggle'),
+        '#title' => t('Show the disable/enable rich text editor toggle'),
         '#default_value' => isset($user->ckeditor_show_toggle) ? $user->ckeditor_show_toggle : (isset($profile->settings['show_toggle']) ? $profile->settings['show_toggle'] : 't'),
         '#options' => array(
           't' => t('Yes'),
@@ -89,7 +94,7 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
           'f' => t('No'),
           't' => t('Yes')
         ),
-        '#description' => t('If this option is enabled a link to a popup window will be used instead of a textarea replace.'),
+        '#description' => t('If this option is enabled, a link to a popup window will be used instead of a textarea replace.'),
       );
 
       $form['ckeditor']['ckeditor_skin'] = array(
@@ -102,24 +107,24 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
 
       $form['ckeditor']['ckeditor_expand'] = array(
         '#type' => 'select',
-        '#title' => t('Start the toolbar expanded'),
+        '#title' => t('Toolbar state on startup'),
         '#default_value' => isset($user->ckeditor_expand) ? $user->ckeditor_expand : (isset($profile->settings['expand']) ? $profile->settings['expand'] : 't'),
         '#options' => array(
           't' => t('Expanded'),
           'f' => t('Collapsed')
         ),
-        '#description' => t('The toolbar start expanded or collapsed.'),
+        '#description' => t('The toolbar will start in an expanded or collapsed state.'),
       );
 
       $form['ckeditor']['ckeditor_width'] = array(
         '#type' => 'textfield',
-        '#title' => t('Width'),
+        '#title' => t('Editor width'),
         '#default_value' => isset($user->ckeditor_width) ? $user->ckeditor_width : (isset($profile->settings['width']) ? $profile->settings['width'] : '100%'),
-        '#description' => t('Width in pixels or percent.') .' '. t('Example') .': 400 '. t('or') .' 100%.',
+        '#description' => t('Editor interface width in pixels or percent.') .' '. t('Examples') .': 400 '. t('or') .' 100%.',
         '#size' => 40,
         '#maxlength' => 128,
       );
-      
+
       $form['ckeditor']['ckeditor_lang'] = array(
         '#type' => 'select',
         '#title' => t('Language'),
@@ -136,7 +141,7 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
           't' => t('Yes'),
           'f' => t('No')
         ),
-        '#description' => t('Use auto detect user language feature.')
+        '#description' => t('Automatically detect the user language.')
       );
 
       return array('ckeditor' => $form);
