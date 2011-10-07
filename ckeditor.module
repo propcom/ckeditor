@@ -37,7 +37,6 @@
  * The name of the simplified toolbar that should be forced.
  * Make sure that this toolbar is defined in ckeditor.config.js or fckconfig.js.
  */
-define('CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME', 'DrupalBasic') ;
 define('CKEDITOR_ENTERMODE_P', 1);
 define('CKEDITOR_ENTERMODE_BR', 2);
 define('CKEDITOR_ENTERMODE_DIV', 3);
@@ -616,7 +615,7 @@ function ckeditor_process_textarea($element) {
       $force_simple_toolbar = ckeditor_is_enabled('1', empty($global_conf['simple_incl_regex']) ? '' : $global_conf['simple_incl_regex'], $element['#id'], $_GET['q']);
     }
     if ($force_simple_toolbar) {
-      $toolbar = CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME;
+      $toolbar = "[ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ]";
     }
 
     if (!empty($conf['theme_config_js']) && $conf['theme_config_js'] == 't' && file_exists($themepath .'ckeditor.config.js')) {

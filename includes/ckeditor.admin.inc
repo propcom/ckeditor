@@ -380,7 +380,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#cols' => 60,
     '#rows' => 5,
     '#default_value' => !empty($profile->settings['simple_incl']) ? $profile->settings['simple_incl'] : '',
-    '#description' => t('Enter the paths to the textarea fields on which you want to force the simplified toolbar (!name).', array('!name' => CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)) .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Take a look at the exclusion settings (above) for short instruction.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))),
+    '#description' => t('Enter the paths to the textarea fields on which you want to force the simplified toolbar.') .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Take a look at the exclusion settings (above) for short instruction.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))),
     '#wysiwyg' => FALSE,
   );
 
@@ -1164,7 +1164,7 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#cols' => 60,
     '#rows' => 5,
     '#default_value' => !empty($profile->settings['simple_incl']) ? $profile->settings['simple_incl'] : '',
-    '#description' => t('Enter the paths to the textarea fields on which you want to force the simplified toolbar (!name).', array('!name' => CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME)) .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Take a look at the exclusion settings (above) for short instruction.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))),
+    '#description' => t('Enter the paths to the textarea fields on which you want to force the simplified toolbar.') .' '. t('Please see the <a href="!helppagelink">help page</a> for more information about defining field names. Take a look at the exclusion settings (above) for short instruction.', array('!helppagelink' => url('admin/help/ckeditor', array('fragment' => 'fieldinclexcl')))),
     '#wysiwyg' => FALSE,
   );
 
