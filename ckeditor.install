@@ -386,7 +386,7 @@ function _ckeditor_requirements_cookiedomainset() {
 }
 
 /**
- * Update broken settings for the 'Full' profile. (Reset toolbar to default)
+ * Updates broken settings for the 'Full' profile. (Resets toolbar to default)
  */
 function ckeditor_update_7000() {
     $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'Full'))->fetchField();
@@ -421,7 +421,7 @@ function ckeditor_update_7000() {
 }
 
 /**
- * Remove 'DrupalBreak' button from the 'Advanced' profile. (Reset toolbar to default)
+ * Removes the 'DrupalBreak' button from the 'Advanced' profile. (Resets toolbar to default)
  */
 function ckeditor_update_7001() {
     $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'Advanced'))->fetchField();
@@ -453,7 +453,7 @@ function ckeditor_update_7001() {
 }
 
 /**
- * Rewrite 'Path to CKEditor' to new flags.
+ * Rewrites 'Path to CKEditor' to new flags.
  */
 function ckeditor_update_7002() {
     $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'CKEditor Global Profile'))->fetchField();
@@ -478,7 +478,7 @@ function ckeditor_update_7002() {
 }
 
 /**
- * Fix static paths to plugin files
+ * Fixes static paths to plugin files.
  */
 function ckeditor_update_7003() {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
