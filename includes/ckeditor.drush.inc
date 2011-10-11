@@ -64,7 +64,7 @@ function ckeditor_drush_download() {
     drush_log(dt('CKEditor was downloaded to @path.', array('@path' => $path)), 'success');
   }
   else {
-    drush_log(dt('Drush was unable to download the CKEditor to @path.', array('@path' => $path)), 'error');
+    drush_log(dt('Drush was unable to download CKEditor to @path.', array('@path' => $path)), 'error');
   }
 }
 

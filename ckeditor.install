@@ -419,6 +419,7 @@ function _ckeditor_requirements_ckfinder_config_check($profile_name) {
 
   if (!$require_once_found) {
     return t('You are using a feature that requires manual integration in the <code>config.php</code> (either built-in filebrowser or quick uploads are enabled in the !profile profile). Read instructions about enabling built-in file browser and add "require_once ..." statement in editor/filemanager/connectors/php/config.php.', array('!profile' => l($profile_name, 'admin/settings/ckeditor/edit/'. urlencode($profile_name))));
+
   }
 
   if ($userfiles_absolute_path_line && $force_single_extension_line && (

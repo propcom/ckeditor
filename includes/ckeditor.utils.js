@@ -65,7 +65,7 @@ Drupal.ckeditorOn = function(textarea_id) {
     teaser.checkbox.attr('checked', ch_checked);
   }
 
-  if (($("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
+  if (( $("#" + textarea_id) .length > 0 && $("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
     $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
       text: $('#' + textarea_id).val(),
       'filters[]': Drupal.settings.ckeditor.settings[textarea_id].filters
@@ -80,7 +80,6 @@ Drupal.ckeditorOn = function(textarea_id) {
   var textarea_settings = false;
   Drupal.settings.ckeditor.settings[textarea_id].toolbar = eval(Drupal.settings.ckeditor.settings[textarea_id].toolbar);
   textarea_settings = Drupal.settings.ckeditor.settings[textarea_id];
-
   textarea_settings['on'] =
   {
     configLoaded  : function(ev)
@@ -348,6 +347,7 @@ Drupal.ckeditorSubmitAjaxForm = function () {
 /**
  * Drupal behaviors
  */
+var add_more_button_click = false;
 Drupal.behaviors.ckeditor = function (context) {
   if ((typeof(CKEDITOR) == 'undefined') || !CKEDITOR.env.isCompatible) {
     return;
@@ -365,10 +365,14 @@ Drupal.behaviors.ckeditor = function (context) {
   //Support for imageField [#1286192]
   if(Drupal.behaviors.filefieldButtons)
   {
+    //if "add more" button was clicked
+     $("div.content-add-more input").mousedown(function(event){
+       add_more_button_click = true;
+    });
     url = document.location.pathname;
     if (url.indexOf('/') == 0 ) url =  url.substr(1);
     imagefield = $('textarea',$(context).html());
-    if (imagefield.length == 1)
+    if (imagefield.length == 1 && add_more_button_click == false)
     {
       imagefield_id = imagefield.attr('id')
       path = document.location.href.replace(document.location.pathname, '');
@@ -380,15 +384,30 @@ Drupal.behaviors.ckeditor = function (context) {
         type: 'POST',
         success: function( data ) {
             Drupal.settings.ckeditor.settings[imagefield_id] = data;
-            Drupal.ckeditorOff(imagefield_id);
             Drupal.ckeditorOn(imagefield_id);
-          },
+        },
           error: function(xhr) { }
       });
 
-
-//      Drupal.ckeditorOn(imagefield_id);
+    }else if ((/*imagefield.length == 1 &&*/ add_more_button_click == true))
+    {
+      //this happens when "add more" button was clicked
+      //find all CKEDITOR instances for imageField
+      for (var i in CKEDITOR.instances)
+      {
+        pattern = /edit-field-[\w]+-[\d]+-data-title/;
+        if (pattern.test(CKEDITOR.instances[i].name))
+        {
+          name = CKEDITOR.instances[i].name;
+          if ($("#"+name).length > 0)
+          {
+            Drupal.ckeditorOff(name);
+            Drupal.ckeditorOn(name);
+          }
+        }
+      }
     }
+    add_more_button_click = false;
   }
 
 
@@ -436,8 +455,8 @@ Drupal.behaviors.ckeditor = function (context) {
 
   $("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
     var ta_id=$(this).attr("id");
-    if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
-      Drupal.ckeditorOn(ta_id);
+    if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined') ) {
+        Drupal.ckeditorOn(ta_id);
     }
   });
 
