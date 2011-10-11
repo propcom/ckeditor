@@ -399,8 +399,10 @@ Drupal.behaviors.ckeditor = function (context) {
         if (pattern.test(CKEDITOR.instances[i].name))
         {
           name = CKEDITOR.instances[i].name;
+          data = CKEDITOR.instances[i].document.getBody().getHtml()
           if ($("#"+name).length > 0)
           {
+            $("#"+name).attr('value', data);
             Drupal.ckeditorOff(name);
             Drupal.ckeditorOn(name);
           }
