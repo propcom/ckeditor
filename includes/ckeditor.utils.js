@@ -384,7 +384,11 @@ Drupal.behaviors.ckeditor = function (context) {
         type: 'POST',
         success: function( data ) {
             Drupal.settings.ckeditor.settings[imagefield_id] = data;
-            Drupal.ckeditorOn(imagefield_id);
+            if ($(data).length > 0)
+            {
+              Drupal.settings.ckeditor.autostart[imagefield_id] = true;
+              Drupal.ckeditorOn(imagefield_id);
+            }
         },
           error: function(xhr) { }
       });
@@ -399,7 +403,7 @@ Drupal.behaviors.ckeditor = function (context) {
         if (pattern.test(CKEDITOR.instances[i].name))
         {
           name = CKEDITOR.instances[i].name;
-          data = CKEDITOR.instances[i].document.getBody().getHtml()
+          data = CKEDITOR.instances[i].document.getBody().getHtml();
           if ($("#"+name).length > 0)
           {
             $("#"+name).attr('value', data);
@@ -468,3 +472,26 @@ Drupal.behaviors.ckeditor = function (context) {
     });
   });
 };
+if (Drupal.tableDrag) {
+    Drupal.tableDrag.prototype.onDrag = function() {
+      $(this.rowObject.element).find('textarea.ckeditor-processed').each(
+        function() {
+          if (typeof(CKEDITOR.instances) != 'undefined' && typeof(CKEDITOR.instances[$(this).attr('id')]) != 'undefined') {
+            data = CKEDITOR.instances[$(this).attr('id')].document.getBody().getHtml();
+            $("#"+$(this).attr('id')).attr('value',data);
+            Drupal.ckeditorOff($(this).attr('id'));
+          }
+        }
+      );
+    };
+    Drupal.tableDrag.prototype.onDrop = function() {
+
+      $(this.rowObject.element).find('textarea.ckeditor-mod:not(.ckeditor-processed)').each(
+        function() {
+          if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[$(this).attr('id')]) != 'undefined')) {
+            Drupal.ckeditorOn($(this).attr('id'));
+          }
+        }
+      );
+    };
+}
