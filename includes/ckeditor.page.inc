@@ -41,11 +41,11 @@ function ckeditor_help_delegate($path, $arg) {
 
     case 'admin/settings/ckeditor/edit/%':
     case 'admin/settings/ckeditor/add':
-      $output = '<p>'. t('CKEditor is highly configurable. The most commonly used features are listed below. You can also adjust CKEditor to your needs by changing the configuration file: <code>%ckeditor_module_config</code> configuration file.',
+      $output = '<p>'. t('CKEditor is highly configurable. The most commonly used features are listed below. You can also adjust CKEditor to your needs by changing the <code>%ckeditor_module_config</code> configuration file.',
         array(
           '%ckeditor_module_config' => drupal_get_path('module', 'ckeditor') .'/ckeditor.config.js',
         )) .'</p>';
-      $output .= '<p>'. t('It is advised to not edit the <code>%ckeditor_config_file</code> (<code>%ckeditor_config_path</code>) configuration file that is distributed with CKEditor, because you may overwrite it accidentally when you update the editor.',
+      $output .= '<p>'. t('It is recommended to not edit the <code>%ckeditor_config_file</code> (<code>%ckeditor_config_path</code>) configuration file that is distributed with CKEditor, because you may overwrite it accidentally when you update the editor.',
         array(
           '%ckeditor_config_path' => drupal_get_path('module', 'ckeditor') .'/ckeditor/config.js',
           '%ckeditor_config_file' => 'config.js',
@@ -59,17 +59,17 @@ function ckeditor_help_delegate($path, $arg) {
 
     case 'admin/settings/ckeditor':
       $output =
-        '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
+        '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with CKEditor. CKEditor is an online rich text editor that can be embedded inside web pages. It is a !wysiwyg editor which means that the text edited in it looks as similar as possible to the results end users will see after the document gets published. It brings to the Web popular editing features found in desktop word processors such as Microsoft Word and OpenOffice.org Writer. CKEditor is truly lightweight and does not require any kind of installation on the client computer.',
           array(
             '!wysiwyg' => '<acronym title="'. t('What You See Is What You Get') .'">'. t('WYSIWYG') .'</acronym>',
           )) .'</p>'.
-        '<p>'. t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
+        '<p>'. t('More information about the editor can be found at the !ckeditorlink. A handy !userguidelink is available, too.',
           array(
             '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com'),
-            '!userguidelink' => l(t('user guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide'),
+            '!userguidelink' => l(t('User\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide'),
           )) .'</p>'.
-        '<p>'. t('Profiles can be defined based on user roles. A CKEditor profile can define which pages receive this CKEditor capability, what buttons or themes are enabled for the editor, how the editor is displayed, and a few other editor functions. It is possible also to define the Global Profile that will hold values that will be appended to all other profiles.') .'</p>'.
-        '<p>'. t('Lastly, only users with the %accesspermission !permissionlink will be able to use CKEditor.',
+        '<p>'. t('Profiles can be defined based on user roles. A CKEditor profile may define which pages receive the CKEditor support, which buttons or themes are enabled for the editor, how the editor is displayed, and a few other editor functions. It is also possible to define the Global Profile that will store values which will be appended to all other profiles.') .'</p>'.
+        '<p>'. t('Please note that only users with the "%accesspermission" !permissionlink will be able to use CKEditor.',
           array(
             '%accesspermission' => t('access ckeditor'),
             '!permissionlink' => l(t('permission'), 'admin/user/permissions')
@@ -77,32 +77,32 @@ function ckeditor_help_delegate($path, $arg) {
       break;
 
     case 'admin/help#ckeditor':
-      $output = '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with a rich text or !wysiwyg editor. This editor brings many of the powerful functionalities of known desktop editors like Word to the web. It\'s relatively lightweight and doesn\'t require any kind of installation on the client computer.',
+      $output = '<p>'. t('The CKEditor module allows Drupal to replace textarea fields with CKEditor. CKEditor is an online rich text editor that can be embedded inside web pages. It is a !wysiwyg editor which means that the text edited in it looks as similar as possible to the results end users will see after the document gets published. It brings to the Web popular editing features found in desktop word processors such as Microsoft Word and OpenOffice.org Writer. CKEditor is truly lightweight and does not require any kind of installation on the client computer.',
           array(
             '!wysiwyg' => '<acronym title="'. t('What You See Is What You Get') .'">'. t('WYSIWYG') .'</acronym>',
           )) .'</p>';
-      $output .= '<p>'. t('More information about the editor is located at the !ckeditorlink. A small !userguidelink is available.',
+      $output .= '<p>'. t('More information about the editor can be found at the !ckeditorlink. A handy !userguidelink is available, too.',
           array(
-            '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com'),
-            '!userguidelink' => l(t('user guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide'),
+            '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com'),
+            '!userguidelink' => l(t('User\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide'),
           )) .'</p>'.
       $output .= '<h3>'. t('Configuration') .'</h3>';
       $output .= '<ol>';
-      $output .= '<li>'. t('Go to the !ckeditorlink and download the latest version of CKEditor. Then uncompress the contents of the ckeditor directory of the downloaded file to %ckeditordir.',
+      $output .= '<li>'. t('Go to the !ckeditorlink and download the latest version of CKEditor. Unpack the contents of the <code>ckeditor</code> directory of the downloaded file to the <code>%ckeditordir</code> directory.',
         array(
-          '!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'),
+          '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com/download'),
           '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') .'/ckeditor/',
         )) .'</li>';
       $output .= '<li>'. t('Enable the module as usual from within Drupal\'s administration pages.') .'</li>';
-      $output .= '<li>'. t('Grant permissions for use of CKEditor in !adminpath.',
+      $output .= '<li>'. t('Grant permissions for use of CKEditor in the <strong>!adminpath</strong> section.',
         array(
           '!adminpath' => l(t('Administer') .' > '. t('User management') .' > '. t('Permissions'), 'admin/user/permissions'),
         )) .'</li>';
-      $output .= '<li>'. t('Under !adminpath, adjust the CKEditor profiles. In each profile you can choose which textareas will be replaced by CKEditor, select default toolbar and configure some more advanced settings.',
+      $output .= '<li>'. t('Adjust CKEditor profiles in the <strong>!adminpath</strong> section. In each profile you can choose which textareas will be replaced by CKEditor as well as select the default toolbar and configure some more advanced settings.',
         array(
           '!adminpath' => l(t('Administer') .' > '. t('Site configuration') .' > '. t('CKEditor'), 'admin/settings/ckeditor'),
         )) .'</li>';
-      $output .= '<li>'. t('For the Rich Text Editing to work you also need to configure your !filterlink for the users that may access Rich Text Editing. Either grant those users Full HTML access or use the following list of tags in the HTML filter:',
+      $output .= '<li>'. t('For the Rich Text Editing to work you also need to configure your !filterlink for the users that may access Rich Text Editing. Either grant those users <strong>Full HTML</strong> access or use the following list of tags in the HTML filter:',
         array(
           '!filterlink' => l(t('filters'), 'admin/settings/filters'),
         )) .
@@ -111,7 +111,7 @@ function ckeditor_help_delegate($path, $arg) {
         array(
         '!readme' => l('README.txt', drupal_get_path('module', 'ckeditor') .'/README.txt')
         )) .'</li>';
-      $output .= '<li>'. t('To have better control over line breaks, you should disable <strong>%settingname</strong> setting in the chosen filter (recommended).',
+      $output .= '<li>'. t('To have better control over line breaks, you should disable the <strong>%settingname</strong> setting in the chosen filter (recommended).',
         array(
           '%settingname' => t('Line break converter'),
         )) .'</li>';
@@ -123,12 +123,12 @@ function ckeditor_help_delegate($path, $arg) {
       $output .= '</ol>';
 
       $output .= '<a name="fieldinclexcl"></a>';
-      $output .= '<h3>'. t('Defining field inclusion/exclusions') .'</h3>';
-      $output .= '<p>'. t('In order to specifically display CKEditor on those text areas on which you need it, the CKEditor module provides a powerfull method to define fields that should be enhanced with CKEditor. The first choice you have to make is whether you want to display CKEditor on all textareas and define a list of exceptions, or if you don\'t want to display CKEditor unless it is specifically enabled. This choice is made in the %settingname setting.',
+      $output .= '<h3>'. t('Defining field inclusions/exclusions') .'</h3>';
+      $output .= '<p>'. t('In order to display CKEditor in some specific textareas where you need it, the CKEditor module provides a powerful method to define fields that should be enhanced with CKEditor. The first choice you have to make is whether you want to display CKEditor for all textareas and define a list of exceptions. You can also decide that you do not want to display CKEditor unless it is specifically enabled. This choice is made in the <strong>%settingname</strong> setting.',
         array(
           '%settingname' => t('Use inclusion or exclusion mode'),
         )) .'</p>';
-      $output .= '<p>'. t('Next, the list of exceptions has to be defined. This list follows a specific syntax: the path to a field is defined by specifying the content type followed by @ character, specifying the path followed by dot and appending the field name at the end. You may decide to not use the content type. The field %fieldname on page %pathname would thus be addressed as %result. You can use wildcards * and ? anywhere in this line. If you have a dot in your field name and it causes problems, you can escape it with a slash (\).',
+      $output .= '<p>'. t('Next, you need to define the list of exceptions. This list follows a specific syntax: the path to a field is defined by giving the content type followed by the <code>@</code> character, specifying the path followed by a dot and finally appending the field name at the end. You may decide to skip the content type. The <code>%fieldname</code> field on the <code>%pathname</code> page would thus be addressed as <code>%result</code>. You can use wildcards <code>*</code> and <code>?</code> anywhere in this line. If you have trouble with the field name that contains a dot, you can escape it with a backslash character (<code>\</code>).',
         array(
           '%fieldname' => 'edit-log',
           '%pathname' => 'node/add/page',
@@ -137,18 +137,18 @@ function ckeditor_help_delegate($path, $arg) {
 
       $output .= '<strong>'. t('Some examples:') .'</strong>';
       $output .= '<ul>';
-      $output .= '<li><code>node/add/page</code>: '. t('matches all fields on %pathname', array('%pathname' => 'node/add/page')) .'</li>';
-      $output .= '<li><code>*.edit-log</code>: '. t('matches all fields called %fieldname on any page', array('%fieldname' => 'edit-log')) .'</li>';
-      $output .= '<li><code>blog@*.edit-body</code>: '. t('matches all fields called %fieldname on pages related to node type %typename', array('%fieldname' => 'edit-body', '%typename' => 'blog')) .'</li>';
-      $output .= '<li><code>forum@*.*</code>: '. t('matches all fields on pages related to node type %nodetype', array('%nodetype' => 'forum')) .'</li>';
-      $output .= '<li><code>node/add/*</code>: '. t('matches all fields on pages such as %pathname1, %pathname2, etc.', array('%pathname1' => 'node/add/page', '%pathname2' => 'node/add/story')) .'</li>';
-      $output .= '<li><code>node/add/*.edit-log</code>: '. t('matches all %fieldname fields on pages such as %pathname1, %pathname2, etc.', array('%fieldname' => 'edit-log', '%pathname1' => 'node/add/page', '%pathname2' => 'node/add/story')) .'</li>';
-      $output .= '<li><code>node/add/*.edit-user-*</code>: '. t('matches fields starting with %fieldname on pages starting with %pathname', array('%fieldname' => 'edit-user-', '%pathname' => 'node/add/')) .'</li>';
+      $output .= '<li><code>node/add/page</code>: '. t('matches all fields on the <code>%pathname</code> page', array('%pathname' => 'node/add/page')) .'</li>';
+      $output .= '<li><code>*.edit-log</code>: '. t('matches all fields called <code>%fieldname</code> on any page', array('%fieldname' => 'edit-log')) .'</li>';
+      $output .= '<li><code>blog@*.edit-body</code>: '. t('matches all fields called <code>%fieldname</code> on pages related to node type <code>%typename</code>', array('%fieldname' => 'edit-body', '%typename' => 'blog')) .'</li>';
+      $output .= '<li><code>forum@*.*</code>: '. t('matches all fields on pages related to node type <code>%nodetype</code>', array('%nodetype' => 'forum')) .'</li>';
+      $output .= '<li><code>node/add/*</code>: '. t('matches all fields on pages such as <code>%pathname1</code>, <code>%pathname2</code>, etc.', array('%pathname1' => 'node/add/page', '%pathname2' => 'node/add/story')) .'</li>';
+      $output .= '<li><code>node/add/*.edit-log</code>: '. t('matches all <code>%fieldname</code> fields on pages such as <code>%pathname1</code>, <code>%pathname2</code>, etc.', array('%fieldname' => 'edit-log', '%pathname1' => 'node/add/page', '%pathname2' => 'node/add/story')) .'</li>';
+      $output .= '<li><code>node/add/*.edit-user-*</code>: '. t('matches fields starting with <code>%fieldname</code> on pages starting with <code>%pathname</code>', array('%fieldname' => 'edit-user-', '%pathname' => 'node/add/')) .'</li>';
       $output .= '</ul>';
 
       $output .= '<h3>'. t('Troubleshooting') .'</h3>';
       $output .= '<p>';
-      $output .= t('Take a look at !listlink when installing CKEditor (or check !troubleshooting).',
+      $output .= t('Take a look at !listlink when installing CKEditor (or check the <code>!troubleshooting</code> file).',
         array(
           '!listlink' => l(t('the list of common problems'), 'http://drupal.ckeditor.com/troubleshooting'),
           '!troubleshooting' => l('TROUBLESHOOTING.txt', drupal_get_path('module', 'ckeditor') .'/TROUBLESHOOTING.txt')
@@ -160,7 +160,7 @@ function ckeditor_help_delegate($path, $arg) {
       $output .= '<h3>'. t('Uploading images and files') .'</h3>';
       $output .= '<p>'. t('There are three ways for uploading files:') .'</p>';
       $output .= '<ol>';
-      $output .= '<li>'. t('By using !ckfinder (commercial).',
+      $output .= '<li>'. t('By using !ckfinder (commercial), an advanced Ajax file manager.',
         array(
           '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
         )) .'</li>';

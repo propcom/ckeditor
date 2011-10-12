@@ -24,14 +24,18 @@
  *
  * This module allows Drupal to replace textarea fields with CKEditor.
  *
- * This HTML text editor brings to the web many of the powerful functionalities
- * of known desktop editors like Word. It's really  lightweight and doesn't
- * require any kind of installation on the client computer.
+ * CKEditor is an online rich text editor that can be embedded inside web pages.
+ * It is a WYSIWYG (What You See Is What You Get) editor which means that the
+ * text edited in it looks as similar as possible to the results end users will
+ * see after the document gets published. It brings to the Web popular editing
+ * features found in desktop word processors such as Microsoft Word and
+ * OpenOffice.org Writer. CKEditor is truly lightweight and does not require any
+ * kind of installation on the client computer.
  */
 
 /**
  * @file
- * Drush integration for the ckeditor module.
+ * Drush integration for the CKEditor module.
  */
 
 /**
@@ -40,7 +44,7 @@
 function ckeditor_drush_command() {
   $items['ckeditor-download'] = array(
     'callback' => 'ckeditor_drush_download',
-    'description' => dt('Downloads the required CKEditor library from svn.fckeditor.net.'),
+    'description' => dt('Downloads the required CKEditor library from svn.ckeditor.com.'),
     'arguments' => array(
       'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/ckeditor</code>).'),
     ),
@@ -60,7 +64,7 @@ function ckeditor_drush_download() {
     $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries/ckeditor';
   }
 
-  if (drush_shell_exec('svn checkout http://svn.fckeditor.net/CKEditor/releases/stable/ ' . $path)) {
+  if (drush_shell_exec('svn checkout http://svn.ckeditor.com/CKEditor/releases/stable/ ' . $path)) {
     drush_log(dt('CKEditor was downloaded to @path.', array('@path' => $path)), 'success');
   }
   else {

@@ -4,8 +4,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /*
- WARNING: clear browser's cache after you modify this file.
- If you don't do this, you may notice that browser is ignoring all your changes.
+ WARNING: Clear the browser cache after you modify this file.
+ If you do not do this, you may notice that the browser is ignoring all your changes.
  */
 CKEDITOR.editorConfig = function(config) {
   config.indentClasses = [ 'rteindent1', 'rteindent2', 'rteindent3', 'rteindent4' ];
@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function(config) {
   config.resize_minWidth = 450;
 
   // Protect PHP code tags (<?...?>) so CKEditor will not break them when
-  // switching from Source to WYSIWYG.
+  // switching from Source view to WYSIWYG.
   // Uncommenting this line doesn't mean the user will not be able to type PHP
   // code in the source. This kind of prevention must be done in the server
   // side

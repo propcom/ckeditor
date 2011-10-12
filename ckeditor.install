@@ -287,9 +287,9 @@ function ckeditor_schema() {
  * Implementation of hook_requirements().
  *
  * This hook will issue warnings if:
- * - The CKEditor source files are not found
- * - The CKEditor source files are out of date
- * - Quick upload and/or the built-in file browser are used and $cookie_domain is not set
+ * - The CKEditor source files are not found.
+ * - The CKEditor source files are out of date.
+ * - Quick upload and/or the built-in file browser are used and $cookie_domain is not set.
  */
 function ckeditor_requirements($phase) {
   $requirements = array();
@@ -418,13 +418,12 @@ function _ckeditor_requirements_ckfinder_config_check($profile_name) {
   }
 
   if (!$require_once_found) {
-    return t('You are using a feature that requires manual integration in the <code>config.php</code> (either built-in filebrowser or quick uploads are enabled in the !profile profile). Read instructions about enabling built-in file browser and add "require_once ..." statement in editor/filemanager/connectors/php/config.php.', array('!profile' => l($profile_name, 'admin/settings/ckeditor/edit/'. urlencode($profile_name))));
-
+    return t('You are using a feature that requires manual integration in the <code>config.php</code> file. Please read the "Installing CKFinder" section in the <code>!readme</code> file carefully and add a <code>require_once ...</code> statement to the <code>%ckfconfig</code> file.', array('%ckfconfig' => drupal_get_path('module', 'ckeditor') . '/ckfinder/config.php', '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE))));
   }
 
   if ($userfiles_absolute_path_line && $force_single_extension_line && (
   $require_once_line < $userfiles_absolute_path_line || $require_once_line > $force_single_extension_line)) {
-    return t('You are using a feature that requires manual integration into config.php (either built-in filebrowser or quick uploads are enabled in the !profile profile). You have added "require_once ..." statement in editor/filemanager/connectors/php/config.php, but in the wrong line.', array('!profile' => l($profile_name, 'admin/settings/ckeditor/edit/'. urlencode($profile_name))));
+    return t('You are using a feature that requires manual integration in the <code>config.php</code> file. You have added a <code>require_once ...</code> statement to the <code>%ckfconfig</code> file, but in the wrong line.', array('%ckfconfig' => drupal_get_path('module', 'ckeditor') . '/ckfinder/config.php'));
   }
 
   return FALSE;
@@ -438,7 +437,7 @@ function _ckeditor_requirements_ckfinder_config_check($profile_name) {
  *
  * This function is used by ckeditor_requirements().
  *
- * @return boolean True iff any profile requires $cookie_domain.
+ * @return boolean True if any profile requires $cookie_domain.
  */
 function _ckeditor_requirements_ckfinder_filebrowser_enabled() {
   module_load_include('module', 'ckeditor');
@@ -479,7 +478,7 @@ function _ckeditor_requirements_cookiedomainset() {
 /**
  *	Implementation of hook_update_N().
  *
- *	Delete all plus signs from profiles name
+ *	Deletes all plus signs from profile names.
  */
 
 function ckeditor_update_6100() {
@@ -495,7 +494,7 @@ function ckeditor_update_6100() {
 /**
  *	Implementation of hook_update_N().
  *
- *	Fix static paths to plugin files
+ *	Fixes static paths to plugin files.
  */
 
 function ckeditor_update_6101() {
@@ -537,7 +536,7 @@ function ckeditor_update_6101() {
 /**
  *	Implementation of hook_update_N().
  *
- *	Move toolbar definition from config file to database - toolbar definition is now set in CKEditor profile.
+ *	Moves toolbar definition from the configuration file to the database - toolbar definition is now set in the CKEditor profile.
  */
 
 function ckeditor_update_6102() {
@@ -617,7 +616,7 @@ function ckeditor_update_6102() {
       $settings = serialize($settings);
 
       $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
-      $ret[] = array('success' => $return !== FALSE, 'query' => "[!!] UPDATE PROFILE - {$name} - Custom toolbar cannot be converted, pls set this toolbar manually in CKEditor profile!");
+      $ret[] = array('success' => $return !== FALSE, 'query' => "[!!] UPDATE PROFILE - {$name} - Custom toolbar cannot be converted, please set this toolbar manually in the CKEditor profile!");
     }
   }
 

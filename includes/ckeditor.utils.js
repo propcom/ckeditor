@@ -280,7 +280,7 @@ Drupal.ckeditorInsertHtml = function(html) {
     return true;
   }
   else {
-    alert(Drupal.t('Content can be only inserted into CKEditor in WYSIWYG mode.'));
+    alert(Drupal.t('Content can only be inserted into CKEditor in the WYSIWYG mode.'));
     return false;
   }
 };

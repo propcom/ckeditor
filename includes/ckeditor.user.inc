@@ -71,7 +71,7 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
           't' => t('Yes'),
           'f' => t('No')
         ),
-        '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running a popup window (see below).'),
+        '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea. Works only if CKEditor is not running in a popup window (see below).'),
       );
 
       if (user_access('administer ckeditor')) {
@@ -150,15 +150,15 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
 
   if ($type == 'validate') {
     if (isset($edit['ckeditor_default'], $edit['ckeditor_popup']) && $edit['ckeditor_default'] == 't' && $edit['ckeditor_popup'] == 't') {
-      form_set_error('ckeditor_popup', t('If CKEditor is enabled by default, popup window must be disabled.'));
+      form_set_error('ckeditor_popup', t('If CKEditor is enabled by default, the popup window must be disabled.'));
     }
 
     if (isset($edit['ckeditor_show_toggle'], $edit['ckeditor_popup']) && $edit['ckeditor_show_toggle'] == 't' && $edit['ckeditor_popup'] == 't') {
-      form_set_error('ckeditor_popup', t('If toggle is enabled, popup window must be disabled.'));
+      form_set_error('ckeditor_popup', t('If toggle is enabled, the popup window must be disabled.'));
     }
 
     if (isset($edit['ckeditor_width']) && !preg_match('/^\d+%?$/', $edit['ckeditor_width'])) {
-      form_set_error('ckeditor_width', t('Enter valid width.') .' '. t('Example') .': 400 '. t('or') .' 100%.');
+      form_set_error('ckeditor_width', t('Enter a valid width value.') .' '. t('Example') .': 400 '. t('or') .' 100%.');
     }
   }
 

@@ -24,7 +24,7 @@
  *
  * This module allows Drupal to replace textarea fields with CKEditor.
  *
-  * CKEditor is an online rich text editor that can be embedded inside web pages.
+ * CKEditor is an online rich text editor that can be embedded inside web pages.
  * It is a WYSIWYG (What You See Is What You Get) editor which means that the
  * text edited in it looks as similar as possible to the results end users will
  * see after the document gets published. It brings to the Web popular editing

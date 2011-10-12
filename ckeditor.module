@@ -111,7 +111,7 @@ function ckeditor_elements() {
       'ckeditor_process_input'
     ),
   );
-  // only roles with permission get the ckeditor
+  // only roles with permission get CKEditor
   if (user_access('access ckeditor')) {
     $type['textarea'] = array('#process' => array('ckeditor_process_textarea'));
     $type['form'] = array('#after_build' => array('ckeditor_process_form'));
@@ -344,8 +344,8 @@ function ckeditor_menu() {
   );
 
     $items['admin/ckeditor/get_settings'] = array(
-    'title' => 'Get settings for ckeditor instance',
-    'description' => 'Get settings for ckeditor instance',
+    'title' => 'Get settings for the CKEditor instance',
+    'description' => 'Get settings for the CKEditor instance',
     'page callback' => 'ckeditor_get_settings',
     'access arguments' => array('access ckeditor'),
     'type' => MENU_CALLBACK,

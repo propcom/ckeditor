@@ -1,4 +1,4 @@
 name = CKEditor
-description = "Enables the usage of CKEditor (WYSIWYG) instead of plain text fields."
+description = "Enables CKEditor (WYSIWYG HTML editor) for use instead of plain text fields."
 core = 6.x
 package = User interface

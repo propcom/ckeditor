@@ -213,5 +213,3 @@ CKEditor adds <p>&nbsp;</p>
 Sometimes you may notice that when editing nodes, the spacing between paragraphs is being doubled.
 This may be caused by the HTML Purifier module when the AutoParagraph option is enabled.
 When you disable it, make sure you clear the HTML Purifier cache.
-
-
