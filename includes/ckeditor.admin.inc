@@ -46,8 +46,8 @@ function ckeditor_admin_main() {
     //check if CKEditor plugin is installed
     if (!_ckeditor_requirements_isinstalled()) {
         drupal_set_message(t('Checking for <code>%filename</code> or <code>%file</code>.', array('%filename' => $ckconfig_file, '%file' => 'sites/all/libraries/ckeditor/ckeditor.js')));
-        drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the !ckeditorlink in order to download the latest version. After that you must extract the files to the <code>%ckeditorpath</code> or <code>%librarypath</code> directory and make sure that the <code>%ckeditorfile</code> or <code>%ckeditorlibrary</code> file exist. Refer to the <code>!readme</code> file for more information.', array('!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'), '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE)), '%ckeditorpath' => 'sites/all/modules/ckeditor/ckeditor', '%ckeditorsubdir' => $editor_path . '/editor', '%ckeditorfile' => 'sites/all/modules/ckeditor/ckeditor/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
-        drupal_set_message(t('If you have CKEditor already installed, edit <strong>@editg</strong> and update the CKEditor path.', array('@editg' => l(t('CKEditor Global Profile'), 'admin/config/content/ckeditor/editg'))), 'warning');
+        drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the !ckeditorlink in order to download the latest version. After that you must extract the files to the <code>%ckeditorpath</code> or <code>%librarypath</code> directory and make sure that the <code>%ckeditorfile</code> or <code>%ckeditorlibrary</code> file exists. Refer to the <code>!readme</code> file for more information.', array('!ckeditorlink' => l(t('CKEditor homepage'), 'http://ckeditor.com/download'), '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE)), '%ckeditorpath' => 'sites/all/modules/ckeditor/ckeditor', '%ckeditorsubdir' => $editor_path . '/editor', '%ckeditorfile' => 'sites/all/modules/ckeditor/ckeditor/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
+        drupal_set_message(t('If you have CKEditor already installed, edit the <strong>@editg</strong> and update the CKEditor path.', array('@editg' => l(t('CKEditor Global Profile'), 'admin/config/content/ckeditor/editg'))), 'warning');
         return '';
     }
 
@@ -773,7 +773,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#default_value' => !empty($profile->settings['css_path']) ? $profile->settings['css_path'] : "",
         '#size' => 40,
         '#maxlength' => 255,
-        '#description' => t('Enter the path to the CSS file (Example: <code>!example1</code>) or a list of CSS files separated with a comma (Example: <code>!example2</code>). Make sure to select the <strong>Define CSS</strong> option above.',
+        '#description' => t('Enter the path to the CSS file (Example: <code>!example1</code>) or a list of CSS files separated with a comma (Example: <code>!example2</code>). Make sure you select the <strong>Define CSS</strong> option above.',
                 array(
                     '!example1' => '"css/editor.css"',
                     '!example2' => '"/themes/garland/style.css,http://example.com/style.css"',
@@ -806,7 +806,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         '#default_value' => !empty($profile->settings['styles_path']) ? $profile->settings['styles_path'] : "",
         '#size' => 40,
         '#maxlength' => 255,
-        '#description' => t('Enter the path to a file with predefined styles (Example: <code>!example1</code>). Be sure to select the <strong>Define path to ckeditor.styles.js</strong> option above.',
+        '#description' => t('Enter the path to a file with predefined styles (Example: <code>!example1</code>). Make sure you select the <strong>Define path to ckeditor.styles.js</strong> option above.',
                 array(
                     '!example1' => '/ckeditor.styles.js'
                 )

@@ -46,7 +46,7 @@ function ckeditor_help_delegate($path, $arg) {
                             array(
                                 '%ckeditor_module_config' => drupal_get_path('module', 'ckeditor') . '/ckeditor.config.js',
                     )) . '</p>';
-            $output .= '<p>' . t('It is advised to not edit the <code>%ckeditor_config_file</code> (<code>%ckeditor_config_path</code>) configuration file that is distributed with CKEditor, because you may overwrite it accidentally when you update the editor.',
+            $output .= '<p>' . t('It is recommended to not edit the <code>%ckeditor_config_file</code> (<code>%ckeditor_config_path</code>) configuration file that is distributed with CKEditor, because you may overwrite it accidentally when you update the editor.',
                             array(
                                 '%ckeditor_config_path' => ckeditor_path(true) . '/config.js',
                                 '%ckeditor_config_file' => 'config.js',
@@ -93,7 +93,7 @@ function ckeditor_help_delegate($path, $arg) {
                                 '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') . '/ckeditor/',
                     )) . '</li>';
             $output .= '<li>' . t('Enable the module as usual from within Drupal\'s administration pages.') . '</li>';
-            $output .= '<li>' . t('Under !adminpath, adjust the CKEditor profiles. Profiles determine which options are available to users based on the input format system.',
+            $output .= '<li>' . t('Adjust CKEditor profiles in the <strong>!adminpath</strong> section. Profiles determine which options are available to users based on the input format system.',
                             array(
                                 '!adminpath' => l(t('Administration panel') . ' > ' . t('Configuration') . ' > ' . t('Content Authoring') . ' > ' . t('CKEditor'), 'admin/config/content/ckeditor'),
                     )) . '</li>';
@@ -130,7 +130,7 @@ function ckeditor_help_delegate($path, $arg) {
             $output .= '<h3>' . t('Uploading images and files') . '</h3>';
             $output .= '<p>' . t('There are three ways for uploading files:') . '</p>';
             $output .= '<ol>';
-            $output .= '<li>' . t('By using !ckfinder (commercial).',
+            $output .= '<li>' . t('By using !ckfinder (commercial), an advanced Ajax file manager.',
                             array(
                                 '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
                     )) . '</li>';

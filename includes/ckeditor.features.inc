@@ -20,7 +20,7 @@
  * == END LICENSE ==
  *
  * @file
- * CKEditor Module for Drupal 6.x
+ * CKEditor Module for Drupal 7.x
  *
  * This module allows Drupal to replace textarea fields with CKEditor.
  *

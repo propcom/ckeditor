@@ -192,12 +192,12 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             return true;
         }
         else {
-            alert(Drupal.t('Content can be only inserted into CKEditor in WYSIWYG mode.'));
+            alert(Drupal.t('Content can only be inserted into CKEditor in the WYSIWYG mode.'));
             return false;
         }
     };
 
-    /**
+/**
  * Ajax support
  */
     if (typeof(Drupal.Ajax) != 'undefined' && typeof(Drupal.Ajax.plugins) != 'undefined') {
@@ -217,7 +217,7 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         }
     };
 
-    /**
+/**
  * Drupal behaviors
  */
     Drupal.behaviors.ckeditor = {
