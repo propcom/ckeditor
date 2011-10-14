@@ -336,7 +336,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'default' => 't'
         );
     }
-    
+
     if (module_exists('ckeditor_link') && file_exists(drupal_get_path('module', 'ckeditor_link') . '/plugins/link/plugin.js')) {
         $arr['ckeditor_link'] = array(
             'name' => 'drupal_path',
@@ -397,22 +397,16 @@ function ckeditor_load_plugins($render = FALSE) {
                 $buttons = array();
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
                     foreach ($matches[1] as $i => $button_name){
-                        if (preg_match_all('#(label|icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                        if (preg_match_all('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
                             $buttons[$button_name] = array();
                             foreach($matches2[1] as $j => $val){
-                                $matches2[2][$j] = $matches2[2][$j] . ';';
-                                if ($val == 'label'){
-                                    $matches2[2][$j] = str_replace('Drupal.t', 't', $matches2[2][$j]);
-                                }
-                                elseif ($val == 'icon'){
-                                    $matches2[2][$j] = str_replace(array('this.path', '+'), array('', ''), $matches2[2][$j]);
-                                }
-
-                                $buttons[$button_name][$val] = eval("return ".$matches2[2][$j]);
+                                $buttons[$button_name]['label'] = $button_name;
+                                $matches2[2][$j] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2][$j]);
+                                $buttons[$button_name][$val] = trim($matches2[2][$j]);
                             }
                         }
                     }
-                }              
+                }
                 if (preg_match('#@file ([^\n\r]*)#', $source, $matches)) {
                     $arr[$file] = array(
                         'name' => $file,
@@ -447,18 +441,12 @@ function ckeditor_load_plugins($render = FALSE) {
                 $buttons = array();
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
                     foreach ($matches[1] as $i => $button_name){
-                        if (preg_match_all('#(label|icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                        if (preg_match_all('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
                             $buttons[$button_name] = array();
                             foreach($matches2[1] as $j => $val){
-                                $matches2[2][$j] = $matches2[2][$j] . ';';
-                                if ($val == 'label'){
-                                    $matches2[2][$j] = str_replace('Drupal.t', 't', $matches2[2][$j]);
-                                }
-                                elseif ($val == 'icon'){
-                                    $matches2[2][$j] = str_replace(array('this.path', '+'), array('', ''), $matches2[2][$j]);
-                                }
-
-                                $buttons[$button_name][$val] = eval("return ".$matches2[2][$j]);
+                                $buttons[$button_name]['label'] = $button_name;
+                                $matches2[2][$j] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2][$j]);
+                                $buttons[$button_name][$val] = trim($matches2[2][$j]);
                             }
                         }
                     }
@@ -486,7 +474,7 @@ function ckeditor_load_plugins($render = FALSE) {
 
         closedir($handle);
     }
-    
+
     /*
      * CKEditor plugins registered by hook
      */
@@ -500,18 +488,12 @@ function ckeditor_load_plugins($render = FALSE) {
                 $buttons = array();
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
                     foreach ($matches[1] as $i => $button_name){
-                        if (preg_match_all('#(label|icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                        if (preg_match_all('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
                             $buttons[$button_name] = array();
                             foreach($matches2[1] as $j => $val){
-                                $matches2[2][$j] = $matches2[2][$j] . ';';
-                                if ($val == 'label'){
-                                    $matches2[2][$j] = str_replace('Drupal.t', '', $matches2[2][$j]);
-                                }
-                                elseif ($val == 'icon'){
-                                    $matches2[2][$j] = str_replace(array('this.path', '+'), array('', ''), $matches2[2][$j]);
-                                }
-
-                                $buttons[$button_name][$val] = eval("return ".$matches2[2][$j]);
+                                $buttons[$button_name]['label'] = $button_name;
+                                $matches2[2][$j] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2][$j]);
+                                $buttons[$button_name][$val] = trim($matches2[2][$j]);
                             }
                         }
                     }
@@ -527,18 +509,18 @@ function ckeditor_load_plugins($render = FALSE) {
 
     if (isset($arr['media']) && module_exists('media') == FALSE) {
         unset($arr['media']);
-    }    
-    
+    }
+
     if (isset($arr['imce']) && module_exists('imce') == FALSE) {
         unset($arr['imce']);
     }
-    
+
     ksort($arr);
-    
+
     if ($render === TRUE) {
         $arr = ckeditor_plugins_render($arr);
     }
-    
+
     return $arr;
 }
 
@@ -556,7 +538,7 @@ function ckeditor_plugins_render($plugins) {
     foreach ((array) $plugins as $i => $plugin) {
         $plugins[$i]['path'] = str_replace(array_keys($render), array_values($render), $plugin['path']);
     }
-    
+
     return $plugins;
 }
 
@@ -612,7 +594,7 @@ function ckeditor_get_profile($input_format) {
     $select = db_select('ckeditor_settings', 's');
     $select->join('ckeditor_input_format', 'f', 'f.name = s.name');
     $result = $select->fields('s', array("name"))->condition('f.format', $input_format)->condition('f.name', 'CKEditor Global Profile', '<>')->range(0, 1)->execute()->fetchAssoc();
-    
+
     if ($result && $profile = ckeditor_profile_load($result['name'])) {
         return $profile;
     }
@@ -736,8 +718,8 @@ function ckeditor_profiles_compile( $input_format = FALSE, $clear = FALSE ) {
 function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     global $user, $language, $theme;
 
-    $current_theme = variable_get('theme_default', $theme); 
-    
+    $current_theme = variable_get('theme_default', $theme);
+
     $settings = array();
     $conf = array();
     $conf = $profile->settings;
@@ -791,7 +773,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings['shiftEnterMode'] = constant("CKEDITOR_ENTERMODE_" . strtoupper($conf['shift_enter_mode']));
     $settings['toolbarStartupExpanded'] = ( $conf['expand'] == 't' );
     $settings['width'] = $conf['width'];
-    $settings['skin'] = $conf['skin']; 
+    $settings['skin'] = $conf['skin'];
     $settings['format_tags'] = $conf['font_format'];
     //$settings['popup'] = $conf['popup'];
     $settings['show_toggle'] = $conf['show_toggle'];
@@ -811,10 +793,10 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                 break;
         }
     }
-    
+
     if (isset($conf['loadPlugins'])) {
         $settings['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
-        
+
         if (array_key_exists('media', $settings['loadPlugins']) && module_exists('media')) {
             module_load_include('inc', 'media', 'includes/media.browser');
             $javascript = media_browser_js();
@@ -860,7 +842,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     else {
         $settings['textformat_filters'] = FALSE;
     }
-    
+
     if (isset($conf['custom_formatting']) && $conf['custom_formatting'] == 't') {
         foreach ($conf['formatting']['custom_formatting_options'] as $k => $v) {
             if ($v === 0) {
@@ -1275,12 +1257,12 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
     $use_ckeditor = FALSE;
     $format_arr = FALSE;
     $suffix = '';
-    
+
     if (is_array($format)){
         $format_arr = $format;
         $format = $format_arr['#default_value'];
     }
-    
+
     if (!isset($field['#id'])) {
         return $field;
     }
@@ -1304,7 +1286,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
     if (isset($field['#attributes']['disabled']) && $field['#attributes']['disabled'] == 'disabled') {
         return $field;
     }
-    
+
     if (!isset($processed_ids[$field['#id']])) {
         $processed_ids[$field['#id']] = array();
     }
@@ -1325,7 +1307,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             return $field;
         }
     }
-    
+
     if ($settings = ckeditor_profiles_compile($format)) {
         $textarea_id = $field['#id'];
         $class[] = 'ckeditor-mod';
@@ -1381,7 +1363,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         $editor_local_path = ckeditor_path(TRUE);
         // get the default drupal files path
         $files_path = $host . variable_get('file_private_path', conf_path() . '/files');
-        
+
         if (!$is_running) {
             drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer') );
             //if ($settings['popup'] != 't') {
@@ -1450,10 +1432,10 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         else {
             $field['#attributes']['class'] = array_merge($field['#attributes']['class'], $class);
         }
-        
+
         return $field;
     }
-    
+
     if ($settings = ckeditor_profiles_compile($use_ckeditor)){
         $textarea_id = $field['#id'];
         $class[] = 'ckeditor-mod';
@@ -1486,14 +1468,14 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             // Make sure to append to #suffix so it isn't completely overwritten
             $suffix .= $wysiwyg_link;
         }
-        
+
         $module_drupal_path = drupal_get_path('module', 'ckeditor');
         $module_full_path = $host . $module_drupal_path;
         $editor_path = ckeditor_path(FALSE);
         $editor_local_path = ckeditor_path(TRUE);
         // get the default drupal files path
         $files_path = $host . variable_get('file_private_path', conf_path() . '/files');
-        
+
         if (!$is_running) {
             drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer') );
             //if ($settings['popup'] != 't') {
@@ -1559,7 +1541,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         else {
             $field['#attributes']['class'] = array_merge($field['#attributes']['class'], $class);
         }
-        
+
         return $field;
     }
 
