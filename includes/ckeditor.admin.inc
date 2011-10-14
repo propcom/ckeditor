@@ -530,7 +530,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     $default_plugins = array();
     foreach ($plugin_list AS $key => $val) {
       $plugins[$key] = $val['desc'];
-        if ($val['default'] == 't') {
+        if (isset($val['default']) && $val['default'] == 't') {
           $default_plugins[] = $key;
         }
     }
