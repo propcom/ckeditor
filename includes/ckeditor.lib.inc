@@ -397,13 +397,11 @@ function ckeditor_load_plugins($render = FALSE) {
                 $buttons = array();
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
                     foreach ($matches[1] as $i => $button_name){
-                        if (preg_match_all('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
                             $buttons[$button_name] = array();
-                            foreach($matches2[1] as $j => $val){
-                                $buttons[$button_name]['label'] = $button_name;
-                                $matches2[2][$j] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2][$j]);
-                                $buttons[$button_name][$val] = trim($matches2[2][$j]);
-                            }
+                            $buttons[$button_name]['label'] = $button_name;
+                            $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
+                            $buttons[$button_name]['icon'] = trim($matches2[2]);
                         }
                     }
                 }
@@ -441,13 +439,11 @@ function ckeditor_load_plugins($render = FALSE) {
                 $buttons = array();
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
                     foreach ($matches[1] as $i => $button_name){
-                        if (preg_match_all('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
                             $buttons[$button_name] = array();
-                            foreach($matches2[1] as $j => $val){
-                                $buttons[$button_name]['label'] = $button_name;
-                                $matches2[2][$j] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2][$j]);
-                                $buttons[$button_name][$val] = trim($matches2[2][$j]);
-                            }
+                            $buttons[$button_name]['label'] = $button_name;
+                            $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
+                            $buttons[$button_name]['icon'] = trim($matches2[2]);
                         }
                     }
                 }
@@ -488,13 +484,11 @@ function ckeditor_load_plugins($render = FALSE) {
                 $buttons = array();
                 if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
                     foreach ($matches[1] as $i => $button_name){
-                        if (preg_match_all('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
                             $buttons[$button_name] = array();
-                            foreach($matches2[1] as $j => $val){
-                                $buttons[$button_name]['label'] = $button_name;
-                                $matches2[2][$j] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2][$j]);
-                                $buttons[$button_name][$val] = trim($matches2[2][$j]);
-                            }
+                            $buttons[$button_name]['label'] = $button_name;
+                            $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
+                            $buttons[$button_name]['icon'] = trim($matches2[2]);
                         }
                     }
                 }
