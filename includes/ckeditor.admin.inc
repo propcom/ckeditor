@@ -467,10 +467,15 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   drupal_set_html_head('<script type="text/javascript" src="'. $editor_path .'/ckeditor.js?I"></script>');
   drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
   drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
-  drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'file');
-  drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
-  drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
-  drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+  if (module_exists('jquery_ui')){
+      jquery_ui_add(array('jquery.ui.widget.js', 'jquery.ui.sortable.js'));
+  }
+  else {
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'file');
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+  }
   drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
 
   $form['appearance']['uicolor'] = array(
