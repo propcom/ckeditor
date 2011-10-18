@@ -1339,7 +1339,10 @@ function ckeditor_get_settings()
       $enabled = FALSE;
     }
   }
-  if (!$enabled) echo json_encode(array());
+
+  if (!$enabled) {
+    echo json_encode(array()); die();
+  }
   $element = ckeditor_process_textarea(array('#id' => $_POST['id']));
   if (empty($_SESSION['cke_get_settings'][$_POST['id']])) echo  json_encode(array());
   echo  json_encode($_SESSION['cke_get_settings'][$_POST['id']]);
