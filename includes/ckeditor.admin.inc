@@ -867,7 +867,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
     $form['ckeditor_upload_settings']['UserFilesPath']['#description'] = t('Setting a relative path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg')));
     $form['ckeditor_upload_settings']['UserFilesPath']['#disabled'] = TRUE;
-    $form['ckeditor_upload_settings']['UserFilesAbsolutePath']['#description'] = t('Setting the path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!global' => url('admin/settings/ckeditor/editg')));
+    $form['ckeditor_upload_settings']['UserFilesAbsolutePath']['#description'] = t('Setting the path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg')));
     $form['ckeditor_upload_settings']['UserFilesAbsolutePath']['#disabled'] = TRUE;
   }
 
