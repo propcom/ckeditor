@@ -920,31 +920,25 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if ($filebrowser == 'ckfinder' || $filebrowser_image == 'ckfinder' || $filebrowser_flash == 'ckfinder') {
         if (user_access('allow CKFinder file uploads')) {
-            if (!empty($profile->settings['UserFilesPath'])) {
-                $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
-            }
-            else {
-                $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
-                if (!empty($private_dir)) {
-                    $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/' . $private_dir . '/';                }
-                else {
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/';
-                }
-            }
-            if (!empty($profile->settings['UserFilesAbsolutePath'])) {
-                $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
-            }
-            else {
-                $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
-                if (!empty($private_dir)) {
-                    $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
-                }
-                else {
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR;
-                }
-            }
+        if (!empty($profile->settings['UserFilesPath'])) {
+          $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
+        }
+        if (!empty($profile->settings['UserFilesAbsolutePath'])) {
+          $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
+        }
+        if (variable_get('file_default_scheme', '') == 'private')
+        {
+          $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
+          if (!empty($private_dir)) {
+             $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
+            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') .'/'. $private_dir .'/';
+            $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
+          }
+          else {
+            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') .'/';
+            $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR;
+          }
+        }
         }
     }
     /* MODULES NOT PORTED TO D7
