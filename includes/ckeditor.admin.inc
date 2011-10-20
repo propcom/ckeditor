@@ -1262,7 +1262,7 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#title' => t('Enable access to files located in the private folder'),
     '#default_value' => !empty($profile->settings['ckeditor_allow_download_private_files']),
     '#return_value' => 't',
-    '#description' =>  t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file, if it located inside of the path specified above (<code>'.realpath(file_directory_path()).'</code>) and if there is no information about the file in the Drupal database.'),
+    '#description' =>  t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file, if it located inside of the private path (<code>'.realpath(file_directory_path()).'</code>) and if there is no information about the file in the Drupal database.'),
     '#required' => FALSE
   );
 
