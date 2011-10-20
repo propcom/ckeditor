@@ -820,55 +820,57 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "" : strtr($profile->settings['UserFilesPath'], array("%f" => file_directory_path(), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
   $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "" : strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => file_directory_path(), "%u" => "UID", "%b" => base_path(), "%d" => $_SERVER['DOCUMENT_ROOT'], "%n" => "UNAME"));
 
-  $form['ckeditor_upload_settings']['UserFilesPath'] = array(
-    '#type' => 'textfield',
-    '#prefix' => '<fieldset><legend>' . t('CKFinder settings') .'</legend>',
-    '#title' => t('Path to uploaded files'),
-    '#default_value' => !empty($profile->settings['UserFilesPath']) ? $profile->settings['UserFilesPath'] : "%b%f/",
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#description' => t('Path to uploaded files relative to the document root.') .
-      '<br />'.
-      t('Available placeholders:!b &ndash; the base URL path of the Drupal installation <code>!base</code>.!f &ndash; Drupal file system path where the files are stored <code>!files</code>.!u &ndash; User ID.!n &ndash; Username.<br />Current path: <code>!path</code>',
-        array(
-          '!n' => '<br /><code>%n</code>',
-          '!u' => '<br /><code>%u</code>',
-          '!f' => '<br/><code>%f</code>',
-          '!b' => '<br/><code>%b</code>',
-          '!path' => $current_user_files_path,
-          '!files' => file_directory_path(),
-          '!base' => base_path()
-        ))
-  );
+  if (variable_get('file_downloads', '') != FILE_DOWNLOADS_PRIVATE) {
 
-  $form['ckeditor_upload_settings']['UserFilesAbsolutePath'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Absolute path to uploaded files'),
-    '#default_value' => !empty($profile->settings['UserFilesAbsolutePath']) ? $profile->settings['UserFilesAbsolutePath'] : "%d%b%f/",
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#suffix' => '</fieldset>',
-    '#description' => t('The path to the local directory (on the server) which points to the path defined above. If left empty, CKEditor will try to discover the right path.') .
-      '<br />'.
-      t('Available placeholders:!d &ndash; the server path to document root <code>!root</code>.!b &ndash; base URL path of the Drupal installation <code>!base</code>.!f &ndash; Drupal file system path where the files are stored <code>!files</code>.!u &ndash; User ID.!n &ndash; Username.<br />Current path: <code>!path</code>',
-        array(
-          '!u' => '<br /><code>%u</code>',
-          '!n' => '<br /><code>%n</code>',
-          '!d' => '<br/><code>%d</code>',
-          '!b' => '<br /><code>%b</code>',
-          '!f' => '<br/><code>%f</code>',
-          '!path' => $current_user_files_absolute_path,
-          '!files' => file_directory_path(),
-          '!base' => base_path(),
-          '!root' => $_SERVER['DOCUMENT_ROOT']
-        ))
-  );
+    $form['ckeditor_upload_settings']['UserFilesPath'] = array(
+      '#type' => 'textfield',
+      '#prefix' => '<fieldset><legend>' . t('CKFinder settings') .'</legend>',
+      '#title' => t('Path to uploaded files'),
+      '#default_value' => !empty($profile->settings['UserFilesPath']) ? $profile->settings['UserFilesPath'] : "%b%f/",
+      '#size' => 40,
+      '#maxlength' => 255,
+      '#description' => t('Path to uploaded files relative to the document root.') .
+        '<br />'.
+        t('Available placeholders:!b &ndash; the base URL path of the Drupal installation <code>!base</code>.!f &ndash; Drupal file system path where the files are stored <code>!files</code>.!u &ndash; User ID.!n &ndash; Username.<br />Current path: <code>!path</code>',
+          array(
+            '!n' => '<br /><code>%n</code>',
+            '!u' => '<br /><code>%u</code>',
+            '!f' => '<br/><code>%f</code>',
+            '!b' => '<br/><code>%b</code>',
+            '!path' => $current_user_files_path,
+            '!files' => file_directory_path(),
+            '!base' => base_path()
+          ))
+    );
+
+    $form['ckeditor_upload_settings']['UserFilesAbsolutePath'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Absolute path to uploaded files'),
+      '#default_value' => !empty($profile->settings['UserFilesAbsolutePath']) ? $profile->settings['UserFilesAbsolutePath'] : "%d%b%f/",
+      '#size' => 40,
+      '#maxlength' => 255,
+      '#suffix' => '</fieldset>',
+      '#description' => t('The path to the local directory (on the server) which points to the path defined above. If left empty, CKEditor will try to discover the right path.') .
+        '<br />'.
+        t('Available placeholders:!d &ndash; the server path to document root <code>!root</code>.!b &ndash; base URL path of the Drupal installation <code>!base</code>.!f &ndash; Drupal file system path where the files are stored <code>!files</code>.!u &ndash; User ID.!n &ndash; Username.<br />Current path: <code>!path</code>',
+          array(
+            '!u' => '<br /><code>%u</code>',
+            '!n' => '<br /><code>%n</code>',
+            '!d' => '<br/><code>%d</code>',
+            '!b' => '<br /><code>%b</code>',
+            '!f' => '<br/><code>%f</code>',
+            '!path' => $current_user_files_absolute_path,
+            '!files' => file_directory_path(),
+            '!base' => base_path(),
+            '!root' => $_SERVER['DOCUMENT_ROOT']
+          ))
+    );
+  }
 
   if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
-    $form['ckeditor_upload_settings']['UserFilesPath']['#description'] = t('Setting a relative path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg')));
-    $form['ckeditor_upload_settings']['UserFilesPath']['#disabled'] = TRUE;
-    $form['ckeditor_upload_settings']['UserFilesAbsolutePath']['#description'] = t('Setting the path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg')));
-    $form['ckeditor_upload_settings']['UserFilesAbsolutePath']['#disabled'] = TRUE;
+    $form['ckeditor_upload_settings']['private_path_descrption'] = array(
+      '#value' => '<div>'.t('Setting a relative path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg'))).'</div>',
+    );
   }
 
   $form['advanced'] = array(
@@ -1076,6 +1078,7 @@ function ckeditor_admin_profile_form_submit($form, &$form_state) {
 }
 
 function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
+  global $user;
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
   if ($mode == 'edit') {
     $profile = ckeditor_profile_load('CKEditor Global Profile');
@@ -1254,6 +1257,15 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
   );
 
   if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
+   $form['ckeditor_advanced_settings']['ckeditor_allow_download_private_files'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable access to files located in the private folder'),
+    '#default_value' => !empty($profile->settings['ckeditor_allow_download_private_files']),
+    '#return_value' => 't',
+    '#description' =>  t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file, if it located inside of the path specified above (<code>'.realpath(file_directory_path()).'</code>) and if there is no information about the file in the Drupal database.'),
+    '#required' => FALSE
+  );
+
     $current_private_dir = !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '';
     $form['ckeditor_advanced_settings']['private_dir'] = array(
       '#type' => 'textfield',
@@ -1261,7 +1273,7 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
       '#default_value' => !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '',
       '#size' => 40,
       '#maxlength' => 255,
-      '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('<strong>Warning:</strong> CKEditor does not implement any kind of access protection on files available in this location. All files stored in the directory defined above might be accessible to unauthenticated users if there is no information about the file in the Drupal\'s database.') . '<br />' . t('System path to the private folder is: !system_path.', array('!system_path' => realpath(file_directory_path()) . DIRECTORY_SEPARATOR)) . '<br />' . t('Available wildcard characters:') . '<br/><strong>%u</strong> - ' . t('User ID') . '<br /><strong>%n</strong> - ' . t('Username') . '<br />' . t('Current path: !path', array('!path' => $current_private_dir . ' (' . file_create_path($current_private_dir) . ')')),
+      '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('<strong>Warning:</strong> CKEditor does not implement any kind of access protection on files available in this location. All files stored in the directory defined above might be accessible to unauthenticated users if there is no information about the file in the Drupal\'s database.') . '<br />' . t('System path to the private folder is: !system_path.', array('!system_path' => realpath(file_directory_path()) . DIRECTORY_SEPARATOR)) . '<br />' . t('Available wildcard characters:') . '<br/><strong>%u</strong> - ' . t('User ID') . '<br /><strong>%n</strong> - ' . t('Username') . '<br />' . t('Current path: !path', array('!path' => $current_private_dir . ' (' . str_replace('/', DIRECTORY_SEPARATOR, file_create_path(str_replace(array('%u', '%n'), array($user->uid, $user->name), $current_private_dir))) . ')')),
     );
   }
   if (function_exists('linktocontent_node_menu') && function_exists('pathfilter_filter')) {

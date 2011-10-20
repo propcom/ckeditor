@@ -391,9 +391,9 @@ function ckeditor_file_download($file) {
     $private_dir = preg_quote($private_dir, '#');
     $private_dir = strtr($private_dir, array('%u' => '(\d+)', '%n' => '([\x80-\xF7 \w@.-]+)')); // regex for %n taken from user_validate_name() in user.module
     $private_dir = trim($private_dir, '\/');
-
     $regex = '#^'. preg_quote(file_directory_path() .'/', '#') . $private_dir .'#';
-
+    if (!$private_dir && strcmp($global_profile->settings['ckeditor_allow_download_private_files'], 't') != 0)
+      return -1;
     //If path to the file points to the CKEditor private directory, allow downloading
     if (preg_match($regex, $path)) {
       $ctype = ($info = @getimagesize($path)) ? $info['mime'] : (function_exists('mime_content_type') ? mime_content_type($path) : 'application/x-download');
