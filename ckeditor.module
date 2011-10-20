@@ -365,7 +365,7 @@ function ckeditor_init() {
   {
     $module_drupal_path = drupal_get_path('module', 'ckeditor');
     $editor_local_path  = ckeditor_path(TRUE);
-    drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module', 'footer', FALSE, TRUE, FALSE);
+    drupal_add_js($editor_local_path . '/ckeditor.js', 'module', 'footer', FALSE, TRUE, FALSE);
     drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', 'footer' );
     drupal_add_js(array('ckeditor' => array('settings' =>array('edit-footer','edit-header'))), 'setting');
     }
