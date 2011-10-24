@@ -135,22 +135,23 @@ function ckeditor_load_skin_options() {
 
 function ckeditor_load_lang_options() {
   $arr = array();
-  $editor_local_path  = ckeditor_path(TRUE);
-  $lang_dir     = $editor_local_path .'/editor/lang';
-  if (is_dir($lang_dir)) {
-    $dh = @opendir($lang_dir);
-    if (FALSE !== $dh ) {
-      while (($file = readdir($dh)) !== FALSE) {
-        if (in_array($file, array(".", "..", "CVS", ".svn"))) {
-          continue;
-        }
-        $matches = array();
-        if (is_file($lang_dir . DIRECTORY_SEPARATOR . $file) && preg_match('/^(.*?)\.js$/', $file, $matches)) {
-          $lang = $matches[1];
-          $arr[$lang] = drupal_strtoupper($lang);
-        }
-      }
-      closedir( $dh );
+  $editor_local_path = ckeditor_path(TRUE);
+  $lang_file = $editor_local_path . '/lang/_languages.js';
+  if (file_exists($lang_file))
+  {
+   $f = fopen($lang_file, 'r');
+   $file = fread($f, filesize($lang_file));
+   $tmp = explode('{', $file);
+   if (isset($tmp[2]))
+   {
+     $tmp = explode('}', $tmp[2]);
+   }
+    $langs = explode(',', $tmp[0]);
+    foreach ($langs AS $key => $lang)
+    {
+      preg_match("/(\w+-?\w+):'(\w+)'/i",$lang, $matches);
+      if (isset($matches[1]) && isset($matches[2]))
+        $arr[$matches[1]] = $matches[2];
     }
   }
 
