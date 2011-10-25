@@ -197,24 +197,24 @@ function ckeditor_load_skin_options() {
 function ckeditor_load_lang_options() {
     $arr = array();
     $editor_local_path = ckeditor_path(TRUE);
-    $lang_dir = $editor_local_path . '/editor/lang';
-    if (is_dir($lang_dir)) {
-        $dh = @opendir($lang_dir);
-        if (FALSE !== $dh) {
-            while (($file = readdir($dh)) !== FALSE) {
-                if (in_array($file, array(".", "..", "CVS", ".svn"))) {
-                    continue;
-                }
-                $matches = array();
-                if (is_file($lang_dir . DIRECTORY_SEPARATOR . $file) && preg_match('/^(.*?)\.js$/', $file, $matches)) {
-                    $lang = $matches[1];
-                    $arr[$lang] = drupal_strtoupper($lang);
-                }
-            }
-            closedir($dh);
-        }
+    $lang_file = $editor_local_path . '/lang/_languages.js';
+    if (file_exists($lang_file))
+    {
+      $f = fopen($lang_file, 'r');
+      $file = fread($f, filesize($lang_file));
+      $tmp = explode('{', $file);
+      if (isset($tmp[2]))
+      {
+        $tmp = explode('}', $tmp[2]);
+      }
+      $langs = explode(',', $tmp[0]);
+      foreach ($langs AS $key => $lang)
+      {
+        preg_match("/(\w+-?\w+):'(\w+)'/i",$lang, $matches);
+        if (isset($matches[1]) && isset($matches[2]))
+          $arr[$matches[1]] = $matches[2];
+      }
     }
-
     //oops, we have no information about languages, let's use those available in CKEditor 2.4.3
     if (empty($arr)) {
         $arr = array(
@@ -274,12 +274,9 @@ function ckeditor_load_lang_options() {
             'zh-cn' => 'Chinese Simplified',
         );
     }
-
     asort($arr);
-
     return $arr;
 }
-
 /**
  * Get the language locale code supported by Scayt for the specified language
  */
@@ -920,31 +917,25 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if ($filebrowser == 'ckfinder' || $filebrowser_image == 'ckfinder' || $filebrowser_flash == 'ckfinder') {
         if (user_access('allow CKFinder file uploads')) {
-            if (!empty($profile->settings['UserFilesPath'])) {
-                $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
-            }
-            else {
-                $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
-                if (!empty($private_dir)) {
-                    $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/' . $private_dir . '/';                }
-                else {
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = base_path() . variable_get('file_private_path', conf_path() . '/files') . '/';
-                }
-            }
-            if (!empty($profile->settings['UserFilesAbsolutePath'])) {
-                $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_private_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
-            }
-            else {
-                $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
-                if (!empty($private_dir)) {
-                    $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
-                }
-                else {
-                    $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR;
-                }
-            }
+        if (!empty($profile->settings['UserFilesPath'])) {
+          $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
+        }
+        if (!empty($profile->settings['UserFilesAbsolutePath'])) {
+          $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
+        }
+        if (variable_get('file_default_scheme', '') == 'private')
+        {
+          $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
+          if (!empty($private_dir)) {
+             $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
+            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') .'/'. $private_dir .'/';
+            $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
+          }
+          else {
+            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') .'/';
+            $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR;
+          }
+        }
         }
     }
     /* MODULES NOT PORTED TO D7
