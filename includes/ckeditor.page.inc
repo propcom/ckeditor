@@ -212,6 +212,7 @@ function ckeditor_filter_xss() {
       }
     }
     else {
+      $text = module_invoke($module, 'filter', 'prepare', $delta, $format, $text);
       $text = module_invoke($module, 'filter', 'process', $delta, $format, $text);
     }
   }
