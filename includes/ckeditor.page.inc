@@ -191,20 +191,29 @@ function ckeditor_filter_xss() {
   $text = $_POST['text'];
   $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
 
+  $filters = array();
+
   foreach ($_POST['filters'] as $module_delta) {
     if (!is_string($module_delta)) {
       continue;
     }
-    $module = strtok($module_delta, "/");
-    $delta = strtok("/");
-    $format = strtok("/");
+    $filter = new stdClass();
+    $filter->module = strtok($module_delta, "/");
+    $filter->delta = strtok("/");
+    $filter->format = strtok("/");
 
-    if (!module_hook($module, 'filter')) {
+    if (!module_hook($filter->module, 'filter')) {
       continue;
     }
 
+    $filters[] = $filter;
+
+    $text = module_invoke($filter->module, 'filter', 'prepare', $filter->delta, $filter->format, $text);
+  }
+
+  foreach ($filters as $filter){
     //built-in filter module, a special case where we would like to strip XSS and nothing more
-    if ($module == 'filter' && $delta == 0) {
+    if ($filter->module == 'filter' && $filter->delta == 0) {
       preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);
       if ($matches[1]) {
         $tags = array_unique($matches[1]);
@@ -212,8 +221,7 @@ function ckeditor_filter_xss() {
       }
     }
     else {
-      $text = module_invoke($module, 'filter', 'prepare', $delta, $format, $text);
-      $text = module_invoke($module, 'filter', 'process', $delta, $format, $text);
+      $text = module_invoke($filter->module, 'filter', 'process', $filter->delta, $filter->format, $text);
     }
   }
 
