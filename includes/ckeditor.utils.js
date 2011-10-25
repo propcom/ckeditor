@@ -347,7 +347,6 @@ Drupal.ckeditorSubmitAjaxForm = function () {
 /**
  * Drupal behaviors
  */
-var add_more_button_click = false;
 Drupal.behaviors.ckeditor = function (context) {
   if ((typeof(CKEDITOR) == 'undefined') || !CKEDITOR.env.isCompatible) {
     return;
@@ -363,61 +362,43 @@ Drupal.behaviors.ckeditor = function (context) {
   }
 
   //Support for imageField [#1286192]
-  if(Drupal.behaviors.filefieldButtons)
-  {
-    //if "add more" button was clicked
-     $("div.content-add-more input").mousedown(function(event){
-       add_more_button_click = true;
+  if (Drupal.behaviors.filefieldButtons) {
+    $('input[id$="-add-more"]:submit').each(function(){
+      $(this).mousedown(function(){
+        $('.form-item textarea.ckeditor-mod', $(this).parent().prev().html()).each(function(){
+          Drupal.ckeditorOff($(this).attr('id'));
+        });
+      });
     });
-    url = document.location.pathname;
-    if (url.indexOf('/') == 0 ) url =  url.substr(1);
-    imagefield = $('textarea',$(context).html());
-    if (imagefield.length == 1 && add_more_button_click == false)
-    {
-      imagefield_id = imagefield.attr('id')
-//      path = document.location.href.replace(document.location.pathname, '');
-      path = Drupal.settings.basePath;
-      //Drupal.settings.ckeditor.settings[imagefield_id] = [];
-       $.ajax({
-        url: path + 'admin/ckeditor/get_settings',
-        dataType: 'json',
-        data: { 'id': imagefield_id, 'url': url },
-        type: 'POST',
-        success: function( data ) {
+    if ($('.form-item textarea', $(context)).length == 1) {
+      var url = document.location.pathname;
+      if (url.indexOf('/') == 0 ) url =  url.substr(1);
+      var path = Drupal.settings.basePath;
+      var imagefield_id = $('textarea', $(context)).attr('id');
+      if (!CKEDITOR.instances[imagefield_id]){
+        $.ajax({
+          url: path + 'admin/ckeditor/get_settings',
+          dataType: 'json',
+          data: {'id': imagefield_id, 'url': url},
+          type: 'POST',
+          success: function( data ) {
             Drupal.settings.ckeditor.settings[imagefield_id] = data;
-            if ($(data).length > 0)
-            {
+            if ($(data).length > 0) {
               Drupal.settings.ckeditor.autostart[imagefield_id] = true;
               Drupal.ckeditorOn(imagefield_id);
             }
-        },
-          error: function(xhr) { }
-      });
-
-    }else if ((/*imagefield.length == 1 &&*/ add_more_button_click == true))
-    {
-      //this happens when "add more" button was clicked
-      //find all CKEDITOR instances for imageField
-      for (var i in CKEDITOR.instances)
-      {
-        pattern = /edit-field-[\w]+-[\d]+-data-title/;
-        if (pattern.test(CKEDITOR.instances[i].name))
-        {
-          name = CKEDITOR.instances[i].name;
-          data = CKEDITOR.instances[i].document.getBody().getHtml();
-          if ($("#"+name).length > 0)
-          {
-            $("#"+name).attr('value', data);
-            Drupal.ckeditorOff(name);
-            Drupal.ckeditorOn(name);
           }
-        }
+        });
+        $('input[id$="-filefield-remove"]', $(context)).mousedown(function(){
+          $('textarea.ckeditor-mod', $(context)).each(function(){
+            if (CKEDITOR.instances[$(this).attr('id')]){
+              Drupal.ckeditorOff($(this).attr('id'));
+            }
+          })
+        });
       }
     }
-    add_more_button_click = false;
   }
-
-
 
   //Added for support [#1288664] Views
   if ($(context).attr('id') === 'views-ajax-pad')
@@ -435,7 +416,7 @@ Drupal.behaviors.ckeditor = function (context) {
       $.ajax({
         url: path + 'admin/ckeditor/get_settings',
         dataType: 'json',
-        data: { 'id': views_textarea_id, 'url': 'admin/build/views' },
+        data: {'id': views_textarea_id, 'url': 'admin/build/views'},
         type: 'POST',
         success: function( data ) {
             Drupal.settings.ckeditor.settings[views_textarea_id] = data;
@@ -484,6 +465,7 @@ Drupal.behaviors.ckeditor = function (context) {
     });
   });
 };
+
 if (Drupal.tableDrag) {
     Drupal.tableDrag.prototype.onDrag = function() {
       $(this.rowObject.element).find('textarea.ckeditor-processed').each(
