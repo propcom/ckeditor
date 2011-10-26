@@ -1,25 +1,25 @@
 
 -- 2011-10-24
-- [#1319658] by michal_cksource: Correct language list in CKEditor profile configuration
+- [#1319658] by michal_cksource: Correct language list in the CKEditor profile configuration
 
 -- 2011-10-20
 - [#1259510] by michal_cksource: Fix for setting a private files folder breaks CKEditor file uploads
 
 -- 2011-10-17
-- [#1310280] by dczepierga: Change icons detecting from CKEditor plugin files
+- [#1310280] by dczepierga: Improve icons detection from CKEditor plugins (part 2)
 - [#1298972] by michal_cksource: Correct messages and add language fixes
-- [#1311928] by dczepierga: Add drupal_ui support to editing of toolbar 
+- [#1311928] by dczepierga: Add jquery_ui support to the Drag & Drop toolbar configuration
 
 -- 2011-10-14
-- [#1310280] by dczepierga: Change icons detecting from CKEditor plugin files
-- [#1295176] by dczepierga: Fix  Notice: Undefined index: default in ckeditor_admin_profile_form() - when editing CKeditor profile 
+- [#1310280] by dczepierga: Improve icons detection from CKEditor plugins
+- [#1295176] by dczepierga: Fix Notice: Undefined index: default in ckeditor_admin_profile_form() - when editing CKEditor profile 
 - [#1310198] by duozersk: Add plugin to count symbols and words inside CKEditor
 
 -- 2011-10-04
 - [#1298972] by michal_cksource: Correct messages and add language fixes
 
 -- 2011-09-26
-- [#1154264] by dczepierga: Fix for deleting profle  - After deleting the Advanced profile, Full HTML profile doesn't load
+- [#1154264] by dczepierga: Fix for deleting profle - after deleting the Advanced profile, Full HTML profile doesn't load
 
 -- 2011-09-23
 - [#1288084] by dczepierga: Disable Media and IMCE module selection if these modules are not installed
@@ -32,20 +32,20 @@
 
 -- 2011-09-15
 - [#1280298] by dczepierga: Add configuration option to disable text format filters in filter/xss request
-- [#1270792] by dczepierga: Add toolbar configuration wizard
+- [#1270792] by dczepierga: Further improvements to the Drag & Drop toolbar configuration
 
 -- 2011-09-13
-- [#1173294] by dczepierga: Fix for incorrect file path  for Uploaded Images
+- [#1173294] by dczepierga: Fix for incorrect file path for uploaded Images
 
 -- 2011-09-12
-- [#1270792] by michal_cksource: Add fix to toolbar configuration wizard - add fix to css.
-- [#1270792] by michal_cksource: Add fix to toolbar configuration wizard  - fix  error (dragged item was to low in Firefox), fix error (validation fails when 'group' button was first in buttons row) .
+- [#1270792] by michal_cksource: Improved Drag & Drop toolbar configuration - fixed css styles
+- [#1270792] by michal_cksource: Improved Drag & Drop toolbar configuration - fixed errors (dragged item was to low in Firefox and validation failed when 'group' button was first in buttons row)
 
 -- 2011-09-06
-- [#1270792] by dczepierga: Add toolbar configuration wizard
+- [#1270792] by dczepierga: Add Drag & Drop toolbar configuration
 
 -- 2011-08-31
-- [#1264884] by dczepierga: Fix warning: is_dir(): open_basedir restriction in effect.
+- [#1264884] by dczepierga: Fix warning: is_dir(): open_basedir restriction in effect
 
 -----------------------------
  2011-08-29
