@@ -352,6 +352,13 @@ Drupal.behaviors.ckeditor = function (context) {
   if ((typeof(CKEDITOR) == 'undefined') || !CKEDITOR.env.isCompatible) {
     return;
   }
+
+  $.each(CKEDITOR.instances, function(index, value){
+    if ($('#'+index).length == 0){
+      delete CKEDITOR.instances[index];
+    }
+  });
+
   $('.ckeditor_links').show();
   // make sure the textarea behavior is run first, to get a correctly sized grippie
   // the textarea behavior requires the teaser behavior, so load that one as well
@@ -406,17 +413,14 @@ Drupal.behaviors.ckeditor = function (context) {
   }
 
   //Added for support [#1288664] Views
-  if ($(context).attr('id') === 'views-ajax-pad')
-  {
+  if ($(context).attr('id') === 'views-ajax-pad'){
     $("div.form-buttons input#edit-submit").click(function(){
         if (typeof CKEDITOR.instances['edit-header'] != 'undefined' )$('#edit-header').attr('value',CKEDITOR.instances['edit-header'].document.getBody().getHtml());
         if (typeof CKEDITOR.instances['edit-footer'] != 'undefined' )$('#edit-footer').attr('value',CKEDITOR.instances['edit-footer'].document.getBody().getHtml());
         if (typeof CKEDITOR.instances['edit-empty'] != 'undefined' )$('#edit-empty').attr('value',CKEDITOR.instances['edit-empty'].document.getBody().getHtml());
     });
-    views_textarea_id = $("textarea", $(context)).attr('id');
-    if (views_textarea_id)
-    {
-      //path = document.location.href.replace(document.location.pathname, '');
+    var views_textarea_id = $("textarea", $(context)).attr('id');
+    if (views_textarea_id){
       path = Drupal.settings.basePath;
       $.ajax({
         url: path + 'admin/ckeditor/get_settings',
@@ -424,14 +428,11 @@ Drupal.behaviors.ckeditor = function (context) {
         data: {'id': views_textarea_id, 'url': 'admin/build/views'},
         type: 'POST',
         success: function( data ) {
+          if ($(data).length > 0 && typeof CKEDITOR.instances[views_textarea_id] == 'undefined'){
             Drupal.settings.ckeditor.settings[views_textarea_id] = data;
-            if ($(data).length > 0)
-            {
-              Drupal.ckeditorOff(views_textarea_id);
-              Drupal.ckeditorOn(views_textarea_id);
-            }
-          },
-          error: function(xhr) { }
+            Drupal.ckeditorOn(views_textarea_id);
+          }
+        }
       });
     }
   }
