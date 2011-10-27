@@ -1,67 +1,68 @@
 --2011-10-27
-- [#1288664] by dczepierga: CKeditor is not working in Views header and footer text areas
+- [#1288664] by dczepierga: Fix for CKEditor is not working in Views header and footer text areas
 
 --2011-10-25
-- [#1286192] by dczepierga: CKEditor just showing on imagefield textareas on editing, not on node creation
+- [#1286192] by dczepierga: Fix for CKEditor support to Imagefield module textareas
 - [#1278062] by dczepierga: Allow security filters to run their 'prepare' code before 'process'
 
 --2011-10-24
-- [#1319668] by michal_cksource: Correct language list in CKEditor profile configuration
+- [#1319668] by michal_cksource: Correct language list in the CKEditor profile configuration
 
 --2011-10-20
-- [#963208] by michal_cksource: Ckeditor implementation of hook_file_download globally undermines private file download system
-- [#1288664] by michal_cksource: CKeditor is not working in Views header and footer text areas
+- [#963208] by michal_cksource: Fix for CKEditor implementation of hook_file_download globally undermines private file download system
+- [#1288664] by michal_cksource: Fix for CKEditor is not working in Views header and footer text areas
 
 --2011-10-19
-- [#1314262] by michal_cksource: Invalid link in CKEditor profile
+- [#1314262] by michal_cksource: Fix for invalid link in CKEditor profile
 
 --2011-10-18
-- [#1288664] by michal_cksource: CKeditor is not working in Views header and footer text areas
+- [#1288664] by michal_cksource: Fix for CKEditor is not working in Views header and footer text areas
 
 --2011-10-17
-- [#1310290] by dczepierga: Change icons detecting from CKEditor plugin file
-- [#1311926] by dczepierga: editing of toolbar is not working - add drupal_ui support
-- [#1310390] by dczepierga: CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME undefined
+- [#1310290] by dczepierga: Improve icons detection from CKEditor plugins
+- [#1311926] by dczepierga: Add jquery_ui support to the Drag & Drop toolbar configuration
+- [#1310390] by dczepierga: Fix for undefined CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME name
 
 --2011-10-14
-- [#1310298] by dczepierga: Error when editing CKeditor profile
-- [#1310290] by dczepierga: Change icons detecting from CKEditor plugin file
-- [#1308426] by duozersk: Counter plugin to count symbols and words
+- [#1310298] by dczepierga: Fix Notice: Undefined index: default in ckeditor_admin_profile_form() - when editing CKEditor profile
+- [#1310290] by dczepierga: Improve icons detection from CKEditor plugins
+- [#1308426] by duozersk: Add plugin to count symbols and words inside CKEditor
 
 --2011-10-12
 - [#1296804] by michal_cksource: Add patch for Tabledrag compatibility
 - [#1300140] by michal_cksource: Correct messages and add language fixes
 
 --2011-10-11
-- [#1286192] by michal_cksource: CKEditor just showing on imagefield textareas on editing, not on node creation
+- [#1286192] by michal_cksource: Fix for CKEditor support to Imagefield module textareas
 
 --2011-10-07
-- [#1298302] by dczepierga: Remove toolbar changing in user profile form
+- [#1298302] by dczepierga: Improve fix to call to undefined function ckeditor_load_toolbar_options()
 
 --2011-10-05
 - [#1300140] by michal_cksource: Correct messages and add language fixes
 
 --2011-10-04
-- [#1298302] by dczepierga: Remove toolbar changing in user profile form
+- [#1298302] by dczepierga: Fix to call to undefined function ckeditor_load_toolbar_options()
 
 --2011-10-03
-- [#1297570] by dczepierga: The order the profiles are listed in changes all the time, requires sorting
-- [#1297090] by AlexisWilke: E_NOTICE in the module
-- [#1297774] by dczepierga: Toolbar configuration wizard
+- [#1297570] by dczepierga: Add sorting to the profiles list
+- [#1297090] by AlexisWilke: Fix E_NOTICE when calling $conf['ckeditor_load_method'] in module file
+- [#1297774] by dczepierga: Add Drag & Drop toolbar configuration
 
 --2011-09-30
-- [#1294394] by dczepierga: Multi toolbar configuration, and different settings for each profile
+- [#1294394] by dczepierga: Improve multi toolbar configuration, and different settings for each profile
 
 --2011-09-29
-- [#1286192] by michal_cksource: CKEditor just showing on imagefield textareas on editing, not on node creation
-- [#1288664] by michal_cksource: CKeditor is not working in Views header and footer text areas
-- [#1294394] by dczepierga: Multi toolbar configuration, and different settings for each profile
+- [#1286192] by michal_cksource: Fix for CKEditor support to Imagefield module textareas
+- [#1288664] by michal_cksource: Fix for CKEditor is not working in Views header and footer text areas
+- [#1294394] by dczepierga: Add multi toolbar configuration, and different settings for each profile
 
 --2011-09-23
-- [#1289218] by dczepierga: Disable Linktocontent and IMCE module selection if not installed
+- [#1289218] by dczepierga: Disable Linktocontent and IMCE module selection if these modules are not installed
+
 
 --2011-09-07
-- [#1269544] by dczepierga: Cannot Update Ckeditor Undefined Call to ckeditor_plugins_path()
+- [#1269544] by dczepierga: : Call to undefined function ckeditor_plugins_path() when try to update module
 
 -----------------------------
  2011-08-30
