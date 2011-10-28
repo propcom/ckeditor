@@ -4,27 +4,27 @@
 -----------------------------
 
 New features:
-[#1308426] Add plugin to count symbols and words inside CKEditor
-[#1297774] Add Drag & Drop toolbar configuration
-[#1294394] Add multi toolbar configuration, and different settings for each profile
+[#1308426] by duozersk: Add plugin to count symbols and words inside CKEditor
+[#1297774] by dczepierga: Add Drag & Drop toolbar configuration
+[#1294394] by dczepierga: Add multi toolbar configuration, and different settings for each profile
 
 Bug fixes:
-[#1278062] Allow security filters to run their 'prepare' code before 'process'
-[#1319668] Correct language list in the CKEditor profile configuration
-[#963208] Fix for CKEditor implementation of hook_file_download globally undermines private file download system
-[#1314262] Fix for invalid link in CKEditor profile
-[#1311926] Add jquery_ui support to the Drag & Drop toolbar configuration
-[#1310390] Fix for undefined CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME name
-[#1310298] Fix Notice: Undefined index: default in ckeditor_admin_profile_form() - when editing CKEditor profile
-[#1296804] Add patch for Tabledrag compatibility
-[#1300140] Correct messages and add language fixes
-[#1298302] Fix to call to undefined function ckeditor_load_toolbar_options()
-[#1297570] Add sorting to the profiles list
-[#1297090] Fix E_NOTICE when calling $conf['ckeditor_load_method'] in module file
-[#1286192] Fix for CKEditor support to Imagefield module textareas
-[#1288664] Fix for CKEditor is not working in Views header and footer text areas 
-[#1289218] Disable Linktocontent and IMCE module selection if these modules are not installed
-[#1269544] Call to undefined function ckeditor_plugins_path() when try to update module 
+[#1278062] by dczepierga: Allow security filters to run their 'prepare' code before 'process'
+[#1319668] by michal_cksource: Correct language list in the CKEditor profile configuration
+[#963208] by michal_cksource: Fix for CKEditor implementation of hook_file_download globally undermines private file download system
+[#1314262] by michal_cksource: Fix for invalid link in CKEditor profile
+[#1311926] by dczepierga: Add jquery_ui support to the Drag & Drop toolbar configuration
+[#1310390] by dczepierga: Fix for undefined CKEDITOR_FORCE_SIMPLE_TOOLBAR_NAME name
+[#1310298] by dczepierga: Fix Notice: Undefined index: default in ckeditor_admin_profile_form() - when editing CKEditor profile
+[#1296804] by michal_cksource: Add patch for Tabledrag compatibility
+[#1300140] by michal_cksource: Correct messages and add language fixes
+[#1298302] by dczepierga: Fix to call to undefined function ckeditor_load_toolbar_options()
+[#1297570] by dczepierga: Add sorting to the profiles list
+[#1297090] by AlexisWilke: Fix E_NOTICE when calling $conf['ckeditor_load_method'] in module file
+[#1286192] by dczepierga: Fix for CKEditor support to Imagefield module textareas
+[#1288664] by dczepierga: Fix for CKEditor is not working in Views header and footer text areas 
+[#1289218] by dczepierga: Disable Linktocontent and IMCE module selection if these modules are not installed
+[#1269544] by dczepierga: Call to undefined function ckeditor_plugins_path() when try to update module 
 
 -----------------------------
  2011-08-30
