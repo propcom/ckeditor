@@ -47,7 +47,7 @@ table.cke_editor fieldset {
     border-right: 0;
 }
 
-/*toolbar wizzard*/
+/*toolbar Drag & Drop*/
 #edit-toolbar {
     display: none;
 }
@@ -112,9 +112,6 @@ li.sortableItem {
     disc-type: none;
     z-index: 99;
 }
-ul {
-    list-style-type: none;
-}
 
 /* Fix for fieldset for-edit-apperance in Firefox*/
 fieldset#edit-appearance div#groupLayout, div#allButtons  {
@@ -123,3 +120,4 @@ fieldset#edit-appearance div#groupLayout, div#allButtons  {
   margin: 1em 0;
   overflow: auto;
 }
+/*  end of toolbar Drag & Drop */
