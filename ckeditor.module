@@ -468,8 +468,14 @@ function ckeditor_file_download($uri) {
     $private_dir = trim($private_dir, '\/');
 
     $regex = '#^'. preg_quote(file_default_scheme() . '://' , '#') . $private_dir .'#';
-    $path =   file_default_scheme() . '://' . str_replace(file_default_scheme() . '://', '' , $uri)   ;
-    if (!$private_dir && variable_get('file_default_scheme', '') == 'private' && strcmp($global_profile->settings['ckeditor_allow_download_private_files'], 't') != 0) return -1;
+
+    if (!strstr($uri, 'private://') && !strstr($uri,'public://'))
+    {
+      $path =   file_default_scheme() . '://' .$uri   ;
+    }else{
+      $path =    $uri  ;
+    }
+    if (!$private_dir && variable_get('file_default_scheme', '') == 'private' &&  strcmp(isset($global_profile->settings['ckeditor_allow_download_private_files']) ? $global_profile->settings['ckeditor_allow_download_private_files']: '', 't') != 0 ) return -1;
     if (preg_match($regex, $path))
     {
       $info = image_get_info($uri);
