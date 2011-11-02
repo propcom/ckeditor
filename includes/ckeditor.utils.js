@@ -353,12 +353,15 @@ Drupal.behaviors.ckeditor = function (context) {
     return;
   }
 
-  $.each(CKEDITOR.instances, function(index, value){
-    if ($('#'+index).length == 0){
-      delete CKEDITOR.instances[index];
-    }
-  });
-
+  if (typeof CKEDITOR.instances != 'undefined')
+  {
+      $.each(CKEDITOR.instances, function(index, value){
+        if ($('#'+index).length == 0)
+        {
+          delete CKEDITOR.instances[index];
+        }
+      });
+  }
   $('.ckeditor_links').show();
   // make sure the textarea behavior is run first, to get a correctly sized grippie
   // the textarea behavior requires the teaser behavior, so load that one as well
@@ -428,6 +431,7 @@ Drupal.behaviors.ckeditor = function (context) {
         data: {'id': views_textarea_id, 'url': 'admin/build/views'},
         type: 'POST',
         success: function( data ) {
+
           if ($(data).length > 0 && typeof CKEDITOR.instances[views_textarea_id] == 'undefined'){
             Drupal.settings.ckeditor.settings[views_textarea_id] = data;
             Drupal.ckeditorOn(views_textarea_id);
