@@ -468,10 +468,20 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
   drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
   if (module_exists('jquery_ui')){
-      jquery_ui_add(array('jquery.ui.widget.js', 'jquery.ui.sortable.js'));
+    if (!module_exists('jquery_update'))
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
+      if (jquery_ui_get_version() > 1.6)
+      {
+        jquery_ui_add(array('ui.sortable'));
+      }else {
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+      }
   }
   else {
-      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'file');
+      if(!module_exists('jquery_update'))
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
