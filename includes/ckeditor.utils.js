@@ -423,7 +423,7 @@ Drupal.behaviors.ckeditor = function (context) {
         if (typeof CKEDITOR.instances['edit-empty'] != 'undefined' )$('#edit-empty').attr('value',CKEDITOR.instances['edit-empty'].document.getBody().getHtml());
     });
     var views_textarea_id = $("textarea", $(context)).attr('id');
-    if (views_textarea_id){
+    if (typeof views_textarea_id != 'undefined' && views_textarea_id != 'edit-options-alter-text'){
       path = Drupal.settings.basePath;
       $.ajax({
         url: path + 'admin/ckeditor/get_settings',
@@ -431,7 +431,6 @@ Drupal.behaviors.ckeditor = function (context) {
         data: {'id': views_textarea_id, 'url': 'admin/build/views'},
         type: 'POST',
         success: function( data ) {
-
           if ($(data).length > 0 && typeof CKEDITOR.instances[views_textarea_id] == 'undefined'){
             Drupal.settings.ckeditor.settings[views_textarea_id] = data;
             Drupal.ckeditorOn(views_textarea_id);
