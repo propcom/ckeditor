@@ -45,6 +45,11 @@ function hook_ckeditor_plugin() {
             'desc' => t('Plugin description'),
             // The full path to the CKEditor plugins directory, with the trailing slash.
             'path' => drupal_get_path('module', 'my_module') . '/plugin_dir/',
+            'buttons' => array( 'button_name' => array(
+              'icon' => 'path to button icon',
+              'label' => 'Button Label',
+              )
+            )
         )
     );
 }
