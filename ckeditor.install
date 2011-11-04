@@ -241,6 +241,8 @@ function ckeditor_requirements($phase) {
         }
         if (!empty($installed_version)) {
             $requirements['ckeditor']['value'] = $installed_version;
+        }else{
+          $requirements['ckeditor']['value'] = t('Not found');
         }
     }
 
@@ -482,25 +484,25 @@ function ckeditor_update_7002() {
  */
 function ckeditor_update_7003() {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-    
+
     $render = array();
     $render["%base_path%"] = base_path();
     $render["%editor_path%"] = ckeditor_path(FALSE) . '/';
     $render["%ckeditor_path%"] = drupal_get_path('module', 'ckeditor');
     $render["%plugin_dir%"] = $render["%ckeditor_path%"] . '/plugins/';
-    
+
     $result = db_query("SELECT * FROM {ckeditor_settings} WHERE name <> :name", array(':name' => 'CKEditor Global Profile'))->fetchAllAssoc('name');
-    
+
     foreach ((array) $result as $profile) {
         $name = $profile->name;
         $settings = unserialize($profile->settings);
-        
+
         foreach ((array) $settings['loadPlugins'] as $i => $plugin) {
             $settings['loadPlugins'][$i]['path'] = str_replace(array_values($render), array_keys($render), $plugin['path']);
         }
-        
+
         $settings = serialize($settings);
-        
+
         $update = db_update('ckeditor_settings')
                     ->fields(array(
                         'settings' => $settings,
@@ -508,5 +510,5 @@ function ckeditor_update_7003() {
                     ->condition('name', $name, '=')
                     ->execute();
     }
-       
+
 }
