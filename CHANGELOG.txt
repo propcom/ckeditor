@@ -1,4 +1,16 @@
 -----------------------------
+ 2011-11-04
+ New stable release: 6.x-1.8
+-----------------------------
+
+Bug fixes:
+[#1327818] by michal_cksource: Fix to edit settings
+[#1326660] by michal_cksource: Fix for "Rewrite the output of this field" (Views option)
+[#1329166] by michal_cksource: Fix Notice: Undefined index: ckeditor_allow_download_private_files in ckeditor.module
+[#1325926] by michal_cksource: Fix jQuery support problems
+[#1327196] by michal_cksource: Fix popup window no longer available
+
+-----------------------------
  2011-10-28
  New stable release: 6.x-1.7
 -----------------------------
@@ -22,9 +34,9 @@ Bug fixes:
 [#1297570] by dczepierga: Add sorting to the profiles list
 [#1297090] by AlexisWilke: Fix E_NOTICE when calling $conf['ckeditor_load_method'] in module file
 [#1286192] by dczepierga: Fix for CKEditor support to Imagefield module textareas
-[#1288664] by dczepierga: Fix for CKEditor is not working in Views header and footer text areas 
+[#1288664] by dczepierga: Fix for CKEditor is not working in Views header and footer text areas
 [#1289218] by dczepierga: Disable Linktocontent and IMCE module selection if these modules are not installed
-[#1269544] by dczepierga: Call to undefined function ckeditor_plugins_path() when try to update module 
+[#1269544] by dczepierga: Call to undefined function ckeditor_plugins_path() when try to update module
 
 -----------------------------
  2011-08-30
