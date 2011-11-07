@@ -168,8 +168,8 @@ function MODULENAME_ckeditor_plugin() {
             'path' => drupal_get_path('module', 'my_module') . '/plugin_dir/',
             // Plugin buttons definition [optional]
             'buttons' => array(
-              array('label' => 'Button label', 'icon' => '/path/to/icon/image'),
-              array('label' => 'Button label', 'icon' => '/path/to/icon/image'),
+              'button_name' => array('label' => 'Button label', 'icon' => '/path/to/icon/image'),
+              'button_name' => array('label' => 'Button label', 'icon' => '/path/to/icon/image'),
               ...
             )
         )
