@@ -261,7 +261,12 @@ function ckeditor_load_plugins($render = FALSE) {
       'name' => 'Linkit',
       'desc' => t('Support for the Linkit module <em>(buttons: Linkit)</em>'),
       'path' => $base_path . drupal_get_path('module', 'linkit') . '/editors/ckeditor/',
-      'buttons' => false,
+      'buttons' => array(
+        'Linkit' => array(
+          'title' => 'Linkit',
+          'icon' => $base_path . drupal_get_path('module', 'linkit') . '/editors/ckeditor/linkit.png'
+        )
+      ),
       'default' => 't'
     );
   }
@@ -416,6 +421,11 @@ function ckeditor_load_plugins($render = FALSE) {
 
   if (isset($arr['imce']) && module_exists('imce') == FALSE) {
     unset($arr['imce']);
+  }
+
+  //remove page break button if there is no module to do this
+  if (isset($arr['drupalbreaks']['buttons']['DrupalPageBreak']) && !module_exists('paging') && !module_exists('pagebreak')) {
+    unset($arr['drupalbreaks']['buttons']['DrupalPageBreak']);
   }
 
   ksort($arr);
