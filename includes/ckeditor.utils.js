@@ -125,6 +125,8 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
                 CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
             }
         }
+        //remove width 100% from settings because this may cause problems with theme css
+        if (textarea_settings.width == '100%') textarea_settings.width = '';
         Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
     };
 
