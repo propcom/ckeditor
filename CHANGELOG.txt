@@ -1,3 +1,7 @@
+2011-11-10
+New stable relase 7.x-1.6
+[#1337064] Fix Fatal error: Call to undefined function db_fetch_object()
+
 2011-11-09
 New stable relase 7.x-1.5
 
