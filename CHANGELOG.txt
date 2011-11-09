@@ -1,8 +1,12 @@
+2011-11-09
+New stable relase 7.x-1.5
+
 Bug fixes:
+[#1334140] by michal_cksource: CKEditor is cut off in comments form
 [#1331728] by michal_cksource: Remove unnecessary Drupal Page Break button if there is no module to support this feature
 [#1331720] by michal_cksource: Fix broken link to Global Profile in CKEditor configuration main page
 [#1331716] by michal_cksource: Fix missing version number in report status
-[#1324554] by michal_cksource: Fix adding custom plugin - change in ckeditor.api.php
+[#1324554] by dczepierga: Fix adding custom plugin - change in ckeditor.api.php
 [#1283918] by michal_cksource: Fix UTF-8 issues
 [#1327540] by michal_cksource: Fix hook_file_download allows downloading of private files created by another module
 [#1325412] by michal_cksource: Fix problem with list-style-type in ckeditor.css
