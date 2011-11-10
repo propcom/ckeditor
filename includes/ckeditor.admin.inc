@@ -468,7 +468,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
   drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
   if (module_exists('jquery_ui')){
-    if (!module_exists('jquery_update'))
+    if (!module_exists('jquery_update')  || jquery_update_get_version() <= 1.2 )
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
       if (jquery_ui_get_version() > 1.6)
       {
@@ -480,7 +480,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       }
   }
   else {
-      if(!module_exists('jquery_update'))
+      if(!module_exists('jquery_update') || jquery_update_get_version() <= 1.2 )
         drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
