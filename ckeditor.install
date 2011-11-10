@@ -217,7 +217,7 @@ function ckeditor_install() {
       "admin/settings/actions/configure/*\n".
       "*.edit-target\n".
       "*.edit-wysiwyg-filter-*\n".
-      "admin/build/views/*\n"
+      "admin/build/views*\n"
       );
 
       //force by default simple toolbar on selected textareas
