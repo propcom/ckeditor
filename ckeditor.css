@@ -48,10 +48,10 @@ table.cke_editor fieldset {
 }
 
 /*toolbar Drag & Drop*/
-#edit-toolbar {
+form#ckeditor-admin-profile-form textarea#edit-toolbar {
     display: none;
 }
-#edit-toolbar + .grippie {
+form#ckeditor-admin-profile-form #edit-toolbar + .grippie {
     display: none;
 }
 div.sortableList {
