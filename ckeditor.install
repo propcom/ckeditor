@@ -176,7 +176,7 @@ function ckeditor_install() {
     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiRtl','BidiLtr'],
     ['Link','Unlink','Anchor','Linkit','LinkToNode','LinkToMenu'],
-    ['DrupalBreak', 'DrupalPageBreak']
+    ['DrupalBreak']
 ]
       ";
 
