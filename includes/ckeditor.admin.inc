@@ -559,12 +559,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
     drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
     if (module_exists('jquery_ui')){
-        jquery_ui_add(array('jquery.ui.widget.js', 'jquery.ui.sortable.js'));
+        jquery_ui_add(array('jquery.ui.widget,min.js', 'jquery.ui.sortable.min.js'));
     }
     else {
-        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
-        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
-        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
     }
     drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
 
