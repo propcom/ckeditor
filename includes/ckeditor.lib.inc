@@ -428,6 +428,11 @@ function ckeditor_load_plugins($render = FALSE) {
     unset($arr['drupalbreaks']['buttons']['DrupalPageBreak']);
   }
 
+  if (isset($arr['drupalbreaks']))
+  {
+    $arr['drupalbreaks']['default'] = 't';
+  }
+
   ksort($arr);
 
   if ($render === TRUE) {
