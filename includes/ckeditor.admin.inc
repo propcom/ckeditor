@@ -1686,7 +1686,7 @@ function ckeditor_toolbar_buttons_all() {
     'BGColor' => array('name' => 'BGColor', 'icon' => $path . '/images/buttons/backgroundColor.png', 'title' => 'Background Color', 'row' => 3),
     'Maximize' => array('name' => 'Maximize', 'icon' => $path . '/images/buttons/maximize.png', 'title' => 'Maximize', 'row' => 3),
     'ShowBlocks' => array('name' => 'ShowBlocks', 'icon' => $path . '/images/buttons/showBlocks.png', 'title' => 'Show Blocks', 'row' => 3),
-    'Iframe' => array('name' => 'Iframe', 'icon' => $path . '/images/buttons/iframe.png', 'title' => 'Read more', 'row' => 3),
+    'Iframe' => array('name' => 'Iframe', 'icon' => $path . '/images/buttons/iframe.png', 'title' => 'IFrame', 'row' => 3),
     'About' => array('name' => 'About', 'icon' => $path . '/images/buttons/about.png', 'title' => 'About', 'row' => 3),
     '__spacer' => array('name' => false, 'icon' => $path . '/images/buttons/spacer.png', 'title' => 'Spacer', 'row' => 4),
     '__group' => array('name' => false, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
