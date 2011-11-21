@@ -520,7 +520,6 @@ function ckeditor_load_plugins($render = FALSE) {
     if ($render === TRUE) {
         $arr = ckeditor_plugins_render($arr);
     }
-
     return $arr;
 }
 
@@ -928,9 +927,13 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         if (user_access('allow CKFinder file uploads')) {
         if (!empty($profile->settings['UserFilesPath'])) {
           $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
+        }else{
+          $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr('%b%f/', array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
         }
         if (!empty($profile->settings['UserFilesAbsolutePath'])) {
           $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
+        }else {
+             $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr('%d%b%f/', array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
         }
         if (variable_get('file_default_scheme', '') == 'private')
         {

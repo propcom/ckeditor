@@ -76,10 +76,10 @@ function CheckAuthentication() {
                 $_SESSION['ckeditor']['UserFilesPath'] = $_SESSION['ckeditor'][$_GET['id']]['UserFilesPath'];
                 $_SESSION['ckeditor']['UserFilesAbsolutePath'] = $_SESSION['ckeditor'][$_GET['id']]['UserFilesAbsolutePath'];
             }
-            chdir($current_cwd); 
+            chdir($current_cwd);
         }
     }
-    
+
     return $authenticated;
 }
 
@@ -94,4 +94,5 @@ if (isset($_SESSION['ckeditor']['UserFilesPath'], $_SESSION['ckeditor']['UserFil
     $baseUrl = strtr(base_path(), array(
                 '/modules/ckeditor/ckfinder/core/connector/php' => '',
             )) . variable_get('file_private_path', conf_path() . '/files') . '/';
+    $baseDir = resolveUrl($baseUrl);
 }

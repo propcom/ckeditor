@@ -912,9 +912,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     if (variable_get('file_default_scheme', '') != 'private')
     {
+      $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "%b%f/" : $profile->settings['UserFilesPath'];
+      $current_user_files_path = strtr($current_user_files_path, array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
 
-      $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "" : strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
-      $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "" : strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => "UNAME"));
+      $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "%d%b%f/" : $profile->settings['UserFilesAbsolutePath'];
+      $current_user_files_absolute_path = strtr($current_user_files_absolute_path, array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => "UNAME"));
+
 
       $form['ckeditor_upload_settings']['UserFilesPath'] = array(
           '#type' => 'textfield',
