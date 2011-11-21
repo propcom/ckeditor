@@ -250,6 +250,10 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
       break;
   }
 
+  $global_profile = ckeditor_profile_load("CKEditor Global Profile");
+  $toolbar_wizard = !empty($global_profile->settings['toolbar_wizard']) ? $global_profile->settings['toolbar_wizard'] : 't';
+  drupal_add_js(array('ckeditor_toolbar_wizard' => $toolbar_wizard), 'setting');
+
   $form['basic']['name'] = array(
     '#type' => 'textfield',
     '#title' => t('Profile name'),
@@ -467,26 +471,29 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   drupal_set_html_head('<script type="text/javascript" src="'. $editor_path .'/ckeditor.js?I"></script>');
   drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
   drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
-  if (module_exists('jquery_ui')){
-    if (!module_exists('jquery_update')  || jquery_update_get_version() <= 1.2 )
-      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
-      if (jquery_ui_get_version() > 1.6)
-      {
-        jquery_ui_add(array('ui.sortable'));
-      }else {
-        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
-        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
-        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
-      }
-  }
-  else {
+
+  if ($toolbar_wizard == 't'){
+    if (module_exists('jquery_ui')){
+      if (!module_exists('jquery_update')  || jquery_update_get_version() <= 1.2 )
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
+        if (jquery_ui_get_version() > 1.6)
+        {
+          jquery_ui_add(array('ui.sortable'));
+        }else {
+          drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
+          drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
+          drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+        }
+    }
+    else {
       if(!module_exists('jquery_update') || jquery_update_get_version() <= 1.2 )
         drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+    }
+    drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
   }
-  drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
 
   $form['appearance']['uicolor'] = array(
     '#type' => 'select',
@@ -520,19 +527,21 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#rows' => 15
   );
 
-  $form['appearance']['toolbar_wizzard_used'] = array(
-    '#type' => 'markup',
-    '#value' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
-    '#description' => t('Currently used buttons'),
-  );
+  if ($toolbar_wizard == 't'){
+    $form['appearance']['toolbar_wizzard_used'] = array(
+      '#type' => 'markup',
+      '#value' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
+      '#description' => t('Currently used buttons'),
+    );
 
-  drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all()), 'setting');
+    drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all()), 'setting');
 
-  $form['appearance']['toolbar_wizzard_all'] = array(
-    '#type' => 'markup',
-    '#value' => '<div>' . t('All buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
-    '#description' => t('All available buttons'),
-  );
+    $form['appearance']['toolbar_wizzard_all'] = array(
+      '#type' => 'markup',
+      '#value' => '<div>' . t('All buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
+      '#description' => t('All available buttons'),
+    );
+  }
 
   $plugin_list = ckeditor_load_plugins();
   $plugins = array();
@@ -1294,6 +1303,17 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#description' => t('With the !plink extension it is possible to use internal: links. By default the !link extension is linking to nodes using paths.', array('!plink' => l(t('Path Filter'), 'http://drupal.org/project/pathfilter'), '!link' => l(t('Link To Content'), 'http://drupal.org/project/linktocontent'))),
     );
   }
+
+  $form['ckeditor_advanced_settings']['toolbar_wizard'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show toolbar wizard'),
+    '#default_value' => !empty($profile->settings['toolbar_wizard']) ? $profile->settings['toolbar_wizard'] : 't',
+    '#options' => array(
+      't' => t('Enabled'),
+      'f' => t('Disabled')
+    ),
+    //'#description' => t('If this option is selected (enabled), the content displayed in the editor when you are editing the page will be filtered through the filters associated with a given "text format". When this option is disabled, the editor will show the full unfiltered page content.'),
+  );
 
   $form['submit'] = array(
     '#type' => 'submit',
