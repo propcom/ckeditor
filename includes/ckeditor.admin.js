@@ -15,7 +15,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             configBox.style = 'display:none';
         }
     });
-    
+
     $(document).ready(function() {
         if (typeof(CKEDITOR) == "undefined")
             return;
@@ -122,7 +122,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }
             }
         });
-        
+
         $(".cke_load_toolbar").click(function() {
             var buttons = eval('Drupal.settings.'+$(this).attr("id"));
             var text = "[\n";
@@ -152,8 +152,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             text = text + "]";
             text = text.replace(/\['\/'\]/g,"'/'");
             $("#edit-toolbar").attr('value',text);
-            Drupal.ckeditorToolbarReload();
+            if (Drupal.settings.ckeditor_toolbar_wizard == 't'){
+                Drupal.ckeditorToolbarReload();
+            }
             return false;
         });
+
+        if (Drupal.settings.ckeditor_toolbar_wizard == 'f'){
+            $("form#ckeditor-admin-profile-form textarea#edit-toolbar, form#ckeditor-admin-profile-form #edit-toolbar + .grippie").show();
+        }
     });
 })(jQuery);
