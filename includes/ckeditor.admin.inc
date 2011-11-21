@@ -249,7 +249,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
             't' => t('Enabled'),
             'f' => t('Disabled')
         ),
-        //'#description' => t('If this option is selected (enabled), the content displayed in the editor when you are editing the page will be filtered through the filters associated with a given "text format". When this option is disabled, the editor will show the full unfiltered page content.'),
+        '#description' => t('When enabled, the toolbar can be built by using the drag-and-drop wizard. Otherwise you will need to enter the toolbar configuration manually to the text box.'),
     );
 
     $form['submit'] = array(
