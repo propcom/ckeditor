@@ -783,12 +783,13 @@ function ckeditor_process_textarea($element) {
     switch ($filebrowser) {
       case 'ckfinder':
         if (user_access('allow CKFinder file uploads')) {
-          $settings[$textarea_id]['filebrowserBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html';
-          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Images';
-          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Flash';
-          $settings[$textarea_id]['filebrowserUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
-          $settings[$textarea_id]['filebrowserImageUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
-          $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
+          $ckfinder_full_path = ckfinder_path();
+          $settings[$textarea_id]['filebrowserBrowseUrl'] = $ckfinder_full_path .'/ckfinder.html';
+          $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $ckfinder_full_path .'/ckfinder.html?Type=Images';
+          $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $ckfinder_full_path .'/ckfinder.html?Type=Flash';
+          $settings[$textarea_id]['filebrowserUploadUrl'] = $ckfinder_full_path .'/core/connector/php/connector.php?command=QuickUpload&type=Files';
+          $settings[$textarea_id]['filebrowserImageUploadUrl'] = $ckfinder_full_path .'/core/connector/php/connector.php?command=QuickUpload&type=Images';
+          $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $ckfinder_full_path .'/core/connector/php/connector.php?command=QuickUpload&type=Flash';
         }
         break;
       case 'imce':
@@ -820,8 +821,9 @@ function ckeditor_process_textarea($element) {
       switch ($filebrowser_image) {
         case 'ckfinder':
           if (user_access('allow CKFinder file uploads')) {
-            $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Images';
-            $settings[$textarea_id]['filebrowserImageUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+            $ckfinder_full_path = ckfinder_path();
+            $settings[$textarea_id]['filebrowserImageBrowseUrl'] = $ckfinder_full_path .'/ckfinder/ckfinder.html?Type=Images';
+            $settings[$textarea_id]['filebrowserImageUploadUrl'] = $ckfinder_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
           }
           break;
         case 'imce':
@@ -854,8 +856,9 @@ function ckeditor_process_textarea($element) {
       switch ($filebrowser_flash) {
         case 'ckfinder':
           if (user_access('allow CKFinder file uploads')) {
-            $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $module_full_path .'/ckfinder/ckfinder.html?Type=Images';
-            $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $module_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+            $ckfinder_full_path = ckfinder_path();
+            $settings[$textarea_id]['filebrowserFlashBrowseUrl'] = $ckfinder_full_path .'/ckfinder/ckfinder.html?Type=Images';
+            $settings[$textarea_id]['filebrowserFlashUploadUrl'] = $ckfinder_full_path .'/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
           }
           break;
         case 'imce':
@@ -1235,6 +1238,40 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
   else {
     return $cke_plugins_path;
   }
+}
+
+/**
+ * Read the CKFinder path from the Global profile.
+ *
+ * @return
+ *   Path to CKFinder folder.
+ */
+function ckfinder_path($refresh = FALSE) {
+  static $ckf_path;
+
+  if ($refresh || (!$ckf_path)) {
+    $mod_path = drupal_get_path('module', 'ckeditor');
+    $lib_path = 'sites/all/libraries';
+    $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
+
+    //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
+    //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
+    $ckf_path = base_path() . $mod_path . '/ckfinder';
+
+    if ($global_profile) {
+      $gs = $global_profile->settings;
+
+      if (isset($gs['ckfinder_path'])) {
+        $tmp_path = $gs['ckfinder_path'];
+        $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => base_path() . $mod_path, "%l" => base_path() . $lib_path));
+        $tmp_path = str_replace('\\', '/', $tmp_path);
+        $tmp_path = str_replace('//', '/', $tmp_path);
+        $ckf_path = $tmp_path;
+      }
+    }
+  }
+
+  return $ckf_path;
 }
 
 function ckeditor_get_nodetype($get_q) {
