@@ -217,7 +217,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
       '#title' => t('Enable access to files located in the private folder'),
       '#default_value' => !empty($profile->settings['ckeditor_allow_download_private_files']),
       '#return_value' => 't',
-      '#description' =>  t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file, if it located inside of the private path (<code>'.variable_get('file_private_path' , '').'</code>) and if there is no information about the file in the Drupal database.'),
+      '#description' => t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file located inside of the private path (<code>'.variable_get('file_private_path' , '').'</code>), but only if there is no information about the file in the Drupal database. If the path below is specified, anyone will have access only to that location.'),
       '#required' => FALSE
     );
       $current_private_dir = !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '';
@@ -227,7 +227,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
           '#default_value' => !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '',
           '#size' => 40,
           '#maxlength' => 255,
-          '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><code>%u</code> &ndash; ' . t('User ID') . '<br /><code>%n</code> &ndash; ' . t('Username') . '<br />' . t('System path to the private folder is: <code>!system_path</code>.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) . '<br />' . t('<strong>Warning:</strong> CKEditor does not implement any kind of access protection for files available in this location. All files stored in the directory defined above might be accessible to unauthenticated users if there is no information about the file in the Drupal\'s database.'),
+        	 '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><code>%u</code> &ndash; ' . t('User ID') . '<br /><code>%n</code> &ndash; ' . t('Username') . '<br />' . t('System path to the private folder is: <code>!system_path</code>.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) ,
       );
     }
 

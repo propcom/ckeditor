@@ -451,7 +451,6 @@ function ckeditor_features_api() {
  * CKEditor does not implement any kind of potection on private files.
  */
 function ckeditor_file_download($uri) {
-
   if ($path = file_create_url($uri)) {
     $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri", array(':uri' => $path));
     foreach ($result as $record)
@@ -467,15 +466,21 @@ function ckeditor_file_download($uri) {
     $private_dir = strtr($private_dir, array('%u' => '(\d+)', '%n' => '([\x80-\xF7 \w@.-]+)')); // regex for %n taken from user_validate_name() in user.module
     $private_dir = trim($private_dir, '\/');
 
-    $regex = '#^'. preg_quote(file_default_scheme() . '://' , '#') . $private_dir .'#';
+    $regex = '#^'. preg_quote('private://' , '#') . $private_dir .'#';
 
-    if (!strstr($uri, 'private://') && !strstr($uri,'public://'))
-    {
-      $path =   file_default_scheme() . '://' .$uri   ;
-    }else{
+    if (!strstr($uri, 'private://') && !strstr($uri,'public://')) {
+      $path = 'private://' .$uri   ;
+    }else {
       $path =    $uri  ;
     }
-    if (!$private_dir && variable_get('file_default_scheme', '') == 'private' &&  strcmp(isset($global_profile->settings['ckeditor_allow_download_private_files']) ? $global_profile->settings['ckeditor_allow_download_private_files']: '', 't') != 0 ) return -1;
+    //check if CKEditor's "Enable access to files located in the private folder" option is disabled or enabled
+    $allow_download_private_files = FALSE;
+    if (isset($global_profile->settings['ckeditor_allow_download_private_files']) &&  $global_profile->settings['ckeditor_allow_download_private_files'] === 't') {
+      $allow_download_private_files = TRUE;
+    }
+    //denied access to file if private upload is set and CKEditor's "Enable access to files located in the private folder" option is disabled
+    if ($allow_download_private_files  == FALSE ) return -1;
+    //check if file can be served by comparing regex and path to file
     if (preg_match($regex, $path))
     {
       $info = image_get_info($uri);
