@@ -90,4 +90,5 @@ else {
   $baseUrl = strtr(base_path(), array(
     '/modules/ckeditor/ckfinder/core/connector/php' => '',
   )) . file_directory_path() .'/';
+  $baseDir = resolveUrl($baseUrl);
 }
