@@ -87,13 +87,7 @@ function ckeditor_help_delegate($path, $arg) {
                                 )) . '</p>';
             $output .= '<h4>' . t('Configuration') . '</h4>';
             $output .= '<ol>';
-            $output .= '<li>' . t('Go to the !ckeditorlink and download the latest version of CKEditor. Unpack the contents of the <code>ckeditor</code> directory of the downloaded file to <code>%ckeditordir</code> (or to <code>sites/all/libriaries/ckeditor</code>).',
-                            array(
-                                '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com/download'),
-                                '%ckeditordir' => base_path() . drupal_get_path('module', 'ckeditor') . '/ckeditor/',
-                    )) . '</li>';
-            $output .= '<li>' . t('Enable the module as usual from within Drupal\'s administration pages.') . '</li>';
-            $output .= '<li>' . t('Adjust CKEditor profiles in the <strong>!adminpath</strong> section. Profiles determine which options are available to users based on the input format system.',
+            $output .= '<li>' . t('CKEditor profiles can be configured in the <strong>!adminpath</strong> section. Profiles determine which options are available to users based on the input format system.',
                             array(
                                 '!adminpath' => l(t('Administration panel') . ' > ' . t('Configuration') . ' > ' . t('Content Authoring') . ' > ' . t('CKEditor'), 'admin/config/content/ckeditor'),
                     )) . '</li>';
