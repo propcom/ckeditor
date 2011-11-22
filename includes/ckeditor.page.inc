@@ -101,18 +101,18 @@ function ckeditor_help_delegate($path, $arg) {
                             array(
                                 '!filterlink' => l(t('filters'), 'admin/config/content/formats'),
                     )) .
-                    '<br /><code>' . htmlspecialchars('<a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tr> <td> <em> <b> <u> <i> <strong> <font> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption>') . '</code><br />';
-            $output .= t('If you are going to use CKEditor with the <strong>Filtered HTML</strong> input format, please read the "Setting up filters" section in the <code>!readme</code> file.',
+                   '<br /><code>' . htmlspecialchars('<a> <p> <span> <div> <h1> <h2> <h3> <h4> <h5> <h6> <img> <map> <area> <hr> <br> <br /> <ul> <ol> <li> <dl> <dt> <dd> <table> <tbody> <th> <tr> <td> <em> <b> <u> <i> <strong> <del> <ins> <sub> <sup> <quote> <blockquote> <pre> <address> <code> <cite> <embed> <object> <param> <strike> <caption> <iframe>') . '</code><br />';
+            $output .= t('<strong>Note:</strong> be careful when granting users access to create tags like %iframe.<br />If you are going to use CKEditor with the <strong>Filtered HTML</strong> input format, please read the "Setting up filters" section in the <code>!readme</code> file.',
                             array(
+                               '%iframe' => '<iframe>',
                                 '!readme' => l(t('README.txt'), $base_url . '/' . drupal_get_path('module', 'ckeditor') . '/README.txt', array('absolute' => TRUE))
                     )) . '</li>';
             $output .= '<li>' . t('To have better control over line breaks, you should disable the <strong>%settingname</strong> setting in the chosen Text format (recommended).',
                             array(
                                 '%settingname' => t('Line break converter'),
                     )) . '</li>';
-            $output .= '<li>' . t('Modify the <code>%ckconfig</code> file to adjust CKEditor configuration to your needs (optional). Available configuration settings are available in the !apidocs.',
+            $output .= '<li>' . t('All configuration options described in the !apidocs that cannot be easily changed in the administration area can be set in the <strong>Advanced Options</strong> section in the CKEditor profile.',
                             array(
-                                '%ckconfig' => base_path() . drupal_get_path('module', 'ckeditor') . '/ckeditor/ckeditor.config.js',
                                 '!apidocs' => l(t('API documentation'), 'http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html')
                     )) . '</li>';
             $output .= '</ol>';
@@ -121,7 +121,7 @@ function ckeditor_help_delegate($path, $arg) {
             $output .= '<p>';
             $output .= t('Take a look at !listlink when installing CKEditor.',
                             array(
-                                '!listlink' => l(t('the list of common problems'), 'http://drupal.ckeditor.com/troubleshooting')
+                                '!listlink' => l(t('the list of common problems'), 'http://docs.cksource.com/CKEditor_for_Drupal/Troubleshooting')
                     ));
             $output .= ' ' . t('If you are looking for more information, have any trouble with the configuration, or found an issue with the CKEditor module, please visit the !officiallink.', array('!officiallink' => l(t('official project page'), 'http://drupal.org/project/ckeditor')));
             $output .= ' ' . t('More information about how to customize CKEditor for your theme can be found !herelink.', array('!herelink' => l(t('here'), 'http://drupal.ckeditor.com/tricks')));
@@ -162,7 +162,7 @@ function ckeditor_filter_xss() {
     else {
         $text = $_POST['text'];
     }
-    
+
     $filters = filter_get_filters();
     $format_filters = filter_list_format($_POST['input_format']);
 
