@@ -236,7 +236,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
       '#title' => t('Enable access to files located in the private folder'),
       '#default_value' => !empty($profile->settings['ckeditor_allow_download_private_files']),
       '#return_value' => 't',
-      '#description' =>  t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file, if it located inside of the private path (<code>'.variable_get('file_private_path' , '').'</code>) and if there is no information about the file in the Drupal database.'),
+      '#description' => t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file located inside of the private path (<code>'.variable_get('file_private_path' , '').'</code>), but only if there is no information about the file in the Drupal database. If the path below is specified, anyone will have access only to that location.'),
       '#required' => FALSE
     );
       $current_private_dir = !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '';
@@ -246,7 +246,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
           '#default_value' => !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '',
           '#size' => 40,
           '#maxlength' => 255,
-          '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><code>%u</code> &ndash; ' . t('User ID') . '<br /><code>%n</code> &ndash; ' . t('Username') . '<br />' . t('System path to the private folder is: <code>!system_path</code>.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) . '<br />' . t('<strong>Warning:</strong> CKEditor does not implement any kind of access protection for files available in this location. All files stored in the directory defined above might be accessible to unauthenticated users if there is no information about the file in the Drupal\'s database.'),
+        	 '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><code>%u</code> &ndash; ' . t('User ID') . '<br /><code>%n</code> &ndash; ' . t('Username') . '<br />' . t('System path to the private folder is: <code>!system_path</code>.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) ,
       );
     }
 
@@ -605,12 +605,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     if ($toolbar_wizard == 't'){
         if (module_exists('jquery_ui')){
-            jquery_ui_add(array('jquery.ui.widget.js', 'jquery.ui.sortable.js'));
+            jquery_ui_add(array('jquery.ui.widget.min.js', 'jquery.ui.sortable.min.js'));
         }
         else {
-            drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.js', 'file');
-            drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.js', 'file');
-            drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.js', 'file');
+            drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
+            drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
+            drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
         }
         drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
     }
@@ -961,9 +961,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     if (variable_get('file_default_scheme', '') != 'private')
     {
+      $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "%b%f/" : $profile->settings['UserFilesPath'];
+      $current_user_files_path = strtr($current_user_files_path, array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
 
-      $current_user_files_path = empty($profile->settings['UserFilesPath']) ? "" : strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%n" => "UNAME"));
-      $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "" : strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => "UNAME"));
+      $current_user_files_absolute_path = empty($profile->settings['UserFilesAbsolutePath']) ? "%d%b%f/" : $profile->settings['UserFilesAbsolutePath'];
+      $current_user_files_absolute_path = strtr($current_user_files_absolute_path, array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => "UID", "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => "UNAME"));
+
 
       $form['ckeditor_upload_settings']['UserFilesPath'] = array(
           '#type' => 'textfield',
@@ -1432,7 +1435,7 @@ function ckeditor_toolbar_buttons_all() {
         'BGColor' => array('name' => 'BGColor', 'icon' => $path . '/images/buttons/backgroundColor.png', 'title' => 'Background Color', 'row' => 3),
         'Maximize' => array('name' => 'Maximize', 'icon' => $path . '/images/buttons/maximize.png', 'title' => 'Maximize', 'row' => 3),
         'ShowBlocks' => array('name' => 'ShowBlocks', 'icon' => $path . '/images/buttons/showBlocks.png', 'title' => 'Show Blocks', 'row' => 3),
-        'Iframe' => array('name' => 'Iframe', 'icon' => $path . '/images/buttons/iframe.png', 'title' => 'Read more', 'row' => 3),
+        'Iframe' => array('name' => 'Iframe', 'icon' => $path . '/images/buttons/iframe.png', 'title' => 'IFrame', 'row' => 3),
         'About' => array('name' => 'About', 'icon' => $path . '/images/buttons/about.png', 'title' => 'About', 'row' => 3),
         '__spacer' => array('name' => false, 'icon' => $path . '/images/buttons/spacer.png', 'title' => 'Spacer', 'row' => 4),
         '__group' => array('name' => false, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
