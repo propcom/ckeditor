@@ -917,7 +917,7 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         }
         */
     }
-
+    
     if ($filebrowser == 'ckfinder' || $filebrowser_image == 'ckfinder' || $filebrowser_flash == 'ckfinder') {
         if (user_access('allow CKFinder file uploads')) {
         if (!empty($profile->settings['UserFilesPath'])) {
@@ -955,12 +955,13 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     switch ($filebrowser) {
         case 'ckfinder':
             if (user_access('allow CKFinder file uploads')) {
-                $settings['filebrowserBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?id=' . $profile_name;
-                $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id=' . $profile_name;
-                $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Flash&id=' . $profile_name;
-                $settings['filebrowserUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&id=' . $profile_name;
-                $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
-                $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash&id=' . $profile_name;
+                $ckfinder_full_path = $host . ckfinder_path();
+                $settings['filebrowserBrowseUrl'] = $ckfinder_full_path . '/ckfinder.html?id=' . $profile_name;
+                $settings['filebrowserImageBrowseUrl'] = $ckfinder_full_path . '/ckfinder.html?Type=Images&id=' . $profile_name;
+                $settings['filebrowserFlashBrowseUrl'] = $ckfinder_full_path . '/ckfinder.html?Type=Flash&id=' . $profile_name;
+                $settings['filebrowserUploadUrl'] = $ckfinder_full_path . '/core/connector/php/connector.php?command=QuickUpload&type=Files&id=' . $profile_name;
+                $settings['filebrowserImageUploadUrl'] = $ckfinder_full_path . '/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
+                $settings['filebrowserFlashUploadUrl'] = $ckfinder_full_path . '/core/connector/php/connector.php?command=QuickUpload&type=Flash&id=' . $profile_name;
             }
             break;
         case 'imce':
@@ -994,8 +995,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         switch ($filebrowser_image) {
             case 'ckfinder':
                 if (user_access('allow CKFinder file uploads')) {
-                    $settings['filebrowserImageBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id=' . $profile_name;
-                    $settings['filebrowserImageUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
+                    $ckfinder_full_path = $host . ckfinder_path();
+                    $settings['filebrowserImageBrowseUrl'] = $ckfinder_full_path . '/ckfinder.html?Type=Images&id=' . $profile_name;
+                    $settings['filebrowserImageUploadUrl'] = $ckfinder_full_path . '/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
                 }
                 break;
             case 'imce':
@@ -1030,8 +1032,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         switch ($filebrowser_flash) {
             case 'ckfinder':
                 if (user_access('allow CKFinder file uploads')) {
-                    $settings['filebrowserFlashBrowseUrl'] = $module_full_path . '/ckfinder/ckfinder.html?Type=Images&id=' . $profile_name;
-                    $settings['filebrowserFlashUploadUrl'] = $module_full_path . '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
+                    $ckfinder_full_path = $host . ckfinder_path();
+                    $settings['filebrowserFlashBrowseUrl'] = $ckfinder_full_path . '/ckfinder.html?Type=Images&id=' . $profile_name;
+                    $settings['filebrowserFlashUploadUrl'] = $ckfinder_full_path . '/core/connector/php/connector.php?command=QuickUpload&type=Images&id=' . $profile_name;
                 }
                 break;
             case 'imce':

@@ -209,6 +209,25 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         '#description' => t('The path to the local directory (on the server) that points to the path defined above. Enter either an absolute server path or a path relative to the <code>index.php</code> file. If left empty, the CKEditor module will try to find the right path.<br />Current path: <code>!path</code>', array('!path' => ckeditor_plugins_path(TRUE))),
     );
 
+    $form['ckeditor_advanced_settings']['ckfinder_path'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Path to CKFinder'),
+        '#default_value' => !empty($profile->settings['ckfinder_path']) ? $profile->settings['ckfinder_path'] : '%m/ckfinder',
+        '#size' => 40,
+        '#maxlength' => 128,
+        '#description' => t('The path to CKFinder (AJAX based file manager downloaded from <a href="!ckfindercom">ckfinder.com</a>) relative to the document root.') .
+        '<br />' .
+        t('Available placeholders:!m &ndash; path where the CKEditor module is stored (<code>!files</code>).!l &ndash; path to the libraries directory (<code>sites/all/libraries</code>)<br />Current path: <code>!path</code>',
+                array(
+                    '!m' => '<br /><code>%m</code>',
+                    '!l' => '<br /><code>%l</code>',
+                    '!path' => ckfinder_path(FALSE),
+                    '!files' => $module_drupal_path,
+                    '!ckeditorcom' => 'http://ckfinder.com/download'
+                )
+        )
+    );
+
     //@todo DOWNLOAD API
     if (variable_get('file_default_scheme', '') == 'private')
     {
@@ -318,6 +337,16 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
     }
     //no slash at the end
     $edit['ckeditor_plugins_path'] = trim(rtrim($edit['ckeditor_plugins_path'], "/"));
+
+    //strip slash from the end
+    if (empty($edit['ckfinder_path'])) {
+        $edit['ckfinder_path'] = '';
+    }
+    $edit['ckfinder_path'] = trim(rtrim($edit['ckfinder_path'], "/"));
+    if ($edit['ckfinder_path'] && 0 !== strpos($edit['ckfinder_path'], "/") && 0 !== strpos($edit['ckfinder_path'], "%")) {
+        //ensure that slash is at the beginning
+        $edit['ckfinder_path'] = "/" . $edit['ckfinder_path'];
+    }
 
     $settings = ckeditor_admin_values_to_settings($edit);
     db_insert('ckeditor_settings')

@@ -430,6 +430,40 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
 }
 
 /**
+ * Read the CKFinder path from the Global profile.
+ *
+ * @return
+ *   Path to CKFinder folder.
+ */
+function ckfinder_path($refresh = FALSE) {
+    static $ckf_path;
+
+    if ($refresh || (!$ckf_path)) {
+        $mod_path = drupal_get_path('module', 'ckeditor');
+        $lib_path = 'sites/all/libraries';
+        $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
+
+        //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
+        //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
+        $ckf_path = $mod_path . '/ckfinder';
+
+        if ($global_profile) {
+            $gs = $global_profile->settings;
+
+            if (isset($gs['ckfinder_path'])) {
+                $tmp_path = $gs['ckfinder_path'];
+                $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => $mod_path, "%l" => $lib_path));
+                $tmp_path = str_replace('\\', '/', $tmp_path);
+                $tmp_path = str_replace('//', '/', $tmp_path);
+                $ckf_path = $tmp_path;
+            }
+        }
+    }
+
+    return $ckf_path;
+}
+
+/**
  * Implementation of hook_features_api().
  *
  * Allow exporting of CKEditor profiles by the Features module.
