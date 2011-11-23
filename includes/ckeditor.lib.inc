@@ -232,6 +232,7 @@ function ckeditor_load_plugins($render = FALSE) {
   $ckeditor_path = '%ckeditor_path%';
   $plugin_dir = '%plugin_dir%';
   $plugin_dir_additional = '%plugin_dir_extra%';
+  $pattern = '#\.addButton\([\s]*[\'"](.*?)[\'"][\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s';
 
   /*
    * External plugins
@@ -304,7 +305,7 @@ function ckeditor_load_plugins($render = FALSE) {
       if (is_dir($_plugin_dir . $file) && file_exists($_plugin_dir . $file . '/plugin.js')) {
         $source = file_get_contents($_plugin_dir . $file . '/plugin.js');
         $buttons = array();
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
+        if (preg_match_all($pattern, $source, $matches)) {
           foreach ($matches[1] as $i => $button_name){
             if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
               $buttons[$button_name] = array();
@@ -347,7 +348,7 @@ function ckeditor_load_plugins($render = FALSE) {
       if (is_dir($_plugin_dir_additional . $file) && file_exists($_plugin_dir_additional . $file . '/plugin.js')) {
         $source = file_get_contents($_plugin_dir_additional . $file . '/plugin.js');
         $buttons = array();
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
+        if (preg_match_all($pattern, $source, $matches)) {
           foreach ($matches[1] as $i => $button_name){
             if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
               $buttons[$button_name] = array();
@@ -392,7 +393,7 @@ function ckeditor_load_plugins($render = FALSE) {
       $plugins[$i]['path'] = $base_path . $plugin['path'];
       if (!isset($plugin['buttons']) || count($plugin['buttons']) == 0) {
         $buttons = array();
-        if (preg_match_all('#\.addButton\([\s]*\'(.*?)\'[\s]*\,[\s]*\{[\s]*(.*?)[\s]*\}#s', $source, $matches)) {
+        if (preg_match_all($pattern, $source, $matches)) {
           foreach ($matches[1] as $i => $button_name){
             if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
               $buttons[$button_name] = array();
