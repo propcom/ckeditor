@@ -246,7 +246,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
           '#default_value' => !empty($profile->settings['private_dir']) ? $profile->settings['private_dir'] : '',
           '#size' => 40,
           '#maxlength' => 255,
-        	 '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><code>%u</code> &ndash; ' . t('User ID') . '<br /><code>%n</code> &ndash; ' . t('Username') . '<br />' . t('System path to the private folder is: <code>!system_path</code>.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) ,
+           '#description' => t('The path relative to the location of the private directory where CKEditor should store uploaded files.') . '<br />' . t('Available wildcard characters:') . '<br/><code>%u</code> &ndash; ' . t('User ID') . '<br /><code>%n</code> &ndash; ' . t('Username') . '<br />' . t('System path to the private folder is: <code>!system_path</code>.', array('!system_path' => realpath(variable_get('file_private_path', conf_path() . '/files')) . DIRECTORY_SEPARATOR)) ,
       );
     }
 
@@ -262,13 +262,13 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
 
     $form['ckeditor_advanced_settings']['toolbar_wizard'] = array(
         '#type' => 'radios',
-        '#title' => t('Show toolbar wizard'),
+        '#title' => t('Use toolbar Drag&Drop feature'),
         '#default_value' => !empty($profile->settings['toolbar_wizard']) ? $profile->settings['toolbar_wizard'] : 't',
         '#options' => array(
             't' => t('Enabled'),
             'f' => t('Disabled')
         ),
-        '#description' => t('When enabled, the toolbar can be built by using the drag-and-drop wizard. Otherwise you will need to enter the toolbar configuration manually to the text box.'),
+        '#description' => t('When enabled, the toolbar can be built by using the drag-and-drop feature. Otherwise you will need to enter the toolbar configuration manually to the text box.'),
     );
 
     $form['submit'] = array(
