@@ -481,8 +481,8 @@ function ckeditor_load_plugins($render = FALSE) {
             if (!isset($plugin['buttons']) || count($plugin['buttons']) == 0) {
                 $buttons = array();
                 if (preg_match_all($pattern, $source, $matches)) {
-                    foreach ($matches[1] as $i => $button_name){
-                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                    foreach ($matches[1] as $j => $button_name){
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$j], $matches2)){
                             $buttons[$button_name] = array();
                             $buttons[$button_name]['label'] = $button_name;
                             $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
@@ -490,7 +490,7 @@ function ckeditor_load_plugins($render = FALSE) {
                         }
                     }
                 }
-                $plugin['buttons'] = (count($buttons) > 0) ? $buttons : FALSE;
+                $plugins[$i]['buttons'] = (count($buttons) > 0) ? $buttons : FALSE;
             }
         }
         else {
