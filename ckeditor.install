@@ -391,6 +391,7 @@ function _ckeditor_requirements_cookiedomainset() {
  * Updates broken settings for the 'Full' profile. (Resets toolbar to default)
  */
 function ckeditor_update_7000() {
+    _ckeditor_d6_to_d7_migration();
     $result = db_query("SELECT settings FROM {ckeditor_settings} WHERE name = :name", array(':name' => 'Full'))->fetchField();
     $settings = unserialize($result);
     $settings['toolbar'] = "
@@ -485,6 +486,8 @@ function ckeditor_update_7002() {
 function ckeditor_update_7003() {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
+    _ckeditor_d6_to_d7_migration();
+
     $render = array();
     $render["%base_path%"] = base_path();
     $render["%editor_path%"] = ckeditor_path(FALSE) . '/';
@@ -511,4 +514,44 @@ function ckeditor_update_7003() {
                     ->execute();
     }
 
+}
+
+/**
+* Minor update for those who have run update.php with problems.
+* @see http://drupal.org/node/1347682 for a better explanation.
+*/
+function ckeditor_update_7004() {
+  return _ckeditor_d6_to_d7_migration();
+}
+
+/**
+* Adapts D6 table structure to D7 schema.
+*/
+function _ckeditor_d6_to_d7_migration() {
+  if (db_table_exists('ckeditor_role')) {
+    db_drop_table('ckeditor_role');
+  }
+  if (!db_table_exists('ckeditor_input_format')) {
+    $ckeditor_input_format = array(
+      'description' => 'Stores CKEditor input format assignments',
+      'fields' => array(
+        'name' => array(
+          'type' => 'varchar',
+          'not null' => TRUE,
+          'default' => '',
+          'length' => 128,
+          'description' => 'Name of the CKEditor role',
+        ),
+        'format' => array(
+          'type' => 'varchar',
+          'not null' => TRUE,
+          'default' => '',
+          'length' => 128,
+          'description' => 'Drupal filter format ID',
+        )
+      ),
+      'primary key' => array('name', 'format'),
+    );
+    db_create_table('ckeditor_input_format', $ckeditor_input_format);
+  }
 }
