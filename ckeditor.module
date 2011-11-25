@@ -513,7 +513,7 @@ function ckeditor_file_download($uri) {
       $allow_download_private_files = TRUE;
     }
     //denied access to file if private upload is set and CKEditor's "Enable access to files located in the private folder" option is disabled
-    if ($allow_download_private_files  == FALSE ) return -1;
+    if ($allow_download_private_files  == FALSE ) return NULL;
     //check if file can be served by comparing regex and path to file
     if (preg_match($regex, $path))
     {
