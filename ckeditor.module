@@ -46,7 +46,6 @@ global $_ckeditor_ids;
 
 $_ckeditor_configuration = array();
 $_ckeditor_ids = array();
-
 /**
 * Implementation of hook_form_alter()
 */
@@ -398,13 +397,12 @@ function ckeditor_file_download($file) {
       $allow_download_private_files = TRUE;
     }
     //denied access to file if private upload is set and CKEditor's "Enable access to files located in the private folder" option is disabled
-    if ($allow_download_private_files  == FALSE ) return -1;
+    if ($allow_download_private_files  == FALSE ) return NULL;
     //check if file can be served by comparing regex and path to file
     if (preg_match($regex, $path)) {
       $ctype = ($info = @getimagesize($path)) ? $info['mime'] : (function_exists('mime_content_type') ? mime_content_type($path) : 'application/x-download');
       return array('Content-Type: '. $ctype);
     }
-   return -1;
   }
 }
 
