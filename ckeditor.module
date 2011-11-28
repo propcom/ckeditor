@@ -486,7 +486,7 @@ function ckeditor_features_api() {
  */
 function ckeditor_file_download($uri) {
   if ($path = file_create_url($uri)) {
-    $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri", array(':uri' => $path));
+    $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri", array(':uri' => $uri));
     foreach ($result as $record)
     {
       return NULL;
