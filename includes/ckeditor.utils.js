@@ -69,6 +69,8 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar = eval(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar);
         textarea_settings = ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]];
 
+        var drupalTopToolbar = $('#toolbar', Drupal.overlayChild ? window.parent.document : document);
+
         textarea_settings['on'] =
         {
             configLoaded  : function(ev)
@@ -105,6 +107,12 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             {
                 Drupal.ckeditorInstance = ev.editor;
                 Drupal.ckeditorActiveId = ev.editor.name;
+            }
+            ,
+            afterCommandExec: function(ev)
+            {
+                if (ev.data.name != 'maximize') { return; }
+                if (ev.data.command.state == CKEDITOR.TRISTATE_ON) { drupalTopToolbar.hide(); } else { drupalTopToolbar.show(); }
             }
         };
 
