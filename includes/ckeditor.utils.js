@@ -425,10 +425,14 @@ Drupal.behaviors.ckeditor = function (context) {
     var views_textarea_id = $("textarea", $(context)).attr('id');
     if (typeof views_textarea_id != 'undefined' && views_textarea_id != 'edit-options-alter-text'){
       path = Drupal.settings.basePath;
+      views_path = $("form", $(context)).attr('action');
+      if (views_path.indexOf('/') == 0) {
+        views_path = views_path.substr(1)
+      }
       $.ajax({
         url: path + 'admin/ckeditor/get_settings',
         dataType: 'json',
-        data: {'id': views_textarea_id, 'url': 'admin/build/views'},
+        data: {'id': views_textarea_id, 'url': views_path},
         type: 'POST',
         success: function( data ) {
           if ($(data).length > 0 && typeof CKEDITOR.instances[views_textarea_id] == 'undefined'){
