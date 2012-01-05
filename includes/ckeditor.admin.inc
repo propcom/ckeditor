@@ -42,18 +42,18 @@ function ckeditor_admin_main() {
   $ckconfig_file = $editor_path .'/config.js';
   if (!_ckeditor_requirements_isinstalled()) {
     drupal_set_message(t('Checking for <code>%filename</code> or <code>%file</code>.', array('%filename' => $ckconfig_file, '%file' => 'sites/all/libraries/ckeditor/ckeditor.js')));
-    drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the <a href="!ckeditorlink">CKEditor homepage</a> in order to download the latest version. After that you must extract the files to the <code>%ckeditorpath</code> or <code>%librarypath</code> directory and make sure that the <code>%ckeditorfile</code> or <code>%ckeditorlibrary</code> file exists. Refer to the <a href="!readme">readme.txt</a> file for more information.', array('!ckeditorlink' => url('http://ckeditor.com/download'), '!readme' => url('admin/help/ckeditor'), '%ckeditorpath' => $editor_path, '%ckeditorsubdir' => $editor_path .'/editor', '%ckeditorfile' => $editor_path .'/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
-    drupal_set_message(t('If you have CKEditor already installed, edit the <a href="!editg">CKEditor Global Profile</a> and update the CKEditor path.', array('!editg' => url('admin/settings/ckeditor/editg'))), 'warning');
+    drupal_set_message(t('The CKEditor component is not installed correctly. Please go to the <a href="@ckeditorlink">CKEditor homepage</a> in order to download the latest version. After that you must extract the files to the <code>%ckeditorpath</code> or <code>%librarypath</code> directory and make sure that the <code>%ckeditorfile</code> or <code>%ckeditorlibrary</code> file exists. Refer to the <a href="!readme">readme.txt</a> file for more information.', array('@ckeditorlink' => url('http://ckeditor.com/download'), '!readme' => url('admin/help/ckeditor'), '%ckeditorpath' => $editor_path, '%ckeditorsubdir' => $editor_path .'/editor', '%ckeditorfile' => $editor_path .'/ckeditor.js', '%ckeditorlibrary' => 'sites/all/libraries/ckeditor/ckeditor.js', '%librarypath' => 'sites/all/libraries/ckeditor')), 'error');
+    drupal_set_message(t('If you have CKEditor already installed, edit the <a href="@editg">CKEditor Global Profile</a> and update the CKEditor path.', array('@editg' => url('admin/settings/ckeditor/editg'))), 'warning');
     return FALSE;
   }
 
   if (module_exists('wysiwyg')) {
-    drupal_set_message(t('The WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (!wysiwygdisablelink).', array('!wysiwygdisablelink' => l(t('click here to disable'), 'ckeditor/disable/wysiwyg'))), 'warning');
+    drupal_set_message(t('The WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (<a href="@wysiwygdisablelink">click here to disable</a>).', array('@wysiwygdisablelink' => url('ckeditor/disable/wysiwyg'))), 'warning');
   }
 
   $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
   if (!$access_ckeditor_roles) {
-    drupal_set_message(t('There is currently no role with the "access ckeditor" permission. Visit the <a href="!acl">Permissions</a> administration section.', array('!acl' => url('admin/user/permissions'))), 'warning');
+    drupal_set_message(t('There is currently no role with the "access ckeditor" permission. Visit the <a href="@acl">Permissions</a> administration section.', array('@acl' => url('admin/user/permissions'))), 'warning');
   }
   else {
     $result = db_query_range("SELECT name FROM {ckeditor_settings} WHERE name<>'CKEditor Global Profile'", 0, 1);
@@ -82,7 +82,7 @@ function ckeditor_admin_main() {
           $list .= "<li>". $access_ckeditor_roles[$rid] ."</li>";
         }
         $list .= "</ul>";
-        drupal_set_message(t('Not all roles with the "<a href="!access">access ckeditor</a>" permission are associated with CKEditor profiles. As a result, users with the following roles may be unable to use CKEditor: !list Create new or edit existing CKEditor profiles below and check the "Roles allowed to use this profile" option in the <strong>Basic setup</strong> section.', array('!access' => url('admin/user/permissions'), '!list' => $list)), 'warning');
+        drupal_set_message(t('Not all roles with the "<a href="@access">access ckeditor</a>" permission are associated with CKEditor profiles. As a result, users with the following roles may be unable to use CKEditor: !list Create new or edit existing CKEditor profiles below and check the "Roles allowed to use this profile" option in the <strong>Basic setup</strong> section.', array('@access' => url('admin/user/permissions'), '!list' => $list)), 'warning');
       }
     }
   }
@@ -124,12 +124,12 @@ function ckeditor_profile_overview() {
     $output .= '<p>'. l(t('Create a new profile'), 'admin/settings/ckeditor/add') .'</p>';
   }
   else {
-    drupal_set_message(t('No profiles found. Click here to <a href="!create">create a new profile</a>.', array('!create' => url('admin/settings/ckeditor/add'))));
+    drupal_set_message(t('No profiles found. Click here to <a href="@create">create a new profile</a>.', array('@create' => url('admin/settings/ckeditor/add'))));
   }
 
   $rows = array();
   if (!isset($profiles['CKEditor Global Profile'])) {
-    drupal_set_message(t('The global profile can not be found. Click here to <a href="!create">create the global profile</a>.', array('!create' => url('admin/settings/ckeditor/addg'))));
+    drupal_set_message(t('The global profile can not be found. Click here to <a href="@create">create the global profile</a>.', array('@create' => url('admin/settings/ckeditor/addg'))));
   }
   else {
     $output .= "<h3>". t("Global settings") ."</h3>";
@@ -195,7 +195,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   $roles = $orig_roles;
 
   if (!empty($profile->rids) && !user_roles(FALSE, 'access ckeditor')) {
-    drupal_set_message(t('You have not assigned the "access ckeditor" <a href="!permissions">permissions</a> yet. It is recommended to assign the "access ckeditor" <a href="!permissions">permissions</a> before updating CKEditor profiles.', array('!permissions' => url('admin/user/permissions'))), 'warning');
+    drupal_set_message(t('You have not assigned the "access ckeditor" <a href="@permissions">permissions</a> yet. It is recommended to assign the "access ckeditor" <a href="@permissions">permissions</a> before updating CKEditor profiles.', array('@permissions' => url('admin/user/permissions'))), 'warning');
   }
 
   if (empty($profile->name)) {
@@ -318,9 +318,9 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     }
     $form['security']['filters'][$id] = array(
       '#type' => 'checkbox',
-      '#title' => $filter->name,
+      '#title' => check_plain($filter->name),
       '#default_value' => !empty($profile->settings['filters'][$id]),
-      '#description' => module_invoke($filter->module, 'filter', 'description', $filter->delta),
+      '#description' => check_plain(module_invoke($filter->module, 'filter', 'description', $filter->delta)),
     );
   }
 
@@ -472,21 +472,21 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
   drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
   drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
 
-  if ($toolbar_wizard == 't'){
-    if (module_exists('jquery_ui')){
+  if ($toolbar_wizard == 't') {
+    if (module_exists('jquery_ui')) {
       if (!module_exists('jquery_update')  || jquery_update_get_version() <= 1.2 )
         drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
-        if (jquery_ui_get_version() > 1.6)
-        {
+        if (jquery_ui_get_version() > 1.6) {
           jquery_ui_add(array('ui.sortable'));
-        }else {
+        }
+        else {
           drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
           drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
           drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
         }
     }
     else {
-      if(!module_exists('jquery_update') || jquery_update_get_version() <= 1.2 )
+      if (!module_exists('jquery_update') || jquery_update_get_version() <= 1.2 )
         drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
       drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
@@ -527,7 +527,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#rows' => 15
   );
 
-  if ($toolbar_wizard == 't'){
+  if ($toolbar_wizard == 't') {
     $form['appearance']['toolbar_wizzard_used'] = array(
       '#type' => 'markup',
       '#value' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
@@ -891,7 +891,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
 
   if (variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE) {
     $form['ckeditor_upload_settings']['private_path_descrption'] = array(
-      '#value' => '<div>'.t('Setting a relative path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg'))).'</div>',
+      '#value' => '<div>' . t('Setting a relative path to uploaded files was disabled because private downloads are enabled and thus this path is calculated automatically. To change the location of uploaded files in the private file system, edit the <strong><a href="!url">CKEditor Global Profile</a></strong>.', array('!url' => url('admin/settings/ckeditor/editg'))) . '</div>',
     );
   }
 
@@ -1304,7 +1304,7 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#title' => t('Enable access to files located in the private folder'),
     '#default_value' => !empty($profile->settings['ckeditor_allow_download_private_files']),
     '#return_value' => 't',
-    '#description' => t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file located inside of the private path (<code>'.realpath(file_directory_path()).'</code>), but only if there is no information about the file in the Drupal database. If the path below is specified, anyone will have access only to that location.'),
+    '#description' => t('<strong>Use this option with care.</strong> If checked, CKEditor will allow anyone knowing the URL to view a file located inside of the private path (<code>' . realpath(file_directory_path()) . '</code>), but only if there is no information about the file in the Drupal database. If the path below is specified, anyone will have access only to that location.'),
     '#required' => FALSE
   );
 
@@ -1471,7 +1471,7 @@ function ckeditor_admin_profile_validate_fieldpaths($fieldname, $paths) {
   }
 
   if (!empty($myerrors)) {
-    form_set_error($fieldname, implode('<br/>', $myerrors));
+    form_set_error($fieldname, check_plain(implode('<br/>', $myerrors)));
   }
 }
 
@@ -1742,8 +1742,8 @@ function ckeditor_toolbar_buttons_all() {
     'ShowBlocks' => array('name' => 'ShowBlocks', 'icon' => $path . '/images/buttons/showBlocks.png', 'title' => 'Show Blocks', 'row' => 3),
     'Iframe' => array('name' => 'Iframe', 'icon' => $path . '/images/buttons/iframe.png', 'title' => 'IFrame', 'row' => 3),
     'About' => array('name' => 'About', 'icon' => $path . '/images/buttons/about.png', 'title' => 'About', 'row' => 3),
-    '__spacer' => array('name' => false, 'icon' => $path . '/images/buttons/spacer.png', 'title' => 'Spacer', 'row' => 4),
-    '__group' => array('name' => false, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
+    '__spacer' => array('name' => FALSE, 'icon' => $path . '/images/buttons/spacer.png', 'title' => 'Spacer', 'row' => 4),
+    '__group' => array('name' => FALSE, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
   );
 
   $plugins = ckeditor_load_plugins(TRUE);

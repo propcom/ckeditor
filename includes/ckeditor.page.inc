@@ -203,7 +203,7 @@ function ckeditor_filter_xss() {
     $text = module_invoke($filter->module, 'filter', 'prepare', $filter->delta, $filter->format, $text);
   }
 
-  foreach ($filters as $filter){
+  foreach ($filters as $filter) {
     //built-in filter module, a special case where we would like to strip XSS and nothing more
     if ($filter->module == 'filter' && $filter->delta == 0) {
       preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);

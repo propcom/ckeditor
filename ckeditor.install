@@ -378,7 +378,7 @@ function _ckeditor_requirements_getinstalledversion() {
 function _ckeditor_requirements_ckfinder_config_check($profile_name) {
   module_load_include('module', 'ckeditor');
   $ckfinder_full_path = ckfinder_path();
-  $config_path = realpath('.'.base_path()) . $ckfinder_full_path .'/config.php';
+  $config_path = realpath('.' . base_path()) . $ckfinder_full_path . '/config.php';
 
   if (!file_exists($config_path)) {
     return t('!ckfinder is not installed correctly: <code>!config</code> not found. Make sure that you uploaded all files and did not accidentally remove the configuration file.', array(
@@ -551,7 +551,7 @@ function ckeditor_update_6102() {
     $name = $profile->name;
     $settings = unserialize($profile->settings);
 
-    if ($settings['toolbar'] == 'DrupalBasic'){
+    if ($settings['toolbar'] == 'DrupalBasic') {
       $settings['toolbar'] = "
 [
     [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ]
@@ -563,7 +563,7 @@ function ckeditor_update_6102() {
       $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
       $ret[] = array('success' => $return !== FALSE, 'query' => "UPDATE PROFILE - {$name}");
     }
-    else if ($settings['toolbar'] == 'DrupalFiltered'){
+    elseif ($settings['toolbar'] == 'DrupalFiltered') {
       $settings['toolbar'] = "
 [
     ['Source'],
@@ -586,7 +586,7 @@ function ckeditor_update_6102() {
       $return = db_query( "UPDATE {ckeditor_settings} SET settings = '%s' WHERE name = '%s'", $settings, $name);
       $ret[] = array('success' => $return !== FALSE, 'query' => "UPDATE PROFILE - {$name}");
     }
-    else if ($settings['toolbar'] == 'DrupalFull'){
+    elseif ($settings['toolbar'] == 'DrupalFull') {
       $settings['toolbar'] = "
 [
       ['Source'],
