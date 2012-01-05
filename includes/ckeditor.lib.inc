@@ -198,19 +198,16 @@ function ckeditor_load_lang_options() {
     $arr = array();
     $editor_local_path = ckeditor_path(TRUE);
     $lang_file = $editor_local_path . '/lang/_languages.js';
-    if (file_exists($lang_file))
-    {
+    if (file_exists($lang_file)) {
       $f = fopen($lang_file, 'r');
       $file = fread($f, filesize($lang_file));
       $tmp = explode('{', $file);
-      if (isset($tmp[2]))
-      {
+      if (isset($tmp[2])) {
         $tmp = explode('}', $tmp[2]);
       }
       $langs = explode(',', $tmp[0]);
-      foreach ($langs AS $key => $lang)
-      {
-        preg_match("/(\w+-?\w+):'(\w+)'/i",$lang, $matches);
+      foreach ($langs AS $key => $lang) {
+        preg_match("/(\w+-?\w+):'(\w+)'/i", $lang, $matches);
         if (isset($matches[1]) && isset($matches[2]))
           $arr[$matches[1]] = $matches[2];
       }
@@ -330,7 +327,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'name' => 'swf',
             'desc' => t('Support for the CKEditor SWF module'),
             'path' => $base_path . drupal_get_path('module', 'ckeditor_swf') . '/plugins/swf/',
-            'buttons' => false,
+            'buttons' => FALSE,
             'default' => 't'
         );
     }
@@ -340,7 +337,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'name' => 'drupal_path',
             'desc' => t('Support for the CKEditor Link module'),
             'path' => $base_path . drupal_get_path('module', 'ckeditor_link') . '/plugins/link/',
-            'buttons' => false,
+            'buttons' => FALSE,
             'default' => 't'
         );
     }
@@ -369,7 +366,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'name' => 'tableresize',
             'desc' => t('Table Resize plugin'),
             'path' => $base_path . $editor_path . 'plugins/tableresize/',
-            'buttons' => false,
+            'buttons' => FALSE,
             'default' => 't'
         );
     }
@@ -379,7 +376,7 @@ function ckeditor_load_plugins($render = FALSE) {
             'name' => 'autogrow',
             'desc' => t('Auto Grow plugin'),
             'path' => $base_path . $editor_path . 'plugins/autogrow/',
-            'buttons' => false,
+            'buttons' => FALSE,
             'default' => 'f'
         );
     }
@@ -394,8 +391,8 @@ function ckeditor_load_plugins($render = FALSE) {
                 $source = file_get_contents($_plugin_dir . $file . '/plugin.js');
                 $buttons = array();
                  if (preg_match_all($pattern, $source, $matches)) {
-                    foreach ($matches[1] as $i => $button_name){
-                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                    foreach ($matches[1] as $i => $button_name) {
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)) {
                             $buttons[$button_name] = array();
                             $buttons[$button_name]['label'] = $button_name;
                             $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
@@ -436,8 +433,8 @@ function ckeditor_load_plugins($render = FALSE) {
                 $source = file_get_contents($_plugin_dir_additional . $file . '/plugin.js');
                 $buttons = array();
                 if (preg_match_all($pattern , $source, $matches)) {
-                    foreach ($matches[1] as $i => $button_name){
-                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)){
+                    foreach ($matches[1] as $i => $button_name) {
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$i], $matches2)) {
                             $buttons[$button_name] = array();
                             $buttons[$button_name]['label'] = $button_name;
                             $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
@@ -481,8 +478,8 @@ function ckeditor_load_plugins($render = FALSE) {
             if (!isset($plugin['buttons']) || count($plugin['buttons']) == 0) {
                 $buttons = array();
                 if (preg_match_all($pattern, $source, $matches)) {
-                    foreach ($matches[1] as $j => $button_name){
-                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$j], $matches2)){
+                    foreach ($matches[1] as $j => $button_name) {
+                        if (preg_match('#(icon)[\s]*\:[\s]*([^\,\n]*)#', $matches[2][$j], $matches2)) {
                             $buttons[$button_name] = array();
                             $buttons[$button_name]['label'] = $button_name;
                             $matches2[2] = str_replace(array('this.path', '+', '\'', '"'), array('', '', '', ''), $matches2[2]);
@@ -507,13 +504,11 @@ function ckeditor_load_plugins($render = FALSE) {
         unset($arr['imce']);
     }
     //remove page break button if there is no module to do this
-    if (isset($arr['drupalbreaks']['buttons']['DrupalPageBreak']) && !module_exists('paging') && !module_exists('pagebreak'))
-    {
+    if (isset($arr['drupalbreaks']['buttons']['DrupalPageBreak']) && !module_exists('paging') && !module_exists('pagebreak')) {
       unset($arr['drupalbreaks']['buttons']['DrupalPageBreak']);
     }
 
-    if (isset($arr['drupalbreaks']))
-    {
+    if (isset($arr['drupalbreaks'])) {
       $arr['drupalbreaks']['default'] = 't';
     }
 
@@ -928,24 +923,25 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
         if (user_access('allow CKFinder file uploads')) {
         if (!empty($profile->settings['UserFilesPath'])) {
           $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr($profile->settings['UserFilesPath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
-        }else{
+        }
+        else{
           $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = strtr('%b%f/', array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => $host, "%n" => $user->name));
         }
         if (!empty($profile->settings['UserFilesAbsolutePath'])) {
           $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr($profile->settings['UserFilesAbsolutePath'], array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
-        }else {
+        }
+        else {
              $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr('%d%b%f/', array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
         }
-        if (variable_get('file_default_scheme', '') == 'private')
-        {
+        if (variable_get('file_default_scheme', '') == 'private') {
           $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
           if (!empty($private_dir)) {
              $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
-            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') .'/'. $private_dir .'/';
+            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') . '/' . $private_dir . '/';
             $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
           }
           else {
-            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') .'/';
+            $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') . '/';
             $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR;
           }
         }
@@ -1259,7 +1255,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
     $format_arr = FALSE;
     $suffix = '';
 
-    if (is_array($format)){
+    if (is_array($format)) {
         $format_arr = $format;
         $format = $format_arr['#default_value'];
     }
@@ -1299,7 +1295,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
     if ($profile === FALSE) {
         foreach ((array) $format_arr['#options'] as $key => $val) {
             if ($key == $format) continue;
-            if ($profile = ckeditor_get_profile($key)){
+            if ($profile = ckeditor_get_profile($key)) {
                 $use_ckeditor = $key;
                 break;
             }
@@ -1437,7 +1433,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         return $field;
     }
 
-    if ($settings = ckeditor_profiles_compile($use_ckeditor)){
+    if ($settings = ckeditor_profiles_compile($use_ckeditor)) {
         $textarea_id = $field['#id'];
         $class[] = 'ckeditor-mod';
         $_ckeditor_ids[] = $textarea_id;

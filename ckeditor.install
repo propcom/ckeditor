@@ -241,7 +241,8 @@ function ckeditor_requirements($phase) {
         }
         if (!empty($installed_version)) {
             $requirements['ckeditor']['value'] = $installed_version;
-        }else{
+        }
+        else{
           $requirements['ckeditor']['value'] = t('Not found');
         }
     }
@@ -289,7 +290,7 @@ function _ckeditor_requirements_ckfinder_config_check($profile_name) {
     global $base_url;
     module_load_include('module', 'ckeditor');
     $ckfinder_full_path = ckfinder_path();
-    $config_path = realpath('.'.base_path()) . $ckfinder_full_path .'/config.php';
+    $config_path = realpath('.' . base_path()) . $ckfinder_full_path . '/config.php';
 
     if (!file_exists($config_path)) {
         return t('!ckfinder is not installed correctly: <code>!config</code> not found. Make sure that you uploaded all files and did not accidentally remove the configuration file.', array(
