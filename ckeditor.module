@@ -237,7 +237,7 @@ function ckeditor_pre_render_text_format($element) {
             $element['summary'] = ckeditor_load_by_field($element['summary'], $element['format']['format'], FALSE);
         }
         else {
-            $element['value'] = ckeditor_load_by_field($element['value'], $element['#format']);
+            $element['value'] = ckeditor_load_by_field($element['value'], $element['format']['format']);
         }
     }
     else {
