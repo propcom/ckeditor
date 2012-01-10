@@ -48,7 +48,7 @@ function ckeditor_admin_main() {
   }
 
   if (module_exists('wysiwyg')) {
-    drupal_set_message(t('The WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (<a href="@wysiwygdisablelink">click here to disable</a>).', array('@wysiwygdisablelink' => url('ckeditor/disable/wysiwyg'))), 'warning');
+    drupal_set_message(t('The WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (<a href="@wysiwygdisablelink">click here to disable</a>).', array('@wysiwygdisablelink' => url('ckeditor/disable/wysiwyg/' . drupal_get_token('ckeditorDisableWysiwyg')))), 'warning');
   }
 
   $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
@@ -1648,7 +1648,6 @@ function ckeditor_profile_delete($name) {
 }
 
 function _ckeditor_load_methods() {
-  module_load_include('module', 'ckeditor');
   $result = array('ckeditor.js' => 'ckeditor.js');
   if (file_exists(ckeditor_path(TRUE) . '/ckeditor_basic.js')) {
     $result['ckeditor_basic.js'] = 'ckeditor_basic.js';
@@ -1662,7 +1661,10 @@ function _ckeditor_load_methods() {
 /*
  * Disable WYSIWYG module
  */
-function ckeditor_disable_wysiwyg() {
+function ckeditor_disable_wysiwyg($token) {
+  if (!drupal_valid_token($token, 'ckeditorDisableWysiwyg')) {
+    exit();
+  }
   module_disable(array('wysiwyg'));
   drupal_set_message(t('The WYSIWYG module is disabled.'));
 

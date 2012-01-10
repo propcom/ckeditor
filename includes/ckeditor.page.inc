@@ -174,18 +174,28 @@ function ckeditor_help_delegate($path, $arg) {
  * AJAX callback - XSS filter
  */
 function ckeditor_filter_xss() {
+  global $user;
   $GLOBALS['devel_shutdown'] = FALSE;
 
-  if (!isset($_POST['text']) || !is_string($_POST['text']) || !is_array($_POST['filters'])) {
+  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall')) {
     exit;
   }
+
+  module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+  $profile = ckeditor_user_get_profile($user);
+
+  if ($profile == FALSE) {
+    exit;
+  }
+
+  $settings = $profile->settings;
 
   $text = $_POST['text'];
   $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
 
   $filters = array();
 
-  foreach ($_POST['filters'] as $module_delta) {
+  foreach ($settings['filters'] as $module_delta => $active) {
     if (!is_string($module_delta)) {
       continue;
     }

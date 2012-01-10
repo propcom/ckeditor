@@ -80,14 +80,7 @@ function get_element_id(){
       } else {
         $(".content_editor").val(window.opener.$("#"+textarea_id).val());
       }
-      if (($("#" + textarea_id).val().length > 0) && (window.opener.$("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || window.opener.$("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
-        $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
-          text: $('#' + textarea_id).val(),
-          'filters[]': Drupal.settings.ckeditor.settings[textarea_id].filters
-        }, function(text){
-          $("#" + textarea_id).val(text);
-        });
-      }
+
       if (typeof Drupal.settings.ckeditor.settings[textarea_id].toolbar_orig == 'undefined'){
         Drupal.settings.ckeditor.settings[textarea_id].toolbar_orig = Drupal.settings.ckeditor.settings[textarea_id].toolbar;
       }
@@ -95,7 +88,19 @@ function get_element_id(){
         Drupal.settings.ckeditor.settings[textarea_id].toolbar = Drupal.settings.ckeditor.settings[textarea_id].toolbar_orig;
       }
       Drupal.settings.ckeditor.settings[textarea_id].toolbar = eval(Drupal.settings.ckeditor.settings[textarea_id].toolbar);
-      CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
+
+      if (($("#" + textarea_id).val().length > 0) && (window.opener.$("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || window.opener.$("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
+        $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
+          'text': $('#' + textarea_id).val(),
+          'token': Drupal.settings.ckeditor.ajaxToken
+        }, function(text){
+          $("#" + textarea_id).val(text);
+          CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
+        });
+      }
+      else {
+        CKEDITOR.replace(textarea_id, Drupal.settings.ckeditor.settings[textarea_id]);
+      }
     });
   </script>
   <table width="100%" height="100%">
