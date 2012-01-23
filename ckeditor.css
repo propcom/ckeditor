@@ -112,6 +112,12 @@ li.sortableItem {
     z-index: 99;
 }
 
+#security-filters .filter-warning {
+    display: none;
+    clear: both;
+    color: red;
+}
+
 /* Fix for fieldset for-edit-apperance in Firefox*/
 fieldset#edit-appearance div#groupLayout, div#allButtons  {
   border: 0;

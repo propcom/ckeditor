@@ -55,4 +55,18 @@ function hook_ckeditor_plugin() {
     );
 }
 
+/**
+ * Hook to register the CKEditor security filter - it would appear in the security filters list on the profile setting page.
+ */
+function hook_ckeditor_security_filter() {
+    return array(
+        'security_filter_name' => array(
+            // Title of the security filter - it would be displayed in the security filters section of profile settings.
+            'title' => t('Security filter title'),
+            // Description of the security filter - it would be displayed in the security filters section of profile settings.
+            'description' => t('Security filter description'),
+        )
+    );
+}
+
 ?>

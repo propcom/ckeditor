@@ -52,7 +52,7 @@ function ckeditor_admin_main() {
     }
 
     if (module_exists('wysiwyg')) {
-        drupal_set_message(t('The WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (@wysiwygdisablelink).', array('@wysiwygdisablelink' => l(t('click here to disable'), 'ckeditor/disable/wysiwyg'))), 'warning');
+        drupal_set_message(t('The WYSIWYG module was detected. Using both modules at the same time may cause problems. It is recommended to turn the WYSIWYG module off (<a href="@wysiwygdisablelink">click here to disable</a>).', array('@wysiwygdisablelink' => url('ckeditor/disable/wysiwyg/' . drupal_get_token('ckeditorDisableWysiwyg')))), 'warning');
     }
 
     //find profile other than Global
@@ -448,11 +448,12 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     }
 
     $form['basic']['input_formats'] = array(
+        '#id' => 'input-formats',
         '#type' => 'checkboxes',
-        '#title' => t('Input formats'),
+        '#title' => t('Text formats'),
         '#default_value' => !empty($profile->input_formats) ? array_keys((array) $profile->input_formats) : array(),
         '#options' => $formats,
-        '#description' => t('Choose the input formats where you want to load CKEditor.')
+        '#description' => t('Choose the text formats where you want to load CKEditor.')
     );
 
     $form['security'] = array(
@@ -464,6 +465,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     );
 
     $form['security']['filters'] = array(
+        '#id' => 'security-filters',
         '#type' => 'fieldset',
         '#title' => t('Security filters'),
         '#description' => t('Please choose all filters that protect your content (probably not all filters listed below are security filters).'),
@@ -472,38 +474,33 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     $all_filters = filter_get_filters();
 
-    if (!isset($profile->settings['ss'])) {
-        $profile->settings['filters']['filter/0'] = 1;
+    //get text formats filters
+    $input_format_filters = array();
+    foreach ($formats AS $key => $value) {
+        $input_format_filters[$key] = array();
+        $filters = filter_list_format($key);
+        foreach ($filters as $filter_name => $filter_settings) {
+            if ($filter_settings->status == 1) {
+                $input_format_filters[$key][$filter_name] = TRUE;
+            }
+        }
+    }
+    drupal_add_js(array('text_format_filters' => $input_format_filters), 'setting');
+
+    _ckeditor_admin_profile_form_add_filter($form, 'filter_html', "Limit allowed HTML tags", "Removes the attributes that the built-in \"Limit allowed HTML tags\"
+-filter does not allow inside HTML elements/tags", !empty($profile->settings['filters']['filter_html']));
+
+    //load security filters from whitelisted modules
+    $security_modules = array('htmLawed', 'htmltidy', 'htmlpurifier', 'wysiwyg_filter');
+    foreach ($security_modules as $val) {
+        _ckeditor_admin_profile_form_add_module_filters($form, $profile, $val);
     }
 
-    if (array_key_exists('filter_htmlcorrector', $all_filters)) {
-        $form['security']['filters']['filter_htmlcorrector'] = array(
-            '#type' => 'checkbox',
-            '#title' => t("@data", array('@data' => $all_filters['filter_htmlcorrector']['title'])),
-            '#default_value' => !empty($profile->settings['filters']['filter_htmlcorrector']),
-            '#description' => t("@data", array('@data' => $all_filters['filter_htmlcorrector']['description'])),
-        );
+    //load security filters added by API
+    $external_module_filters = module_invoke_all('ckeditor_security_filter');
+    foreach ($external_module_filters as $module_filter_name => $module_filter_conf) {
+        _ckeditor_admin_profile_form_add_filter($form, $module_filter_name, $module_filter_conf['title'], $module_filter_conf['description'], !empty($profile->settings['filters'][$module_filter_name]));
     }
-
-    if (array_key_exists('filter_html', $all_filters)) {
-        $form['security']['filters']['filter_html'] = array(
-            '#type' => 'checkbox',
-            '#title' => t("@data", array('@data' => $all_filters['filter_html']['title'])),
-            '#default_value' => !empty($profile->settings['filters']['filter_html']),
-            '#description' => t("@data", array('@data' => $all_filters['filter_html']['description'])),
-        );
-    }
-
-    $form['security']['textformat_filters'] = array(
-        '#type' => 'radios',
-        '#title' => t('Use Drupal text format filters'),
-        '#default_value' => !empty($profile->settings['textformat_filters']) ? $profile->settings['textformat_filters'] : 't',
-        '#options' => array(
-            't' => t('Enabled'),
-            'f' => t('Disabled')
-        ),
-        '#description' => t('If this option is selected (enabled), the content displayed in the editor when you are editing the page will be filtered through the filters associated with a given "text format". When this option is disabled, the editor will show the full unfiltered page content.'),
-    );
 
     $form['security']['ss'] = array(
         '#type' => 'radios',
@@ -1339,7 +1336,6 @@ function ckeditor_profile_delete($name) {
  * List of CKEditor librares to load
  */
 function _ckeditor_load_methods() {
-    module_load_include('module', 'ckeditor');
     $result = array('ckeditor.js' => 'ckeditor.js');
     if (file_exists(ckeditor_path(TRUE) . '/ckeditor_basic.js')) {
         $result['ckeditor_basic.js'] = 'ckeditor_basic.js';
@@ -1353,7 +1349,10 @@ function _ckeditor_load_methods() {
 /*
  * Disable WYSIWYG module
  */
-function ckeditor_disable_wysiwyg() {
+function ckeditor_disable_wysiwyg($token) {
+    if (!drupal_valid_token($token, 'ckeditorDisableWysiwyg')) {
+        exit();
+    }
     module_disable(array('wysiwyg'));
     drupal_set_message(t('The WYSIWYG module is disabled.'));
 
@@ -1447,4 +1446,29 @@ function ckeditor_toolbar_buttons_all() {
     }
 
     return $buttons;
+}
+
+/**
+ * Add security filters from a selected Drupal module to the configuration panel available in the CKEditor profile administration section
+ */
+function _ckeditor_admin_profile_form_add_module_filters(&$form, $profile, $module_name) {
+    if (module_exists($module_name)) {
+        $module_filters = module_invoke($module_name, 'filter_info');
+        foreach ($module_filters as $module_filter_name => $module_filter_conf) {
+            _ckeditor_admin_profile_form_add_filter($form, $module_filter_name, $module_filter_conf['title'], $module_filter_conf['description'], !empty($profile->settings['filters'][$module_filter_name]));
+        }
+    }
+}
+
+/**
+ *  Add security filter to the configuration panel available in the CKEditor profile administration section
+ */
+function _ckeditor_admin_profile_form_add_filter(&$form, $name, $title, $desc, $default) {
+    $warning = '<div class="filter-warning"><strong> Warning:</strong><code> ' . $title . ' </code> is disabled for the following text formats: <span data="text_formats"></span>. In order to use it you have to enable it in the text format configuration.</div>';
+    $form['security']['filters'][$name] = array(
+        '#type' => 'checkbox',
+        '#title' => t("@data", array('@data' => $title)),
+        '#default_value' => $default,
+        '#description' => t("!data !warning", array('!data' => $desc, '!warning' => $warning))
+    );
 }

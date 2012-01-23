@@ -65,10 +65,11 @@ function ckeditor_menu() {
         'type' => MENU_CALLBACK,
     );
 
-    $items['ckeditor/disable/wysiwyg'] = array(
+    $items['ckeditor/disable/wysiwyg/%'] = array(
         'title' => 'Disable the WYSIWYG module',
         'description' => 'Disable WYSIWYG module.',
         'page callback' => 'ckeditor_disable_wysiwyg',
+        'page arguments' => array(3),
         'file' => 'includes/ckeditor.admin.inc',
         'access arguments' => array('administer ckeditor'),
         'access callback' => TRUE,

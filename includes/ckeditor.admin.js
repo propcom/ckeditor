@@ -123,6 +123,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             }
         });
 
+        $("#input-formats :checkbox").change(function() {
+            $('#security-filters .filter-warning').hide();
+            $('#security-filters .filter-warning span[data="text_formats"]').html('');
+            $('#input-formats :checked').each(function() {
+                var format_name = $(this).val();
+                var format_label = $('label[for="' + $(this).attr('id') + '"]').html();
+                $('#security-filters :checkbox').each(function() {
+                    var filter_name = ($(this).attr('name').match(/^filters\[(.*)\]$/))[1];
+                    if (typeof Drupal.settings.text_format_filters[format_name][filter_name] == 'undefined') {
+                        var dataSel = $(this).siblings('div.description').find('span[data="text_formats"]');
+                        var html = dataSel.html();
+                        if (html.length == 0) {
+                            dataSel.html(format_label)
+                        }
+                        else {
+                            html += ', ';
+                            html += format_label;
+                            dataSel.html(html);
+                        }
+                        dataSel.parent().show();
+                    }
+                });
+            });
+        });
+        $("#input-formats :checkbox:eq(0)").trigger('change');
+
         $(".cke_load_toolbar").click(function() {
             var buttons = eval('Drupal.settings.'+$(this).attr("id"));
             var text = "[\n";

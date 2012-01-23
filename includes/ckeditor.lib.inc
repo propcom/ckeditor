@@ -726,18 +726,9 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
             $conf[$setting] = ckeditor_user_get_setting($user, $profile, $setting);
         }
     }
-    /*
-    if ($conf['popup'] == 't' && $conf['show_toggle'] == 't') {
-        $conf['show_toggle'] = 'f';
-    }
-    */
-    if (!isset($conf['filters'])) {
-        $conf['filters'] = array();
-    }
 
     if (!isset($conf['ss'])) {
         $conf['ss'] = 2;
-        $conf['filters']['default'] = 1;
     }
 
     $themepath = drupal_get_path('theme', $current_theme) . '/';
@@ -770,8 +761,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
     $settings['width'] = $conf['width'];
     $settings['skin'] = $conf['skin'];
     $settings['format_tags'] = $conf['font_format'];
-    //$settings['popup'] = $conf['popup'];
     $settings['show_toggle'] = $conf['show_toggle'];
+    $settings['ss'] = $conf['ss'];
 
     if (isset($conf['language_direction'])) {
         switch ($conf['language_direction']) {
@@ -822,20 +813,6 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if (isset($conf['forcePasteAsPlainText']) && $conf['forcePasteAsPlainText'] == 't') {
         $settings['forcePasteAsPlainText'] = TRUE;
-    }
-
-    $settings['filters'] = array();
-    foreach ($conf['filters'] as $filter => $filter_val) {
-        if ($filter_val == 1) {
-            $settings['filters'][] = $filter;
-        }
-    }
-
-    if (!isset($conf['textformat_filters']) || $conf['textformat_filters'] == 't') {
-        $settings['textformat_filters'] = TRUE;
-    }
-    else {
-        $settings['textformat_filters'] = FALSE;
     }
 
     if (isset($conf['custom_formatting']) && $conf['custom_formatting'] == 't') {
@@ -1257,7 +1234,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
 
     if (is_array($format)) {
         $format_arr = $format;
-        $format = $format_arr['#default_value'];
+        $format = isset($format_arr['#value']) ? $format_arr['#value'] : $format_arr['#default_value'];
     }
 
     if (!isset($field['#id'])) {
@@ -1284,6 +1261,8 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         return $field;
     }
 
+    drupal_add_js(array('ckeditor' => array('textarea_default_format' => array($field['#id'] => $format))), 'setting');
+
     if (!isset($processed_ids[$field['#id']])) {
         $processed_ids[$field['#id']] = array();
     }
@@ -1293,6 +1272,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
     $host = base_path();
 
     if ($profile === FALSE) {
+        $ckeditor_in_default_format = FALSE;
         foreach ((array) $format_arr['#options'] as $key => $val) {
             if ($key == $format) continue;
             if ($profile = ckeditor_get_profile($key)) {
@@ -1304,27 +1284,25 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             return $field;
         }
     }
+    else {
+        $ckeditor_in_default_format = TRUE;
+    }
 
+    $settings = FALSE;
     if ($settings = ckeditor_profiles_compile($format)) {
+        $ckeditor_on = ($profile->settings['default'] == 't') ? TRUE : FALSE;
+    }
+    else if ($settings = ckeditor_profiles_compile($use_ckeditor)) {
+        $ckeditor_on = FALSE;
+    }
+    else {
+        return $field;
+    }
+
+    if ($settings) {
         $textarea_id = $field['#id'];
         $class[] = 'ckeditor-mod';
         $_ckeditor_ids[] = $textarea_id;
-        $ckeditor_on = ($profile->settings['default'] == 't') ? TRUE : FALSE;
-
-        $xss_check = 0;
-        //it's not a problem when adding new content/comment
-        if (arg(1) != "add" && arg(1) != "reply") {
-            //let ckeditor know when perform XSS checks auto/manual
-            if ($profile->settings['ss'] == 1) {
-                $xss_class = 'filterxss1';
-            }
-            else {
-                $xss_class = 'filterxss2';
-            }
-
-            $class[]= $xss_class;
-            $xss_check = 1;
-        }
 
         //settings are saved as strings, not booleans
         if ($settings['show_toggle'] == 't' && $show_toggle) {
@@ -1341,12 +1319,8 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
                 $toggle_fields = "['{$textarea_id}']";
             }
 
-            $content = '';
-            if (isset($field['#value'])) {
-                $content .= $field['#value'];
-            }
             $wysiwyg_link = '';
-            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:void(0);\" onclick=\"javascript:Drupal.ckeditorToggle({$toggle_fields},'" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "'," . $xss_check . ");\" id=\"switch_{$textarea_id}\">";
+            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:void(0);\" onclick=\"javascript:Drupal.ckeditorToggle({$toggle_fields},'" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "');\" id=\"switch_{$textarea_id}\">";
             $wysiwyg_link .= $ckeditor_on ? t('Switch to plain text editor') : t('Switch to rich text editor');
             $wysiwyg_link .= '</a>';
 
@@ -1362,26 +1336,26 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         $files_path = $host . variable_get('file_private_path', conf_path() . '/files');
 
         if (!$is_running) {
+            if (!$ckeditor_in_default_format) {
+                $load_method = 'ckeditor_basic.js';
+                $load_time_out = 0;
+            }
+            else if (isset($profile->settings['ckeditor_load_method'])) {
+                $load_method = $profile->settings['ckeditor_load_method'];
+                $load_time_out = $profile->settings['ckeditor_load_time_out'];
+            }
             drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer') );
-            //if ($settings['popup'] != 't') {
-                if (isset($profile->settings['ckeditor_load_method'])) {
-                    drupal_add_js($editor_path . '/' . $profile->settings['ckeditor_load_method'], array('type' => 'file', 'scope' => 'footer'));
-                    if ($profile->settings['ckeditor_load_method'] == 'ckeditor_basic.js') {
-                        drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $profile->settings['ckeditor_load_time_out'] . ';', array('type' => 'inline', 'scope' => 'footer'));
-                        drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
-                    }
+            if (isset($load_method)) {
+                drupal_add_js($editor_path . '/' . $load_method, array('type' => 'file', 'scope' => 'footer'));
+                if ($load_method == 'ckeditor_basic.js') {
+                    drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $load_time_out . ';', array('type' => 'inline', 'scope' => 'footer'));
+                    drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
                 }
-                else {
-                    drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer'));
-                }
-            /*}
+            }
             else {
-                drupal_add_js($editor_path . '/ckeditor_basic.js', 'file');
-            }*/
+                drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer'));
+            }
             drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => base_path() . $editor_path . '/')), 'setting');
-            /*if ($settings['popup'] == 't') {
-                drupal_add_js(array('ckeditor' => array('editor_path' => $editor_path)), 'setting');
-            }*/
             if (module_exists('paging')) {
                 drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
             }
@@ -1394,6 +1368,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             if (module_exists('pagebreak')) {
                 drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
             }
+            drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'))), 'setting');
             $is_running = TRUE;
         }
 
@@ -1407,11 +1382,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         if (!empty($field["#language"])) {
             drupal_add_js(array('ckeditor' => array('scayt_language' => ckeditor_scayt_langcode($field["#language"]))), 'setting');
         }
-        /*
-        if ($settings['popup'] == 't') {
-            $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="return Drupal.ckeditorOpenPopup(\'' . $textarea_id . '\', \'' . $field['#id'] . '\', \'' . $settings['width'] . '\');">' . t('Open rich text editor') . "</a>)</span>";
-        }
-        */
+
         // Remember extra information and reuse it during "Preview"
         $processed_ids[$field['#id']]['suffix'] = $suffix;
         $processed_ids[$field['#id']]['class'] = $class;
@@ -1429,118 +1400,30 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         else {
             $field['#attributes']['class'] = array_merge($field['#attributes']['class'], $class);
         }
-
-        return $field;
-    }
-
-    if ($settings = ckeditor_profiles_compile($use_ckeditor)) {
-        $textarea_id = $field['#id'];
-        $class[] = 'ckeditor-mod';
-        $_ckeditor_ids[] = $textarea_id;
-
-        //settings are saved as strings, not booleans
-        if ($settings['show_toggle'] == 't' && $show_toggle) {
-
-            if ( $add_fields_to_toggle !== FALSE ) {
-                if ( is_array($add_fields_to_toggle) ) {
-                    $toggle_fields = "['" . $textarea_id . "','" . implode("','", $add_fields_to_toggle) . "']";
-                }
-                else {
-                    $toggle_fields = "['" . $textarea_id . "','" . $add_fields_to_toggle . "']";
-                }
-            }
-            else {
-                $toggle_fields = "['{$textarea_id}']";
-            }
-
-            $content = '';
-            if (isset($field['#value'])) {
-                $content .= $field['#value'];
-            }
-            $wysiwyg_link = '';
-            $wysiwyg_link .= "<a class=\"ckeditor_links\" style=\"display:none\" href=\"javascript:void(0);\" onclick=\"javascript:Drupal.ckeditorToggle({$toggle_fields},'" . str_replace("'", "\\'", t('Switch to plain text editor')) . "','" . str_replace("'", "\\'", t('Switch to rich text editor')) . "');\" id=\"switch_{$textarea_id}\">";
-            $wysiwyg_link .= t('Switch to rich text editor');
-            $wysiwyg_link .= '</a>';
-
-            // Make sure to append to #suffix so it isn't completely overwritten
-            $suffix .= $wysiwyg_link;
-        }
-
-        $module_drupal_path = drupal_get_path('module', 'ckeditor');
-        $module_full_path = $host . $module_drupal_path;
-        $editor_path = ckeditor_path(FALSE);
-        $editor_local_path = ckeditor_path(TRUE);
-        // get the default drupal files path
-        $files_path = $host . variable_get('file_private_path', conf_path() . '/files');
-
-        if (!$is_running) {
-            drupal_add_js($module_drupal_path . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer') );
-            //if ($settings['popup'] != 't') {
-                if (isset($profile->settings['ckeditor_load_method'])) {
-                    drupal_add_js($editor_path . '/' . $profile->settings['ckeditor_load_method'], array('type' => 'file', 'scope' => 'footer'));
-                    if ($profile->settings['ckeditor_load_method'] == 'ckeditor_basic.js') {
-                        drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $profile->settings['ckeditor_load_time_out'] . ';', array('type' => 'inline', 'scope' => 'footer'));
-                        drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
-                    }
-                }
-                else {
-                    drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer'));
-                }
-            /*}
-            else {
-                drupal_add_js($editor_path . '/ckeditor_basic.js', 'file');
-            }*/
-            drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => base_path() . $editor_path . '/')), 'setting');
-            /*if ($settings['popup'] == 't') {
-                drupal_add_js(array('ckeditor' => array('editor_path' => $editor_path)), 'setting');
-            }*/
-            if (module_exists('paging')) {
-                drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
-            }
-            if (module_exists('linktocontent_node')) {
-                drupal_add_js(array('ckeditor' => array('linktocontent_node' => TRUE)), 'setting');
-            }
-            if (module_exists('linktocontent_menu')) {
-                drupal_add_js(array('ckeditor' => array('linktocontent_menu' => TRUE)), 'setting');
-            }
-            if (module_exists('pagebreak')) {
-                drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
-            }
-            $is_running = TRUE;
-        }
-
-        drupal_add_js(array('ckeditor' => array('theme' => $theme)), 'setting');
-        if (!empty($settings)) {
-            drupal_add_js(array('ckeditor' => array('elements' => array( $textarea_id => $format ))), 'setting');
-        }
-        if (!empty($field["#language"])) {
-            drupal_add_js(array('ckeditor' => array('scayt_language' => ckeditor_scayt_langcode($field["#language"]))), 'setting');
-        }
-        /*
-        if ($settings['popup'] == 't') {
-            $suffix .= ' <span style="display:none" class="ckeditor_popuplink ckeditor_links">(<a href="#" onclick="return Drupal.ckeditorOpenPopup(\'' . $textarea_id . '\', \'' . $field['#id'] . '\', \'' . $settings['width'] . '\');">' . t('Open rich text editor') . "</a>)</span>";
-        }
-        */
-        // Remember extra information and reuse it during "Preview"
-        $processed_ids[$field['#id']]['suffix'] = $suffix;
-        $processed_ids[$field['#id']]['class'] = $class;
-
-        if (empty($field['#suffix'])) {
-            $field['#suffix'] = $suffix;
-        }
-        else {
-            $field['#suffix'] .= $suffix;
-        }
-
-        if (empty($field['#attributes']['class'])) {
-            $field['#attributes']['class'] = $class;
-        }
-        else {
-            $field['#attributes']['class'] = array_merge($field['#attributes']['class'], $class);
-        }
-
-        return $field;
     }
 
     return $field;
+}
+
+/**
+ * Return all modules that provide security filters.
+ */
+function ckeditor_security_filters() {
+    $security_filters = array();
+    $security_filters['filter_html'] = TRUE;
+    $security_modules = array('htmLawed', 'htmltidy', 'htmlpurifier', 'wysiwyg_filter');
+    foreach ($security_modules as $module_name) {
+        if (module_exists($module_name)) {
+            $module_filters = module_invoke($module_name, 'filter_info');
+            foreach ($module_filters as $module_filter_name => $module_filter_conf) {
+                $security_filters[$module_filter_name] = TRUE;
+            }
+        }
+    }
+    $external_module_filters = module_invoke_all('ckeditor_security_filter');
+    foreach ($external_module_filters as $module_filter_name => $module_filter_conf) {
+        $security_filters[$module_filter_name] = TRUE;
+    }
+    
+    return $security_filters;
 }

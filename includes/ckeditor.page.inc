@@ -144,33 +144,45 @@ function ckeditor_help_delegate($path, $arg) {
  * AJAX callback - XSS filter
  */
 function ckeditor_filter_xss() {
+    header('Content-Type: text/html; charset=utf-8');
     $GLOBALS['devel_shutdown'] = FALSE;
 
-    if (!isset($_POST['text']) || !is_string($_POST['text']) || !is_array($_POST['filters']) || !isset($_POST['input_format']) || !is_string($_POST['input_format'])) {
+    if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['input_format']) || !is_string($_POST['input_format']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall')) {
+      exit;
+    }
+
+    $format = filter_format_load($_POST['input_format']);
+    if ($format == FALSE || !is_object($format) || !filter_access($format)) {
         exit;
     }
 
-    if (!isset($_POST['textformat_filters']) || $_POST['textformat_filters'] == 'true') {
-        $text = check_markup($_POST['text'], $_POST['input_format']);
+    module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+    $profile = ckeditor_get_profile($_POST['input_format']);
+
+    if ($profile == FALSE) {
+        $settings = array();
+        $settings['filters'] = ckeditor_security_filters();
     }
     else {
-        $text = $_POST['text'];
+        $settings = $profile->settings;
     }
 
+    $text = $_POST['text'];
     $filters = filter_get_filters();
     $format_filters = filter_list_format($_POST['input_format']);
+    foreach ((array) $settings['filters'] as $name => $status) {
+        //If filter not exists, cannot be called or isn't enabled in selected text format then skip this filter
+        if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || !array_key_exists($name, $format_filters) || $format_filters[$name]->status == 0) {
+          continue;
+        }
 
-    foreach ($_POST['filters'] as $name) {
-        if ($name == "default") {
+        //Call default CKEditor built-in filter
+        if ($name == "filter_html" && $status == 1) {
             preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);
             if ($matches[1]) {
                 $tags = array_unique($matches[1]);
                 $text = filter_xss($text, $tags);
             }
-            continue;
-        }
-
-        if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || (array_key_exists($name, $format_filters)) && $format_filters[$name]->status) {
             continue;
         }
 
