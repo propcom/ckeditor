@@ -377,6 +377,9 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
+    $editor_path = ckeditor_path(FALSE);
+    $module_drupal_path = drupal_get_path('module', 'ckeditor');
+
     $skin_options = ckeditor_load_skin_options();
     $lang_options = ckeditor_load_lang_options();
 
@@ -441,9 +444,11 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     }
 
     $formats = array();
+    $input_format_config_links = array();
     foreach ($orig_formats AS $format) {
         if ( (arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats) ) {
             $formats[$format->format] = $format->name;
+            $input_format_config_links[$format->format] = array("name" => $format->name, "config_url" => url("admin/config/content/formats/" . $format->format));
         }
     }
 
@@ -466,13 +471,15 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
     $form['security']['filters'] = array(
         '#id' => 'security-filters',
-        '#type' => 'fieldset',
-        '#title' => t('Security filters'),
-        '#description' => t('Please choose all filters that protect your content (probably not all filters listed below are security filters).'),
-        '#tree' => TRUE,
+        '#type' => 'container'
     );
 
-    $all_filters = filter_get_filters();
+    $form['security']['filters']['__header'] = array(
+        '#type' => 'item',
+        '#title' => t('Security filters'),
+        '#description' => t('Below is a list of security filters along with their status for each text format.<br/><br/>The following statuses are available:</br><img src="!img_enabled"/> - the filter is configured for a given text format and will be run on the content during the filtering proces.<br/><img src="!img_disabled"/> - the filter is disabled for a given text format and will not be run on the content during the filtering process.<br/><br/>In order to modify the security filters settings for each of the text formats, you need to visit the text format configuration sections as listed below: <ul class="text-formats-config"></ul>', array("!img_enabled" => base_path() . $module_drupal_path . "/images/tick.png", "!img_disabled" => base_path() . $module_drupal_path . "/images/delete.png")),
+        '#weight' => -10
+     );
 
     //get text formats filters
     $input_format_filters = array();
@@ -485,22 +492,10 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             }
         }
     }
-    drupal_add_js(array('text_format_filters' => $input_format_filters), 'setting');
+    drupal_add_js(array('text_format_filters' => $input_format_filters, 'text_formats_config_links' => $input_format_config_links), 'setting');
 
-    _ckeditor_admin_profile_form_add_filter($form, 'filter_html', "Limit allowed HTML tags", "Removes the attributes that the built-in \"Limit allowed HTML tags\"
--filter does not allow inside HTML elements/tags", !empty($profile->settings['filters']['filter_html']));
-
-    //load security filters from whitelisted modules
-    $security_modules = array('htmLawed', 'htmltidy', 'htmlpurifier', 'wysiwyg_filter');
-    foreach ($security_modules as $val) {
-        _ckeditor_admin_profile_form_add_module_filters($form, $profile, $val);
-    }
-
-    //load security filters added by API
-    $external_module_filters = module_invoke_all('ckeditor_security_filter');
-    foreach ($external_module_filters as $module_filter_name => $module_filter_conf) {
-        _ckeditor_admin_profile_form_add_filter($form, $module_filter_name, $module_filter_conf['title'], $module_filter_conf['description'], !empty($profile->settings['filters'][$module_filter_name]));
-    }
+    $security_filters = ckeditor_security_filters();
+    _ckeditor_admin_profile_form_security_filters($form, $profile, $security_filters);
 
     $form['security']['ss'] = array(
         '#type' => 'radios',
@@ -592,8 +587,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         drupal_add_js(array('ckeditor_uicolor' => $color_palette), 'setting');
     }
 
-    $editor_path = ckeditor_path(FALSE);
-    $module_drupal_path = drupal_get_path('module', 'ckeditor');
     drupal_add_js('window.CKEDITOR_BASEPATH = "' . base_path() . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
     drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
     drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
@@ -1449,26 +1442,41 @@ function ckeditor_toolbar_buttons_all() {
 }
 
 /**
- * Add security filters from a selected Drupal module to the configuration panel available in the CKEditor profile administration section
+ * Add security filters to the configuration panel available in the CKEditor profile administration section
  */
-function _ckeditor_admin_profile_form_add_module_filters(&$form, $profile, $module_name) {
-    if (module_exists($module_name)) {
-        $module_filters = module_invoke($module_name, 'filter_info');
-        foreach ($module_filters as $module_filter_name => $module_filter_conf) {
-            _ckeditor_admin_profile_form_add_filter($form, $module_filter_name, $module_filter_conf['title'], $module_filter_conf['description'], !empty($profile->settings['filters'][$module_filter_name]));
+function _ckeditor_admin_profile_form_security_filters(&$form, $profile, $security_filters) {
+    foreach ((array) $security_filters['modules'] as $module_name => $module_conf) {
+        if (isset($module_conf['project_page']) && strlen($module_conf['project_page']) > 0) {
+            $form['security']['filters'][$module_name] = array(
+                '#type' => 'fieldset',
+                '#title' => t("!title <a href=\"!link\" target=\"_blank\">project page</a>", array("!title" => $module_conf['title'], "!link" => $module_conf['project_page'])),
+                '#weight' => $module_conf['weight']
+            );
         }
-    }
-}
+        else {
+            $form['security']['filters'][$module_name] = array(
+                '#type' => 'fieldset',
+                '#title' => t("!title", array("!title" => $module_conf['title'])),
+                '#weight' => $module_conf['weight']
+            );
+        }
 
-/**
- *  Add security filter to the configuration panel available in the CKEditor profile administration section
- */
-function _ckeditor_admin_profile_form_add_filter(&$form, $name, $title, $desc, $default) {
-    $warning = '<div class="filter-warning"><strong> Warning:</strong><code> ' . $title . ' </code> is disabled for the following text formats: <span data="text_formats"></span>. In order to use it you have to enable it in the text format configuration.</div>';
-    $form['security']['filters'][$name] = array(
-        '#type' => 'checkbox',
-        '#title' => t("@data", array('@data' => $title)),
-        '#default_value' => $default,
-        '#description' => t("!data !warning", array('!data' => $desc, '!warning' => $warning))
-    );
+        if ($module_conf['installed'] == TRUE) {
+            foreach ((array) $module_conf['filters'] as $filter_name => $filter_conf) {
+                $filter_text_formats = '<div class="filter-text-formats" filter="' . $filter_name . '"></div><div class="filter-info">';
+                $form['security']['filters'][$module_name][$filter_name] = array(
+                    '#type' => 'item',
+                    '#title' => t("@data", array('@data' => $filter_conf['title'])),
+                    '#description' => t("!data", array('!data' => $filter_conf['description'])),
+                    '#prefix' => t("<div class=\"filter-wrapper\"></div>!formats", array("!formats" => $filter_text_formats)),
+                    '#suffix' => "</div>"
+                );
+            }
+        }
+        else {
+            $form['security']['filters'][$module_name]['not_installed'] = array(
+                '#markup' => t("<i>Not installed</i>")
+            );
+        }
+     }
 }

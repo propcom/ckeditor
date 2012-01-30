@@ -159,13 +159,9 @@ function ckeditor_filter_xss() {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     $profile = ckeditor_get_profile($_POST['input_format']);
 
-    if ($profile == FALSE) {
-        $settings = array();
-        $settings['filters'] = ckeditor_security_filters();
-    }
-    else {
-        $settings = $profile->settings;
-    }
+    $settings = array();
+    $security_filters = ckeditor_security_filters();
+    $settings['filters'] = $security_filters['filters'];
 
     $text = $_POST['text'];
     $filters = filter_get_filters();
