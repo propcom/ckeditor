@@ -147,7 +147,7 @@ function ckeditor_filter_xss() {
     header('Content-Type: text/html; charset=utf-8');
     $GLOBALS['devel_shutdown'] = FALSE;
 
-    if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['input_format']) || !is_string($_POST['input_format']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall')) {
+    if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['input_format']) || !is_string($_POST['input_format']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', TRUE)) {
       exit;
     }
 
