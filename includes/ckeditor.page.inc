@@ -177,7 +177,7 @@ function ckeditor_filter_xss() {
   global $user;
   $GLOBALS['devel_shutdown'] = FALSE;
 
-  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall')) {
+  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', TRUE)) {
     exit;
   }
 
