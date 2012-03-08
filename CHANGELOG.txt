@@ -5,6 +5,7 @@ New features:
 [#1489358] by dczepierga: Add support for stylesheetparser plugin
 [#1483402] by dczepierga: Change security filters policy
 [#1489074] by acbramley: Change ckeditor xss url to be passed through url()
+[#1473010] by michal_cksource: Spell checker set to use interface language
 
 Bug fixes:
 [#1507852] by dczepierga: 'drush ckeditor-download' fails if svn not installed

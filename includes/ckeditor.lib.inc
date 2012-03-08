@@ -819,6 +819,8 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
 
     if ($conf['auto_lang'] == "f") {
         $settings['language'] = $conf['lang'];
+        //[#1473010]
+        $settings['scayt_sLang'] = ckeditor_scayt_langcode($conf['lang']);
     }
 
     if (isset($conf['forcePasteAsPlainText']) && $conf['forcePasteAsPlainText'] == 't') {
@@ -1389,7 +1391,10 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
         if (!empty($ckeditor_on)) {
             drupal_add_js(array('ckeditor' => array('autostart' => array( $textarea_id => $ckeditor_on))), 'setting');
         }
-        if (!empty($field["#language"])) {
+        //[#1473010]
+        if (isset($settings['scayt_sLang'])) {
+          drupal_add_js(array('ckeditor' => array('scayt_language' => $settings['scayt_sLang'] )), 'setting');
+        } else if (!empty($field["#language"]) && $field["#language"] != LANGUAGE_NONE) {
             drupal_add_js(array('ckeditor' => array('scayt_language' => ckeditor_scayt_langcode($field["#language"]))), 'setting');
         }
 
