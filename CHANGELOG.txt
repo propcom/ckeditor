@@ -7,6 +7,8 @@ New features:
 [#1489366] by dczepierga: Add support for stylesheetparser plugin
 
 Bug fixes:
+[#1506080] by dczepierga: Refactor code with titles and descriptions for translate function
+[#1496162] by michal_cksource: Buttons are to high during Drag & Drop in Firefox
 [#1491884] by dczepierga: Portuguese language missing
 [#1482874] by dczepierga: body field is blank
 [#1491462] by kevin.dutra: All filters applied in ckeditor_filter_xss()
