@@ -165,7 +165,7 @@ function ckeditor_permission() {
             'description' => t('Allow users to customize CKEditor appearance.')
         );
 
-    if (file_exists(drupal_get_path('module', 'ckeditor') . "/ckfinder")) {
+    if (file_exists(ckfinder_path())) {
         $arr['allow CKFinder file uploads'] = array(
             'title' => t('CKFinder access'),
             'description' => t('Allow users to use CKFinder.')
