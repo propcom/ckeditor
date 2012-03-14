@@ -93,7 +93,12 @@ function ckeditor_user($type, $edit, &$user, $category = NULL) {
  */
 function ckeditor_perm() {
   $arr = array('administer ckeditor', 'access ckeditor');
-  if (file_exists(drupal_get_path('module', 'ckeditor') . "/ckfinder")) {
+  $base_path = base_path();
+  $ckfinder_path = ckfinder_path();
+  if (strpos($base_path, $ckfinder_path) == 0) {
+    $ckfinder_path = str_replace(base_path(), '', $ckfinder_path);
+  }
+  if (file_exists($ckfinder_path)) {
     $arr[] = 'allow CKFinder file uploads';
   }
   return $arr;
