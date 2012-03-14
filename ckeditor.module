@@ -95,10 +95,12 @@ function ckeditor_perm() {
   $arr = array('administer ckeditor', 'access ckeditor');
   $base_path = base_path();
   $ckfinder_path = ckfinder_path();
-  if (strpos($base_path, $ckfinder_path) == 0) {
+  if (strpos($base_path, $ckfinder_path) == 0 && $base_path != '/') {
     $ckfinder_path = str_replace(base_path(), '', $ckfinder_path);
+  }else if (strpos($base_path, $ckfinder_path) == 0){
+    $ckfinder_path = substr($ckfinder_path, 1);
   }
-  if (file_exists($ckfinder_path)) {
+  if (file_exists($ckfinder_path .'/config.php')) {
     $arr[] = 'allow CKFinder file uploads';
   }
   return $arr;
