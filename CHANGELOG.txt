@@ -1,5 +1,11 @@
+2012-03-15
+New stable release 7.x-1.x
+
+Bug fixes:
+[#1371660] by dczepierga: CKFinder requirement check needs fixed
+
 2012-03-14
-New stable relase 7.x-1.7
+New stable release 7.x-1.7
 
 New features:
 [#1338044] by dczepierga: Add option to disable Toolbar wizard
@@ -44,7 +50,7 @@ Bug fixes:
 
 
 2011-10-26
-New stable relase 7.x-1.4
+New stable release 7.x-1.4
 
 -- 2011-10-24
 - [#1319658] by michal_cksource: Correct language list in the CKEditor profile configuration
