@@ -1,6 +1,6 @@
 -----------------------------
  2012-03-15
- New stable release: 6.x-1.x
+ New stable release: 6.x-1.10
 -----------------------------
 
 Bug fixes:
