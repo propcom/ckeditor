@@ -1,4 +1,12 @@
 -----------------------------
+ 2012-03-15
+ New stable release: 6.x-1.x
+-----------------------------
+
+Bug fixes:
+[#1483508] by dczepierga: CKFinder requirement check needs fixed
+
+-----------------------------
  2012-03-14
  New stable release: 6.x-1.9
 -----------------------------
