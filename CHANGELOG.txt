@@ -1,3 +1,9 @@
+2012-03-19
+New stable release 7.x-1.x
+
+New features:
+[#1489358] by dczepierga: Add support for stylesheetparser plugin
+
 2012-03-15
 New stable release 7.x-1.8
 

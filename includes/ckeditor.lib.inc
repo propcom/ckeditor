@@ -381,6 +381,16 @@ function ckeditor_load_plugins($render = FALSE) {
         );
     }
 
+    if (file_exists($_editor_path . 'plugins/stylesheetparser/plugin.js')) {
+        $arr['stylesheetparser'] = array(
+            'name' => 'stylesheetparser',
+            'desc' => t('Stylesheet Parser plugin'),
+            'path' => $base_path . $editor_path . 'plugins/stylesheetparser/',
+            'buttons' => FALSE,
+            'default' => 'f'
+        );
+    }
+
     /*
      * CKEditor module plugins
      */
