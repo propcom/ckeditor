@@ -1,4 +1,12 @@
 -----------------------------
+ 2012-03-19
+ New stable release: 6.x-1.x
+-----------------------------
+
+New features:
+[#1489366] by dczepierga: Add support for stylesheetparser plugin
+
+-----------------------------
  2012-03-15
  New stable release: 6.x-1.10
 -----------------------------
