@@ -611,6 +611,7 @@ function ckeditor_process_textarea($element) {
       }
       drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path)), 'setting');
       drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'))), 'setting');
+      drupal_add_js(array('ckeditor' => array('textarea_query' => $_GET['q'])), 'setting');
       $is_running = TRUE;
     }
 
@@ -1290,7 +1291,7 @@ function ckeditor_get_nodetype($get_q) {
   static $nodetype;
 
   if (!isset($nodetype)) {
-    $menuitem = menu_get_item();
+    $menuitem = menu_get_item($get_q);
     $nodetype = '*';
     if (!empty($menuitem['page_arguments']) && is_array($menuitem['page_arguments'])) {
       foreach ($menuitem['page_arguments'] as $item) {

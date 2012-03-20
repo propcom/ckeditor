@@ -130,7 +130,10 @@ Drupal.ckeditorOn = function(textarea_id) {
   if (( $("#" + textarea_id).length > 0 && $("#" + textarea_id).val().length > 0) && ($("#" + textarea_id).attr('class').indexOf("filterxss1") != -1 || $("#" + textarea_id).attr('class').indexOf("filterxss2") != -1)) {
     $.post(Drupal.settings.basePath + 'index.php?q=ckeditor/xss', {
       'text': $('#' + textarea_id).val(),
-      'token': Drupal.settings.ckeditor.ajaxToken
+      'token': Drupal.settings.ckeditor.ajaxToken,
+      'textarea_id': textarea_id,
+      'query': Drupal.settings.ckeditor.textarea_query,
+      'theme' : Drupal.settings.ckeditor.theme
     }, function(text){
       $("#" + textarea_id).val(text);
       Drupal.ckeditorInit(textarea_id);

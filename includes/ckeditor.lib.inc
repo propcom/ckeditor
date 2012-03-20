@@ -491,9 +491,11 @@ function ckeditor_user_get_setting($user, $profile, $setting) {
   return $status;
 }
 
-function ckeditor_user_get_profile($user, $element_id = NULL) {
+function ckeditor_user_get_profile($user, $element_id = 'edit-body', $url = NULL) {
   $rids = array();
-
+  if (is_null($url)) {
+      $url = $_GET['q'];
+  }
   // Since ckeditor_profile_load() makes a db hit, only call it when we're pretty sure
   // we're gonna render ckeditor.
   $sorted_roles = ckeditor_sorted_roles();
@@ -525,8 +527,8 @@ function ckeditor_user_get_profile($user, $element_id = NULL) {
         $profile = ckeditor_profile_load($profile_name);
 
         $conf = $profile->settings;
-        $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $element_id, $_GET['q']);
-
+        $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $element_id, $url);
+        
         if ($enabled) {
           return $profile;
         }

@@ -174,20 +174,21 @@ function ckeditor_help_delegate($path, $arg) {
  * AJAX callback - XSS filter
  */
 function ckeditor_filter_xss() {
-  global $user;
+  global $user, $theme;
+
   $GLOBALS['devel_shutdown'] = FALSE;
 
-  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', TRUE)) {
+  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['textarea_id']) || !is_string($_POST['textarea_id']) || !isset($_POST['query']) || !is_string($_POST['query']) || !isset($_POST['theme']) || !is_string($_POST['theme']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', TRUE)) {
     exit;
   }
 
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-  $profile = ckeditor_user_get_profile($user);
-
+  $theme = $_POST['theme'];
+  $profile = ckeditor_user_get_profile($user, $_POST['textarea_id'], $_POST['query']);
   if ($profile == FALSE) {
     exit;
   }
-
+  
   $settings = $profile->settings;
 
   $text = $_POST['text'];
