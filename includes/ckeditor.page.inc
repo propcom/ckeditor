@@ -188,16 +188,15 @@ function ckeditor_filter_xss() {
   if ($profile == FALSE) {
     exit;
   }
-  
+
   $settings = $profile->settings;
 
   $text = $_POST['text'];
   $text = strtr($text, array('<!--' => '__COMMENT__START__', '-->' => '__COMMENT__END__'));
 
   $filters = array();
-
   foreach ($settings['filters'] as $module_delta => $active) {
-    if (!is_string($module_delta)) {
+    if (!$active || !is_string($module_delta)) {
       continue;
     }
     $filter = new stdClass();
