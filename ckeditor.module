@@ -611,7 +611,7 @@ function ckeditor_process_textarea($element) {
       }
       drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path)), 'setting');
       drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'))), 'setting');
-      drupal_add_js(array('ckeditor' => array('textarea_query' => $_GET['q'])), 'setting');
+      drupal_add_js(array('ckeditor' => array('query' => $_GET['q'])), 'setting');
       $is_running = TRUE;
     }
 

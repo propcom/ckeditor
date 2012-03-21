@@ -132,7 +132,7 @@ Drupal.ckeditorOn = function(textarea_id) {
       'text': $('#' + textarea_id).val(),
       'token': Drupal.settings.ckeditor.ajaxToken,
       'textarea_id': textarea_id,
-      'query': Drupal.settings.ckeditor.textarea_query,
+      'query': Drupal.settings.ckeditor.query,
       'theme' : Drupal.settings.ckeditor.theme
     }, function(text){
       $("#" + textarea_id).val(text);
