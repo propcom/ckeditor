@@ -145,8 +145,8 @@ function ckeditor_load_lang_options() {
       $tmp = explode('}', $tmp[2]);
     }
     $langs = explode(',', $tmp[0]);
-    foreach ($langs AS $key => $lang) {
-      preg_match("/(\w+-?\w+):'(\w+)'/i", $lang, $matches);
+    foreach ($langs AS $lang) {
+      preg_match("/'?(\w+-?\w+)'?:'([\w\s\(\)]+)'/i", $lang, $matches);
       if (isset($matches[1]) && isset($matches[2]))
         $arr[$matches[1]] = $matches[2];
     }
@@ -528,7 +528,7 @@ function ckeditor_user_get_profile($user, $element_id = 'edit-body', $url = NULL
 
         $conf = $profile->settings;
         $enabled = ckeditor_is_enabled(empty($conf['excl_mode']) ? '0' : $conf['excl_mode'], empty($conf['excl_regex']) ? '' : $conf['excl_regex'], $element_id, $url);
-        
+
         if ($enabled) {
           return $profile;
         }
