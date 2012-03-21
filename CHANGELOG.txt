@@ -4,6 +4,9 @@ New stable release 7.x-1.x
 New features:
 [#1489358] by dczepierga: Add support for stylesheetparser plugin
 
+Bug fixes:
+[#1492344] by dczepierga: Portuguese language missing
+
 2012-03-15
 New stable release 7.x-1.8
 

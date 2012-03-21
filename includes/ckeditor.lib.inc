@@ -207,7 +207,7 @@ function ckeditor_load_lang_options() {
       }
       $langs = explode(',', $tmp[0]);
       foreach ($langs AS $key => $lang) {
-        preg_match("/(\w+-?\w+):'(\w+)'/i", $lang, $matches);
+        preg_match("/'?(\w+-?\w+)'?:'([\w\s\(\)]+)'/i", $lang, $matches);
         if (isset($matches[1]) && isset($matches[2]))
           $arr[$matches[1]] = $matches[2];
       }
@@ -1434,6 +1434,6 @@ function ckeditor_security_filters() {
     foreach ($external_module_filters as $module_filter_name => $module_filter_conf) {
         $security_filters[$module_filter_name] = TRUE;
     }
-    
+
     return $security_filters;
 }
