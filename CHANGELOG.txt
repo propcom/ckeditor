@@ -1,5 +1,5 @@
 -----------------------------
- 2012-03-19
+ 2012-03-21
  New stable release: 6.x-1.x
 -----------------------------
 
@@ -7,6 +7,7 @@ New features:
 [#1489366] by dczepierga: Add support for stylesheetparser plugin
 
 Bug fixes:
+[#1482874] by dczepierga: body field is blank
 [#1491462] by kevin.dutra: All filters applied in ckeditor_filter_xss()
 
 -----------------------------
