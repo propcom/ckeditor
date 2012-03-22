@@ -270,13 +270,16 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             });
         },
         detach:
-        function(context){
+        function(context, settings, trigger){
             $(context).find("textarea.ckeditor-mod.ckeditor-processed").each(function () {
-                var ta_id=$(this).attr("id");
-                if (CKEDITOR.instances[ta_id])
-                    $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
+              var ta_id=$(this).attr("id");
+              if (CKEDITOR.instances[ta_id])
+                $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
+              if(trigger != 'serialize') {
                 Drupal.ckeditorOff(ta_id);
-            }).removeClass('ckeditor-processed');
+                $(this).removeClass('ckeditor-processed');
+              }
+            });
         }
     };
 })(jQuery);
