@@ -53,10 +53,10 @@ tbody {
 }
 
 /*toolbar wizzard*/
-form#ckeditor-admin-profile-form textarea#edit-toolbar {
+form#ckeditor-admin-profile-form textarea#edit-toolbar, form#ckeditor-admin-global-profile-form textarea#edit-toolbar {
     display: none;
 }
-form#ckeditor-admin-profile-form #edit-toolbar + .grippie {
+form#ckeditor-admin-profile-form #edit-toolbar + .grippie, form#ckeditor-admin-global-profile-form #edit-toolbar + .grippie {
     display: none;
 }
 div.sortableList {

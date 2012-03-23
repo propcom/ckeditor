@@ -1303,6 +1303,9 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     $btn = t('Update the global profile');
   }
 
+  $toolbar_wizard = !empty($profile->settings['toolbar_wizard']) ? $profile->settings['toolbar_wizard'] : 't';
+  drupal_add_js(array('ckeditor_toolbar_wizard' => $toolbar_wizard), 'setting');
+
   $form['common'] = array(
     '#type' => 'fieldset',
     '#title' => t('Main setup'),
@@ -1405,6 +1408,58 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
       ),
     '#wysiwyg' => FALSE,
   );
+
+  $module_drupal_path = drupal_get_path('module', 'ckeditor');
+
+  drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
+
+  if ($toolbar_wizard == 't') {
+    if (module_exists('jquery_ui')) {
+      if (!module_exists('jquery_update')  || jquery_update_get_version() <= 1.2 )
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
+        if (jquery_ui_get_version() > 1.6) {
+          jquery_ui_add(array('ui.sortable'));
+        }
+        else {
+          drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
+          drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
+          drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
+        }
+    }
+    else {
+      if (!module_exists('jquery_update') || jquery_update_get_version() <= 1.2 )
+        drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-1.4.4.min.js', 'core');
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
+      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
+    }
+    drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
+  }
+
+  $form['ckeditor_exclude_settings']['simple_toolbar'] = array(
+    '#id' => 'edit-toolbar',
+    '#type' => 'textarea',
+    '#title' => t('Simplified toolbar'),
+    '#default_value' => isset($profile->settings['simple_toolbar']) ? $profile->settings['simple_toolbar'] : "[ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ]",
+    '#wysiwyg' => FALSE,
+    '#rows' => 15
+  );
+
+  if ($toolbar_wizard == 't') {
+    $form['ckeditor_exclude_settings']['toolbar_wizzard_used'] = array(
+      '#type' => 'markup',
+      '#value' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
+      '#description' => t('Currently used buttons'),
+    );
+
+    drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all(FALSE)), 'setting');
+
+    $form['ckeditor_exclude_settings']['toolbar_wizzard_all'] = array(
+      '#type' => 'markup',
+      '#value' => '<div>' . t('All buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
+      '#description' => t('All available buttons'),
+    );
+  }
 
   $form['ckeditor_advanced_settings'] = array(
     '#type' => 'fieldset',
@@ -1635,6 +1690,10 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
 
 function ckeditor_admin_global_profile_form_validate($form, &$form_state) {
   $edit =& $form_state['values'];
+
+  if (!preg_match('#^\s*\[(?:\s*(?:\{\s*[\w:\'" ,]*\s*\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]\s*\}|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#U', $edit['simple_toolbar']) && !preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['simple_toolbar'])) {
+    form_set_error('simple_toolbar', t('Enter a valid toolbar configuration.'));
+  }
 
   //include mode and all other fields are empty, invalid
   if ($edit['excl_mode'] == 1 && empty($edit['excl'])) {
@@ -1970,7 +2029,7 @@ function ckeditor_disable_wysiwyg($token) {
 /*
  * Get all available toolbar buttons
  */
-function ckeditor_toolbar_buttons_all() {
+function ckeditor_toolbar_buttons_all($addPlugins = TRUE) {
   $path = base_path() . drupal_get_path('module', 'ckeditor');
 
   //CKEditor default buttons
@@ -2044,11 +2103,13 @@ function ckeditor_toolbar_buttons_all() {
     '__group' => array('name' => FALSE, 'icon' => $path . '/images/buttons/group.png', 'title' => 'Group', 'row' => 4)
   );
 
-  $plugins = ckeditor_load_plugins(TRUE);
-  foreach ($plugins as $plugin_name => $plugin) {
-    if (!isset($plugin['buttons']) || $plugin['buttons'] == FALSE) continue;
-    foreach ((array) $plugin['buttons'] as $button_name => $button) {
-      $buttons[$button_name] = array('name' => $button_name, 'icon' => $plugin['path'] . $button['icon'], 'title' => t($button['label']), 'row' => 4);
+  if ($addPlugins === TRUE) {
+    $plugins = ckeditor_load_plugins(TRUE);
+    foreach ($plugins as $plugin_name => $plugin) {
+        if (!isset($plugin['buttons']) || $plugin['buttons'] == FALSE) continue;
+        foreach ((array) $plugin['buttons'] as $button_name => $button) {
+        $buttons[$button_name] = array('name' => $button_name, 'icon' => $plugin['path'] . $button['icon'], 'title' => t($button['label']), 'row' => 4);
+        }
     }
   }
 

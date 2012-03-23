@@ -626,7 +626,12 @@ function ckeditor_process_textarea($element) {
       $force_simple_toolbar = ckeditor_is_enabled('1', empty($global_conf['simple_incl_regex']) ? '' : $global_conf['simple_incl_regex'], $element['#id'], $_GET['q']);
     }
     if ($force_simple_toolbar) {
-      $toolbar = "[ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ]";
+      if (!isset($global_conf['simple_toolbar'])) {
+        $toolbar = "[ [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ] ]";
+      }
+      else {
+        $toolbar = $global_conf['simple_toolbar'];
+      }
     }
 
     if (!empty($conf['theme_config_js']) && $conf['theme_config_js'] == 't' && file_exists($themepath .'ckeditor.config.js')) {
