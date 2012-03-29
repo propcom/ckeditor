@@ -1,4 +1,4 @@
-2012-04-04
+2012-04-18
 New stable release 7.x-1.x
 
 New features:
@@ -7,6 +7,7 @@ New features:
 [#1489074] by acbramley: Change ckeditor xss url to be passed through url()
 
 Bug fixes:
+[#1507852] by dczepierga: 'drush ckeditor-download' fails if svn not installed
 [#1432068] by kruser: sites/all/libraries/ckeditor/ckeditor.styles.js doesn't exist
 [#1504398] by ndeschildre: Import of ckeditor profile features fails, manual revert needed
 [#1508342] by dczepierga: WSOD on saving content from CKEditor using Ajax when node edit form is embedded in display of another node
