@@ -1,5 +1,5 @@
 -----------------------------
- 2012-03-28
+ 2012-03-29
  New stable release: 6.x-1.x
 -----------------------------
 
@@ -7,6 +7,7 @@ New features:
 [#1489366] by dczepierga: Add support for stylesheetparser plugin
 
 Bug fixes:
+[#1507362] by kevin.dutra: Path to CKFinder can be badly constructed
 [#1506080] by dczepierga: Refactor code with titles and descriptions for translate function
 [#1496162] by michal_cksource: Buttons are to high during Drag & Drop in Firefox
 [#1491884] by dczepierga: Portuguese language missing
