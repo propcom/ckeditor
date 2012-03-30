@@ -284,10 +284,13 @@ function ckeditor_filter_xss() {
 
   $GLOBALS['devel_shutdown'] = FALSE;
 
-  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['textarea_id']) || !is_string($_POST['textarea_id']) || !isset($_POST['query']) || !is_string($_POST['query']) || !isset($_POST['theme']) || !is_string($_POST['theme']) || !isset($_POST['input_format']) || !filter_access((int) $_POST['input_format']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', TRUE)) {
+  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['textarea_id']) || !is_string($_POST['textarea_id']) || !isset($_POST['query']) || !is_string($_POST['query']) || !isset($_POST['theme']) || !is_string($_POST['theme']) || !isset($_POST['input_format']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', TRUE)) {
     exit;
   }
-
+  $filter_format_id = filter_resolve_format((int) $_POST['input_format']);
+  if (!filter_access($filter_format_id)) {
+    exit;
+  }
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
   $theme = $_POST['theme'];
   $profile = ckeditor_user_get_profile($user, $_POST['textarea_id'], $_POST['query']);
@@ -308,7 +311,7 @@ function ckeditor_filter_xss() {
     $filter = new stdClass();
     $filter->module = strtok($module_delta, "/");
     $filter->delta = strtok("/");
-    $filter->format = filter_resolve_format((int) $_POST['input_format']);
+    $filter->format = $filter_format_id;
 
     if (!module_hook($filter->module, 'filter')) {
       continue;
