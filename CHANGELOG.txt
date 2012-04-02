@@ -1,10 +1,14 @@
-2012-03-19
+2012-04-02
 New stable release 7.x-1.x
 
 New features:
 [#1489358] by dczepierga: Add support for stylesheetparser plugin
+[#1483402] by dczepierga: Change security filters policy
 
 Bug fixes:
+[#1491210] by michal_cksource: CKEditor gets disabled/enabled on all AJAX calls
+[#1512196] by dczepierga: Refactor code with titles and descriptions for translate function
+[#1496164] by michal_cksource: Buttons are to high during Drag & Drop in Firefox
 [#1492344] by dczepierga: Portuguese language missing
 
 2012-03-15
