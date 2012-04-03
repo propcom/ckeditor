@@ -1,4 +1,4 @@
-2012-04-02
+2012-04-03
 New stable release 7.x-1.x
 
 New features:
@@ -6,6 +6,7 @@ New features:
 [#1483402] by dczepierga: Change security filters policy
 
 Bug fixes:
+[#1508342] by dczepierga: WSOD on saving content from CKEditor using Ajax when node edit form is embedded in display of another node
 [#1491210] by michal_cksource: CKEditor gets disabled/enabled on all AJAX calls
 [#1512196] by dczepierga: Refactor code with titles and descriptions for translate function
 [#1496164] by michal_cksource: Buttons are to high during Drag & Drop in Firefox
