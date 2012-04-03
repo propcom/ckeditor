@@ -6,6 +6,7 @@ New features:
 [#1483402] by dczepierga: Change security filters policy
 
 Bug fixes:
+[#1504398] by ndeschildre: Import of ckeditor profile features fails, manual revert needed
 [#1508342] by dczepierga: WSOD on saving content from CKEditor using Ajax when node edit form is embedded in display of another node
 [#1491210] by michal_cksource: CKEditor gets disabled/enabled on all AJAX calls
 [#1512196] by dczepierga: Refactor code with titles and descriptions for translate function
