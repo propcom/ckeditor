@@ -110,6 +110,9 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
 
         run_filter = typeof(run_filter) != 'undefined' ? run_filter : true;
 
+        if (typeof(textarea_id) == 'undefined' || textarea_id.length == 0 || $("#" + textarea_id).length == 0) {
+            return;
+        }
         if ((typeof(Drupal.settings.ckeditor.load_timeout) == 'undefined') && (typeof(CKEDITOR.instances[textarea_id]) != 'undefined')) {
             return;
         }
