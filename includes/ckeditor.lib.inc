@@ -1378,7 +1378,7 @@ function ckeditor_load_by_field( $field, $format, $show_toggle = TRUE, $add_fiel
             if (module_exists('pagebreak')) {
                 drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
             }
-            drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'))), 'setting');
+            drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'), 'xss_url' => url('ckeditor/xss'))), 'setting');
             $is_running = TRUE;
         }
 
