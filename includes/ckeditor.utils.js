@@ -81,15 +81,17 @@ Drupal.ckeditorInit = function(textarea_id) {
       }
   }
 
-  textarea_settings.extraPlugins = '';
-  if (typeof CKEDITOR.plugins != 'undefined'){
-    for (var plugin in textarea_settings['loadPlugins']){
-      textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
-      CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
-    }
+  if (CKEDITOR.loadFullCore) {
+    CKEDITOR.on('loaded', function() {
+      textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
+      Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
+    });
+    CKEDITOR.loadFullCore();
   }
-
-  Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
+  else {
+    textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
+    Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
+  }
 };
 
 Drupal.ckeditorOn = function(textarea_id) {
@@ -206,6 +208,22 @@ Drupal.ckeditorOff = function(textarea_id) {
   $("#" + textarea_id).next(".grippie").css("display", "block");
   $("#" + textarea_id).removeClass("ckeditor-processed");
 };
+
+/**
+ * Loading selected CKEditor plugins
+ *
+ * @param object textarea_settings
+ */
+Drupal.ckeditorLoadPlugins = function(textarea_settings) {
+  textarea_settings.extraPlugins = '';
+  if (typeof CKEDITOR.plugins != 'undefined') {
+    for (var plugin in textarea_settings['loadPlugins']) {
+      textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
+      CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
+    }
+  }
+  return textarea_settings;
+}
 
 /**
  * CKEditor popup mode function
