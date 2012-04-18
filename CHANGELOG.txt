@@ -7,6 +7,7 @@ New features:
 [#1489074] by acbramley: Change ckeditor xss url to be passed through url()
 
 Bug fixes:
+[#1432068] by kruser: sites/all/libraries/ckeditor/ckeditor.styles.js doesn't exist
 [#1504398] by ndeschildre: Import of ckeditor profile features fails, manual revert needed
 [#1508342] by dczepierga: WSOD on saving content from CKEditor using Ajax when node edit form is embedded in display of another node
 [#1491210] by michal_cksource: CKEditor gets disabled/enabled on all AJAX calls

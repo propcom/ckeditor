@@ -986,7 +986,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             'Define the location of the !ckeditor_styles_js_file file. It is used by the <strong>Style</strong> drop-down list available in the default toolbar. Copy the !ckeditor_styles_js_path file into your theme directory (!theme) and adjust it to your needs.',
             array(
                 '!ckeditor_styles_js_file' => '<code>ckeditor.styles.js</code>',
-                '!ckeditor_styles_js_path' => '<code>' . ckeditor_path(TRUE) . '/ckeditor.styles.js</code>',
+                '!ckeditor_styles_js_path' => '<code>' . drupal_get_path('module', 'ckeditor') . '/ckeditor.styles.js</code>',
                 '!theme' => '<code>' . path_to_theme() . '/ckeditor.styles.js' . '</code>'
             )
         )
