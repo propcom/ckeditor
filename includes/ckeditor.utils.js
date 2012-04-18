@@ -94,16 +94,20 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
             }
         }
 
-        textarea_settings.extraPlugins = '';
-        if (typeof CKEDITOR.plugins != 'undefined'){
-            for (var plugin in textarea_settings['loadPlugins']){
-                textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
-                CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
-            }
-        }
         //remove width 100% from settings because this may cause problems with theme css
         if (textarea_settings.width == '100%') textarea_settings.width = '';
-        Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
+
+        if (CKEDITOR.loadFullCore) {
+            CKEDITOR.on('loaded', function() {
+                textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
+                Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
+            });
+            CKEDITOR.loadFullCore();
+        }
+        else {
+            textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
+            Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
+        }
     }
 
     Drupal.ckeditorOn = function(textarea_id, run_filter) {
@@ -166,6 +170,22 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
 
         $("#" + textarea_id).next(".grippie").css("display", "block");
     };
+
+/**
+* Loading selected CKEditor plugins
+*
+* @param object textarea_settings
+*/
+    Drupal.ckeditorLoadPlugins = function(textarea_settings) {
+        textarea_settings.extraPlugins = '';
+        if (typeof CKEDITOR.plugins != 'undefined') {
+            for (var plugin in textarea_settings['loadPlugins']) {
+                textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
+                CKEDITOR.plugins.addExternal(textarea_settings['loadPlugins'][plugin]['name'], textarea_settings['loadPlugins'][plugin]['path']);
+            }
+        }
+        return textarea_settings;
+    }
 
     /**
  * Returns true if CKEDITOR.version >= version

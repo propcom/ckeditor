@@ -8,6 +8,7 @@ New features:
 [#1473010] by michal_cksource: Spell checker set to use interface language
 
 Bug fixes:
+[#1537824] by dczepierga: External plugins not work on ckeditor_basic.js loading method
 [#1507852] by dczepierga: 'drush ckeditor-download' fails if svn not installed
 [#1432068] by kruser: sites/all/libraries/ckeditor/ckeditor.styles.js doesn't exist
 [#1504398] by ndeschildre: Import of ckeditor profile features fails, manual revert needed
