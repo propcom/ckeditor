@@ -1,5 +1,5 @@
 2012-04-18
-New stable release 7.x-1.x
+New stable release 7.x-1.9
 
 New features:
 [#1489358] by dczepierga: Add support for stylesheetparser plugin
@@ -10,7 +10,7 @@ New features:
 Bug fixes:
 [#1537824] by dczepierga: External plugins not work on ckeditor_basic.js loading method
 [#1507852] by dczepierga: 'drush ckeditor-download' fails if svn not installed
-[#1432068] by kruser: sites/all/libraries/ckeditor/ckeditor.styles.js doesn't exist
+[#1432068] by kruser:  Fix path to sites/all/libraries/ckeditor/ckeditor.styles.js file
 [#1504398] by ndeschildre: Import of ckeditor profile features fails, manual revert needed
 [#1508342] by dczepierga: WSOD on saving content from CKEditor using Ajax when node edit form is embedded in display of another node
 [#1491210] by michal_cksource: CKEditor gets disabled/enabled on all AJAX calls
