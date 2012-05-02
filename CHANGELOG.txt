@@ -2,6 +2,7 @@
 New stable release 7.x-1.x
 
 Bug fixes:
+[#1557526] by dczepierga: CKeditor gets inserted multiple times on text format selection
 [#1554840] by dczepierga: Missing argument - WYSIWYG Filter, HTML Purifier & HTMLawed
 
 2012-04-18

@@ -270,26 +270,28 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
                     $('.ckeditor_links').show();
                 }
 
-                var sel_format = ta_id.substr(0, ta_id.lastIndexOf("-")) + "-format--2";
-                $('#'+sel_format).change(function(){
-                    Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
-                    if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined') {
-                        $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
-                    }
-                    Drupal.ckeditorOff(ta_id);
-                    if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
-                        if ($('#'+ta_id).hasClass('ckeditor-processed')) {
-                            Drupal.ckeditorOn(ta_id, false);
+                var sel_format = $("#" + ta_id.substr(0, ta_id.lastIndexOf("-")) + "-format--2");
+                if (sel_format && sel_format.not('.ckeditor-processed')) {
+                    sel_format.addClass('ckeditor-processed').change(function() {
+                        Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
+                        if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined') {
+                            $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
+                        }
+                        Drupal.ckeditorOff(ta_id);
+                        if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
+                            if ($('#'+ta_id).hasClass('ckeditor-processed')) {
+                                Drupal.ckeditorOn(ta_id, false);
+                            }
+                            else {
+                                Drupal.ckeditorOn(ta_id);
+                            }
+                            $('#switch_'+ta_id).show();
                         }
                         else {
-                            Drupal.ckeditorOn(ta_id);
+                            $('#switch_'+ta_id).hide();
                         }
-                        $('#switch_'+ta_id).show();
-                    }
-                    else {
-                        $('#switch_'+ta_id).hide();
-                    }
-                });
+                    });
+                }
             });
         },
         detach:
