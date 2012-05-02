@@ -1,3 +1,9 @@
+2012-05-02
+New stable release 7.x-1.x
+
+Bug fixes:
+[#1554840] by dczepierga: Missing argument - WYSIWYG Filter, HTML Purifier & HTMLawed
+
 2012-04-18
 New stable release 7.x-1.9
 
