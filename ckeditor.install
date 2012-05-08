@@ -109,6 +109,9 @@ function ckeditor_install() {
     $arr['ckeditor_load_time_out'] = 0;
     $arr['scayt_autoStartup'] = "f";
 
+    //advanced options
+    $arr['html_entities'] = "f";
+
     db_insert('ckeditor_settings')->fields(array("name" => "Advanced", "settings" => serialize($arr)))->execute();
 
     //insert settings for advanced role

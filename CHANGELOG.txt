@@ -1,6 +1,9 @@
 2012-05-02
 New stable release 7.x-1.x
 
+New features:
+[#1559700] by dczepierga: Disable HTML Entities conversion by default
+
 Bug fixes:
 [#1567022] by dczepierga: Overlays of administration toolbar in CKEditor maximized mode
 [#1557526] by dczepierga: CKeditor gets inserted multiple times on text format selection
