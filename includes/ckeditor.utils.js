@@ -37,7 +37,7 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
         ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar = eval(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].toolbar);
         textarea_settings = ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]];
 
-        var drupalTopToolbar = $('#toolbar', Drupal.overlayChild ? window.parent.document : document);
+        var drupalTopToolbar = $('#toolbar, #admin-menu', Drupal.overlayChild ? window.parent.document : document);
 
         textarea_settings['on'] =
         {
