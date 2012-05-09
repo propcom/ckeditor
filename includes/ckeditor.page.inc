@@ -222,6 +222,8 @@ function ckeditor_filter_xss() {
     $text = $_POST['text'];
     $filters = filter_get_filters();
     $format_filters = filter_list_format($_POST['input_format']);
+    $cache_id = $_POST['input_format'] . ':' . '' . ':' . hash('sha256', $text);
+    
     foreach ((array) $settings['filters'] as $name => $status) {
         //If filter not exists, cannot be called or isn't enabled in selected text format then skip this filter
         if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || !array_key_exists($name, $format_filters) || $format_filters[$name]->status == 0) {
@@ -238,7 +240,7 @@ function ckeditor_filter_xss() {
             continue;
         }
 
-        $text = $filters[$name]['process callback']($text, $format_filters[$name], $_POST['input_format'], '', TRUE);
+        $text = $filters[$name]['process callback']($text, $format_filters[$name], $_POST['input_format'], '', TRUE, $cache_id);
     }
 
     echo $text;
