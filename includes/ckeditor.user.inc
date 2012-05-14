@@ -35,10 +35,15 @@
  */
 
 function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
-  if ($type == 'form' && $category == 'account' && user_access('access ckeditor')) {
+  if ($type == 'form' && $category == 'account' && user_access('access ckeditor', $user)) {
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
     $profile = ckeditor_user_get_profile($user);
+    if (!$profile) {
+      // No profile has been assigned.
+      return NULL;
+    }
+
     $skin_options = ckeditor_load_skin_options();
     $lang_options = ckeditor_load_lang_options();
 

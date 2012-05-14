@@ -7,6 +7,7 @@ New features:
 [#1514376] by dczepierga: Change ckeditor xss url to be passed through url()
 
 Bug fixes:
+[#1398910] by dczepierga: Trying to get property of non-object when editing user with no access or profile
 
 -----------------------------
  2012-03-30
