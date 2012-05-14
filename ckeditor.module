@@ -249,20 +249,6 @@ function ckeditor_pre_render_text_format($element) {
 }
 
 /**
- * Implementation of hook_user().
- *
- * This function delegates the execution to ckeditor_user_delegate() in includes/ckeditor.user.inc to
- * lower the amount of code in ckeditor.module.
- */
-function ckeditor_user($type, $edit, &$user, $category = NULL) {
-    if (($type == 'form' && $category == 'account') || $type == 'validate') {
-        module_load_include('inc', 'ckeditor', 'includes/ckeditor.user');
-        return ckeditor_user_delegate($type, $edit, $user, $category);
-    }
-    return NULL;
-}
-
-/**
  * Load all profiles. Just load one profile if $name is passed in.
  */
 function ckeditor_profile_load($name = '', $clear = FALSE) {
