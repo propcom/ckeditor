@@ -1122,6 +1122,11 @@ function ckeditor_profile_settings_compile( $global_profile, $profile ) {
                     foreach ($theme_info->stylesheets as $type => $stylesheets) {
                         if ($type != "print") {
                             foreach ($stylesheets as $name => $path) {
+                                // Checks if less module exists...
+                                if (strstr($path, '.less') && module_exists('less')) {
+                                    $path = 'sites/default/files/less/' . $path; // append the less file path
+                                    $path = str_replace('.less', '', $path); // remove the .less
+                                }
                                 if (file_exists($path)) {
                                     $css_files[$name] = $host . $path . $query_string;
                                     // Grab rtl stylesheets ( will get rtl css files when thay are named with suffix "-rtl.css" (ex: fusion baased themes) )
