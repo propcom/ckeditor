@@ -6,6 +6,7 @@ New features:
 [#1559700] by dczepierga: Disable HTML Entities conversion by default
 
 Bug fixes:
+[#1595606] by kmcnamee: Wrong instructions for configuring CKFinder
 [#1350998] by MegaChriz: CKEditor settings appear on all user profile edit pages
 [#1567022] by dczepierga: Overlays of administration toolbar in CKEditor maximized mode
 [#1557526] by dczepierga: CKeditor gets inserted multiple times on text format selection
