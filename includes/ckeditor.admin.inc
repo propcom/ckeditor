@@ -1137,7 +1137,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
         array(
           '!ckeditor_config' => '<code>' . drupal_get_path('module', 'ckeditor') . "/ckeditor.config.js</code>",
           '!docs' => l(t('CKEditor documentation'), 'http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html'),
-          '@code' => "config.fontSize_sizes = '16/16px;24/24px;48/48px;'\nconfig.font_names = 'Arial;Times New Roman;Verdana'"
+          '@code' => "config.fontSize_sizes = '16/16px;24/24px;48/48px;';\nconfig.font_names = 'Arial;Times New Roman;Verdana';"
         )
       ),
     '#wysiwyg' => FALSE
