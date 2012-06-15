@@ -1,4 +1,4 @@
-2012-05-02
+2012-06-15
 New stable release 7.x-1.x
 
 New features:
@@ -6,6 +6,7 @@ New features:
 [#1559700] by dczepierga: Disable HTML Entities conversion by default
 
 Bug fixes:
+[#1637416] by michal_cksource: Fix description to "Custom JavaScript configuration" option
 [#1595606] by kmcnamee: Wrong instructions for configuring CKFinder
 [#1350998] by MegaChriz: CKEditor settings appear on all user profile edit pages
 [#1567022] by dczepierga: Overlays of administration toolbar in CKEditor maximized mode
