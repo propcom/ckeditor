@@ -938,7 +938,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
             'none' => t('CKEditor default')
         ),
         '#description' => t(
-            'Defines the CSS to be used in the editor area.!title_theme_css &ndash; load the !style_css file from the current site theme.!define_css &ndash; enter the CSS file path below.!ckeditor_default &ndash; use the default editor CSS.',
+            'Defines the CSS to be used in the editor area.!title_theme_css &ndash; load the !style_css file from the current site theme.!title_define_css &ndash; enter the CSS file path below.!title_ckeditor_default &ndash; use the default editor CSS.',
             array(
                 '!title_theme_css' => '<br /><strong>' . t('Use theme CSS') . '</strong>',
                 '!title_define_css' => '<br /><strong>' . t('Define CSS') . '</strong>',
