@@ -84,12 +84,18 @@ Drupal.ckeditorInit = function(textarea_id) {
   if (CKEDITOR.loadFullCore) {
     CKEDITOR.on('loaded', function() {
       textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
+      if (CKEDITOR.instances[textarea_id]) {
+        CKEDITOR.instances[textarea_id].destroy(true);
+      }
       Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
     });
     CKEDITOR.loadFullCore();
   }
   else {
     textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
+    if (CKEDITOR.instances[textarea_id]) {
+      CKEDITOR.instances[textarea_id].destroy(true);
+    }
     Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
   }
 };

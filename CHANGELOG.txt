@@ -1,5 +1,5 @@
 -----------------------------
- 2012-06-15
+ 2012-07-03
  New stable release: 6.x-1.x
 -----------------------------
 
@@ -7,6 +7,7 @@ New features:
 [#1514376] by dczepierga: Change ckeditor xss url to be passed through url()
 
 Bug fixes:
+[#1663462] by dczepierga: Destroy existing instance when trying to replace it
 [#1216096] by michal_cksource: Fix description to "Custom JavaScript configuration" option
 [#1594382] by kmcnamee: Wrong instructions for configuring CKFinder
 [#1397812] by dczepierga: External plugins not work on ckeditor_basic.js loading method
