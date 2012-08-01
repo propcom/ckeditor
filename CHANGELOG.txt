@@ -7,6 +7,7 @@ New features:
 [#1692666] by dczepierga: Unset Ckeditor-Plugin upon uninstalling
 
 Bug fixes:
+[#1698600] by azovsky: Undefined index: format in ckeditor_pre_render_text_format()
 [#1651130] by lmeurs: Wrong variable substitution using t()
 [#1637416] by michal_cksource: Fix description to "Custom JavaScript configuration" option
 [#1595606] by kmcnamee: Wrong instructions for configuring CKFinder
