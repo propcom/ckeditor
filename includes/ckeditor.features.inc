@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CKEditor - The text editor for the Internet - http://ckeditor.com
  * Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
@@ -36,7 +37,7 @@
 /**
  * Implementation of hook_features_export_options()
  */
-function ckeditor_profile_features_export_options()  {
+function ckeditor_profile_features_export_options() {
   $options = array();
   $profiles = (array) ckeditor_profile_load();
   foreach ($profiles as $name => $profile) {
@@ -50,7 +51,7 @@ function ckeditor_profile_features_export_options()  {
  */
 function ckeditor_profile_features_export($data, &$export, $module_name = '') {
   $pipe = array();
-  foreach ((array)$data as $name) {
+  foreach ((array) $data as $name) {
     $profile = ckeditor_profile_load($name);
     if ($profile) {
       $export['features']['ckeditor_profile'][$name] = $name;
@@ -86,7 +87,7 @@ function ckeditor_profile_features_export_render($module_name, $data) {
  * Implementation of hook_features_rebuild()
  */
 function ckeditor_profile_features_rebuild($module) {
-    ckeditor_profile_features_revert($module);
+  ckeditor_profile_features_revert($module);
 }
 
 /**

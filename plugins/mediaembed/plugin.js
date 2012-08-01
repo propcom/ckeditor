@@ -15,12 +15,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       editor.addCss(
         'img.cke_mediaembed' +
         '{' +
-          'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.gif' ) + ');' +
-          'background-position: center center;' +
-          'background-repeat: no-repeat;' +
-          'border: 1px solid #a9a9a9;' +
-          'width: 80px;' +
-          'height: 80px;' +
+        'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.gif' ) + ');' +
+        'background-position: center center;' +
+        'background-repeat: no-repeat;' +
+        'border: 1px solid #a9a9a9;' +
+        'width: 80px;' +
+        'height: 80px;' +
         '}'
         );
       var me = this;
@@ -30,20 +30,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
           minWidth : 400,
           minHeight : 200,
           contents : [
+          {
+            id : 'mediaTab',
+            label : Drupal.t('Embed media code'),
+            title : Drupal.t('Embed media code'),
+            elements :
+            [
             {
-              id : 'mediaTab',
-              label : Drupal.t('Embed media code'),
-              title : Drupal.t('Embed media code'),
-              elements :
-              [
-                {
-                  id : 'embed',
-                  type : 'textarea',
-                  rows : 9,
-                  label : Drupal.t('Paste embed code here')
-                }
-              ]
+              id : 'embed',
+              type : 'textarea',
+              rows : 9,
+              label : Drupal.t('Paste embed code here')
             }
+            ]
+          }
           ],
           onOk : function() {
             var editor = this.getParentEditor();
@@ -78,8 +78,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     afterInit : function( editor )
     {
       var dataProcessor = editor.dataProcessor,
-        dataFilter = dataProcessor && dataProcessor.dataFilter,
-        htmlFilter = dataProcessor && dataProcessor.htmlFilter;
+      dataFilter = dataProcessor && dataProcessor.dataFilter,
+      htmlFilter = dataProcessor && dataProcessor.htmlFilter;
 
       if ( htmlFilter )
       {
@@ -106,34 +106,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       if ( dataFilter )
       {
         dataFilter.addRules(
+        {
+          elements :
           {
-            elements :
+            'div' : function( element )
             {
-              'div' : function( element )
-              {
-                var attributes = element.attributes,
-                  classId = attributes.classid && String( attributes.classid ).toLowerCase();
-                  
-                if (element.attributes[ 'class' ] == 'media_embed') {
-                  var fakeElement = editor.createFakeParserElement(element, 'cke_mediaembed', 'div', true);
-                  var fakeStyle = fakeElement.attributes.style || '';
-                  if (typeof(element.children[0].attributes) != 'undefined') { 
-                    var height = element.children[0].attributes.height,
-                      width = element.children[0].attributes.width;
-                  }
-                  if ( typeof width != 'undefined' )
-                    fakeStyle = fakeElement.attributes.style = fakeStyle + 'width:' + cssifyLength( width ) + ';';
-              
-                  if ( typeof height != 'undefined' )
-                    fakeStyle = fakeElement.attributes.style = fakeStyle + 'height:' + cssifyLength( height ) + ';';
-                 
-                  return fakeElement;  
+              var attributes = element.attributes,
+              classId = attributes.classid && String( attributes.classid ).toLowerCase();
+
+              if (element.attributes[ 'class' ] == 'media_embed') {
+                var fakeElement = editor.createFakeParserElement(element, 'cke_mediaembed', 'div', true);
+                var fakeStyle = fakeElement.attributes.style || '';
+                if (typeof(element.children[0].attributes) != 'undefined') {
+                  var height = element.children[0].attributes.height,
+                  width = element.children[0].attributes.width;
                 }
-                return element;
+                if ( typeof width != 'undefined' )
+                  fakeStyle = fakeElement.attributes.style = fakeStyle + 'width:' + cssifyLength( width ) + ';';
+
+                if ( typeof height != 'undefined' )
+                  fakeStyle = fakeElement.attributes.style = fakeStyle + 'height:' + cssifyLength( height ) + ';';
+
+                return fakeElement;
               }
+              return element;
             }
-          },
-          5);
+          }
+        },
+        5);
       }
     }
   } );
