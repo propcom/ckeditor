@@ -1,10 +1,10 @@
-2012-08-01
+2012-08-08
 New stable release 7.x-1.x
 
 New features:
 [#1577518] by dczepierga: Remove unused/unsupported hook_user from code
 [#1559700] by dczepierga: Disable HTML Entities conversion by default
-[#1692666] by dczepierga: Unset Ckeditor-Plugin upon uninstalling
+[#1692666] by dczepierga: Unset Ckeditor-Plugin upon module disabling/uninstalling
 
 Bug fixes:
 [#1698600] by azovsky: Undefined index: format in ckeditor_pre_render_text_format()
