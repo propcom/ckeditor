@@ -199,23 +199,20 @@ function ckeditor_filter_xss() {
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
   $profile = ckeditor_get_profile($_POST['input_format']);
 
-  $settings = array();
-  $security_filters = ckeditor_security_filters();
-  $settings['filters'] = $security_filters['filters'];
-
   $text = $_POST['text'];
   $filters = filter_get_filters();
   $format_filters = filter_list_format($_POST['input_format']);
+  $security_filters = ckeditor_security_filters();
   $cache_id = $_POST['input_format'] . ':' . '' . ':' . hash('sha256', $text);
 
-  foreach ((array) $settings['filters'] as $name => $status) {
-    //If filter not exists, cannot be called or isn't enabled in selected text format then skip this filter
-    if (!isset($filters[$name]) || !isset($filters[$name]['process callback']) || !array_key_exists($name, $format_filters) || $format_filters[$name]->status == 0) {
+  foreach ((array) $format_filters as $name => $object) {
+    //If filter is not security filter, not exists, cannot be called or isn't enabled in selected text format then skip this filter
+    if (!isset($security_filters['filters'][$name]) || !isset($filters[$name]) || !isset($filters[$name]['process callback']) || $object->status == 0) {
       continue;
     }
 
     //Call default CKEditor built-in filter
-    if ($name == "filter_html" && $status == 1) {
+    if ($name == 'filter_html' && $security_filters['filters']['filter_html'] == 1) {
       preg_match_all("|</?([a-z][a-z0-9]*)(?:\b[^>]*)>|i", $text, $matches);
       if ($matches[1]) {
         $tags = array_unique($matches[1]);
