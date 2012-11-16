@@ -9,10 +9,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 ( function() {
   CKEDITOR.plugins.add( 'mediaembed',
   {
-    requires : [ 'fakeobjects', 'htmlwriter' ],
+    requires : [ 'dialog', 'fakeobjects', 'htmlwriter' ],
     init: function( editor )
     {
-      editor.addCss(
+      var addCssObj = editor;
+
+      if (Drupal.ckeditor_ver == 4) {
+        addCssObj = CKEDITOR;
+      }
+      addCssObj.addCss(
         'img.cke_mediaembed' +
         '{' +
         'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/placeholder.gif' ) + ');' +
@@ -23,57 +28,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         'height: 80px;' +
         '}'
         );
-      var me = this;
-      CKEDITOR.dialog.add( 'MediaEmbedDialog', function( editor ) {
-        return {
-          title : Drupal.t('Embed Media Dialog'),
-          minWidth : 400,
-          minHeight : 200,
-          contents : [
-          {
-            id : 'mediaTab',
-            label : Drupal.t('Embed media code'),
-            title : Drupal.t('Embed media code'),
-            elements :
-            [
-            {
-              id : 'embed',
-              type : 'textarea',
-              rows : 9,
-              label : Drupal.t('Paste embed code here')
-            }
-            ]
-          }
-          ],
-          onOk : function() {
-            var editor = this.getParentEditor();
-            var content = this.getValueOf( 'mediaTab', 'embed' );
-            if ( content.length>0 ) {
-              var realElement = CKEDITOR.dom.element.createFromHtml('<div class="media_embed"></div>');
-              realElement.setHtml(content);
-              var fakeElement = editor.createFakeElement( realElement , 'cke_mediaembed', 'div', true);
-              var matches = content.match(/width=(["']?)(\d+)\1/i);
-              if (matches && matches.length == 3) {
-                fakeElement.setStyle('width', cssifyLength(matches[2]));
-              }
-              matches = content.match(/height=([\"\']?)(\d+)\1/i);
-              if (matches && matches.length == 3) {
-                fakeElement.setStyle('height', cssifyLength(matches[2]));
-              }
-              editor.insertElement(fakeElement);
-            }
-          }
-        };
-      });
 
-      editor.addCommand( 'MediaEmbed', new CKEDITOR.dialogCommand( 'MediaEmbedDialog' ) );
-
+      editor.addCommand( 'mediaembedDialog', new CKEDITOR.dialogCommand( 'mediaembedDialog' ) );
       editor.ui.addButton( 'MediaEmbed',
       {
         label: 'Embed Media',
-        command: 'MediaEmbed',
+        command: 'mediaembedDialog',
         icon: this.path + 'images/icon.png'
       } );
+      CKEDITOR.dialog.add( 'mediaembedDialog', this.path + 'dialogs/mediaembed.js' );
     },
     afterInit : function( editor )
     {

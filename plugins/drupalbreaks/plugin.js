@@ -7,15 +7,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @file Plugin for inserting Drupal teaser and page breaks.
  */
 ( function() {
+  var pluginRequires = [ 'fakeobjects', 'htmldataprocessor' ];
+  if (Drupal.ckeditor_ver == 4) {
+    pluginRequires = [ 'fakeobjects' ];
+  }
+
   CKEDITOR.plugins.add( 'drupalbreaks',
   {
-    requires  : [ 'fakeobjects', 'htmldataprocessor' ],
+    requires  : pluginRequires,
 
     init : function( editor )
     {
+      var addCssObj = editor;
 
+      if (Drupal.ckeditor_ver == 4) {
+        addCssObj = CKEDITOR;
+      }
       // Add the styles that renders our fake objects.
-      editor.addCss(
+      addCssObj.addCss(
         'img.cke_drupal_pagebreak,img.cke_drupal_break' +
         '{' +
         'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/pagebreak.gif' ) + ');' +

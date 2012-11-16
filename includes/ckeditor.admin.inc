@@ -40,7 +40,7 @@
 function ckeditor_admin_main() {
   global $base_url;
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-  $editor_path = ckeditor_path(TRUE);
+  $editor_path = ckeditor_path('local');
   $ckconfig_file = $editor_path . '/config.js';
 
   //check if CKEditor plugin is installed
@@ -185,7 +185,9 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     '#collapsed' => FALSE,
   );
 
-  $module_drupal_path = drupal_get_path('module', 'ckeditor');
+  $drupal_base_path = ckeditor_base_path('relative');
+  $drupal_library_path = ckeditor_library_path('relative');
+  $module_drupal_path = ckeditor_module_path('relative');
 
   $form['ckeditor_advanced_settings']['ckeditor_path'] = array(
     '#type' => 'textfield',
@@ -199,16 +201,18 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         )
     ) .
     '<br /> ' .
-    t('Available placeholders:!m &ndash; path where the CKEditor module is stored (!files).!l &ndash; path to the libraries directory (!library)', array(
+    t('Available placeholders:!b &ndash; path of the Drupal installation (!base) !m &ndash; path where the CKEditor module is stored (!module).!l &ndash; path to the libraries directory (!library)', array(
+      '!b' => '<br /><code>%b</code>',
       '!m' => '<br /><code>%m</code>',
       '!l' => '<br /><code>%l</code>',
-      '!library' => '<code>sites/all/libraries</code>',
-      '!files' => '<code>' . $module_drupal_path . '</code>',
+      '!base' => '<code>' . $drupal_base_path . '</code>',
+      '!module' => '<code>' . $module_drupal_path . '</code>',
+      '!library' => '<code>' . $drupal_library_path . '</code>',
         )
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckeditor_path(FALSE) . '</code>'
+      '!path' => '<code>' . ckeditor_path('relative') . '</code>'
         )
     ),
     '#required' => TRUE
@@ -227,7 +231,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckeditor_path(TRUE) . '</code>'
+      '!path' => '<code>' . ckeditor_path('local') . '</code>'
         )
     )
   );
@@ -240,16 +244,18 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     '#maxlength' => 128,
     '#description' => t('Path to the CKEditor plugins directory relative to the document root.') .
     '<br />' .
-    t('Available placeholders:!m &ndash; the base URL path where the CKEditor module is stored (!files).!l &ndash; the base URL path to the libraries directory (!library)', array(
+    t('Available placeholders:!b &ndash; path of the Drupal installation (!base) !m &ndash; the base URL path where the CKEditor module is stored (!module).!l &ndash; the base URL path to the libraries directory (!library)', array(
+      '!b' => '<br /><code>%b</code>',
       '!m' => '<br /><code>%m</code>',
       '!l' => '<br /><code>%l</code>',
-      '!files' => '<code>' . $module_drupal_path . '</code>',
-      '!library' => '<code>sites/all/libraries/</code>'
+      '!base' => '<code>' . $drupal_base_path . '</code>',
+      '!module' => '<code>' . $module_drupal_path . '</code>',
+      '!library' => '<code>' . $drupal_library_path . '</code>',
         )
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckeditor_plugins_path() . '</code>'
+      '!path' => '<code>' . ckeditor_plugins_path('relative') . '</code>'
         )
     )
   );
@@ -267,7 +273,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckeditor_plugins_path(TRUE) . '</code>'
+      '!path' => '<code>' . ckeditor_plugins_path('local') . '</code>'
         )
     )
   );
@@ -284,16 +290,36 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
         )
     ) .
     '<br />' .
-    t('Available placeholders:!m &ndash; path where the CKEditor module is stored (!files).!l &ndash; path to the libraries directory (!library)', array(
+    t('Available placeholders:!b &ndash; path of the Drupal installation (!base) !m &ndash; path where the CKEditor module is stored (!module).!l &ndash; path to the libraries directory (!library)', array(
+      '!b' => '<br /><code>%b</code>',
       '!m' => '<br /><code>%m</code>',
       '!l' => '<br /><code>%l</code>',
-      '!files' => '<code>' . $module_drupal_path . '</code>',
-      '!library' => '<code>sites/all/libraries/</code>'
+      '!base' => '<code>' . $drupal_base_path . '</code>',
+      '!module' => '<code>' . $module_drupal_path . '</code>',
+      '!library' => '<code>' . $drupal_library_path . '</code>'
         )
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckfinder_path(FALSE) . '</code>'
+      '!path' => '<code>' . ckfinder_path('relative') . '</code>'
+        )
+    )
+  );
+
+  $form['ckeditor_advanced_settings']['ckfinder_local_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Local path to CKFinder'),
+    '#default_value' => isset($profile->settings['ckfinder_local_path']) ? $profile->settings['ckfinder_local_path'] : '',
+    '#size' => 40,
+    '#maxlength' => 128,
+    '#description' => t(
+        'The path to the local directory (on the server) that points to the path defined above. Enter either an absolute server path or a path relative to the !indexphp file. If left empty, the CKEditor module will try to find the right path.', array(
+      '!indexphp' => '<code>index.php</code>'
+        )
+    ) .
+    '<br /> ' .
+    t('Current path: !path', array(
+      '!path' => '<code>' . ckfinder_path('local') . '</code>'
         )
     )
   );
@@ -437,6 +463,9 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
     $edit['ckfinder_path'] = "/" . $edit['ckfinder_path'];
   }
 
+  //no slash at the end
+  $edit['ckfinder_local_path'] = trim(rtrim($edit['ckfinder_local_path'], "/"));
+
   $settings = ckeditor_admin_values_to_settings($edit);
   db_insert('ckeditor_settings')
       ->fields(array(
@@ -467,8 +496,10 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
-  $editor_path = ckeditor_path(FALSE);
-  $module_drupal_path = drupal_get_path('module', 'ckeditor');
+  $editor_path = ckeditor_path('relative');
+  $editor_url_path = ckeditor_path('url');
+  $module_drupal_path = ckeditor_module_path('relative');
+  $module_drupal_url_path = ckeditor_module_path('url');
 
   $skin_options = ckeditor_load_skin_options();
   $lang_options = ckeditor_load_lang_options();
@@ -569,8 +600,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#title' => t('Security filters'),
     '#description' => t(
         'Below is a list of security filters along with their status for each text format.<br/><br/>The following statuses are available:!img_enabled - the filter is configured for a given text format and will be run on the content during the filtering proces.!img_disabled - the filter is disabled for a given text format and will not be run on the content during the filtering process.<br/><br/>In order to modify the security filters settings for each of the text formats, you need to visit the text format configuration sections as listed below: !elem_format_config', array(
-      '!img_enabled' => '</br><img src="' . base_path() . $module_drupal_path . '/images/tick.png"/>',
-      '!img_disabled' => '</br><img src="' . base_path() . $module_drupal_path . '/images/delete.png"/>',
+      '!img_enabled' => '</br><img src="' . $module_drupal_path . '/images/tick.png"/>',
+      '!img_disabled' => '</br><img src="' . $module_drupal_path . '/images/delete.png"/>',
       '!elem_format_config' => '<ul class="text-formats-config"></ul>'
         )
     ),
@@ -668,21 +699,21 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     drupal_add_js(array('ckeditor_uicolor' => $color_palette), 'setting');
   }
 
-  drupal_add_js('window.CKEDITOR_BASEPATH = "' . base_path() . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
-  drupal_add_js($editor_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
-  drupal_add_js($module_drupal_path . '/ckeditor.config.js', 'file');
-  drupal_add_js($module_drupal_path . '/includes/ckeditor.admin.js', 'file');
+  drupal_add_js('window.CKEDITOR_BASEPATH = "' . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
+  drupal_add_js($editor_url_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
+  drupal_add_js($module_drupal_url_path . '/ckeditor.config.js', 'file');
+  drupal_add_js($module_drupal_url_path . '/includes/ckeditor.admin.js', 'file');
 
   if ($toolbar_wizard == 't') {
     if (module_exists('jquery_ui')) {
       jquery_ui_add(array('jquery.ui.widget.min.js', 'jquery.ui.sortable.min.js'));
     }
     else {
-      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
-      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
-      drupal_add_js($module_drupal_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
+      drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
+      drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
+      drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
     }
-    drupal_add_js($module_drupal_path . '/includes/jqueryUI/sort.js', 'file');
+    drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/sort.js', 'file');
   }
 
   $form['appearance']['uicolor'] = array(
@@ -767,6 +798,19 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     ),
     '#description' => t('The toolbar will start in an expanded or collapsed state.'),
   );
+
+  if (ckeditor_get_version() == 4) {
+    $form['appearance']['use_divarea'] = array(
+      '#type' => 'radios',
+      '#title' => t('"Div-based" editor'),
+      '#default_value' => !empty($profile->settings['use_divarea']) ? $profile->settings['use_divarea'] : 't',
+      '#options' => array(
+        't' => t('Enabled'),
+        'f' => t('Disabled')
+      ),
+      '#description' => t("Loading editor into <code>div</code> instead of <code>iframe</code>.")
+    );
+  }
 
   $form['appearance']['width'] = array(
     '#type' => 'textfield',
@@ -1136,27 +1180,30 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $form['advanced']['ckeditor_load_method'] = array(
-    '#type' => 'select',
-    '#title' => t('Loading method'),
-    '#default_value' => !empty($profile->settings['ckeditor_load_method']) ? $profile->settings['ckeditor_load_method'] : 'ckeditor.js',
-    '#options' => _ckeditor_load_methods(),
-    '#description' => t('Select the loading method of CKEditor. If the !ckeditor_basic_js file is used, only a small file is loaded initially and the rest of the editor is loaded later (see <strong>Loading timeout</strong>). This might be useful if CKEditor is disabled by default.', array(
-      '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
-        )
-    )
-  );
-  $form['advanced']['ckeditor_load_time_out'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Loading timeout'),
-    '#default_value' => !empty($profile->settings['ckeditor_load_time_out']) ? $profile->settings['ckeditor_load_time_out'] : "0",
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#description' => t('The time to wait (in seconds) to load the full editor code after the page is loaded, if the !ckeditor_basic_js file is used. If set to zero, the editor is loaded on demand.', array(
-      '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
-        )
-    )
-  );
+  if (ckeditor_get_version() == 3) {
+    $form['advanced']['ckeditor_load_method'] = array(
+      '#type' => 'select',
+      '#title' => t('Loading method'),
+      '#default_value' => !empty($profile->settings['ckeditor_load_method']) ? $profile->settings['ckeditor_load_method'] : 'ckeditor.js',
+      '#options' => _ckeditor_load_methods(),
+      '#description' => t('Select the loading method of CKEditor. If the !ckeditor_basic_js file is used, only a small file is loaded initially and the rest of the editor is loaded later (see <strong>Loading timeout</strong>). This might be useful if CKEditor is disabled by default.', array(
+        '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
+          )
+      )
+    );
+    $form['advanced']['ckeditor_load_time_out'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Loading timeout'),
+      '#default_value' => !empty($profile->settings['ckeditor_load_time_out']) ? $profile->settings['ckeditor_load_time_out'] : "0",
+      '#size' => 40,
+      '#maxlength' => 255,
+      '#description' => t('The time to wait (in seconds) to load the full editor code after the page is loaded, if the !ckeditor_basic_js file is used. If set to zero, the editor is loaded on demand.', array(
+        '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
+          )
+      )
+    );
+  }
+
   $form['advanced']['forcePasteAsPlainText'] = array(
     '#type' => 'select',
     '#title' => t('Force pasting as plain text'),
@@ -1298,14 +1345,15 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
     form_set_error('UserFilesPath', t('An absolute path to uploaded files is required.'));
   }
 
-  $load_methods = _ckeditor_load_methods();
-  if (!isset($load_methods[$edit['ckeditor_load_method']])) {
-    form_set_error('ckeditor_load_method', t('Set a valid loading method.'));
+  if (ckeditor_get_version() == 3) {
+    $load_methods = _ckeditor_load_methods();
+    if (!isset($load_methods[$edit['ckeditor_load_method']])) {
+      form_set_error('ckeditor_load_method', t('Set a valid loading method.'));
+    }
+    if (!preg_match('#\d+#', $edit['ckeditor_load_time_out'])) {
+      form_set_error('ckeditor_load_time_out', t('Enter a valid loading timeout in seconds.'));
+    }
   }
-  if (!preg_match('#\d+#', $edit['ckeditor_load_time_out'])) {
-    form_set_error('ckeditor_load_time_out', t('Enter a valid loading timeout in seconds.'));
-  }
-
   $toolbar = $edit['toolbar'];
   $toolbar = str_replace("'", '"', $toolbar);
   $toolbar = preg_replace('/(\w*)\s*\:/', '"${1}":', $toolbar);
@@ -1478,10 +1526,10 @@ function ckeditor_profile_delete($name) {
 
 function _ckeditor_load_methods() {
   $result = array('ckeditor.js' => 'ckeditor.js');
-  if (file_exists(ckeditor_path(TRUE) . '/ckeditor_basic.js')) {
+  if (file_exists(ckeditor_path('local') . '/ckeditor_basic.js')) {
     $result['ckeditor_basic.js'] = 'ckeditor_basic.js';
   }
-  if (file_exists(ckeditor_path(TRUE) . '/ckeditor_source.js')) {
+  if (file_exists(ckeditor_path('local') . '/ckeditor_source.js')) {
     $result['ckeditor_source.js'] = 'ckeditor_source.js (' . t('for developers only') . ')';
   }
   return $result;

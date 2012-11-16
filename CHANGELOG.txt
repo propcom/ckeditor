@@ -1,7 +1,8 @@
-2012-09-20
+2012-11-22
 New stable release 7.x-1.x
 
 New features:
+[#1847662] by dczepierga: Add support for CKEditor v4
 [#1577518] by dczepierga: Remove unused/unsupported hook_user from code
 [#1559700] by dczepierga: Disable HTML Entities conversion by default
 [#1692666] by dczepierga: Unset Ckeditor-Plugin upon module disabling/uninstalling

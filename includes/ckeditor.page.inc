@@ -43,12 +43,12 @@ function ckeditor_help_delegate($path, $arg) {
     case 'admin/config/content/ckeditor/edit/%':
     case 'admin/config/content/ckeditor/add':
       $output = '<p>' . t('CKEditor is highly configurable. The most commonly used features are listed below. You can also adjust CKEditor to your needs by changing the !ckeditor_module_config configuration file.', array(
-            '!ckeditor_module_config' => '<code>' . drupal_get_path('module', 'ckeditor') . '/ckeditor.config.js</code>',
+            '!ckeditor_module_config' => '<code>' . ckeditor_module_path('local') . '/ckeditor.config.js</code>',
               )
           ) .
           '</p><p>' .
           t('It is recommended to not edit the !ckeditor_config_file (!ckeditor_config_path) configuration file that is distributed with CKEditor, because you may overwrite it accidentally when you update the editor.', array(
-            '!ckeditor_config_path' => '<code>' . ckeditor_path(true) . '/config.js</code>',
+            '!ckeditor_config_path' => '<code>' . ckeditor_path('local') . '/config.js</code>',
             '!ckeditor_config_file' => '<code>config.js</code>',
               )
           ) .

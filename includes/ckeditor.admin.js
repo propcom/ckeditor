@@ -20,6 +20,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     if (typeof(CKEDITOR) == "undefined")
       return;
 
+    var editskinEditor;
     $('#edit-uicolor-textarea').show();
 
     Drupal.ckeditorUiColorOnChange = function() {
@@ -36,7 +37,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     if ( $("#edit-skin").val() == "kama" ){
       $("#edit-uicolor").removeAttr('disabled');
       $("#edit-uicolor").parent().removeClass('form-disabled');
-      CKEDITOR.replace("edit-uicolor-textarea",
+      editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
       {
         extraPlugins : 'uicolor',
         height: 60,
@@ -54,7 +55,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     else {
       $("#edit-uicolor").attr('disabled', 'disabled');
       $("#edit-uicolor").parent().addClass('form-disabled');
-      CKEDITOR.replace("edit-uicolor-textarea",
+      editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
       {
         height: 60,
         uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
@@ -70,11 +71,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     }
 
     $("#edit-skin").bind("change", function() {
-      CKEDITOR.instances["edit-uicolor-textarea"].destroy();
+      editskinEditor.destroy();
       if ( $("#edit-skin").val() == "kama" ){
         $("#edit-uicolor").removeAttr('disabled');
         $("#edit-uicolor").parent().removeClass('form-disabled');
-        CKEDITOR.replace("edit-uicolor-textarea",
+        editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
         {
           extraPlugins : 'uicolor',
           height: 60,
@@ -92,7 +93,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       else {
         $("#edit-uicolor").attr('disabled', 'disabled');
         $("#edit-uicolor").parent().addClass('form-disabled');
-        CKEDITOR.replace("edit-uicolor-textarea",
+        editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
         {
           height: 60,
           uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
@@ -110,7 +111,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
     $("#edit-uicolor").bind("change", function() {
       if (typeof(Drupal.settings.ckeditor_uicolor) != "undefined") {
-        CKEDITOR.instances["edit-uicolor-textarea"].setUiColor(Drupal.settings.ckeditor_uicolor[$(this).val()]);
+        editskinEditor.setUiColor(Drupal.settings.ckeditor_uicolor[$(this).val()]);
       }
       if ($(this).val() != "custom") {
         $('input[name$="uicolor_user"]').val("");

@@ -1,16 +1,15 @@
 /**
  * @file Plugin to count symbols, symbols without blanks and words
  */
-
 ( function(){
   var emptyHtml = '<span class="cke_empty">&nbsp;</span>';
-
   CKEDITOR.plugins.add( 'counter',
   {
     init : function( editor )
     {
       var spaceId = 'cke_counter_' + editor.name;
       var spaceElement;
+      var ckeditorEventThemeSpace = 'themeSpace';
       var getSpaceElement = function()
       {
         if ( !spaceElement )
@@ -18,7 +17,11 @@
         return spaceElement;
       };
 
-      editor.on( 'themeSpace', function( event )
+      if (Drupal.ckeditor_ver == 4) {
+        ckeditorEventThemeSpace = 'uiSpace';
+      }
+
+      editor.on( ckeditorEventThemeSpace, function( event )
       {
         if ( event.data.space == 'bottom' )
         {

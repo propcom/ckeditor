@@ -217,7 +217,7 @@ function ckeditor_requirements($phase) {
     $requirements['ckeditor']['severity'] = REQUIREMENT_OK;
 
     if (!_ckeditor_requirements_isinstalled()) {
-      $sourcepath = ckeditor_path(TRUE);
+      $sourcepath = ckeditor_path('local');
 
       $requirements['ckeditor']['description'] = t('CKEditor was not found in <code>%sourcepath</code>.', array('%sourcepath' => $sourcepath));
       $requirements['ckeditor']['severity'] = REQUIREMENT_ERROR;
@@ -270,15 +270,15 @@ function ckeditor_requirements($phase) {
  */
 function _ckeditor_requirements_getinstalledversion() {
   module_load_include('module', 'ckeditor');
-  $editor_path = ckeditor_path(TRUE, TRUE);
-  $jspath = $editor_path . '/ckeditor_basic.js';
+  $editor_path = ckeditor_path('local', TRUE);
+  $jspath = $editor_path . '/ckeditor.js';
 
   $configcontents = @file_get_contents($jspath);
   if (!$configcontents) {
     return NULL;
   }
   $matches = array();
-  if (preg_match('#,version:\'(.*?)\',#', $configcontents, $matches)) {
+  if (preg_match('#,version:[\'\"]{1}(.*?)[\'\"]{1},#', $configcontents, $matches)) {
     return $matches[1];
   }
   return NULL;
@@ -293,8 +293,7 @@ function _ckeditor_requirements_getinstalledversion() {
 function _ckeditor_requirements_ckfinder_config_check($profile_name) {
   global $base_url;
   module_load_include('module', 'ckeditor');
-  $ckfinder_full_path = ckfinder_path();
-  $config_path = $ckfinder_full_path . '/config.php';
+  $config_path = ckfinder_path('local') . '/config.php';
 
   if (!file_exists($config_path)) {
     return t('!ckfinder is not installed correctly: <code>!config</code> not found. Make sure that you uploaded all files and did not accidentally remove the configuration file.', array(
@@ -495,9 +494,9 @@ function ckeditor_update_7003() {
 
   $render = array();
   $render["%base_path%"] = base_path();
-  $render["%editor_path%"] = ckeditor_path(FALSE) . '/';
-  $render["%ckeditor_path%"] = drupal_get_path('module', 'ckeditor');
-  $render["%plugin_dir%"] = $render["%ckeditor_path%"] . '/plugins/';
+  $render["%editor_path%"] = ckeditor_path('relative') . '/';
+  $render["%ckeditor_path%"] = ckeditor_module_path('relative');
+  $render["%plugin_dir%"] = $render["%module_path%"] . '/plugins/';
 
   $result = db_query("SELECT * FROM {ckeditor_settings} WHERE name <> :name", array(':name' => 'CKEditor Global Profile'))->fetchAllAssoc('name');
 

@@ -165,7 +165,7 @@ function ckeditor_permission() {
     'description' => t('Allow users to customize CKEditor appearance.')
   );
 
-  if (file_exists(ckfinder_path())) {
+  if (file_exists(ckfinder_path('local'))) {
     $arr['allow CKFinder file uploads'] = array(
       'title' => t('CKFinder access'),
       'description' => t('Allow users to use CKFinder.')
@@ -183,6 +183,39 @@ function ckeditor_permission() {
 function ckeditor_help($path, $arg) {
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.page');
   return module_invoke('ckeditor', 'help_delegate', $path, $arg);
+}
+
+/**
+ * Check CKEditor version
+ */
+function ckeditor_get_version($main_version = FALSE) {
+  static $ckeditor_version = FALSE;
+
+  if ($ckeditor_version !== FALSE) {
+    if (!$main_version) {
+      return $ckeditor_version;
+    }
+    $version = explode('.', $ckeditor_version);
+    return trim($version[0]);
+  }
+
+  $editor_path = ckeditor_path('local', TRUE);
+  $jspath = $editor_path . '/ckeditor.js';
+
+  $configcontents = @file_get_contents($jspath);
+  if (!$configcontents) {
+    return $ckeditor_version = NULL;
+  }
+  $matches = array();
+  if (preg_match('#,version:[\'\"]{1}(.*?)[\'\"]{1},#', $configcontents, $matches)) {
+    $ckeditor_version = $matches[1];
+    if (!$main_version) {
+      return $ckeditor_version;
+    }
+    $version = explode('.', $ckeditor_version);
+    return trim($version[0]);
+  }
+  return $ckeditor_version = NULL;
 }
 
 /**
@@ -279,69 +312,106 @@ function ckeditor_profile_load($name = '', $clear = FALSE) {
 }
 
 /**
+ * Generate base path of the Drupal installation.
+ *
+ * @return
+ *   Path of the Drupal installation.
+ */
+function ckeditor_base_path($mode = 'relative') {
+  if ($mode == 'local') {
+    return $cke_base_local_path = '.';
+  }
+  return rtrim(base_path(), '/');
+}
+
+/**
+ * Generate module path of the CKEditor module.
+ *
+ * @return
+ *   Path of CKEditor module.
+ */
+function ckeditor_module_path($mode = 'relative') {
+  switch ($mode) {
+    default:
+    case 'relative':
+      return ckeditor_base_path('relative') . '/' . drupal_get_path('module', 'ckeditor');
+    case 'local':
+      return ckeditor_base_path('local') . '/' . drupal_get_path('module', 'ckeditor');
+    case 'url':
+      return drupal_get_path('module', 'ckeditor');
+  }
+}
+
+/**
+ * Generate library path of the Drupal installation.
+ *
+ * @return
+ *   Path of library in the Drupal installation.
+ */
+function ckeditor_library_path($mode = 'relative') {
+  switch ($mode) {
+    default:
+    case 'relative':
+      return ckeditor_base_path('relative') . '/sites/all/libraries';
+    case 'local':
+      return ckeditor_base_path('local') . '/sites/all/libraries';
+    case 'url':
+      return 'sites/all/libraries';
+  }
+}
+
+/**
  * Read the CKEditor path from the Global profile.
  *
  * @return
  *   Path to CKEditor folder.
  */
-function ckeditor_path($local = FALSE, $refresh = FALSE) {
-  static $cke_path;
-  static $cke_local_path;
+function ckeditor_path($mode = 'relative', $refresh = FALSE) {
+  static $cke_static;
 
-  if ($refresh || (!$cke_path)) {
-    $mod_path = drupal_get_path('module', 'ckeditor');
-    $lib_path = 'sites/all/libraries';
+  if (!isset($cke_static)) {
+    $cke_static = array();
+  }
+
+  if ($refresh || !isset($cke_static[$mode])) {
     $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
-
-    //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
-    //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
-    $cke_path = $mod_path . '/ckeditor';
-
-    //default: path to ckeditor subdirectory in the ckeditor module directory (relative to index.php)
-    //e.g.: sites/all/modules/ckeditor/ckeditor
-    $cke_local_path = $mod_path . '/ckeditor';
-
-    if ($global_profile) {
-      $gs = $global_profile->settings;
-
-      if (isset($gs['ckeditor_path'])) {
-        $tmp_path = $gs['ckeditor_path'];
-        $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => $mod_path, "%l" => $lib_path));
-        $tmp_path = str_replace('\\', '/', $tmp_path);
-        $tmp_path = str_replace('//', '/', $tmp_path);
-        $cke_path = $tmp_path;
-
-        if (empty($gs['ckeditor_local_path'])) {
-          //fortunately wildcards are used, we can easily get the right server path
-          if (FALSE !== strpos($gs['ckeditor_path'], "%m")) {
-            $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%m" => $mod_path));
+    switch ($mode) {
+      default:
+      case 'relative':
+        if ($global_profile && isset($global_profile->settings['ckeditor_path'])) {
+          $cke_path = $global_profile->settings['ckeditor_path'];
+          $cke_path = strtr($cke_path, array("%b" => ckeditor_base_path('relative'), "%m" => ckeditor_module_path('relative'), "%l" => ckeditor_library_path('relative')));
+          $cke_path = str_replace('\\', '/', $cke_path);
+          $cke_path = str_replace('//', '/', $cke_path);
+          return $cke_static[$mode] = $cke_path;
+        }
+        return $cke_static[$mode] = ckeditor_module_path('relative') . '/ckeditor';
+      case 'local':
+        if ($global_profile) {
+          if (!empty($global_profile->settings['ckeditor_local_path'])) {
+            return $cke_static[$mode] = $global_profile->settings['ckeditor_local_path'];
           }
-          if (FALSE !== strpos($gs['ckeditor_path'], "%l")) {
-            $gs['ckeditor_local_path'] = strtr($gs['ckeditor_path'], array("%l" => 'sites/all/libraries'));
+          if (isset($global_profile->settings['ckeditor_path'])) {
+            $cke_local_path = $global_profile->settings['ckeditor_path'];
+            $cke_local_path = strtr($cke_local_path, array("%b" => ckeditor_base_path('local'), "%m" => ckeditor_module_path('local'), "%l" => ckeditor_library_path('local')));
+            return $cke_static[$mode] = $cke_local_path;
           }
         }
-      }
-
-      //ckeditor_path is defined, but wildcards are not used, we need to try to find out where is
-      //the document root located and append ckeditor_path to it.
-      if (!empty($gs['ckeditor_local_path'])) {
-        $cke_local_path = $gs['ckeditor_local_path'];
-      }
-      elseif (!empty($gs['ckeditor_path'])) {
-        module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-        $local_path = ckeditor_resolve_url($gs['ckeditor_path'] . "/");
-        if (FALSE !== $local_path) {
-          $cke_local_path = $local_path;
+        return $cke_static[$mode] = ckeditor_module_path('local') . '/ckeditor';
+      case 'url':
+        if ($global_profile && isset($global_profile->settings['ckeditor_path'])) {
+          $cke_path = $global_profile->settings['ckeditor_path'];
+          $cke_path = strtr($cke_path, array("%m" => ckeditor_module_path('url'), "%l" => ckeditor_library_path('url')));
+          $cke_path = str_replace('\\', '/', $cke_path);
+          $cke_path = str_replace('//', '/', $cke_path);
+          //In D7 base path in URL mode is not needed, so we need to remove it with trailing slash (if exists)
+          $cke_path = str_replace(array("%b/", "%b"), '', $cke_path);
+          return $cke_static[$mode] = $cke_path;
         }
-      }
+        return $cke_static[$mode] = ckeditor_module_path('url') . '/ckeditor';
     }
   }
-  if ($local) {
-    return $cke_local_path;
-  }
-  else {
-    return $cke_path;
-  }
+  return $cke_static[$mode];
 }
 
 /**
@@ -350,72 +420,54 @@ function ckeditor_path($local = FALSE, $refresh = FALSE) {
  * @return
  *   Path to CKEditor plugins folder.
  */
-function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
-  static $cke_plugins_path;
-  static $cke_plugins_local_path;
+function ckeditor_plugins_path($mode = 'relative', $refresh = FALSE) {
+  static $cke_static;
 
-  if ($refresh || (!$cke_plugins_path)) {
-    $mod_path = drupal_get_path('module', 'ckeditor');
-    $lib_path = 'sites/all/libraries';
+  if (!isset($cke_static)) {
+    $cke_static = array();
+  }
+
+  if ($refresh || !isset($cke_static[$mode])) {
     $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
-
-    //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
-    //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
-    $cke_plugins_path = base_path() . $mod_path . '/plugins';
-
-    //default: path to plugins subdirectory in the ckeditor module directory (relative to index.php)
-    //e.g.: sites/all/modules/ckeditor/plugins
-    $cke_plugins_local_path = $mod_path . '/plugins';
-
-    if ($global_profile) {
-      $gs = $global_profile->settings;
-
-      if (isset($gs['ckeditor_plugins_path'])) {
-        $tmp_path = $gs['ckeditor_plugins_path'];
-        $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => $mod_path, "%l" => $lib_path));
-        $tmp_path = str_replace('\\', '/', $tmp_path);
-        $tmp_path = str_replace('//', '/', $tmp_path);
-        $tmp_path = rtrim($tmp_path, ' \/');
-        if (substr($tmp_path, 0, 1) != '/') {
-          $tmp_path = '/' . $tmp_path; //starts with '/'
+    switch ($mode) {
+      default:
+      case 'relative':
+        if ($global_profile && isset($global_profile->settings['ckeditor_plugins_path'])) {
+          $cke_plugins_path = $global_profile->settings['ckeditor_plugins_path'];
+          $cke_plugins_path = strtr($cke_plugins_path, array("%b" => ckeditor_base_path('relative'), "%m" => ckeditor_module_path('relative'), "%l" => ckeditor_library_path('relative')));
+          $cke_plugins_path = str_replace('\\', '/', $cke_plugins_path);
+          $cke_plugins_path = str_replace('//', '/', $cke_plugins_path);
+          $cke_plugins_path = rtrim($cke_plugins_path, ' \/');
+          return $cke_static[$mode] = $cke_plugins_path;
         }
-        $cke_plugins_path = $tmp_path;
-
-        if (empty($gs['ckeditor_plugins_local_path'])) {
-          //fortunately wildcards are used, we can easily get the right server path
-          if (FALSE !== strpos($gs['ckeditor_plugins_path'], "%m")) {
-            $gs['ckeditor_plugins_local_path'] = strtr($gs['ckeditor_plugins_path'], array("%m" => $mod_path));
+        return $cke_static[$mode] = ckeditor_module_path('relative') . '/plugins';
+      case 'local':
+        if ($global_profile) {
+          if (!empty($global_profile->settings['ckeditor_plugins_local_path'])) {
+            return $cke_static[$mode] = $global_profile->settings['ckeditor_plugins_local_path'];
           }
-          if (FALSE !== strpos($gs['ckeditor_plugins_path'], "%b")) {
-            $gs['ckeditor_plugins_local_path'] = strtr($gs['ckeditor_plugins_path'], array("%b" => "."));
-          }
-          if (FALSE !== strpos($gs['ckeditor_plugins_path'], "%l")) {
-            $gs['ckeditor_plugins_local_path'] = strtr($gs['ckeditor_plugins_path'], array("%l" => "sites/all/libraries"));
+          if (isset($global_profile->settings['ckeditor_plugins_path'])) {
+            $cke_plugins_local_path = $global_profile->settings['ckeditor_plugins_path'];
+            $cke_plugins_local_path = strtr($cke_plugins_local_path, array("%b" => ckeditor_base_path('local'), "%m" => ckeditor_module_path('local'), "%l" => ckeditor_library_path('local')));
+            return $cke_static[$mode] = $cke_plugins_local_path;
           }
         }
-      }
-
-      //ckeditor_plugins_path is defined, but wildcards are not used, we need to try to find out where is
-      //the document root located and append ckeditor_plugins_path to it.
-      if (!empty($gs['ckeditor_plugins_local_path'])) {
-        $cke_plugins_local_path = $gs['ckeditor_plugins_local_path'];
-      }
-      elseif (!empty($gs['ckeditor_plugins_path'])) {
-        module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
-        $local_path = ckeditor_resolve_url($gs['ckeditor_plugins_path'] . "/");
-        if (FALSE !== $local_path) {
-          $cke_plugins_local_path = $local_path;
+        return $cke_static[$mode] = ckeditor_module_path('local') . '/plugins';
+      case 'url':
+        if ($global_profile && isset($global_profile->settings['ckeditor_plugins_path'])) {
+          $cke_plugins_path = $global_profile->settings['ckeditor_plugins_path'];
+          $cke_plugins_path = strtr($cke_plugins_path, array("%m" => ckeditor_module_path('url'), "%l" => ckeditor_library_path('url')));
+          $cke_plugins_path = str_replace('\\', '/', $cke_plugins_path);
+          $cke_plugins_path = str_replace('//', '/', $cke_plugins_path);
+          $cke_plugins_path = rtrim($cke_plugins_path, ' \/');
+          //In D7 base path in URL mode is not needed, so we need to remove it with trailing slash (if exists)
+          $cke_plugins_path = str_replace(array("%b/", "%b"), '', $cke_plugins_path);
+          return $cke_static[$mode] = $cke_plugins_path;
         }
-      }
+        return $cke_static[$mode] = ckeditor_module_path('url') . '/plugins';
     }
   }
-
-  if ($local) {
-    return $cke_plugins_local_path;
-  }
-  else {
-    return $cke_plugins_path;
-  }
+  return $cke_static[$mode];
 }
 
 /**
@@ -424,32 +476,52 @@ function ckeditor_plugins_path($local = FALSE, $refresh = FALSE) {
  * @return
  *   Path to CKFinder folder.
  */
-function ckfinder_path($refresh = FALSE) {
-  static $ckf_path;
+function ckfinder_path($mode = 'relative', $refresh = FALSE) {
+ static $cke_static;
 
-  if ($refresh || (!$ckf_path)) {
-    $mod_path = drupal_get_path('module', 'ckeditor');
-    $lib_path = 'sites/all/libraries';
-    $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
-
-    //default: path to ckeditor subdirectory in the ckeditor module directory (starting from the document root)
-    //e.g. for http://example.com/drupal it will be /drupal/sites/all/modules/ckeditor/ckeditor
-    $ckf_path = $mod_path . '/ckfinder';
-
-    if ($global_profile) {
-      $gs = $global_profile->settings;
-
-      if (isset($gs['ckfinder_path'])) {
-        $tmp_path = $gs['ckfinder_path'];
-        $tmp_path = strtr($tmp_path, array("%b" => base_path(), "%m" => $mod_path, "%l" => $lib_path));
-        $tmp_path = str_replace('\\', '/', $tmp_path);
-        $tmp_path = str_replace('//', '/', $tmp_path);
-        $ckf_path = $tmp_path;
-      }
-    }
+  if (!isset($cke_static)) {
+    $cke_static = array();
   }
 
-  return $ckf_path;
+  if ($refresh || !isset($cke_static[$mode])) {
+    $global_profile = ckeditor_profile_load('CKEditor Global Profile', $refresh);
+    switch ($mode) {
+      default:
+      case 'relative':
+        if ($global_profile && isset($global_profile->settings['ckfinder_path'])) {
+          $ckfinder_path = $global_profile->settings['ckfinder_path'];
+          $ckfinder_path = strtr($ckfinder_path, array("%b" => ckeditor_base_path('relative'), "%m" => ckeditor_module_path('relative'), "%l" => ckeditor_library_path('relative')));
+          $ckfinder_path = str_replace('\\', '/', $ckfinder_path);
+          $ckfinder_path = str_replace('//', '/', $ckfinder_path);
+          return $cke_static[$mode] = $ckfinder_path;
+        }
+        return $cke_static[$mode] = ckeditor_module_path('relative') . '/ckfinder';
+      case 'local':
+        if ($global_profile) {
+          if (!empty($global_profile->settings['ckfinder_local_path'])) {
+            return $cke_static[$mode] = $global_profile->settings['ckfinder_local_path'];
+          }
+          if (isset($global_profile->settings['ckfinder_path'])) {
+            $ckfinder_path = $global_profile->settings['ckfinder_path'];
+            $ckfinder_path = strtr($ckfinder_path, array("%b" => ckeditor_base_path('local'), "%m" => ckeditor_module_path('local'), "%l" => ckeditor_library_path('local')));
+            return $cke_static[$mode] = $ckfinder_path;
+          }
+        }
+        return $cke_static[$mode] = ckeditor_module_path('local') . '/ckfinder';
+      case 'url':
+        if ($global_profile && isset($global_profile->settings['ckfinder_path'])) {
+          $ckfinder_path = $global_profile->settings['ckfinder_path'];
+          $ckfinder_path = strtr($ckfinder_path, array("%m" => ckeditor_module_path('url'), "%l" => ckeditor_library_path('url')));
+          $ckfinder_path = str_replace('\\', '/', $cke_plugins_path);
+          $ckfinder_path = str_replace('//', '/', $cke_plugins_path);
+          //In D7 base path in URL mode is not needed, so we need to remove it with trailing slash (if exists)
+          $ckfinder_path = str_replace(array("%b/", "%b"), '', $ckfinder_path);
+          return $cke_static[$mode] = $ckfinder_path;
+        }
+        return $cke_static[$mode] = ckeditor_module_path('url') . '/ckfinder';
+    }
+  }
+  return $cke_static[$mode];
 }
 
 /**
