@@ -1,4 +1,4 @@
-2012-11-22
+2012-11-27
 New stable release 7.x-1.x
 
 New features:
@@ -8,6 +8,7 @@ New features:
 [#1692666] by dczepierga: Unset Ckeditor-Plugin upon module disabling/uninstalling
 
 Bug fixes:
+[#1844390] by dczepierga: Undefined index: loadPlugins in ckeditor_modules_enabled()
 [#1790082] by dczepierga: Order of filters calling in ckeditor filter XSS function
 [#1728318] by dczepierga: Text format filters are not properly given $format; cannot look up their per-format settings
 [#1698600] by azovsky: Undefined index: format in ckeditor_pre_render_text_format()
