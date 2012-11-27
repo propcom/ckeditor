@@ -102,6 +102,39 @@ function ckeditor_perm() {
 }
 
 /**
+ * Check CKEditor version
+ */
+function ckeditor_get_version($main_version = FALSE) {
+  static $ckeditor_version = FALSE;
+
+  if ($ckeditor_version !== FALSE) {
+    if (!$main_version) {
+      return $ckeditor_version;
+    }
+    $version = explode('.', $ckeditor_version);
+    return trim($version[0]);
+  }
+
+  $editor_path = ckeditor_path(TRUE, TRUE);
+  $jspath = $editor_path . '/ckeditor.js';
+
+  $configcontents = @file_get_contents($jspath);
+  if (!$configcontents) {
+    return $ckeditor_version = NULL;
+  }
+  $matches = array();
+  if (preg_match('#,version:[\'\"]{1}(.*?)[\'\"]{1},#', $configcontents, $matches)) {
+    $ckeditor_version = $matches[1];
+    if (!$main_version) {
+      return $ckeditor_version;
+    }
+    $version = explode('.', $ckeditor_version);
+    return trim($version[0]);
+  }
+  return $ckeditor_version = NULL;
+}
+
+/**
  * Implementation of hook_elements().
  *  Replace the textarea with CKEditor using a callback function (ckeditor_process_textarea)
  */
@@ -597,7 +630,7 @@ function ckeditor_process_textarea($element) {
       drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', variable_get('preprocess_js', FALSE) ? 'header' : 'footer');
       /* In D6 drupal_add_js() can't add external JS, in D7 use drupal_add_js(...,'external') */
       if ( $conf['popup'] != 't' ) {
-        if (isset($conf['ckeditor_load_method'])) {
+        if (isset($conf['ckeditor_load_method']) && file_exists($editor_local_path . '/' . $conf['ckeditor_load_method'])) {
           drupal_add_js($editor_local_path . '/' . $conf['ckeditor_load_method'], 'module', 'header', FALSE, TRUE, FALSE);
           if ($conf['ckeditor_load_method'] == 'ckeditor_basic.js') {
             drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $conf['ckeditor_load_time_out'] . ';', 'inline');
@@ -670,6 +703,15 @@ function ckeditor_process_textarea($element) {
     if (isset($conf['loadPlugins'])) {
       $settings[$textarea_id]['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
     }
+    else {
+      $settings['loadPlugins'] = array();
+    }
+
+    //add support for divarea plugin from CKE4
+    if (((isset($conf['use_divarea']) && $conf['use_divarea'] == 't') || !isset($conf['use_divarea'])) && file_exists($editor_path . '/plugins/divarea/plugin.js')) {
+      $settings['loadPlugins']['divarea'] = array('name' => 'divarea', 'path' => $host . $editor_path . '/plugins/divarea/plugin.js', 'buttons' => FALSE, 'default' => 't');
+    }
+
     if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
       $settings[$textarea_id]['entities'] = FALSE;
       $settings[$textarea_id]['entities_greek'] = FALSE;

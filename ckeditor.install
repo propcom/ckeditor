@@ -356,14 +356,14 @@ function ckeditor_requirements($phase) {
 function _ckeditor_requirements_getinstalledversion() {
   module_load_include('module', 'ckeditor');
   $editor_path = ckeditor_path(TRUE, TRUE);
-  $jspath = $editor_path .'/ckeditor_basic.js';
+  $jspath = $editor_path .'/ckeditor.js';
 
   $configcontents = @file_get_contents($jspath);
   if (!$configcontents) {
     return NULL;
   }
   $matches = array();
-  if (preg_match('#,version:\'(.*?)\',#', $configcontents, $matches)) {
+  if (preg_match('#,version:[\'\"]{1}(.*?)[\'\"]{1},#', $configcontents, $matches)) {
     return $matches[1];
   }
   return NULL;

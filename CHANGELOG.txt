@@ -1,9 +1,10 @@
 -----------------------------
- 2012-07-03
+ 2012-11-27
  New stable release: 6.x-1.x
 -----------------------------
 
 New features:
+[#1851606] by dczepierga: Add support for CKEditor v4
 [#1514376] by dczepierga: Change ckeditor xss url to be passed through url()
 
 Bug fixes:

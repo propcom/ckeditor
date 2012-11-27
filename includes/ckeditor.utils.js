@@ -3,6 +3,7 @@ Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 Drupal.ckeditor = (typeof(CKEDITOR) != 'undefined');
+Drupal.ckeditor_ver = false;
 // this object will store teaser information
 Drupal.ckeditorTeaser = {
   lookup: {},
@@ -41,7 +42,13 @@ Drupal.ckeditorInit = function(textarea_id) {
   {
     configLoaded  : function(ev)
     {
-      ev.editor.addCss(ev.editor.config.extraCss);
+      Drupal.ckeditor_ver = CKEDITOR.version.split('.')[0];
+      if (Drupal.ckeditor_ver == 4) {
+        CKEDITOR.addCss(ev.editor.config.extraCss);
+      }
+      else {
+        ev.editor.addCss(ev.editor.config.extraCss);
+      }
     },
     instanceReady : function(ev)
     {

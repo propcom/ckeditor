@@ -671,6 +671,19 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#description' => t('The toolbar will start in an expanded or collapsed state.'),
   );
 
+  if (ckeditor_get_version() == 4) {
+    $form['appearance']['use_divarea'] = array(
+      '#type' => 'radios',
+      '#title' => t('"Div-based" editor'),
+      '#default_value' => !empty($profile->settings['use_divarea']) ? $profile->settings['use_divarea'] : 't',
+      '#options' => array(
+        't' => t('Enabled'),
+        'f' => t('Disabled')
+      ),
+      '#description' => t("Loading editor into <code>div</code> instead of <code>iframe</code>.")
+    );
+  }
+
   $form['appearance']['width'] = array(
     '#type' => 'textfield',
     '#title' => t('Editor width'),
@@ -1055,29 +1068,32 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $form['advanced']['ckeditor_load_method'] = array(
-    '#type' => 'select',
-    '#title' => t('Loading method'),
-    '#default_value' => !empty($profile->settings['ckeditor_load_method']) ? $profile->settings['ckeditor_load_method'] : 'ckeditor.js',
-    '#options' => _ckeditor_load_methods(),
-    '#description' => t('Select the loading method of CKEditor. If the !ckeditor_basic_js file is used, only a small file is loaded initially and the rest of the editor is loaded later (see <strong>Loading timeout</strong>). This might be useful if CKEditor is disabled by default.',
-      array(
-        '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
+  if (ckeditor_get_version() == 3) {
+    $form['advanced']['ckeditor_load_method'] = array(
+      '#type' => 'select',
+      '#title' => t('Loading method'),
+      '#default_value' => !empty($profile->settings['ckeditor_load_method']) ? $profile->settings['ckeditor_load_method'] : 'ckeditor.js',
+      '#options' => _ckeditor_load_methods(),
+      '#description' => t('Select the loading method of CKEditor. If the !ckeditor_basic_js file is used, only a small file is loaded initially and the rest of the editor is loaded later (see <strong>Loading timeout</strong>). This might be useful if CKEditor is disabled by default.',
+        array(
+          '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
+        )
       )
-    )
-  );
-  $form['advanced']['ckeditor_load_time_out'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Loading timeout'),
-    '#default_value' => !empty($profile->settings['ckeditor_load_time_out']) ? $profile->settings['ckeditor_load_time_out'] : "0",
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#description' => t('The time to wait (in seconds) to load the full editor code after the page is loaded, if the !ckeditor_basic_js file is used. If set to zero, the editor is loaded on demand.',
-      array(
-        '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
+    );
+    $form['advanced']['ckeditor_load_time_out'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Loading timeout'),
+      '#default_value' => !empty($profile->settings['ckeditor_load_time_out']) ? $profile->settings['ckeditor_load_time_out'] : "0",
+      '#size' => 40,
+      '#maxlength' => 255,
+      '#description' => t('The time to wait (in seconds) to load the full editor code after the page is loaded, if the !ckeditor_basic_js file is used. If set to zero, the editor is loaded on demand.',
+        array(
+          '!ckeditor_basic_js' => '<code>ckeditor_basic.js</code>'
+        )
       )
-    )
-  );
+    );
+  }
+
   $form['advanced']['forcePasteAsPlainText'] = array(
     '#type' => 'select',
     '#title' => t('Force pasting as plain text'),
@@ -1237,14 +1253,16 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
       form_set_error('UserFilesPath', t('An absolute path to uploaded files is required.'));
     }
   }
-  $load_methods=_ckeditor_load_methods();
-  if (!isset($load_methods[$edit['ckeditor_load_method']])) {
-    form_set_error('ckeditor_load_method', t('Set a valid loading method.'));
+  
+  if (ckeditor_get_version() == 3) {
+    $load_methods=_ckeditor_load_methods();
+    if (!isset($load_methods[$edit['ckeditor_load_method']])) {
+      form_set_error('ckeditor_load_method', t('Set a valid loading method.'));
+    }
+    if (!preg_match('#\d+#', $edit['ckeditor_load_time_out'])) {
+      form_set_error('ckeditor_load_time_out', t('Enter a valid loading timeout in seconds.'));
+    }
   }
-  if (!preg_match('#\d+#', $edit['ckeditor_load_time_out'])) {
-    form_set_error('ckeditor_load_time_out', t('Enter a valid loading timeout in seconds.'));
-  }
-
   if (!preg_match('#^\s*\[(?:\s*(?:\{\s*[\w:\'" ,]*\s*\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]\s*\}|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#U', $edit['toolbar']) && !preg_match('#^\s*\[(?:\s*(?:\[(?:\s*([\'\"\"])(?:\w+|-)\1\s*[,]?\s*)+\]|([\'\"\"])\/\2)\s*[,]?\s*)+\]\s*$#', $edit['toolbar'])) {
     form_set_error('toolbar', t('Enter a valid toolbar configuration.'));
   }
