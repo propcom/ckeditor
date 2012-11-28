@@ -535,7 +535,7 @@ function ckeditor_load_plugins($render = FALSE) {
  */
 function ckeditor_plugins_render($plugins) {
   $render = array();
-  $render["%base_path%"] = ckeditor_base_path('relative');
+  $render["%base_path%"] = ckeditor_base_path('relative') . '/';
   $render["%editor_path%"] = ckeditor_path('relative') . '/';
   $render["%module_path%"] = ckeditor_module_path('relative');
   $render["%plugin_dir%"] = $render["%module_path%"] . '/plugins/';
