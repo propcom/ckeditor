@@ -3,7 +3,8 @@ Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 (function ($) {
-  CKEDITOR.on( 'dialogDefinition', function( ev )
+  Drupal.ckeditor_ver = false;
+  CKEDITOR.on('dialogDefinition', function(ev)
   {
     var dialogName = ev.data.name;
     var dialogDefinition = ev.data.definition;
@@ -23,6 +24,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     var editskinEditor;
     $('#edit-uicolor-textarea').show();
 
+    Drupal.ckeditor_ver = Drupal.settings.ckeditor_version.split('.')[0];
+
     Drupal.ckeditorUiColorOnChange = function() {
       var color = CKEDITOR.instances["edit-uicolor-textarea"].getUiColor();
       $("#edit-uicolor").val("custom");
@@ -34,94 +37,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       }
     };
 
-    if ( $("#edit-skin").val() == "kama" ){
-      $("#edit-uicolor").removeAttr('disabled');
-      $("#edit-uicolor").parent().removeClass('form-disabled');
-      editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
-      {
-        extraPlugins : 'uicolor',
-        height: 60,
-        uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
-        width: 400,
-        toolbar : [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList'],[ 'UIColor' ]],
-        skin: $("#edit-skin").val(),
-        on:
-        {
-          focus : Drupal.ckeditorUiColorOnChange,
-          blur : Drupal.ckeditorUiColorOnChange
-        }
-      });
-    }
-    else {
-      $("#edit-uicolor").attr('disabled', 'disabled');
-      $("#edit-uicolor").parent().addClass('form-disabled');
-      editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
-      {
-        height: 60,
-        uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
-        width: 400,
-        toolbar : [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList']],
-        skin: $("#edit-skin").val(),
-        on:
-        {
-          focus : Drupal.ckeditorUiColorOnChange,
-          blur : Drupal.ckeditorUiColorOnChange
-        }
-      });
-    }
+    Drupal.editSkinEditorInit = function() {
+      var skinframe_src = $('#skinframe').attr('src');
+      skinframe_src = skinframe_src.replace(/skin=[^&]+/, 'skin='+$("#edit-skin").val());
+      if ($('#edit-uicolor').val() == 'custom') {
+        skinframe_src = skinframe_src.replace(/uicolor=[^&]+/, 'uicolor='+$('input[name$="uicolor_user"]').val().replace('#', '') || 'D3D3D3');
+      }
+      else {
+        skinframe_src = skinframe_src.replace(/uicolor=[^&]+/, 'uicolor=D3D3D3');
+      }
+      $('#skinframe').attr('src', skinframe_src);
 
-    $("#edit-skin").bind("change", function() {
-      editskinEditor.destroy();
-      if ( $("#edit-skin").val() == "kama" ){
+      if (Drupal.ckeditor_ver == 4) {
         $("#edit-uicolor").removeAttr('disabled');
         $("#edit-uicolor").parent().removeClass('form-disabled');
-        editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
-        {
-          extraPlugins : 'uicolor',
-          height: 60,
-          uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
-          width: 400,
-          toolbar: [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList'],[ 'UIColor' ]],
-          skin: $("#edit-skin").val(),
-          on:
-          {
-            focus : Drupal.ckeditorUiColorOnChange,
-            blur : Drupal.ckeditorUiColorOnChange
-          }
-        });
       }
       else {
-        $("#edit-uicolor").attr('disabled', 'disabled');
-        $("#edit-uicolor").parent().addClass('form-disabled');
-        editskinEditor = CKEDITOR.replace("edit-uicolor-textarea",
-        {
-          height: 60,
-          uiColor: $('input[name$="uicolor_user"]').val() || '#D3D3D3',
-          width: 400,
-          toolbar: [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList']],
-          skin: $("#edit-skin").val(),
-          on:
-          {
-            focus : Drupal.ckeditorUiColorOnChange,
-            blur : Drupal.ckeditorUiColorOnChange
-          }
-        });
-      }
-    });
-
-    $("#edit-uicolor").bind("change", function() {
-      if (typeof(Drupal.settings.ckeditor_uicolor) != "undefined") {
-        editskinEditor.setUiColor(Drupal.settings.ckeditor_uicolor[$(this).val()]);
-      }
-      if ($(this).val() != "custom") {
-        $('input[name$="uicolor_user"]').val("");
-      }
-      else {
-        var color = CKEDITOR.instances["edit-uicolor-textarea"].getUiColor();
-        if (typeof(color) != "undefined") {
-          $('input[name$="uicolor_user"]').val(color);
+        if ($("#edit-skin").val() == "kama") {
+          $("#edit-uicolor").removeAttr('disabled');
+          $("#edit-uicolor").parent().removeClass('form-disabled');
+        }
+        else {
+          $("#edit-uicolor").attr('disabled', 'disabled');
+          $("#edit-uicolor").parent().addClass('form-disabled');
         }
       }
+    };
+
+    Drupal.editSkinEditorInit();
+
+    $("#edit-skin, #edit-uicolor").bind("change", function() {
+      Drupal.editSkinEditorInit();
     });
 
     $("#input-formats :checkbox").change(function() {

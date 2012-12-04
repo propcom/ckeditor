@@ -501,6 +501,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
   $module_drupal_path = ckeditor_module_path('relative');
   $module_drupal_url_path = ckeditor_module_path('url');
 
+  drupal_add_js(array('ckeditor_version' => ckeditor_get_version()), 'setting');
+
   $skin_options = ckeditor_load_skin_options();
   $lang_options = ckeditor_load_lang_options();
 
@@ -727,13 +729,16 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         )
     ),
   );
-  $form['appearance']['uicolor_textarea'] = array(
-    '#type' => 'textarea',
-    '#title' => '',
-    '#default_value' => 'Click the <strong>UI Color Picker</strong> button to set your color preferences.',
-    '#attributes' => array('style' => 'display:none', 'class' => array('ckeditor_ui_demo')),
-    '#resizable' => FALSE,
-    '#wysiwyg' => FALSE
+  $skinframe_url = url('admin/config/content/ckeditor/skinframe', array(
+    'query' => array(
+      'token' => drupal_get_token('ckeditorSkinframeCall'),
+      'skin' => 'kama',
+      'uicolor' => (!empty($profile->settings['uicolor_user']) && $profile->settings['uicolor'] == 'custom') ? ltrim($profile->settings['uicolor_user'], '#') : 'D3D3D3'
+    )
+  ));
+  $form['appearance']['skinframe'] = array(
+    '#markup' => '<iframe frameborder="0" id="skinframe" marginheight="0" marginwidth="0" src="' . $skinframe_url . '" style="height:500px;width:700px;"></iframe><br/>',
+    '#description' => '',
   );
   $form['appearance']['uicolor_user'] = array(
     '#type' => 'hidden',
@@ -1683,4 +1688,70 @@ function _ckeditor_admin_profile_form_security_filters(&$form, $profile, $securi
       );
     }
   }
+}
+
+function ckeditor_skinframe() {
+  header('Content-Type: text/html; charset=utf-8');
+
+  if (!isset($_GET['token']) || !drupal_valid_token($_GET['token'], 'ckeditorSkinframeCall')) {
+    exit;
+  }
+
+  $editor_path = ckeditor_path('relative');
+  $module_drupal_path = ckeditor_module_path('relative');
+
+  $html = "<!DOCTYPE html>";
+  $html .= "<head>";
+  $html .= "<script src=\"{$editor_path}/ckeditor.js\"></script>";
+  $html .= "</head>";
+  $html .= "<body>";
+  $html .= "<input type=\"hidden\" name=\"uicolor_user\"/>";
+  $html .= "<div id=\"editor\" style=\"height: 200px;\">Click the <strong>UI Color Picker</strong> button to set your color preferences.</div>";
+  $html .= "
+<script>
+var skin = window.location.search.match(/skin=([^&]*)/)[1];
+var uicolor = window.location.search.match(/uicolor=([^&]*)/)[1];
+var ckeditorUiColorOnChange = function() {
+  var color = CKEDITOR.instances['editor'].getUiColor();
+  if (typeof(color) != 'undefined') {
+    document.getElementsByName('uicolor_user').value = parent.document.getElementsByName('uicolor_user')[0].value = color;
+    var edit_uicolor = parent.document.getElementById('edit-uicolor');
+    for (i=0; i<edit_uicolor.options.length; i++) {
+      if (edit_uicolor[i].value == 'custom') {
+        edit_uicolor.selectedIndex = i;
+        edit_uicolor[i].selected = 'selected';
+        break;
+      }
+    }
+  }
+};
+CKEDITOR.replace('editor', {
+  extraPlugins : 'uicolor',
+  height: 400,
+  uiColor: '#' + uicolor,
+  toolbar : [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList'],[ 'UIColor' ]],
+  skin: skin,
+  on: {
+    configLoaded: function(ev) {
+      var ckeditor_ver = CKEDITOR.version.split('.')[0];
+      if (ckeditor_ver == 4) {
+        CKEDITOR.plugins.addExternal('uicolor', '{$module_drupal_path}/includes/uicolor/', 'plugin.js');
+        if (uicolor.length == 0 || uicolor == 'default') {
+          delete ev.editor.config.uiColor;
+        }
+      }
+      else {
+        if (skin != 'kama') {
+          ev.editor.config.toolbar = [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList']];
+        }
+      }
+    },
+    blur: ckeditorUiColorOnChange,
+    focus: ckeditorUiColorOnChange
+  }
+});
+</script>";
+  $html .= "</body>";
+  $html .= "</html>";
+  echo $html;
 }
