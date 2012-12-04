@@ -228,7 +228,9 @@ Drupal.ckeditorOff = function(textarea_id) {
  * @param object textarea_settings
  */
 Drupal.ckeditorLoadPlugins = function(textarea_settings) {
-  textarea_settings.extraPlugins = '';
+  if (typeof(textarea_settings.extraPlugins) == 'undefined') {
+    textarea_settings.extraPlugins = '';
+  }
   if (typeof CKEDITOR.plugins != 'undefined') {
     for (var plugin in textarea_settings['loadPlugins']) {
       textarea_settings.extraPlugins += (textarea_settings.extraPlugins) ? ',' + textarea_settings['loadPlugins'][plugin]['name'] : textarea_settings['loadPlugins'][plugin]['name'];
