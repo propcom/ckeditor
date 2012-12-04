@@ -96,8 +96,18 @@ function ckeditor_profile_overview() {
   if ($profiles) {
     $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
     $header = array(t('Profile'), t('Input format'), t('Operations'));
+    $skins = ckeditor_load_skin_options();
     foreach ($profiles as $p) {
       if ($p->name !== "CKEditor Global Profile") {
+        if (isset($p->settings['skin']) && !array_key_exists($p->settings['skin'], $skins)) {
+          drupal_set_message(t(
+            'The `!profile` profile is using `!skin` skin which cannot be found. Please !profile_settings.', array(
+              '!profile' => $p->name,
+              '!skin' => $p->settings['skin'],
+              '!profile_settings' => l(t('update your settings'), 'admin/config/content/ckeditor/edit/' . urlencode($p->name))
+            )
+          ), 'warning');
+        }
         $rows[] = array(
           array('data' => $p->name, 'valign' => 'top'),
           array('data' => implode("<br />\n", $p->input_formats)),
