@@ -1,4 +1,4 @@
-2012-11-28
+2012-12-04
 New stable release 7.x-1.x
 
 New features:
@@ -8,6 +8,7 @@ New features:
 [#1692666] by dczepierga: Unset Ckeditor-Plugin upon module disabling/uninstalling
 
 Bug fixes:
+[#1857910] by dczepierga: Using extraPlugins config option in Custom JavaScript (Advanced options) not work
 [#1850626] by dczepierga: Wrong path on external plugins loaded by hook
 [#1844390] by dczepierga: Undefined index: loadPlugins in ckeditor_modules_enabled()
 [#1790082] by dczepierga: Order of filters calling in ckeditor filter XSS function

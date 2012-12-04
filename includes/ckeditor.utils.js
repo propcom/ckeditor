@@ -190,7 +190,9 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
 * @param object textarea_settings
 */
   Drupal.ckeditorLoadPlugins = function(textarea_settings) {
-    textarea_settings.extraPlugins = '';
+    if (typeof(textarea_settings.extraPlugins) == 'undefined') {
+      textarea_settings.extraPlugins = '';
+    }
     if (typeof CKEDITOR.plugins != 'undefined') {
       for (var plugin in textarea_settings['loadPlugins']) {
         if (typeof(textarea_settings['loadPlugins'][plugin]['active']) == 'undefined' || textarea_settings['loadPlugins'][plugin]['active'] == 1) {
