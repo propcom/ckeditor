@@ -48,11 +48,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       }
       $('#skinframe').attr('src', skinframe_src);
 
-      if (Drupal.ckeditor_ver == 4) {
-        $("#edit-uicolor").removeAttr('disabled');
-        $("#edit-uicolor").parent().removeClass('form-disabled');
-      }
-      else {
+      if (Drupal.ckeditor_ver == 3) {
         if ($("#edit-skin").val() == "kama") {
           $("#edit-uicolor").removeAttr('disabled');
           $("#edit-uicolor").parent().removeClass('form-disabled');
@@ -61,6 +57,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
           $("#edit-uicolor").attr('disabled', 'disabled');
           $("#edit-uicolor").parent().addClass('form-disabled');
         }
+      }
+      else {
+        $("#edit-uicolor").removeAttr('disabled');
+        $("#edit-uicolor").parent().removeClass('form-disabled');
       }
     };
 

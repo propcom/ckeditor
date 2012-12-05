@@ -12,10 +12,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     requires : [ 'dialog', 'fakeobjects', 'htmlwriter' ],
     init: function( editor )
     {
-      var addCssObj = editor;
+      var addCssObj = CKEDITOR;
 
-      if (Drupal.ckeditor_ver == 4) {
-        addCssObj = CKEDITOR;
+      if (Drupal.ckeditor_ver == 3) {
+        addCssObj = editor;
       }
       addCssObj.addCss(
         'img.cke_mediaembed' +

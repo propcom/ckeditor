@@ -7,9 +7,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @file Plugin for inserting Drupal teaser and page breaks.
  */
 ( function() {
-  var pluginRequires = [ 'fakeobjects', 'htmldataprocessor' ];
-  if (Drupal.ckeditor_ver == 4) {
-    pluginRequires = [ 'fakeobjects' ];
+  var pluginRequires = [ 'fakeobjects' ];
+  if (Drupal.ckeditor_ver == 3) {
+    pluginRequires = [ 'fakeobjects', 'htmldataprocessor' ];
   }
 
   CKEDITOR.plugins.add( 'drupalbreaks',
@@ -18,10 +18,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
     init : function( editor )
     {
-      var addCssObj = editor;
+      var addCssObj = CKEDITOR;
 
-      if (Drupal.ckeditor_ver == 4) {
-        addCssObj = CKEDITOR;
+      if (Drupal.ckeditor_ver == 3) {
+        addCssObj = editor;
       }
       // Add the styles that renders our fake objects.
       addCssObj.addCss(
