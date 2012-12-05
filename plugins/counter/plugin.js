@@ -9,7 +9,7 @@
     {
       var spaceId = 'cke_counter_' + editor.name;
       var spaceElement;
-      var ckeditorEventThemeSpace = 'themeSpace';
+      var ckeditorEventThemeSpace = 'uiSpace';
       var getSpaceElement = function()
       {
         if ( !spaceElement )
@@ -17,8 +17,8 @@
         return spaceElement;
       };
 
-      if (Drupal.ckeditor_ver == 4) {
-        ckeditorEventThemeSpace = 'uiSpace';
+      if (Drupal.ckeditor_ver == 3) {
+        ckeditorEventThemeSpace = 'themeSpace';
       }
 
       editor.on( ckeditorEventThemeSpace, function( event )

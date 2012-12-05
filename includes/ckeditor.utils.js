@@ -43,11 +43,11 @@ Drupal.ckeditorInit = function(textarea_id) {
     configLoaded  : function(ev)
     {
       Drupal.ckeditor_ver = CKEDITOR.version.split('.')[0];
-      if (Drupal.ckeditor_ver == 4) {
-        CKEDITOR.addCss(ev.editor.config.extraCss);
+      if (Drupal.ckeditor_ver == 3) {
+        ev.editor.addCss(ev.editor.config.extraCss);
       }
       else {
-        ev.editor.addCss(ev.editor.config.extraCss);
+        CKEDITOR.addCss(ev.editor.config.extraCss);
       }
     },
     instanceReady : function(ev)
