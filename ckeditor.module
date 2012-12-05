@@ -627,22 +627,26 @@ function ckeditor_process_textarea($element) {
       $height = 400;
     }
     if (!$is_running) {
+      $preprocess = FALSE;
+      if (isset($global_profile->settings['ckeditor_aggregate']) && $global_profile->settings['ckeditor_aggregate'] == 't') {
+        $preprocess = TRUE;
+      }
       drupal_add_js($module_drupal_path .'/includes/ckeditor.utils.js', 'module', variable_get('preprocess_js', FALSE) ? 'header' : 'footer');
       /* In D6 drupal_add_js() can't add external JS, in D7 use drupal_add_js(...,'external') */
       if ( $conf['popup'] != 't' ) {
         if (isset($conf['ckeditor_load_method']) && file_exists($editor_local_path . '/' . $conf['ckeditor_load_method'])) {
-          drupal_add_js($editor_local_path . '/' . $conf['ckeditor_load_method'], 'module', 'header', FALSE, TRUE, FALSE);
+          drupal_add_js($editor_local_path . '/' . $conf['ckeditor_load_method'], 'module', 'header', FALSE, TRUE, $preprocess);
           if ($conf['ckeditor_load_method'] == 'ckeditor_basic.js') {
             drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $conf['ckeditor_load_time_out'] . ';', 'inline');
             drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
           }
         }
         else {
-          drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module', 'header', FALSE, TRUE, FALSE);
+          drupal_add_js($editor_local_path . '/ckeditor.js?I', 'module', 'header', FALSE, TRUE, $preprocess);
         }
       }
       else {
-        drupal_add_js($editor_local_path . '/ckeditor_basic.js?I', 'module', 'header', FALSE, TRUE, FALSE);
+        drupal_add_js($editor_local_path . '/ckeditor_basic.js?I', 'module', 'header', FALSE, TRUE, $preprocess);
       }
       drupal_add_js(array('ckeditor' => array('module_path' => $module_full_path, 'editor_path' => $editor_path)), 'setting');
       drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'), 'xss_url' => url('ckeditor/xss'))), 'setting');
