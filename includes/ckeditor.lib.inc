@@ -1371,15 +1371,21 @@ function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_field
       }
       drupal_add_js('window.CKEDITOR_BASEPATH = "' . ckeditor_path('relative') . '/"', array('type' => 'inline', 'weight' => -100));
       drupal_add_js(ckeditor_module_path('url') . '/includes/ckeditor.utils.js', array('type' => 'file', 'scope' => 'footer'));
+
+      $preprocess = FALSE;
+      if (isset($global_profile->settings['ckeditor_aggregate']) && $global_profile->settings['ckeditor_aggregate'] == 't') {
+        $preprocess = TRUE;
+      }
+
       if (isset($load_method) && file_exists($editor_local_path . '/' . $load_method)) {
-        drupal_add_js($editor_url_path . '/' . $load_method, array('type' => 'file', 'scope' => 'footer'));
+        drupal_add_js($editor_url_path . '/' . $load_method, array('type' => 'file', 'scope' => 'footer', 'preprocess' => $preprocess));
         if ($load_method == 'ckeditor_basic.js') {
           drupal_add_js('CKEDITOR.loadFullCoreTimeout = ' . $load_time_out . ';', array('type' => 'inline', 'scope' => 'footer'));
           drupal_add_js(array('ckeditor' => array('load_timeout' => TRUE)), 'setting');
         }
       }
       else {
-        drupal_add_js($editor_url_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer'));
+        drupal_add_js($editor_url_path . '/ckeditor.js', array('type' => 'file', 'scope' => 'footer', 'preprocess' => $preprocess));
       }
       drupal_add_js(array('ckeditor' => array('module_path' => ckeditor_module_path('relative'), 'editor_path' => ckeditor_path('relative') . '/')), 'setting');
       if (module_exists('paging')) {

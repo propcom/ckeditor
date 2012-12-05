@@ -385,6 +385,17 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     );
   }
 
+  $form['ckeditor_advanced_settings']['ckeditor_aggregate'] = array(
+    '#type' => 'radios',
+    '#title' => t('Aggregate <code>ckeditor.js</code>'),
+    '#default_value' => !empty($profile->settings['ckeditor_aggregate']) ? $profile->settings['ckeditor_aggregate'] : 'f',
+    '#options' => array(
+      't' => t('Enabled'),
+      'f' => t('Disabled')
+    ),
+    '#description' => t('When enabled, <code>ckeditor.js</code> will be aggregated if JavaScript aggregation is enabled. <strong>Not recommended</strong>.'),
+  );
+
   $form['ckeditor_advanced_settings']['toolbar_wizard'] = array(
     '#type' => 'radios',
     '#title' => t('Use toolbar Drag&Drop feature'),
