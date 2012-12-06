@@ -320,6 +320,15 @@ function ckeditor_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  $items['admin/settings/ckeditor/skinframe'] = array(
+    'title' => 'Change skin of CKEditor',
+    'description' => 'Configure skin for CKEditor.',
+    'page callback' => 'ckeditor_skinframe',
+    'file' => 'includes/ckeditor.admin.inc',
+    'access arguments' => array('administer ckeditor'),
+    'type' => MENU_CALLBACK,
+  );
+
   $items['admin/settings/ckeditor/add'] = array(
     'title' => 'Add a new CKEditor profile',
     'description' => 'Configure the rich text editor.',
