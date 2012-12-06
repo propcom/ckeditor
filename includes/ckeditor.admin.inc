@@ -567,6 +567,22 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
   $toolbar_wizard = !empty($global_profile->settings['toolbar_wizard']) ? $global_profile->settings['toolbar_wizard'] : 't';
   drupal_add_js(array('ckeditor_toolbar_wizard' => $toolbar_wizard), 'setting');
 
+  //if skin is not set or not exists select default skin (moono or skin) or first on the skin list
+  if (empty($profile->settings['skin']) || (!empty($profile->settings['skin']) && !array_key_exists($profile->settings['skin'], $skin_options))) {
+    if (count($skin_options) > 0) {
+      if (array_key_exists('moono', $skin_options)) {
+        $profile->settings['skin'] = 'moono';
+      }
+      else if (array_key_exists('kama', $skin_options)) {
+        $profile->settings['skin'] = 'kama';
+      }
+      else {
+        reset($skin_options);
+        $profile->settings['skin'] = key($skin_options);
+      }
+    }
+  }
+
   $form['basic']['name'] = array(
     '#type' => 'textfield',
     '#title' => t('Profile name'),
@@ -1746,6 +1762,14 @@ var ckeditorUiColorOnChange = function() {
     }
   }
 };
+CKEDITOR.on('dialogDefinition', function( ev ) {
+  var dialogName = ev.data.name;
+  var dialogDefinition = ev.data.definition;
+
+  if (dialogName == 'uicolor') {
+    dialogDefinition.getContents('tab1').get('configBox').style = 'display:none';
+  }
+});
 CKEDITOR.replace('editor', {
   extraPlugins : 'uicolor',
   height: 400,

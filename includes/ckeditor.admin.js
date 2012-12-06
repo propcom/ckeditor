@@ -4,38 +4,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 (function ($) {
   Drupal.ckeditor_ver = false;
-  CKEDITOR.on('dialogDefinition', function(ev)
-  {
-    var dialogName = ev.data.name;
-    var dialogDefinition = ev.data.definition;
-
-    if ( dialogName == 'uicolor' )
-    {
-      // Get a reference to the configBox and hide it (cannot be removed).
-      var configBox = dialogDefinition.getContents( 'tab1' ).get( 'configBox' );
-      configBox.style = 'display:none';
-    }
-  });
 
   $(document).ready(function() {
     if (typeof(CKEDITOR) == "undefined")
       return;
 
-    var editskinEditor;
     $('#edit-uicolor-textarea').show();
 
     Drupal.ckeditor_ver = Drupal.settings.ckeditor_version.split('.')[0];
-
-    Drupal.ckeditorUiColorOnChange = function() {
-      var color = CKEDITOR.instances["edit-uicolor-textarea"].getUiColor();
-      $("#edit-uicolor").val("custom");
-      if (typeof(color) != "undefined") {
-        if (color == "default"){
-          $("#edit-uicolor").val("default");
-        }
-        $('input[name$="uicolor_user"]').val(color);
-      }
-    };
 
     Drupal.editSkinEditorInit = function() {
       var skinframe_src = $('#skinframe').attr('src');
