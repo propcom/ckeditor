@@ -531,6 +531,20 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#description' => t('If this option is enabled, a link to a popup window will be used instead of a textarea replace.'),
   );
 
+  //if skin is not set or not exists select default skin (moono or skin) or first on the skin list
+  if (empty($profile->settings['skin']) || (!empty($profile->settings['skin']) && !array_key_exists($profile->settings['skin'], $skin_options))) {
+    if (count($skin_options) > 0) {
+      if (array_key_exists('moono', $skin_options)) {
+        $profile->settings['skin'] = 'moono';
+      }
+      else if (array_key_exists('kama', $skin_options)) {
+        $profile->settings['skin'] = 'kama';
+      }
+      else {
+        $profile->settings['skin'] = $skin_options[0];
+      }
+    }
+  }
   $form['appearance']['skin'] = array(
     '#type' => 'select',
     '#title' => t('Skin'),
