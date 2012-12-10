@@ -1,5 +1,5 @@
 -----------------------------
- 2012-12-05
+ 2012-12-10
  New stable release: 6.x-1.x
 -----------------------------
 
@@ -9,6 +9,7 @@ New features:
 [#1514376] by dczepierga: Change ckeditor xss url to be passed through url()
 
 Bug fixes:
+[#1862820] by ceng: CKEditor features are not reverted or applied from the command line
 [#1857920] by dczepierga: Using extraPlugins config option in Custom JavaScript (Advanced options) not work
 [#1663462] by dczepierga: Destroy existing instance when trying to replace it
 [#1216096] by michal_cksource: Fix description to "Custom JavaScript configuration" option
