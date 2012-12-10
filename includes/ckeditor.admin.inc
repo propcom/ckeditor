@@ -841,7 +841,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#description' => t('The toolbar will start in an expanded or collapsed state.'),
   );
 
-  if (ckeditor_get_version() == 4) {
+  if (ckeditor_get_version(TRUE) == 4) {
     $form['appearance']['use_divarea'] = array(
       '#type' => 'radios',
       '#title' => t('"Div-based" editor'),
@@ -1222,7 +1222,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  if (ckeditor_get_version() == 3) {
+  if (ckeditor_get_version(TRUE) == 3) {
     $form['advanced']['ckeditor_load_method'] = array(
       '#type' => 'select',
       '#title' => t('Loading method'),
@@ -1387,7 +1387,7 @@ function ckeditor_admin_profile_form_validate($form, &$form_state) {
     form_set_error('UserFilesPath', t('An absolute path to uploaded files is required.'));
   }
 
-  if (ckeditor_get_version() == 3) {
+  if (ckeditor_get_version(TRUE) == 3) {
     $load_methods = _ckeditor_load_methods();
     if (!isset($load_methods[$edit['ckeditor_load_method']])) {
       form_set_error('ckeditor_load_method', t('Set a valid loading method.'));
