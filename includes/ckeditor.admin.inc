@@ -701,7 +701,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#description' => t('The toolbar will start in an expanded or collapsed state.'),
   );
 
-  if (ckeditor_get_version(TRUE) == 4 && file_exists(ckeditor_path(TRUE) . '/plugins/divarea/plugin.js')) {
+  if (file_exists(ckeditor_path(TRUE) . '/plugins/divarea/plugin.js')) {
     $form['appearance']['use_divarea'] = array(
       '#type' => 'radios',
       '#title' => t('"Div-based" editor'),
