@@ -7,6 +7,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @file Plugin for inserting Drupal embeded media
  */
 ( function() {
+  var numberRegex = /^\d+(?:\.\d+)?$/;
+  var cssifyLength = function( length )
+  {
+    if ( numberRegex.test( length ) )
+      return length + 'px';
+    return length;
+  }
   CKEDITOR.plugins.add( 'mediaembed',
   {
     requires : [ 'dialog', 'fakeobjects', 'htmlwriter' ],
@@ -100,11 +107,4 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       }
     }
   } );
-  var numberRegex = /^\d+(?:\.\d+)?$/;
-  function cssifyLength( length )
-  {
-    if ( numberRegex.test( length ) )
-      return length + 'px';
-    return length;
-  }
 } )();
