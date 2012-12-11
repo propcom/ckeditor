@@ -239,12 +239,17 @@ function ckeditor_requirements($phase) {
         }
       }
     }
-    if ((($installed_version = _ckeditor_requirements_getinstalledversion()) !== NULL) && (-1 == version_compare($installed_version, '3.1 SVN'))) {
+    if ((($installed_version = _ckeditor_requirements_getinstalledversion()) !== NULL) && (-1 == version_compare($installed_version, '3.1 SVN')) && $installed_version != '%VERSION%') {
       $requirements['ckeditor']['description'] = t('Some features are disabled because you are using an older version of CKEditor. Please upgrade to CKEditor 3.1 (or higher).');
       $requirements['ckeditor']['severity'] = REQUIREMENT_INFO;
     }
     if (!empty($installed_version)) {
-      $requirements['ckeditor']['value'] = $installed_version;
+      if ($installed_version == '%VERSION%') {
+        $requirements['ckeditor']['value'] = 'GIT version';
+      }
+      else {
+        $requirements['ckeditor']['value'] = $installed_version;
+      }
     }
     else {
       $requirements['ckeditor']['value'] = t('Not found');

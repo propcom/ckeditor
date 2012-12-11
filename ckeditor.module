@@ -218,6 +218,9 @@ function ckeditor_get_version($main_version = FALSE) {
   $matches = array();
   if (preg_match('#,version:[\'\"]{1}(.*?)[\'\"]{1},#', $configcontents, $matches)) {
     $ckeditor_version = $matches[1];
+    if ($ckeditor_version == '%VERSION%') {
+      $ckeditor_version = '4.0.0';
+    }
     if (!$main_version) {
       return $ckeditor_version;
     }
