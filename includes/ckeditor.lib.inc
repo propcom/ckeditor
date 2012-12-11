@@ -811,7 +811,7 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   }
 
   //add support for divarea plugin from CKE4
-  if (((isset($conf['use_divarea']) && $conf['use_divarea'] == 't') || !isset($conf['use_divarea'])) && file_exists($editor_path . '/plugins/divarea/plugin.js')) {
+  if (((isset($conf['use_divarea']) && $conf['use_divarea'] == 't') || !isset($conf['use_divarea'])) && file_exists($editor_local_path . '/plugins/divarea/plugin.js')) {
     $settings['loadPlugins']['divarea'] = array('name' => 'divarea', 'path' => $editor_path . '/plugins/divarea/plugin.js', 'buttons' => FALSE, 'default' => 't');
   }
 
