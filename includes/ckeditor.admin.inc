@@ -1779,15 +1779,15 @@ CKEDITOR.replace('editor', {
   on: {
     configLoaded: function(ev) {
       var ckeditor_ver = CKEDITOR.version.split('.')[0];
-      if (ckeditor_ver == 4) {
-        CKEDITOR.plugins.addExternal('uicolor', '{$module_drupal_path}/includes/uicolor/', 'plugin.js');
-        if (uicolor.length == 0 || uicolor == 'default') {
-          delete ev.editor.config.uiColor;
+      if (ckeditor_ver == 3) {
+        if (skin != 'kama') {
+          ev.editor.config.toolbar = [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList']];
         }
       }
       else {
-        if (skin != 'kama') {
-          ev.editor.config.toolbar = [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList']];
+        CKEDITOR.plugins.addExternal('uicolor', '{$module_drupal_path}/includes/uicolor/', 'plugin.js');
+        if (uicolor.length == 0 || uicolor == 'default') {
+          delete ev.editor.config.uiColor;
         }
       }
     },
