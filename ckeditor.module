@@ -725,12 +725,12 @@ function ckeditor_process_textarea($element) {
       $settings[$textarea_id]['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
     }
     else {
-      $settings['loadPlugins'] = array();
+      $settings[$textarea_id]['loadPlugins'] = array();
     }
 
     //add support for divarea plugin from CKE4
     if (((isset($conf['use_divarea']) && $conf['use_divarea'] == 't') || !isset($conf['use_divarea'])) && file_exists($editor_local_path . '/plugins/divarea/plugin.js')) {
-      $settings['loadPlugins']['divarea'] = array('name' => 'divarea', 'path' => $editor_path . '/plugins/divarea/', 'buttons' => FALSE, 'default' => 't');
+      $settings[$textarea_id]['loadPlugins']['divarea'] = array('name' => 'divarea', 'path' => $editor_path . '/plugins/divarea/', 'buttons' => FALSE, 'default' => 't');
     }
 
     if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
