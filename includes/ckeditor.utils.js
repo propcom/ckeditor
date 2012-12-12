@@ -54,25 +54,27 @@ Drupal.ckeditorInit = function(textarea_id) {
     {
       var body = $(ev.editor.document.$.body);
       // Don't enter line breaks after paragraph so we can be friendly to drupal's line break filter.
-      ev.editor.dataProcessor.writer.setRules('p', {
-        breakAfterOpen: false
-      });
-      if (typeof(textarea_settings.custom_formatting) != 'undefined') {
-        var dtd = CKEDITOR.dtd;
-        for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
-          ev.editor.dataProcessor.writer.setRules( e, textarea_settings.custom_formatting);
-    }
-        ev.editor.dataProcessor.writer.setRules( 'pre',
-        {
-          indent: textarea_settings.output_pre_indent
+      if (typeof(ev.editor.dataProcessor.writer.setRules) != 'undefined') {
+        ev.editor.dataProcessor.writer.setRules('p', {
+          breakAfterOpen: false
         });
+        if (typeof(textarea_settings.custom_formatting) != 'undefined') {
+          var dtd = CKEDITOR.dtd;
+          for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
+            ev.editor.dataProcessor.writer.setRules( e, textarea_settings.custom_formatting);
+          }
+          ev.editor.dataProcessor.writer.setRules( 'pre',
+          {
+            indent: textarea_settings.output_pre_indent
+          });
+        }
       }
 
       if (ev.editor.config.bodyClass)
         body.addClass(ev.editor.config.bodyClass);
       if (ev.editor.config.bodyId)
         body.attr('id', ev.editor.config.bodyId);
-      if (typeof(Drupal.smileysAttach) != 'undefined')
+      if (typeof(Drupal.smileysAttach) != 'undefined' && typeof(ev.editor.dataProcessor.writer) != 'undefined')
         ev.editor.dataProcessor.writer.indentationChars = '    ';
     },
     focus : function(ev)
