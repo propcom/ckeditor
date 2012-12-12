@@ -55,27 +55,28 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
       instanceReady : function(ev)
       {
         var body = $(ev.editor.document.$.body);
-
-        ev.editor.dataProcessor.writer.setRules('p', {
-          breakAfterOpen: false
-        });
-
-        if (typeof(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting) != 'undefined') {
-          var dtd = CKEDITOR.dtd;
-          for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
-            ev.editor.dataProcessor.writer.setRules( e, ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting);
-          }
-          ev.editor.dataProcessor.writer.setRules( 'pre',
-          {
-            indent: ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].output_pre_indent
+        if (typeof(ev.editor.dataProcessor.writer.setRules) != 'undefined') {
+          ev.editor.dataProcessor.writer.setRules('p', {
+            breakAfterOpen: false
           });
+
+          if (typeof(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting) != 'undefined') {
+            var dtd = CKEDITOR.dtd;
+            for ( var e in CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ) ) {
+              ev.editor.dataProcessor.writer.setRules( e, ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].custom_formatting);
+            }
+            ev.editor.dataProcessor.writer.setRules( 'pre',
+            {
+              indent: ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]].output_pre_indent
+            });
+          }
         }
 
         if (ev.editor.config.bodyClass)
           body.addClass(ev.editor.config.bodyClass);
         if (ev.editor.config.bodyId)
           body.attr('id', ev.editor.config.bodyId);
-        if (typeof(Drupal.smileysAttach) != 'undefined')
+        if (typeof(Drupal.smileysAttach) != 'undefined' && typeof(ev.editor.dataProcessor.writer) != 'undefined')
           ev.editor.dataProcessor.writer.indentationChars = '    ';
       },
       focus : function(ev)

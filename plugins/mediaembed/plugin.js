@@ -16,7 +16,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
   }
   CKEDITOR.plugins.add( 'mediaembed',
   {
-    requires : [ 'dialog', 'fakeobjects', 'htmlwriter' ],
+    requires : [ 'dialog', 'fakeobjects' ],
     init: function( editor )
     {
       var addCssObj = CKEDITOR;
