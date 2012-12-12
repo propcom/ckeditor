@@ -760,11 +760,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#title' => t('User interface color'),
     '#default_value' => !empty($profile->settings['uicolor']) ? $profile->settings['uicolor'] : 'default',
     '#options' => $ui_colors,
-    '#description' => t(
-        'Works only with the !skin skin.', array(
-      '!skin' => '"Kama"'
-        )
-    ),
   );
   $skinframe_url = url('admin/config/content/ckeditor/skinframe', array(
     'query' => array(
