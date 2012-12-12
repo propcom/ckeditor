@@ -1,5 +1,5 @@
-2012-12-10
-New stable release 7.x-1.x
+2012-12-12
+New stable release 7.x-1.10
 
 New features:
 [#1858840] by dczepierga: Add option to enable/disable aggregate ckeditor.js script
@@ -10,8 +10,8 @@ New features:
 
 Bug fixes:
 [#1760506] by ceng: CKEditor features are not reverted or applied from the command line
-[#1857910] by dczepierga: Using extraPlugins config option in Custom JavaScript (Advanced options) not work
-[#1850626] by dczepierga: Wrong path on external plugins loaded by hook
+[#1857910] by dczepierga: Using extraPlugins config option in Custom JavaScript (Advanced options) not working
+[#1850626] by dczepierga: Wrong path to external plugins loaded by hook
 [#1844390] by dczepierga: Undefined index: loadPlugins in ckeditor_modules_enabled()
 [#1790082] by dczepierga: Order of filters calling in ckeditor filter XSS function
 [#1728318] by dczepierga: Text format filters are not properly given $format; cannot look up their per-format settings
@@ -20,8 +20,8 @@ Bug fixes:
 [#1637416] by michal_cksource: Fix description to "Custom JavaScript configuration" option
 [#1595606] by kmcnamee: Wrong instructions for configuring CKFinder
 [#1350998] by MegaChriz: CKEditor settings appear on all user profile edit pages
-[#1567022] by dczepierga: Overlays of administration toolbar in CKEditor maximized mode
-[#1557526] by dczepierga: CKeditor gets inserted multiple times on text format selection
+[#1567022] by dczepierga: Overlays of administration toolbar appears in CKEditor maximized mode
+[#1557526] by dczepierga: CKEditor gets inserted multiple times on text format selection
 [#1554840] by dczepierga: Missing argument - WYSIWYG Filter, HTML Purifier & HTMLawed
 
 2012-04-18
