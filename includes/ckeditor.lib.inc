@@ -190,6 +190,23 @@ function ckeditor_load_skin_options() {
 }
 
 /**
+ * Return default skin for CKEditor
+ *
+ * @return string
+ */
+function ckeditor_default_skin() {
+  $skin_options = ckeditor_load_skin_options();
+  if (array_key_exists('moono', $skin_options)) {
+    return 'moono';
+  }
+  if (array_key_exists('kama', $skin_options)) {
+    return 'kama';
+  }
+  //if any default theme not exists select first from the list
+  return key(reset($skin_options));
+}
+
+/**
  * List of installed CKEditor languages
  *
  * @return array
@@ -558,7 +575,7 @@ function ckeditor_user_get_setting_default() {
     'default' => 't',
     'show_toggle' => 't',
     'popup' => 'f',
-    'skin' => 'kama',
+    'skin' => ckeditor_default_skin(),
     'expand' => 't',
     'width' => '100%',
     'lang' => 'en',
@@ -770,7 +787,13 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   $settings['shiftEnterMode'] = constant("CKEDITOR_ENTERMODE_" . strtoupper($conf['shift_enter_mode']));
   $settings['toolbarStartupExpanded'] = ( $conf['expand'] == 't' );
   $settings['width'] = $conf['width'];
-  $settings['skin'] = $conf['skin'];
+  //check if skin exists, if not select default one
+  if (file_exists($editor_local_path . '/skins/' . $conf['skin'])) {
+    $settings['skin'] = $conf['skin'];
+  }
+  else {
+    $settings['skin'] = ckeditor_default_skin();
+  }
   $settings['format_tags'] = $conf['font_format'];
   $settings['show_toggle'] = $conf['show_toggle'];
   $settings['ss'] = $conf['ss'];
