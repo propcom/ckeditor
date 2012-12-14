@@ -574,9 +574,6 @@ function ckeditor_user_get_setting_default() {
   $default = array(
     'default' => 't',
     'show_toggle' => 't',
-    'popup' => 'f',
-    'skin' => ckeditor_default_skin(),
-    'expand' => 't',
     'width' => '100%',
     'lang' => 'en',
     'auto_lang' => 't',
@@ -748,8 +745,7 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   $profile_name = $profile->name;
 
   if (user_access('customize ckeditor')) {
-    //foreach (array('default', 'show_toggle', 'popup', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
-    foreach (array('default', 'show_toggle', 'skin', 'expand', 'width', 'lang', 'auto_lang') as $setting) {
+    foreach (array('default', 'show_toggle', 'width', 'lang', 'auto_lang') as $setting) {
       $conf[$setting] = ckeditor_user_get_setting($user, $profile, $setting);
     }
   }

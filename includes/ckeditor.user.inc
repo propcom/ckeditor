@@ -75,36 +75,6 @@ function ckeditor_user_customize(&$form, &$form_state, $form_id) {
       ),
       '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea.'),
     );
-    /*
-      $form['ckeditor']['ckeditor_popup'] = array(
-      '#type' => 'radios',
-      '#title' => t('Use CKEditor in a popup window'),
-      '#default_value' => isset($data['ckeditor_popup']) ? $data['ckeditor_popup'] : $default['popup'],
-      '#options' => array(
-      'f' => t('No'),
-      't' => t('Yes')
-      ),
-      '#description' => t('If this option is enabled, a link to a popup window will be used instead of a textarea replace.'),
-      );
-     */
-    $form['ckeditor']['ckeditor_skin'] = array(
-      '#type' => 'select',
-      '#title' => t('Skin'),
-      '#default_value' => isset($data['ckeditor_skin']) ? $data['ckeditor_skin'] : $default['skin'],
-      '#options' => $skin_options,
-      '#description' => t('Choose a CKEditor skin.'),
-    );
-
-    $form['ckeditor']['ckeditor_expand'] = array(
-      '#type' => 'select',
-      '#title' => t('Toolbar state on startup'),
-      '#default_value' => isset($data['ckeditor_expand']) ? $data['ckeditor_expand'] : $default['expand'],
-      '#options' => array(
-        't' => t('Expanded'),
-        'f' => t('Collapsed')
-      ),
-      '#description' => t('The toolbar will start in an expanded or collapsed state.'),
-    );
 
     $form['ckeditor']['ckeditor_width'] = array(
       '#type' => 'textfield',
@@ -160,9 +130,6 @@ function ckeditor_user_presave(&$edit, $account, $category) {
 
     $edit['data']['ckeditor_default'] = isset($edit['ckeditor_default']) ? $edit['ckeditor_default'] : $default['default'];
     $edit['data']['ckeditor_show_toggle'] = isset($edit['ckeditor_show_toggle']) ? $edit['ckeditor_show_toggle'] : $default['show_toggle'];
-    $edit['data']['ckeditor_popup'] = isset($edit['ckeditor_popup']) ? $edit['ckeditor_popup'] : $default['popup'];
-    $edit['data']['ckeditor_skin'] = isset($edit['ckeditor_skin']) ? $edit['ckeditor_skin'] : $default['skin'];
-    $edit['data']['ckeditor_expand'] = isset($edit['ckeditor_expand']) ? $edit['ckeditor_expand'] : $default['expand'];
     $edit['data']['ckeditor_width'] = isset($edit['ckeditor_width']) ? $edit['ckeditor_width'] : $default['width'];
     $edit['data']['ckeditor_lang'] = isset($edit['ckeditor_lang']) ? $edit['ckeditor_lang'] : $default['lang'];
     $edit['data']['ckeditor_auto_lang'] = isset($edit['ckeditor_auto_lang']) ? $edit['ckeditor_auto_lang'] : $default['auto_lang'];
