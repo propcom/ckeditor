@@ -40,8 +40,6 @@ function ckeditor_user_customize(&$form, &$form_state, $form_id) {
   $data = $form['#user']->data;
 
   $default = ckeditor_user_get_setting_default();
-  $toolbar_options = ckeditor_load_toolbar_options();
-  $skin_options = ckeditor_load_skin_options();
   $lang_options = ckeditor_load_lang_options();
 
   // because the settings are saved as strings we need to test for the string 'true'
