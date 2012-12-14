@@ -704,7 +704,13 @@ function ckeditor_process_textarea($element) {
     $settings[$textarea_id]['customConfig'] = $ckeditor_config_path;
     $settings[$textarea_id]['width'] = $conf['width'];
     $settings[$textarea_id]['height'] = $height;
-    $settings[$textarea_id]['skin'] = $conf['skin'];
+    //check if skin exists, if not select default one
+    if (file_exists($editor_local_path . '/skins/' . $conf['skin'])) {
+      $settings[$textarea_id]['skin'] = $conf['skin'];
+    }
+    else {
+      $settings[$textarea_id]['skin'] = ckeditor_default_skin();
+    }
     $settings[$textarea_id]['format_tags'] = $conf['font_format'];
     if (isset($conf['language_direction'])) {
       switch ($conf['language_direction']) {
