@@ -44,7 +44,6 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
       return NULL;
     }
 
-    $skin_options = ckeditor_load_skin_options();
     $lang_options = ckeditor_load_lang_options();
 
     // because the settings are saved as strings we need to test for the string 'true'
@@ -100,25 +99,6 @@ function ckeditor_user_delegate($type, $edit, &$user, $category = NULL) {
           't' => t('Yes')
         ),
         '#description' => t('If this option is enabled, a link to a popup window will be used instead of a textarea replace.'),
-      );
-
-      $form['ckeditor']['ckeditor_skin'] = array(
-        '#type' => 'select',
-        '#title' => t('Skin'),
-        '#default_value' => isset($user->ckeditor_skin) ? $user->ckeditor_skin : (isset($profile->settings['skin']) ? $profile->settings['skin'] : 'default'),
-        '#options' => $skin_options,
-        '#description' => t('Choose a CKEditor skin.'),
-      );
-
-      $form['ckeditor']['ckeditor_expand'] = array(
-        '#type' => 'select',
-        '#title' => t('Toolbar state on startup'),
-        '#default_value' => isset($user->ckeditor_expand) ? $user->ckeditor_expand : (isset($profile->settings['expand']) ? $profile->settings['expand'] : 't'),
-        '#options' => array(
-          't' => t('Expanded'),
-          'f' => t('Collapsed')
-        ),
-        '#description' => t('The toolbar will start in an expanded or collapsed state.'),
       );
 
       $form['ckeditor']['ckeditor_width'] = array(
