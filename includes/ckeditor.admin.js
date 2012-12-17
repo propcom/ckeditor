@@ -15,7 +15,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
     Drupal.editSkinEditorInit = function() {
       var skinframe_src = $('#skinframe').attr('src');
-      skinframe_src = skinframe_src.replace(/skin=[^&]+/, 'skin='+$("#edit-skin").val());
+      //skinframe_src = skinframe_src.replace(/skin=[^&]+/, 'skin='+$("#edit-skin").val());
+      var skin = skinframe_src.match(/skin=([^&]+)/)[1];
       if ($('#edit-uicolor').val() == 'custom') {
         skinframe_src = skinframe_src.replace(/uicolor=[^&]+/, 'uicolor='+$('input[name$="uicolor_user"]').val().replace('#', '') || 'D3D3D3');
       }
@@ -25,7 +26,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
       $('#skinframe').attr('src', skinframe_src);
 
       if (Drupal.ckeditor_ver == 3) {
-        if ($("#edit-skin").val() == "kama") {
+        if (skin == "kama") {
           $("#edit-uicolor").removeAttr('disabled');
           $("#edit-uicolor").parent().removeClass('form-disabled');
         }
@@ -42,7 +43,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
     Drupal.editSkinEditorInit();
 
-    $("#edit-skin, #edit-uicolor").bind("change", function() {
+    $("#edit-uicolor").bind("change", function() {
       Drupal.editSkinEditorInit();
     });
 

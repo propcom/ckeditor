@@ -784,8 +784,8 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   $settings['toolbarStartupExpanded'] = ( $conf['expand'] == 't' );
   $settings['width'] = $conf['width'];
   //check if skin exists, if not select default one
-  if (file_exists($editor_local_path . '/skins/' . $conf['skin'])) {
-    $settings['skin'] = $conf['skin'];
+  if (isset($global_profile->settings['skin']) && file_exists($editor_local_path . '/skins/' . $global_profile->settings['skin'])) {
+    $settings['skin'] = $global_profile->settings['skin'];
   }
   else {
     $settings['skin'] = ckeditor_default_skin();

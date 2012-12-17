@@ -92,22 +92,22 @@ function ckeditor_admin_main() {
  */
 function ckeditor_profile_overview() {
   $output = '';
+  $skins = ckeditor_load_skin_options();
+  $global_profile = ckeditor_profile_load('CKEditor Global Profile');
+  if (isset($global_profile->settings['skin']) && !array_key_exists($global_profile->settings['skin'], $skins)) {
+    drupal_set_message(t(
+      'The `CKEditor Global Profile` profile is using `!skin` skin which cannot be found. Please !profile_settings.', array(
+        '!skin' => $global_profile->settings['skin'],
+        '!profile_settings' => l(t('update your settings'), 'admin/config/content/ckeditor/editg/')
+      )
+    ), 'warning');
+  }
   $profiles = ckeditor_profile_load();
   if ($profiles) {
     $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
     $header = array(t('Profile'), t('Input format'), t('Operations'));
-    $skins = ckeditor_load_skin_options();
     foreach ($profiles as $p) {
       if ($p->name !== "CKEditor Global Profile") {
-        if (isset($p->settings['skin']) && !array_key_exists($p->settings['skin'], $skins)) {
-          drupal_set_message(t(
-            'The `!profile` profile is using `!skin` skin which cannot be found. Please !profile_settings.', array(
-              '!profile' => $p->name,
-              '!skin' => $p->settings['skin'],
-              '!profile_settings' => l(t('update your settings'), 'admin/config/content/ckeditor/edit/' . urlencode($p->name))
-            )
-          ), 'warning');
-        }
         $rows[] = array(
           array('data' => $p->name, 'valign' => 'top'),
           array('data' => implode("<br />\n", $p->input_formats)),
@@ -188,16 +188,37 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     $formats[$format->format] = $format->name;
   }
 
+  $drupal_base_path = ckeditor_base_path('relative');
+  $drupal_library_path = ckeditor_library_path('relative');
+  $module_drupal_path = ckeditor_module_path('relative');
+  $skin_options = ckeditor_load_skin_options();
+
+  $form['appearance'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Editor appearance'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  //if skin is not set or not exists select default skin (moono or skin) or first on the skin list
+  if (empty($profile->settings['skin']) || (!empty($profile->settings['skin']) && !array_key_exists($profile->settings['skin'], $skin_options))) {
+    $profile->settings['skin'] = ckeditor_default_skin();
+  }
+
+  $form['appearance']['skin'] = array(
+    '#type' => 'select',
+    '#title' => t('Skin'),
+    '#default_value' => $profile->settings['skin'],
+    '#options' => $skin_options,
+    '#description' => t('Choose a CKEditor skin.'),
+  );
+
   $form['ckeditor_advanced_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Advanced settings'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-
-  $drupal_base_path = ckeditor_base_path('relative');
-  $drupal_library_path = ckeditor_library_path('relative');
-  $module_drupal_path = ckeditor_module_path('relative');
 
   $form['ckeditor_advanced_settings']['ckeditor_path'] = array(
     '#type' => 'textfield',
@@ -518,13 +539,13 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
   $editor_path = ckeditor_path('relative');
+  $editor_local_path = ckeditor_path('local');
   $editor_url_path = ckeditor_path('url');
   $module_drupal_path = ckeditor_module_path('relative');
   $module_drupal_url_path = ckeditor_module_path('url');
 
   drupal_add_js(array('ckeditor_version' => ckeditor_get_version()), 'setting');
 
-  $skin_options = ckeditor_load_skin_options();
   $lang_options = ckeditor_load_lang_options();
 
   $form['basic'] = array(
@@ -566,22 +587,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
   $global_profile = ckeditor_profile_load('CKEditor Global Profile');
   $toolbar_wizard = !empty($global_profile->settings['toolbar_wizard']) ? $global_profile->settings['toolbar_wizard'] : 't';
   drupal_add_js(array('ckeditor_toolbar_wizard' => $toolbar_wizard), 'setting');
-
-  //if skin is not set or not exists select default skin (moono or skin) or first on the skin list
-  if (empty($profile->settings['skin']) || (!empty($profile->settings['skin']) && !array_key_exists($profile->settings['skin'], $skin_options))) {
-    if (count($skin_options) > 0) {
-      if (array_key_exists('moono', $skin_options)) {
-        $profile->settings['skin'] = 'moono';
-      }
-      else if (array_key_exists('kama', $skin_options)) {
-        $profile->settings['skin'] = 'kama';
-      }
-      else {
-        reset($skin_options);
-        $profile->settings['skin'] = key($skin_options);
-      }
-    }
-  }
 
   $form['basic']['name'] = array(
     '#type' => 'textfield',
@@ -702,13 +707,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     ),
     '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea.'),
   );
-  $form['appearance']['skin'] = array(
-    '#type' => 'select',
-    '#title' => t('Skin'),
-    '#default_value' => !empty($profile->settings['skin']) ? $profile->settings['skin'] : 'kama',
-    '#options' => $skin_options,
-    '#description' => t('Choose a CKEditor skin.'),
-  );
 
   $ui_colors = array(
     "default" => t('CKEditor default'),
@@ -761,10 +759,14 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#default_value' => !empty($profile->settings['uicolor']) ? $profile->settings['uicolor'] : 'default',
     '#options' => $ui_colors,
   );
+
+  if (!isset($global_profile->settings['skin']) || !file_exists($editor_local_path . '/skins/' . $global_profile->settings['skin'])) {
+    $global_profile->settings['skin'] = ckeditor_default_skin();
+  }
   $skinframe_url = url('admin/config/content/ckeditor/skinframe', array(
     'query' => array(
       'token' => drupal_get_token('ckeditorSkinframeCall'),
-      'skin' => 'kama',
+      'skin' => $global_profile->settings['skin'],
       'uicolor' => (!empty($profile->settings['uicolor_user']) && $profile->settings['uicolor'] == 'custom') ? ltrim($profile->settings['uicolor_user'], '#') : 'D3D3D3'
     )
   ));
