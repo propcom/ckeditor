@@ -1,7 +1,8 @@
-2012-12-17
+2012-12-18
 New stable release 7.x-1.x
 
 Bug fixes:
+[#1864760] by dczepierga: Wrong path to plugins stored in database
 [#1868416] by dczepierga: Move skin selection option to CKEditor Global Profile
 [#1866654] by dczepierga: Remove "Skin" and "Toolbar state on startup" options from user profile
 [#1865086] by dczepierga: Set default theme if selected not exists
