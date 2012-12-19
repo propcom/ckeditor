@@ -4,6 +4,7 @@
 -----------------------------
 
 Bug fixes:
+[#1870288] by dczepierga: Disable plugins which not exists and are stored in ckeditor profiles
 [#1866704] by dczepierga: Remove "Skin" and "Toolbar state on startup" options from user profile
 [#1866708] by dczepierga: Set default theme if selected not exists
 
