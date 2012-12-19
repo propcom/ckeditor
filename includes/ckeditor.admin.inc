@@ -95,12 +95,7 @@ function ckeditor_profile_overview() {
   $skins = ckeditor_load_skin_options();
   $global_profile = ckeditor_profile_load('CKEditor Global Profile');
   if (isset($global_profile->settings['skin']) && !array_key_exists($global_profile->settings['skin'], $skins)) {
-    drupal_set_message(t(
-      'The `CKEditor Global Profile` profile is using `!skin` skin which cannot be found. Please !profile_settings.', array(
-        '!skin' => $global_profile->settings['skin'],
-        '!profile_settings' => l(t('update your settings'), 'admin/config/content/ckeditor/editg/')
-      )
-    ), 'warning');
+    drupal_set_message(t('The <em>CKEditor Global Profile</em> profile is using %skin skin which cannot be found. Please <a href="@profile_settings">update your settings</a>.', array('%skin' => $global_profile->settings['skin'], '@profile_settings' => url('admin/config/content/ckeditor/editg'))), 'warning');
   }
   $profiles = ckeditor_profile_load();
   if ($profiles) {
