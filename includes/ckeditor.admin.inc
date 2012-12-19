@@ -101,8 +101,34 @@ function ckeditor_profile_overview() {
   if ($profiles) {
     $access_ckeditor_roles = user_roles(FALSE, 'access ckeditor');
     $header = array(t('Profile'), t('Input format'), t('Operations'));
+    $plugins = ckeditor_load_plugins();
+    $disabled_plugins = array();
     foreach ($profiles as $p) {
       if ($p->name !== "CKEditor Global Profile") {
+        if (isset($p->settings['loadPlugins']) && is_array($p->settings['loadPlugins']) && count($p->settings['loadPlugins']) > 0) {
+          $changed = FALSE;
+          foreach ($p->settings['loadPlugins'] as $plugin_name => $plugin_settings) {
+            if (!array_key_exists($plugin_name, $plugins)) {
+              if (isset($plugin_settings['active']) && $plugin_settings['active'] == 0) {
+                continue;
+              }
+              if (!isset($disabled_plugins[$p->name])) {
+                $disabled_plugins[$p->name] = array();
+              }
+              $p->settings['loadPlugins'][$plugin_name]['active'] = 0;
+              $disabled_plugins[$p->name][] = $plugin_name;
+              $changed = TRUE;
+            }
+          }
+          if ($changed === TRUE) {
+            db_update('ckeditor_settings')
+                ->fields(array(
+                  'settings' => serialize($p->settings)
+                ))
+                ->condition('name', $p->name, '=')
+                ->execute();
+          }
+        }
         $rows[] = array(
           array('data' => $p->name, 'valign' => 'top'),
           array('data' => implode("<br />\n", $p->input_formats)),
@@ -116,6 +142,18 @@ function ckeditor_profile_overview() {
         );
       }
     }
+
+    if (count($disabled_plugins) > 0) {
+      $msg = t("The following plugins could not be found and were automatically disabled in CKEditor profiles:");
+      foreach ($disabled_plugins as $profile_name => $profile_plugins) {
+        $msg .= "<br/><br/>";
+        $msg .= t("<b>Profile</b>: %profile_name", array("%profile_name" => $profile_name));
+        $msg .= "<br/>";
+        $msg .= t("<b>Plugins</b>: %profile_plugins", array("%profile_plugins" => implode(', ', $profile_plugins)));
+      }
+      drupal_set_message($msg, 'warning');
+    }
+
     $output .= '<h3>' . t('Profiles') . '</h3>';
     $output .= theme('table', array("header" => $header, "rows" => $rows));
     $output .= '<p>' . l(t('Create a new profile'), 'admin/config/content/ckeditor/add') . '</p>';
