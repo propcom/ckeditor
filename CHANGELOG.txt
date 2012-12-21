@@ -2,6 +2,7 @@
 New stable release 7.x-1.x
 
 Bug fixes:
+[#1871918] by matulis: Bug in checking if a file "contents.css" exists
 [#1870270] by dczepierga: Disable plugins which not exists and are stored in ckeditor profiles
 [#1864760] by dczepierga: Wrong path to plugins stored in database
 [#1868416] by dczepierga: Move skin selection option to CKEditor Global Profile
