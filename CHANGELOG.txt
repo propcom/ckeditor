@@ -1,5 +1,5 @@
-2012-12-18
-New stable release 7.x-1.x
+2012-12-22
+New stable release 7.x-1.12
 
 Bug fixes:
 [#1871918] by matulis: Bug in checking if a file "contents.css" exists
@@ -10,7 +10,7 @@ Bug fixes:
 [#1865086] by dczepierga: Set default theme if selected not exists
 
 2012-12-12
-New stable release 7.x-1.10
+New stable release 7.x-1.11
 
 New features:
 [#1858840] by dczepierga: Add option to enable/disable aggregate ckeditor.js script
