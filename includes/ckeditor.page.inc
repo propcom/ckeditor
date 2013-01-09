@@ -160,7 +160,7 @@ function ckeditor_help_delegate($path, $arg) {
           '<ol>' .
           '<li>' .
           t('By using !ckfinder (commercial), an advanced Ajax file manager.', array(
-            '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
+            '!ckfinder' => l(t('CKFinder'), 'http://cksource.com/ckfinder'),
               )
           ) .
           '</li>' .

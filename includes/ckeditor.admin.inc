@@ -350,7 +350,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     '#maxlength' => 128,
     '#description' => t(
         'The path to CKFinder (AJAX based file manager downloaded from !ckfindercom) relative to the document root.', array(
-      '!ckfindercom' => l(t('ckfinder.com'), 'http://ckfinder.com/download')
+      '!ckfindercom' => l(t('ckfinder.com'), 'http://cksource.com/ckfinder')
         )
     ) .
     '<br />' .
@@ -1111,7 +1111,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         'Set the file browser settings. A file browser will allow you to browse the files stored on the server and embed them as links, images, or Flash movies. CKEditor is compatible with such Drupal modules as !imce or !elfinder. CKEditor can be also integrated with !ckfinder, an advanced Ajax file manager.', array(
       '!imce' => l(t('IMCE'), 'http://drupal.org/project/imce'),
       '!elfinder' => l(t('elFinder'), 'http://drupal.org/project/elfinder'),
-      '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com')
+      '!ckfinder' => l(t('CKFinder'), 'http://cksource.com/ckfinder')
         )
     )
   );
