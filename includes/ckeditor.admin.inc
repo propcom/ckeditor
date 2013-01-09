@@ -976,7 +976,7 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
         '!imce' => l(t('IMCE'), 'http://drupal.org/project/imce'),
         '!ib' => l(t('Image Browser'), 'http://drupal.org/project/imagebrowser'),
         '!webfm' => l(t('Web File Manager'), 'http://drupal.org/project/webfm'),
-        '!ckfinder' => l(t('CKFinder'), 'http://ckfinder.com'),
+        '!ckfinder' => l(t('CKFinder'), 'http://cksource.com/ckfinder'),
         '!elfinder' => l(t('elFinder'), 'http://drupal.org/project/elfinder')
       )
     )
@@ -1650,7 +1650,7 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     '#description' => t(
         'The path to CKFinder (AJAX based file manager downloaded from !ckfindercom) relative to the document root.',
         array(
-          '!ckfindercom' => l(t('ckdiner.com'), 'http://ckfinder.com/download')
+          '!ckfindercom' => l(t('ckfinder.com'), 'http://cksource.com/ckfinder')
         )
       ) .
       '<br />' .
