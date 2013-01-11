@@ -4,6 +4,7 @@
 -----------------------------
 
 Bug fixes:
+[#1885952] by michal_cksource: Fix HTML validation for iframe in profile configuration.
 [#1885940] by michal_cksource: Disable div based editor on default
 
 -----------------------------
