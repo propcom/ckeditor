@@ -2,6 +2,7 @@
 New stable release 7.x-1.x
 
 Bug fixes:
+[#1885950] by michal_cksource: Fix HTML validation for iframe in profile configuration
 [#1885938] by michal_cksource: Disable div based editor on default
 [#1872064] by dczepierga: Undefined index: loadPlugins in ckeditor_modules_disabled() and ckeditor_modules_uninstalled()
 

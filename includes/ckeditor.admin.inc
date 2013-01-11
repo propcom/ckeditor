@@ -1768,14 +1768,15 @@ function ckeditor_skinframe() {
   $module_drupal_path = ckeditor_module_path('relative');
 
   $html = "<!DOCTYPE html>";
+  $html .= "<html>";
   $html .= "<head>";
-  $html .= "<script src=\"{$editor_path}/ckeditor.js\"></script>";
+  $html .= '<title>CKEditor UI Color Picker</title>';
+  $html .= "<script type=\"text/javascript\" src=\"{$editor_path}/ckeditor.js\"></script>";
   $html .= "</head>";
   $html .= "<body>";
   $html .= "<input type=\"hidden\" name=\"uicolor_user\"/>";
   $html .= "<div id=\"editor\" style=\"height: 200px;\">Click the <strong>UI Color Picker</strong> button to set your color preferences.</div>";
-  $html .= "
-<script>
+  $html .= "<script type=\"text/javascript\">
 var skin = window.location.search.match(/skin=([^&]*)/)[1];
 var uicolor = window.location.search.match(/uicolor=([^&]*)/)[1];
 var ckeditorUiColorOnChange = function() {
