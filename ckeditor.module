@@ -735,8 +735,8 @@ function ckeditor_process_textarea($element) {
     }
 
     //add support for divarea plugin from CKE4
-    if (((isset($conf['use_divarea']) && $conf['use_divarea'] == 't') || !isset($conf['use_divarea'])) && file_exists($editor_local_path . '/plugins/divarea/plugin.js')) {
-      $settings[$textarea_id]['loadPlugins']['divarea'] = array('name' => 'divarea', 'path' => $editor_path . '/plugins/divarea/', 'buttons' => FALSE, 'default' => 't');
+    if (isset($conf['use_divarea']) && $conf['use_divarea'] == 't' && file_exists($editor_local_path . '/plugins/divarea/plugin.js')) {
+      $settings[$textarea_id]['loadPlugins']['divarea'] = array('name' => 'divarea', 'path' => $editor_path . '/plugins/divarea/', 'buttons' => FALSE, 'default' => 'f');
     }
 
     if (isset($conf['html_entities']) && $conf['html_entities'] == 'f') {
