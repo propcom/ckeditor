@@ -952,16 +952,25 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
         $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = strtr('%d%b%f/', array("%f" => variable_get('file_public_path', conf_path() . '/files'), "%u" => $user->uid, "%b" => base_path(), "%d" => ckeditor_get_document_root_full_path(), "%n" => $user->name));
       }
       if (variable_get('file_default_scheme', '') == 'private') {
-        $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '\/') : '';
+        $private_dir = isset($global_profile->settings['private_dir']) ? trim($global_profile->settings['private_dir'], '/') : '';
         if (!empty($private_dir)) {
           $private_dir = strtr($private_dir, array('%u' => $user->uid, '%n' => $user->name));
           $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') . '/' . $private_dir . '/';
-          $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR . $private_dir . DIRECTORY_SEPARATOR;
+          $private_upload_path = file_uri_target('private://' . variable_get('file_private_path', '')) . '/' . $private_dir;
         }
         else {
           $_SESSION['ckeditor'][$profile_name]['UserFilesPath'] = url('system/files') . '/';
-          $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = variable_get('file_private_path', '') . DIRECTORY_SEPARATOR;
+          $private_upload_path =  file_uri_target('private://' . variable_get('file_private_path', ''));
         }
+        //add '/' to beginning of path if necessary
+        if (strpos(variable_get('file_private_path', ''), '/') === 0 && $private_upload_path[0] != '/') {
+          $private_upload_path = '/' . $private_upload_path;
+        }
+        //check if CKEditor private dir exists and create it if not
+        if ($private_dir && !is_dir($private_upload_path)) {
+          mkdir($private_upload_path, 0755, TRUE);
+        }
+        $_SESSION['ckeditor'][$profile_name]['UserFilesAbsolutePath'] = drupal_realpath($private_upload_path) . '/';
       }
     }
   }
