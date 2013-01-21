@@ -655,7 +655,7 @@ function _ckeditor_script_path() {
   elseif (file_exists($module_path . '/ckeditor/ckeditor/ckeditor.js')) {
     $jspath = '%m/ckeditor/ckeditor';
   }
-  elseif (file_exists('sites/all/libraries/ckeditor/ckeditor.js')) {
+  elseif (file_exists(ckeditor_library_path('url') . '/ckeditor/ckeditor.js')) {
     $jspath = '%l/ckeditor';
   }
   return $jspath;
