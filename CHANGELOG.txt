@@ -2,6 +2,7 @@ Dev release 7.x-1.x
 
 Bug fixes:
 
+[#1898294] by kscheirer: Fatal error if Libraries module is enabled after CKEditor
 [#1895278] by wwalc: WYSIWYG editor should allow Drupal to trigger 'formUpdated' event
 [#1063482] by nod_, wwalc, roderik, helior, hadsie: Use Libraries API for CKEditor 
 [#1889010] by michal_cksource: Problem with CKFinder files upload when private download method is used
