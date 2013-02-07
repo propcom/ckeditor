@@ -90,10 +90,10 @@ window.CKEDITOR_BASEPATH = Drupal.settings.ckeditor.editor_path;
           ev.editor.dataProcessor.writer.indentationChars = '    ';
 
         // Let Drupal trigger formUpdated event [#1895278]
-        ev.editor.editable().on( 'keyup', function() {
+        ((ev.editor.editable && ev.editor.editable()) || ev.editor.document.getBody()).on( 'keyup', function() {
           $(ev.editor.element.$).trigger('keyup');
         });
-        ev.editor.editable().on( 'keydown', function() {
+        ((ev.editor.editable && ev.editor.editable()) || ev.editor.document.getBody()).on( 'keydown', function() {
           $(ev.editor.element.$).trigger('keydown');
         });
       },
