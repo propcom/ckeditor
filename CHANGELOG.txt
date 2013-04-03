@@ -2,6 +2,7 @@ Dev release 7.x-1.x
 
 Bug fixes:
 
+[#1603014] by anou, SebCorbin: Corrected strings used in Security section.
 [#1957066] by rudiedirkx: Use field_extra_fields to be able to position the "Rich text editor settings" fieldset
 [#1959754] by wwalc: CKFinder is not installed correctly - improve information in the status report
 [#1898294] by kscheirer: Fatal error if Libraries module is enabled after CKEditor
