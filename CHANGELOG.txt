@@ -1,3 +1,7 @@
+Dev release 6.x-1.x
+
+[#1959754] by wwalc: CKFinder is not installed correctly - improve information in the status report
+
 -----------------------------
  2013-01-11
  New stable release: 6.x-1.x
