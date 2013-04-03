@@ -697,3 +697,16 @@ function ckeditor_modules_uninstalled($modules) {
     }
   }
 }
+
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function ckeditor_field_extra_fields() {
+  $fields['user']['user']['form']['ckeditor'] = array(
+    'label' => t('Rich text editor settings'),
+    'description' => t('Rich text editor settings'),
+    'weight' => 10,
+  );
+  return $fields;
+}
