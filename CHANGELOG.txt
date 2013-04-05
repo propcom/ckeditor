@@ -1,5 +1,6 @@
 Dev release 6.x-1.x
 
+[#1908980] by wwalc: Moono should be set as the default skin.
 [#1959754] by wwalc: CKFinder is not installed correctly - improve information in the status report
 
 -----------------------------

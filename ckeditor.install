@@ -126,7 +126,7 @@ function ckeditor_install() {
       $arr['default'] = "t";
       $arr['show_toggle'] = "t";
       $arr['popup'] = variable_get('ckeditor_popup', 0) ? "t" : "f";
-      $arr['skin'] = "kama";
+      $arr['skin'] = "moono";
       $arr['toolbar'] = "
 [
     [ 'Format', 'Bold', 'Italic', '-', 'NumberedList','BulletedList', '-', 'Link', 'Unlink', 'Image' ]
