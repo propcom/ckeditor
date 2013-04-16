@@ -788,6 +788,52 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     )
   );
 
+  $form['acf'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced content filter'),
+    '#description' => t('Configure input data filtering in CKEditor. See !link for more information about ACF.', array(
+      '!link' => l(t('this blog post'), 'http://ckeditor.com/blog/Upgrading-to-CKEditor-4.1')
+    )),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE
+  );
+
+  $form['acf']['allowed_content'] = array(
+    '#type' => 'radios',
+    '#title' => t('Advanced content filter'),
+    '#description' => t('<strong>Enabled:</strong> CKEditor will only allow tags/attributes/styles provided by CKEditor features. Disallowed content will be removed directly by CKEditor. When configured properly, it helps to ensure a true WYSIWYG experience.').'<br />'.'<br />'.
+      t('<strong>Disabled:</strong> CKEditor will not filter any tags and as a result, the user will be able to insert any content into the editor. The content will only be filtered by server-side filters associated with input formats.').'<br />'.'<br />'.
+      t('<strong>Example:</strong> if only Bold and Link buttons are enabled, only !strong and !a tags will be allowed. Any !b tags will automatically be converted into !strong. The !img tag will not be allowed, unless the Image button is added to the toolbar.', array(
+      '!strong' => '<code>&lt;strong&gt;</code>',
+      '!a' => '<code>&lt;a&gt;</code>',
+      '!img' => '<code>&lt;img&gt;</code>',
+      '!b' => '<code>&lt;b&gt;</code>'
+    )).'<br /><br />'.
+      t('<strong>Warning:</strong> CKEditor will not use the set of tags associated with text format. Only the buttons enabled in the toolbar and optional plugins will determine which tags/attributes/styles are handled by CKEditor. Enabling ACF in CKEditor does not affect server-side filtering done by Drupal in any way.'),
+
+    '#default_value' => !empty($profile->settings['allowed_content']) ? $profile->settings['allowed_content'] : 't',
+    '#options' => array(
+      't' => t('Enabled'),
+      'f' => t('Disabled'),
+    ),
+  );
+
+  $form['acf']['extraAllowedContent'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Extra allowed content'),
+    '#default_value' => !empty($profile->settings['extraAllowedContent']) ? $profile->settings['extraAllowedContent'] : "",
+    '#cols' => 60,
+    '#rows' => 5,
+    '#description' => t(
+      'Set additional allowed content rules for CKEditor. Separate rules with a semicolon. See !docs for more information.', array(
+      '!docs' => l(t('CKEditor documentation'), 'http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-allowedContent')
+    )).'<p>'.
+      t('<strong>Example:</strong> !rules', array(
+        '!rules' => "<code>object[width,height];param[name,value];embed[*];</code>"
+      )).'</p>',
+    '#wysiwyg' => FALSE,
+  );
+
   $form['output'] = array(
     '#type' => 'fieldset',
     '#title' => t('Cleanup and output'),

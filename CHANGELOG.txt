@@ -1,6 +1,7 @@
 6.x-1.x dev
 
 [#1971502] by wwalc: Mediaembed plugin should define allowedContent for ACF
+[#1950498] by wwalc: Advanced Content Filter introduced in CKEditor 4.1 is now configurable in CKEditor profile.
 
 -----------------------------
  2013-04-12
