@@ -36,7 +36,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         '}'
         );
 
-      editor.addCommand( 'mediaembedDialog', new CKEDITOR.dialogCommand( 'mediaembedDialog' ) );
+      editor.addCommand( 'mediaembedDialog', new CKEDITOR.dialogCommand( 'mediaembedDialog', { allowedContent : 'div(media_embed);iframe[*](*)' } ) );
       editor.ui.addButton( 'MediaEmbed',
       {
         label: 'Embed Media',
