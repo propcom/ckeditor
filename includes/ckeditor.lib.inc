@@ -792,6 +792,9 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   }
   $settings['format_tags'] = $conf['font_format'];
   $settings['show_toggle'] = $conf['show_toggle'];
+  if (!empty($conf['allowed_content']) && $conf['allowed_content'] === 'f') {
+    $settings['allowedContent'] = true;
+  }
   $settings['ss'] = $conf['ss'];
 
   if (isset($conf['language_direction'])) {
