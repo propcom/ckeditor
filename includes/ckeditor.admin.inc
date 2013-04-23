@@ -775,14 +775,8 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
   drupal_add_js($module_drupal_url_path . '/includes/ckeditor.admin.js', 'file');
 
   if ($toolbar_wizard == 't') {
-    if (module_exists('jquery_ui')) {
-      jquery_ui_add(array('jquery.ui.widget.min.js', 'jquery.ui.sortable.min.js'));
-    }
-    else {
-      drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/jquery-ui.min.js', 'file');
-      drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/jquery.ui.widget.min.js', 'file');
-      drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/jquery.ui.sortable.min.js', 'file');
-    }
+    drupal_add_library('system', 'ui.widget');
+    drupal_add_library('system', 'ui.sortable');
     drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/sort.js', 'file');
   }
 
