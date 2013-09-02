@@ -795,6 +795,9 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   if (!empty($conf['allowed_content']) && $conf['allowed_content'] === 'f') {
     $settings['allowedContent'] = true;
   }
+  elseif (!empty($conf['extraAllowedContent'])) {
+    $settings['extraAllowedContent'] = $conf['extraAllowedContent'];
+  }
   $settings['ss'] = $conf['ss'];
 
   if (isset($conf['language_direction'])) {
