@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#1659576] by ChinggizKhan: Text of "Switch to plain text editor" link doesn't toggle
 [#2043365] by Erik Erskine, Danny_Joris: CKEditor profile exported as feature with filter format does not import properly
 [#2234971] by wwalc: Adjust the default toolbars.
 [#2234967] by wwalc: Add support for loading CKEditor from remote URL.
