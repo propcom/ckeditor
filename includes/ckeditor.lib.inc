@@ -561,7 +561,7 @@ function ckeditor_load_plugins($render = FALSE) {
     unset($arr['imce']);
   }
   //remove page break button if there is no module to do this
-  if (isset($arr['drupalbreaks']['buttons']['DrupalPageBreak']) && !module_exists('paging') && !module_exists('pagebreak')) {
+  if (isset($arr['drupalbreaks']['buttons']['DrupalPageBreak']) && !module_exists('paging') && !module_exists('pagebreak') && !module_exists('smart_paging')) {
     unset($arr['drupalbreaks']['buttons']['DrupalPageBreak']);
   }
 
@@ -1479,6 +1479,9 @@ function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_field
         drupal_add_js(array('ckeditor' => array('linktocontent_menu' => TRUE)), 'setting');
       }
       if (module_exists('pagebreak')) {
+        drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
+      }
+      if (module_exists('smart_paging')) {
         drupal_add_js(array('ckeditor' => array('pagebreak' => TRUE)), 'setting');
       }
       drupal_add_js(array('ckeditor' => array('ajaxToken' => drupal_get_token('ckeditorAjaxCall'), 'xss_url' => url('ckeditor/xss'))), 'setting');

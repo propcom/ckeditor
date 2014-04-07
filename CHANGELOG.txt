@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#1452544] by covenantd, RedRat: DrupalPageBreak button not visible when using Smart Paging module.
 [#2231005] by ChinggizKhan: Only set "window.CKEDITOR_BASEPATH" when it isnt already set.
 [#1659576] by ChinggizKhan: Text of "Switch to plain text editor" link doesn't toggle
 [#2043365] by Erik Erskine, Danny_Joris: CKEditor profile exported as feature with filter format does not import properly
