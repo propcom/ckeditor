@@ -1849,7 +1849,7 @@ CKEDITOR.on('dialogDefinition', function( ev ) {
 });
 CKEDITOR.replace('editor', {
   extraPlugins : 'uicolor',
-  height: 400,
+  height: 330,
   uiColor: '#' + uicolor,
   toolbar : [[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList'],[ 'UIColor' ]],
   skin: skin,
