@@ -70,7 +70,7 @@ div.sortableList.group {
 div.sortableList div.sortableListDiv {
     height: 34px;
     margin-bottom: 3px;
-    width: 900px;
+    width: 930px;
 }
 div.sortableList div.sortableListDiv span.sortableListSpan {
     background-color: #F0F0EE;
@@ -79,7 +79,7 @@ div.sortableList div.sortableListDiv span.sortableListSpan {
     display: block;
 }
 div.sortableList div.sortableListDiv span.sortableListSpan ul {
-    width: 900px;
+    width: 930px;
     white-space: nowrap;
     border: 1px solid #CCC;
     list-style: none;

@@ -44,7 +44,7 @@ function ckeditor_admin_main() {
   $ckconfig_file = $editor_path . '/config.js';
 
   //check if CKEditor plugin is installed
-  if (!_ckeditor_requirements_isinstalled()) {
+  if ($editor_path != '<URL>' && !_ckeditor_requirements_isinstalled()) {
     drupal_set_message(t(
             'Checking for !filename or !file.', array(
           '!filename' => '<code>' . $ckconfig_file . '</code>',
@@ -253,6 +253,10 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     '#collapsed' => FALSE,
   );
 
+  $current_path = ckeditor_path('relative');
+  if ($current_path == '<URL>') {
+    $current_path = ckeditor_path('url');
+  }
   $form['ckeditor_advanced_settings']['ckeditor_path'] = array(
     '#type' => 'textfield',
     '#title' => t('Path to CKEditor'),
@@ -260,12 +264,12 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     '#size' => 40,
     '#maxlength' => 128,
     '#description' => t(
-        'The path to CKEditor (the WYSIWYG rich text editor downloaded from !ckeditorcom) relative to the document root.', array(
+        'The path to CKEditor (the WYSIWYG rich text editor downloaded from !ckeditorcom). Provide a path relative to the document root, unless CKEditor is located on an external URL. In such case enter the full URL to a folder with CKEditor.', array(
       '!ckeditorcom' => l(t('ckeditor.com'), 'http://ckeditor.com/download')
         )
     ) .
     '<br /> ' .
-    t('Available placeholders:!b &ndash; path of the Drupal installation (!base) !m &ndash; path where the CKEditor module is stored (!module).!l &ndash; path to the libraries directory (!library)', array(
+    t('Available placeholders:!b &ndash; path of the Drupal installation (!base) !m &ndash; path where the CKEditor module is stored (!module).!l &ndash; path to the libraries directory (!library).', array(
       '!b' => '<br /><code>%b</code>',
       '!m' => '<br /><code>%m</code>',
       '!l' => '<br /><code>%l</code>',
@@ -276,12 +280,16 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckeditor_path('relative') . '</code>'
+      '!path' => '<code>' . $current_path . '</code>'
         )
     ),
     '#required' => TRUE
   );
 
+  $local_path = ckeditor_path('local');
+  if ($local_path == '<URL>') {
+    $local_path = t('CKEditor is loaded from URL. Local path is not available.');
+  }
   $form['ckeditor_advanced_settings']['ckeditor_local_path'] = array(
     '#type' => 'textfield',
     '#title' => t('Local path to CKEditor'),
@@ -295,7 +303,7 @@ function ckeditor_admin_global_profile_form($form, $form_state, $mode = 'add') {
     ) .
     '<br /> ' .
     t('Current path: !path', array(
-      '!path' => '<code>' . ckeditor_path('local') . '</code>'
+      '!path' => '<code>' . $local_path . '</code>'
         )
     )
   );
@@ -501,7 +509,7 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
     $edit['ckeditor_path'] = '';
   }
   $edit['ckeditor_path'] = trim(rtrim($edit['ckeditor_path'], "/"));
-  if ($edit['ckeditor_path'] && 0 !== strpos($edit['ckeditor_path'], "/") && 0 !== strpos($edit['ckeditor_path'], "%")) {
+  if ($edit['ckeditor_path'] && 0 !== strpos($edit['ckeditor_path'], "/") && 0 !== strpos($edit['ckeditor_path'], "%") && !preg_match("|^http(s)?://|i", $edit['ckeditor_path'])) {
     //ensure that slash is at the beginning
     $edit['ckeditor_path'] = "/" . $edit['ckeditor_path'];
   }
@@ -719,28 +727,6 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#collapsed' => TRUE,
   );
 
-  $form['appearance']['default'] = array(
-    '#type' => 'radios',
-    '#title' => t('Default state'),
-    '#default_value' => !empty($profile->settings['default']) ? $profile->settings['default'] : 't',
-    '#options' => array(
-      't' => t('Enabled'),
-      'f' => t('Disabled')
-    ),
-    '#description' => t('Default editor state. If disabled, the rich text editor may still be enabled by using toggle.'),
-  );
-
-  $form['appearance']['show_toggle'] = array(
-    '#type' => 'radios',
-    '#title' => t('Show the disable/enable rich text editor toggle'),
-    '#default_value' => !empty($profile->settings['show_toggle']) ? $profile->settings['show_toggle'] : 't',
-    '#options' => array(
-      't' => t('Show'),
-      'f' => t('Hide')
-    ),
-    '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea.'),
-  );
-
   $ui_colors = array(
     "default" => t('CKEditor default'),
     "custom" => t('Select manually')
@@ -769,8 +755,13 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     drupal_add_js(array('ckeditor_uicolor' => $color_palette), 'setting');
   }
 
-  drupal_add_js('window.CKEDITOR_BASEPATH = "' . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
-  drupal_add_js($editor_url_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
+  if ($editor_path == '<URL>') {
+    drupal_add_js($editor_url_path . '/ckeditor.js', 'external');
+  }
+  else {
+    drupal_add_js('window.CKEDITOR_BASEPATH = "' . $editor_path . '/"', array('type' => 'inline', 'weight' => -100));
+    drupal_add_js($editor_url_path . '/ckeditor.js', array('type' => 'file', 'preprocess' => FALSE));
+  }
   drupal_add_js($module_drupal_url_path . '/ckeditor.config.js', 'file');
   drupal_add_js($module_drupal_url_path . '/includes/ckeditor.admin.js', 'file');
 
@@ -779,6 +770,62 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     drupal_add_library('system', 'ui.sortable');
     drupal_add_js($module_drupal_url_path . '/includes/jqueryUI/sort.js', 'file');
   }
+
+  $form['appearance']['toolbar'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Toolbar'),
+    '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
+    '#description' => t('Load sample toolbar: !toolbars', array("!toolbars" => '<a href="#" id="cke_toolbar_DrupalBasic" class="cke_load_toolbar">' . t('Basic') . '</a> | <a href="#" id="cke_toolbar_DrupalAdvanced" class="cke_load_toolbar">' . t('Advanced') . '</a> | <a href="#" id="cke_toolbar_DrupalFull" class="cke_load_toolbar">' . t('Full') . '</a>')),
+    '#wysiwyg' => FALSE,
+    '#rows' => 15
+  );
+
+  if ($toolbar_wizard == 't') {
+    $form['appearance']['toolbar_wizzard_used'] = array(
+      '#markup' => '<div>' . t('Current toolbar') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
+      '#description' => t('Currently used buttons'),
+    );
+
+    drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all()), 'setting');
+
+    $form['appearance']['toolbar_wizzard_all'] = array(
+      '#markup' => '<div>' . t('Available buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
+      '#description' => t('All available buttons'),
+    );
+  }
+
+  $form['appearance']['expand'] = array(
+    '#type' => 'radios',
+    '#title' => t('Toolbar state on startup'),
+    '#default_value' => !empty($profile->settings['expand']) ? $profile->settings['expand'] : 't',
+    '#options' => array(
+      't' => t('Expanded'),
+      'f' => t('Collapsed')
+    ),
+    '#description' => t('The toolbar will start in an expanded or collapsed state.'),
+  );
+
+  $form['appearance']['default'] = array(
+    '#type' => 'radios',
+    '#title' => t('Default editor state'),
+    '#default_value' => !empty($profile->settings['default']) ? $profile->settings['default'] : 't',
+    '#options' => array(
+      't' => t('Enabled'),
+      'f' => t('Disabled')
+    ),
+    '#description' => t('Default editor state. If disabled, the rich text editor may still be enabled by using toggle.'),
+  );
+
+  $form['appearance']['show_toggle'] = array(
+    '#type' => 'radios',
+    '#title' => t('Show the disable/enable rich text editor toggle'),
+    '#default_value' => !empty($profile->settings['show_toggle']) ? $profile->settings['show_toggle'] : 't',
+    '#options' => array(
+      't' => t('Show'),
+      'f' => t('Hide')
+    ),
+    '#description' => t('Whether or not to show the disable/enable rich text editor toggle below the textarea.'),
+  );
 
   $form['appearance']['uicolor'] = array(
     '#type' => 'select',
@@ -798,36 +845,13 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     )
   ));
   $form['appearance']['skinframe'] = array(
-    '#markup' => '<iframe frameborder="0" id="skinframe" marginheight="0" marginwidth="0" src="' . $skinframe_url . '" style="height:500px;width:700px;"></iframe><br/>',
+    '#markup' => '<iframe frameborder="0" id="skinframe" marginheight="0" marginwidth="0" src="' . $skinframe_url . '" style="height:430px;width:700px;"></iframe><br/>',
     '#description' => '',
   );
   $form['appearance']['uicolor_user'] = array(
     '#type' => 'hidden',
     '#default_value' => !empty($profile->settings['uicolor_user']) ? $profile->settings['uicolor_user'] : 'default',
   );
-
-  $form['appearance']['toolbar'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Toolbar'),
-    '#default_value' => !empty($profile->settings['toolbar']) ? $profile->settings['toolbar'] : '',
-    '#description' => t('Load sample toolbar: !toolbars', array("!toolbars" => '<a href="#" id="cke_toolbar_DrupalBasic" class="cke_load_toolbar">' . t('Basic') . '</a> | <a href="#" id="cke_toolbar_DrupalAdvanced" class="cke_load_toolbar">' . t('Advanced') . '</a> | <a href="#" id="cke_toolbar_DrupalFull" class="cke_load_toolbar">' . t('Full') . '</a>')),
-    '#wysiwyg' => FALSE,
-    '#rows' => 15
-  );
-
-  if ($toolbar_wizard == 't') {
-    $form['appearance']['toolbar_wizzard_used'] = array(
-      '#markup' => '<div>' . t('Used buttons') . '</div><div class="sortableList" id="groupLayout"></div><br/>',
-      '#description' => t('Currently used buttons'),
-    );
-
-    drupal_add_js(array('cke_toolbar_buttons_all' => ckeditor_toolbar_buttons_all()), 'setting');
-
-    $form['appearance']['toolbar_wizzard_all'] = array(
-      '#markup' => '<div>' . t('All buttons') . '</div><div id="allButtons" class="sortableList"></div><br/>',
-      '#description' => t('All available buttons'),
-    );
-  }
 
   $plugin_list = ckeditor_load_plugins();
   $plugins = array();
@@ -854,18 +878,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#description' => t('Choose the plugins that you want to enable in CKEditor.')
   );
 
-  $form['appearance']['expand'] = array(
-    '#type' => 'radios',
-    '#title' => t('Toolbar state on startup'),
-    '#default_value' => !empty($profile->settings['expand']) ? $profile->settings['expand'] : 't',
-    '#options' => array(
-      't' => t('Expanded'),
-      'f' => t('Collapsed')
-    ),
-    '#description' => t('The toolbar will start in an expanded or collapsed state.'),
-  );
-
-  if (file_exists(ckeditor_path('local') . '/plugins/divarea/plugin.js')) {
+  if ($editor_local_path != '<URL>' && file_exists($editor_local_path . '/plugins/divarea/plugin.js')) {
     $form['appearance']['use_divarea'] = array(
       '#type' => 'radios',
       '#title' => t('"Div-based" editor'),
@@ -1643,10 +1656,14 @@ function ckeditor_profile_delete($name) {
 
 function _ckeditor_load_methods() {
   $result = array('ckeditor.js' => 'ckeditor.js');
-  if (file_exists(ckeditor_path('local') . '/ckeditor_basic.js')) {
+  $ckeditor_local_path = ckeditor_path('local');
+  if ($ckeditor_local_path == '<URL>') {
+    return $result;
+  }
+  if (file_exists($ckeditor_local_path . '/ckeditor_basic.js')) {
     $result['ckeditor_basic.js'] = 'ckeditor_basic.js';
   }
-  if (file_exists(ckeditor_path('local') . '/ckeditor_source.js')) {
+  if (file_exists($ckeditor_local_path . '/ckeditor_source.js')) {
     $result['ckeditor_source.js'] = 'ckeditor_source.js (' . t('for developers only') . ')';
   }
   return $result;
@@ -1811,6 +1828,8 @@ function ckeditor_skinframe() {
   }
 
   $editor_path = ckeditor_path('relative');
+  if ($editor_path == '<URL>')
+    $editor_path = ckeditor_path('url');
   $module_drupal_path = ckeditor_module_path('relative');
 
   $html = "<!DOCTYPE html>";
