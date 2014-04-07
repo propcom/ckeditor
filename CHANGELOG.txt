@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#2234971] by wwalc: Adjust the default toolbars.
 [#2234967] by wwalc: Add support for loading CKEditor from remote URL.
 [#2234943] by wwalc: Use the moono icons in the administration area.
 [#2127467] by wwalc: Support Pantheon Live Environment.
