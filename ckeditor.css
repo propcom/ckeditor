@@ -68,13 +68,13 @@ div.sortableList.group {
     margin: 20px 0px 0px 0px;
 }
 div.sortableList div.sortableListDiv {
-    height: 30px;
+    height: 34px;
     margin-bottom: 3px;
     width: 900px;
 }
 div.sortableList div.sortableListDiv span.sortableListSpan {
     background-color: #F0F0EE;
-    height: 30px;
+    height: 34px;
     border-right: 1px dashed #CCC;
     display: block;
 }
@@ -85,23 +85,29 @@ div.sortableList div.sortableListDiv span.sortableListSpan ul {
     list-style: none;
     margin:0px;
     padding: 0px 0px 0px 1px;
-    height: 30px;
+    height: 34px;
 }
 div.sortableList div.sortableListDiv span.sortableListSpan ul li {
     list-style: none;
     cursor: move;
     height: 18px;
     min-width: 18px;
-    padding: 2px;
+    padding: 4px;
 }
 div.sortableList div.sortableListDiv span.sortableListSpan ul li.group {
     min-width: 5px;
-    padding-left: 2px;
+    padding-left: 4px;
+}
+div.sortableList div.sortableListDiv span.sortableListSpan ul li.spacer img {
+    margin-bottom: 4px;
 }
 div.sortableList div.sortableListDiv span.sortableListSpan ul li img {
     border: 0;
     padding: 0;
     margin: 0
+}
+div.sortableList #Format, div.sortableList #Font, div.sortableList #Styles, div.sortableList #FontSize {
+    padding:0;
 }
 li.sortableItem {
     position: relative;
