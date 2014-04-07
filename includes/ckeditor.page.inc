@@ -81,7 +81,7 @@ function ckeditor_help_delegate($path, $arg) {
           '</p><p>' .
           t('Useful links: !ckeditorlink | !devguidelink | !userguidelink.', array(
             '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com'),
-            '!devguidelink' => l(t('Developer\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
+            '!devguidelink' => l(t('CKEditor for Drupal 7 Documentation'), 'http://docs.cksource.com/CKEditor_for_Drupal/Open_Source/Drupal_7'),
             '!userguidelink' => l(t('User\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide')
               )
           ) .
@@ -101,7 +101,7 @@ function ckeditor_help_delegate($path, $arg) {
           '<p>' .
           t('Useful links: !ckeditorlink | !devguidelink | !userguidelink.', array(
             '!ckeditorlink' => l(t('CKEditor website'), 'http://ckeditor.com'),
-            '!devguidelink' => l(t('Developer\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Developers_Guide'),
+            '!devguidelink' => l(t('CKEditor for Drupal 7 Documentation'), 'http://docs.cksource.com/CKEditor_for_Drupal/Open_Source/Drupal_7'),
             '!userguidelink' => l(t('User\'s Guide'), 'http://docs.cksource.com/CKEditor_3.x/Users_Guide')
               )
           ) .
