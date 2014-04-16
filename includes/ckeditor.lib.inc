@@ -1309,7 +1309,7 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   }
 
   // Allow modules to modify the settings.
-  drupal_alter('ckeditor_settings', $settings);
+  drupal_alter('ckeditor_settings', $settings, $conf);
 
   return $settings;
 }

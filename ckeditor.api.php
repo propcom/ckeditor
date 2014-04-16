@@ -79,8 +79,10 @@ function hook_ckeditor_security_filter() {
  *
  * @param $settings
  *   An associative array of settings.
+ * @param $conf
+ *   An associative array with access to raw profile settings that might be helpful to alter the real $settings.
  */
-function hook_ckeditor_settings_alter(&$settings) {
+function hook_ckeditor_settings_alter(&$settings, $conf) {
   // Change the ckeditor config path.
   $settings['customConfig'] = drupal_get_path('module', 'ckeditor') . '/ckeditor.config.js';
 }

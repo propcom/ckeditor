@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#2236367] by greenSkin: Add $conf array to ckeditor_settings alter hook
 [#1452544] by covenantd, RedRat: DrupalPageBreak button not visible when using Smart Paging module.
 [#2231005] by ChinggizKhan: Only set "window.CKEDITOR_BASEPATH" when it isnt already set.
 [#1659576] by ChinggizKhan: Text of "Switch to plain text editor" link doesn't toggle
