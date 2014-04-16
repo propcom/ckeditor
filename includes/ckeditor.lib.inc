@@ -608,6 +608,9 @@ function ckeditor_user_get_setting_default() {
     'auto_lang' => 't',
   );
 
+  // Allow other modules to alter the default settings.
+  drupal_alter('ckeditor_default_settings', $default);
+
   return $default;
 }
 

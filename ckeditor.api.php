@@ -87,4 +87,12 @@ function hook_ckeditor_settings_alter(&$settings, $conf) {
   $settings['customConfig'] = drupal_get_path('module', 'ckeditor') . '/ckeditor.config.js';
 }
 
-?>
+/**
+ * Hook that allows to alter the user default settings.
+ *
+ * @param $settings
+ *   An associative array of settings.
+ */
+function hook_ckeditor_default_settings_alter(&$settings) {
+  $settings['show_toggle'] = 'f';
+}
