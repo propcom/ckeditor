@@ -170,4 +170,10 @@ fieldset#edit-appearance div#groupLayout, div#allButtons  {
   margin: 1em 0;
   overflow: auto;
 }
+
+fieldset#edit-appearance li.sortableItem img {
+  width: 100%;
+  max-width:16px;
+  height:auto;
+}
 /*  end of toolbar Drag & Drop */
