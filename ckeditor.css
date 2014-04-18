@@ -106,6 +106,13 @@ div.sortableList div.sortableListDiv span.sortableListSpan ul li img {
     padding: 0;
     margin: 0
 }
+fieldset#edit-appearance li.sortableItem img {
+    max-height:24px;
+    width:auto;
+}
+div.sortableList #Format img, div.sortableList #Font img, div.sortableList #Styles img, div.sortableList #FontSize img {
+    max-height:30px !important;
+}
 div.sortableList #Format, div.sortableList #Font, div.sortableList #Styles, div.sortableList #FontSize {
     padding:0;
 }
@@ -169,11 +176,5 @@ fieldset#edit-appearance div#groupLayout, div#allButtons  {
   padding: 0 0 0 0;
   margin: 1em 0;
   overflow: auto;
-}
-
-fieldset#edit-appearance li.sortableItem img {
-  width: 100%;
-  max-width:16px;
-  height:auto;
 }
 /*  end of toolbar Drag & Drop */
