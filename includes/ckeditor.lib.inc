@@ -1454,7 +1454,7 @@ function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_field
       }
 
       if ($editor_local_path == '<URL>') {
-        drupal_add_js($editor_url_path . '/ckeditor.js', 'external');
+        drupal_add_js($editor_url_path . '/ckeditor.js', array('type' => 'external', 'scope' => 'footer'));
       }
       else if (isset($load_method) && file_exists($editor_local_path . '/' . $load_method)) {
         drupal_add_js($editor_url_path . '/' . $load_method, array('type' => 'file', 'scope' => 'footer', 'preprocess' => $preprocess));

@@ -278,58 +278,74 @@ if (typeof window.CKEDITOR_BASEPATH === 'undefined') {
     }
   };
 
+  function attachCKEditor(context) {
+    // make sure the textarea behavior is run first, to get a correctly sized grippie
+    if (Drupal.behaviors.textarea && Drupal.behaviors.textarea.attach) {
+      Drupal.behaviors.textarea.attach(context);
+    }
+
+    $(context).find("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
+      var ta_id=$(this).attr("id");
+      if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
+        Drupal.ckeditorOff(ta_id);
+      }
+
+      if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
+        Drupal.ckeditorOn(ta_id);
+      }
+
+      if (typeof(Drupal.settings.ckeditor.input_formats[Drupal.settings.ckeditor.elements[ta_id]]) != 'undefined') {
+        $('.ckeditor_links').show();
+      }
+
+      var sel_format = $("#" + ta_id.substr(0, ta_id.lastIndexOf("-")) + "-format--2");
+      if (sel_format && sel_format.not('.ckeditor-processed')) {
+        sel_format.addClass('ckeditor-processed').change(function() {
+          Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
+          if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined') {
+            $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
+          }
+          Drupal.ckeditorOff(ta_id);
+          if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
+            if ($('#'+ta_id).hasClass('ckeditor-processed')) {
+              Drupal.ckeditorOn(ta_id, false);
+            }
+            else {
+              Drupal.ckeditorOn(ta_id);
+            }
+            $('#switch_'+ta_id).show();
+          }
+          else {
+            $('#switch_'+ta_id).hide();
+          }
+        });
+      }
+    });
+  }
+
   /**
  * Drupal behaviors
  */
   Drupal.behaviors.ckeditor = {
     attach:
     function (context) {
+      // If CKEDITOR is undefined and script is loaded from CDN, wait up to 15 seconds until it loads [#2244817]
+      if ((typeof(CKEDITOR) == 'undefined') && Drupal.settings.ckeditor.editor_path.match(/^(http(s)?:)\/\//i)) {
+        if (typeof(Drupal.settings.ckeditor.loadAttempts) == 'undefined') {
+          Drupal.settings.ckeditor.loadAttempts = 50;
+        }
+        if (Drupal.settings.ckeditor.loadAttempts > 0) {
+          Drupal.settings.ckeditor.loadAttempts--;
+          window.setTimeout(function() {
+            Drupal.behaviors.ckeditor.attach(context);
+          }, 300);
+        }
+        return;
+      }
       if ((typeof(CKEDITOR) == 'undefined') || !CKEDITOR.env.isCompatible) {
         return;
       }
-
-      // make sure the textarea behavior is run first, to get a correctly sized grippie
-      if (Drupal.behaviors.textarea && Drupal.behaviors.textarea.attach) {
-        Drupal.behaviors.textarea.attach(context);
-      }
-
-      $(context).find("textarea.ckeditor-mod:not(.ckeditor-processed)").each(function () {
-        var ta_id=$(this).attr("id");
-        if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined'){
-          Drupal.ckeditorOff(ta_id);
-        }
-
-        if ((typeof(Drupal.settings.ckeditor.autostart) != 'undefined') && (typeof(Drupal.settings.ckeditor.autostart[ta_id]) != 'undefined')) {
-          Drupal.ckeditorOn(ta_id);
-        }
-
-        if (typeof(Drupal.settings.ckeditor.input_formats[Drupal.settings.ckeditor.elements[ta_id]]) != 'undefined') {
-          $('.ckeditor_links').show();
-        }
-
-        var sel_format = $("#" + ta_id.substr(0, ta_id.lastIndexOf("-")) + "-format--2");
-        if (sel_format && sel_format.not('.ckeditor-processed')) {
-          sel_format.addClass('ckeditor-processed').change(function() {
-            Drupal.settings.ckeditor.elements[ta_id] = $(this).val();
-            if (CKEDITOR.instances && typeof(CKEDITOR.instances[ta_id]) != 'undefined') {
-              $('#'+ta_id).val(CKEDITOR.instances[ta_id].getData());
-            }
-            Drupal.ckeditorOff(ta_id);
-            if (typeof(Drupal.settings.ckeditor.input_formats[$(this).val()]) != 'undefined'){
-              if ($('#'+ta_id).hasClass('ckeditor-processed')) {
-                Drupal.ckeditorOn(ta_id, false);
-              }
-              else {
-                Drupal.ckeditorOn(ta_id);
-              }
-              $('#switch_'+ta_id).show();
-            }
-            else {
-              $('#switch_'+ta_id).hide();
-            }
-          });
-        }
-      });
+      attachCKEditor(context);
     },
     detach:
     function(context, settings, trigger){

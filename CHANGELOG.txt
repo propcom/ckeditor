@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#2244817] by wwalc: CKEditor from CDN does not load in Panels IPE when a form is loaded in a popup for the first time.
 [#2244387] by wwalc: 3rd party plugins with large icons break the toolbar configurator.
 [#2013657] by pfrenssen: Allow other modules to alter the default settings.
 [#2236367] by greenSkin: Add $conf array to ckeditor_settings alter hook.
