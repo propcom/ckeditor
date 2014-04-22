@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#1960808] by valkum, wwalc: Avoid using arg() in code.
 [#1914496] by Danylo Dragan: Drush integration code doesn't respect --skip option.
 [#2085245] by jlyon: Fix theme path displayed on Edit CKEditor Profile page.
 [#2123669] by wwalc: Better support for loading custom CKEditor skins.

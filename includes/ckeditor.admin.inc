@@ -564,7 +564,7 @@ function ckeditor_admin_global_profile_form_submit($form, &$form_state) {
 /**
  * Form builder for a profile
  */
-function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
+function ckeditor_admin_profile_form($form, $form_state, $task, $profile = NULL) {
   global $theme;
 
   if ($profile != NULL) {
@@ -596,7 +596,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#collapsed' => TRUE
   );
 
-  switch (arg(4)) {
+  switch ($task) {
     case 'clone':
       //load all profiles to check their names
       $profiles = ckeditor_profile_load();
@@ -641,7 +641,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
 
   $orig_formats = filter_formats();
 
-  if (arg(4) == 'edit' && !empty($profile->name)) {
+  if ($task == 'edit' && !empty($profile->name)) {
     $used_formats = db_select('ckeditor_input_format', 'f')->fields('f', array("format"))->distinct()->condition("f.name", array($profile->name), 'NOT IN')->execute()->fetchAllAssoc('format');
   }
   else {
@@ -652,7 +652,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
   $formats = array();
   $input_format_config_links = array();
   foreach ($orig_formats AS $format) {
-    if ((arg(4) == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats)) {
+    if (($task == 'edit' && !empty($profile->input_formats) && array_key_exists($format->format, $profile->input_formats)) || !array_key_exists($format->format, $used_formats)) {
       $formats[$format->format] = $format->name;
       $input_format_config_links[$format->format] = array("name" => $format->name, "config_url" => url("admin/config/content/formats/" . $format->format));
     }
@@ -1526,8 +1526,8 @@ function ckeditor_admin_profile_form_submit($form, &$form_state) {
 /**
  * Form builder for a clone profile
  */
-function ckeditor_admin_profile_clone_form($form, $form_state, $oldprofile) {
-  return ckeditor_admin_profile_form($form, $form_state, $oldprofile);
+function ckeditor_admin_profile_clone_form($form, $form_state, $task, $oldprofile) {
+  return ckeditor_admin_profile_form($form, $form_state, $task, $oldprofile);
 }
 
 /**
