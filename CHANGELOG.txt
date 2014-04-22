@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#2085245] by jlyon: Fix theme path displayed on Edit CKEditor Profile page.
 [#2123669] by wwalc: Better support for loading custom CKEditor skins.
 [#1914904] by rooby: Media plugin not working in IE 9 and below.
 [#2244835] by loopduplicate: CKEditor is not visible in Panels IPE in IE11.

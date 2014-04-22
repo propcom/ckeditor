@@ -1070,6 +1070,9 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
     '#collapsed' => TRUE
   );
 
+  $current_theme = variable_get('theme_default', $theme);
+  $theme_path = drupal_get_path('theme', $current_theme);
+
   $form['css']['css_mode'] = array(
     '#type' => 'select',
     '#title' => t('Editor CSS'),
@@ -1107,7 +1110,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
       '!h' => '<br /><code>%h</code>',
       '!t' => '<br /><code>%t</code>',
       '!host' => '<code>' . base_path() . '</code>',
-      '!theme' => '<code>' . base_path() . path_to_theme() . '/</code>'
+      '!theme' => '<code>' . base_path() . $theme_path . '/</code>'
         )
     )
   );
@@ -1125,7 +1128,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
         'Define the location of the !ckeditor_styles_js_file file. It is used by the <strong>Style</strong> drop-down list available in the default toolbar. Copy the !ckeditor_styles_js_path file into your theme directory (!theme) and adjust it to your needs.', array(
       '!ckeditor_styles_js_file' => '<code>ckeditor.styles.js</code>',
       '!ckeditor_styles_js_path' => '<code>' . drupal_get_path('module', 'ckeditor') . '/ckeditor.styles.js</code>',
-      '!theme' => '<code>' . path_to_theme() . '/ckeditor.styles.js' . '</code>'
+      '!theme' => '<code>' . $theme_path . '/ckeditor.styles.js' . '</code>'
         )
     )
   );
@@ -1149,7 +1152,7 @@ function ckeditor_admin_profile_form($form, $form_state, $profile = NULL) {
       '!t' => '<br /><code>%t</code>',
       '!m' => '<br /><code>%m</code>',
       '!host' => '<code>' . base_path() . '</code>',
-      '!theme' => '<code>' . base_path() . path_to_theme() . '/</code>',
+      '!theme' => '<code>' . base_path() . $theme_path . '/</code>',
       '!module' => '<code>' . drupal_get_path('module', 'ckeditor') . '</code>'
         )
     )
