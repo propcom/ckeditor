@@ -177,7 +177,6 @@ function ckeditor_load_skin_options() {
       closedir($dh);
     }
   }
-
   //oops, we have no information about skins, let's use only default
   if (empty($arr)) {
     $arr = array(
@@ -203,8 +202,9 @@ function ckeditor_default_skin() {
   if (array_key_exists('kama', $skin_options)) {
     return 'kama';
   }
+  reset($skin_options);
   //if any default theme not exists select first from the list
-  return key(reset($skin_options));
+  return key($skin_options);
 }
 
 /**
