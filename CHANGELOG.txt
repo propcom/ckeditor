@@ -1,5 +1,6 @@
 7.x-1.x dev
 
+[#2249139] by wwalc: Use CKEditor 4.4.0 from CKEditor CDN (http://cdn.ckeditor.com) by default.
 [#1370894] by uberhacker, mgifford, Devin Carlson: Conditionally load ckeditor.css only when necessary.
 [#1960808] by valkum, wwalc: Avoid using arg() in code.
 [#1914496] by Danylo Dragan: Drush integration code doesn't respect --skip option.
