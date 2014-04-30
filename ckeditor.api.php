@@ -71,6 +71,13 @@ function hook_ckeditor_security_filter() {
 }
 
 /**
+ * Hook to alter CKEditor security filters.
+ */
+function hook_ckeditor_security_filter_alter(&$security_filters) {
+  // Modify a $security_filter.
+}
+
+/**
  * Hook to extend/change the ckeditor settings.
  *
  * This hook is invoked from ckeditor_profile_settings_compile(). The settings

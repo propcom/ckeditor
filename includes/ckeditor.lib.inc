@@ -1647,6 +1647,7 @@ function ckeditor_security_filters() {
       $security_filters['filters'][$module_filter_name] = TRUE;
     }
   }
+  drupal_alter('ckeditor_security_filter', $security_filters);
 
   return $security_filters;
 }
