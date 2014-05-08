@@ -1,5 +1,8 @@
 7.x-1.x dev
 
+2013-05-08
+New stable release 7.x-1.14
+
 [#2255129] by wwalc: Introduced support for the codesnippet and mathjax plugins.
 [#1762328] by wwalc: IMPORTANT: <code> tags are no longer protected by default.
 [#1327898] by grasmash: Adding new ckeditor_security_filter_alter() hook.
