@@ -123,7 +123,7 @@ Drupal.ckeditorOn = function(textarea_id) {
   if (teaser) {
     var ch_checked = teaser.checkbox.attr('checked');
     var tv = teaser.textarea.val();
-    if (!teaser.textarea.attr("disabled")) {
+    if (teaser.textarea.attr("disabled") !== true || teaser.textarea.attr("disabled") !== 'disabled') {
       $("#" + textarea_id).val(tv + '\n<!--break-->\n' + $("#" + textarea_id).val());
       teaser.textarea.val('');
     }
@@ -557,3 +557,4 @@ if (Drupal.tableDrag) {
       );
     };
 }
+
