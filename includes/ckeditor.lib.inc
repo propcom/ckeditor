@@ -1202,7 +1202,7 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
 
   // add custom stylesheet if configured
   // lets hope it exists but we'll leave that to the site admin
-  $query_string = '?' . substr(variable_get('css_js_query_string', '0'), 0, 1);
+  $query_string = '?' . variable_get('css_js_query_string', '0');
   $css_files = array();
   switch ($conf['css_mode']) {
     case 'theme':
