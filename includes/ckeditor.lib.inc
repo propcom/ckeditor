@@ -1363,7 +1363,7 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
  *
  */
 function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_fields_to_toggle = FALSE) {
-  global $theme;
+  global $user, $theme;
   static $processed_ids = array();
   static $is_running = FALSE;
   $use_ckeditor = FALSE;
@@ -1474,6 +1474,14 @@ function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_field
     $editor_url_path = ckeditor_path('url');
 
     if (!$is_running) {
+      // By default sessions are not started automatically for anonymous users.
+      // Start one for editing content so that we had a consistent token that is used in XSS filter.
+      if (isset($field['#entity']) && !empty($field['#entity']->created) && empty($user->uid)) {
+        drupal_session_start();
+        $_SESSION['ckeditor_anonymous_user'] = true;
+        drupal_page_is_cacheable(FALSE);
+      }
+
       if (!$ckeditor_in_default_format) {
         $load_method = 'ckeditor_basic.js';
         $load_time_out = 0;
