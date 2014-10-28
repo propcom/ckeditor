@@ -593,7 +593,6 @@ function ckeditor_sorted_roles($clear = FALSE) {
  */
 function ckeditor_is_enabled($excl_mode, $excl_regex, $element_id, $get_q) {
   global $theme;
-
   $front = variable_get('site_frontpage', 'node');
   $excl_regex = str_replace('<front>', $front, $excl_regex);
   $nodetype = ckeditor_get_nodetype($get_q);

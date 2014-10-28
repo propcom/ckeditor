@@ -585,6 +585,11 @@ function ckeditor_process_textarea($element) {
     $class = 'ckeditor-mod';
     $_ckeditor_ids[] = $textarea_id;
     $ckeditor_on = ($conf['default']=='t') ? 1 : 0 ;
+    if (!empty($conf['default_state_exception_regex'])) {
+      $match = ckeditor_is_enabled(1, $conf['default_state_exception_regex'], $element['#id'], $_GET['q']) xor 1;
+      $ckeditor_on = ($ckeditor_on xor $match) ? 1 : 0;
+    }
+
     $xss_check = 0;
     //it's not a problem when adding new content/comment
     if (arg(1) != "add" && arg(1) != "reply") {

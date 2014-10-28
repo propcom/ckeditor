@@ -542,6 +542,23 @@ function ckeditor_admin_profile_form($form_state, $profile = NULL) {
     '#description' => t('Default editor state. If disabled, the rich text editor may still be enabled by using toggle or popup window.'),
   );
 
+  $form['appearance']['default_state_exception'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Reverse default state on the following fields'),
+    '#cols' => 60,
+    '#rows' => 5,
+    '#default_value' => !empty($profile->settings['default_state_exception']) ? $profile->settings['default_state_exception'] : '',
+    '#description' => t('Enter the paths to the textarea fields for which you want to reverse the default state above.') .
+      ' ' .
+      t(
+        'See the !helppagelink for more information about defining field names.',
+        array(
+          '!helppagelink' => l(t('Help page'), 'admin/help/ckeditor', array('fragment' => 'fieldinclexcl'))
+        )
+      ),
+    '#wysiwyg' => FALSE,
+  );
+
   $form['appearance']['show_toggle'] = array(
     '#type' => 'radios',
     '#title' => t('Show the disable/enable rich text editor toggle'),
@@ -1459,6 +1476,13 @@ function ckeditor_admin_global_profile_form($form_state, $mode = 'add') {
     );
   }
 
+  $form['appearance'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Editor appearance'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
   $form['ckeditor_exclude_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Visibility settings'),
@@ -2019,15 +2043,15 @@ function ckeditor_rebuild_selectors($name = NULL) {
   while (($data = db_fetch_object($result))) {
     if ($data->settings) {
       $settings = unserialize($data->settings);
-      // [#654626]
-      if (!isset($settings['excl'])) {
-        $settings['excl'] = '';
-      }
-      if (!isset($settings['simple_incl'])) {
-        $settings['simple_incl'] = '';
-      }
-
-      foreach (array('excl', 'simple_incl') as $var) {
+      $vars = array(
+        'excl',
+        'simple_incl',
+        'default_state_exception',
+      );
+      foreach ($vars as $var) {
+        if (!isset($settings[$var])) {
+          $settings[$var] = '';
+        }
         $settings[$var .'_regex'] = '';
         $rules = preg_split('/[\s,]+/', $settings[$var]);
         $regex = array();
