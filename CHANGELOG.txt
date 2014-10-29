@@ -1,5 +1,13 @@
 6.x-1.x dev
 
+[#1063986] by jcisio: Allow user to choose which textarea is enable by default
+
+-----------------------------
+ 2014-10-14
+ New stable release: 6.x-1.15
+-----------------------------
+
+[#2357029] SA-CONTRIB-2014-098 - CKEditor - Cross Site Scripting (XSS)
 [#1971566] by wwalc: Mediaembed throws JS error with ACF enabled
 [#1971502] by wwalc: Mediaembed plugin should define allowedContent for ACF
 [#1950498] by wwalc: Advanced Content Filter introduced in CKEditor 4.1 is now configurable in CKEditor profile.
