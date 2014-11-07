@@ -149,7 +149,7 @@ function _createDropdown(obj) {
 function _fillDropdown(obj, results){
 	if (results.categories != false) {
 		var select = _createDropdown(obj);
-		<!-- linktonode START -->
+		//<!-- linktonode START -->
 		$(select).addOption(-1, "Choose category");
 		//<!-- linktonode END -->
 		for (key in results.categories)
