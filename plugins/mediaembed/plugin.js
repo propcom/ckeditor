@@ -4,8 +4,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * @file
- * Plugin for embedding HTML snippets.
+ * @file Plugin for embedding HTML snippets
  */
 ( function() {
   var numberRegex = /^\d+(?:\.\d+)?$/;
