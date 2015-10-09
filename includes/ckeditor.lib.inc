@@ -630,18 +630,6 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
 
   if (isset($conf['loadPlugins'])) {
     $settings['loadPlugins'] = ckeditor_plugins_render($conf['loadPlugins']);
-
-    if (array_key_exists('media', $settings['loadPlugins']) && module_exists('media') && module_hook('media', 'filter_info')) {
-      module_load_include('inc', 'media', 'includes/media.browser');
-      $javascript = media_browser_js();
-      foreach ($javascript as $key => $definitions) {
-        foreach ($definitions as $definition) {
-          $function = 'drupal_add_' . $key;
-          call_user_func_array($function, $definition);
-        }
-      }
-      drupal_add_js(drupal_get_path('module', 'ckeditor') . '/plugins/media/library.js', array('scope' => 'footer', 'weight' => -20));
-    }
   }
   else {
     $settings['loadPlugins'] = array();
