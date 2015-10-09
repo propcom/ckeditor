@@ -616,11 +616,11 @@ function ckeditor_features_api() {
  * CKEditor does not implement any kind of potection on private files.
  */
 function ckeditor_file_download($uri) {
+  $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri", array(':uri' => $uri));
+  foreach ($result as $record) {
+    return NULL;
+  }
   if ($path = file_create_url($uri)) {
-    $result = db_query("SELECT f.* FROM {file_managed} f WHERE uri = :uri", array(':uri' => $uri));
-    foreach ($result as $record) {
-      return NULL;
-    }
     //No info in DB? Probably a file uploaded with FCKeditor / CKFinder
     $global_profile = ckeditor_profile_load("CKEditor Global Profile");
     //Assume that files inside of ckeditor directory belong to the CKEditor. If private directory is set, let the decision about protection to the user.
