@@ -604,6 +604,7 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   }
   $settings['format_tags'] = $conf['font_format'];
   $settings['show_toggle'] = $conf['show_toggle'];
+  $settings['default'] = $conf['default'];
   if (!empty($conf['allowed_content']) && $conf['allowed_content'] === 'f') {
     $settings['allowedContent'] = true;
   }
@@ -1160,7 +1161,7 @@ function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_field
 
   $settings = FALSE;
   if ($settings = ckeditor_profiles_compile($format)) {
-    $ckeditor_on = ($profile->settings['default'] == 't') ? TRUE : FALSE;
+    $ckeditor_on = ($settings['default'] == 't' && $profile->settings['default'] == 't') ? TRUE : FALSE;
   }
   elseif ($settings = ckeditor_profiles_compile($use_ckeditor)) {
     $ckeditor_on = FALSE;
