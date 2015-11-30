@@ -553,7 +553,6 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
   $current_theme = variable_get('theme_default', $theme);
 
   $settings = array();
-  $conf = array();
   $conf = $profile->settings;
   $profile_name = $profile->name;
 
@@ -1079,6 +1078,12 @@ function ckeditor_profile_settings_compile($global_profile, $profile) {
     }
   }
 
+  if (!empty($settings['loadPlugins'])) {
+    // Remove orphaned plugins (coming from disabled modules).
+    $available_plugins = array_keys(ckeditor_load_plugins());
+    $settings['loadPlugins'] = array_intersect_key($settings['loadPlugins'], array_flip($available_plugins));
+  }
+
   // Allow modules to modify the settings.
   drupal_alter('ckeditor_settings', $settings, $conf);
 
@@ -1159,7 +1164,6 @@ function ckeditor_load_by_field($field, $format, $show_toggle = TRUE, $add_field
     $ckeditor_in_default_format = TRUE;
   }
 
-  $settings = FALSE;
   if ($settings = ckeditor_profiles_compile($format)) {
     $ckeditor_on = ($settings['default'] == 't' && $profile->settings['default'] == 't') ? TRUE : FALSE;
   }
