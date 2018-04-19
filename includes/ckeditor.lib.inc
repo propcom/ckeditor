@@ -177,12 +177,16 @@ function ckeditor_load_skin_options() {
       closedir($dh);
     }
   }
-  //oops, we have no information about skins, let's use only default
-  if (empty($arr)) {
-    $arr = array(
-      'moono' => 'Moono',
-      'kama' => 'Kama'
-    );
+
+  // If we have no information about skins, use the default for this version.
+  if (!$arr) {
+    $version = explode('.', ckeditor_get_version());
+    if ($version[0] == 3) {
+      $arr = array('kama' => 'Kama');
+    }
+    elseif ($version[0] == 4) {
+      $arr = ($version[1] <= 5) ? array('moono' => 'Moono') : array('moono-lisa' => 'Moono-lisa');
+    }
   }
   asort($arr);
 
@@ -195,15 +199,25 @@ function ckeditor_load_skin_options() {
  * @return string
  */
 function ckeditor_default_skin() {
-  $skin_options = ckeditor_load_skin_options();
-  if (array_key_exists('moono', $skin_options)) {
-    return 'moono';
+  // If there is no available list then bail.
+  if (!$skin_options = ckeditor_load_skin_options()) {
+    return '';
   }
-  if (array_key_exists('kama', $skin_options)) {
-    return 'kama';
+
+  // Default skins in descending order
+  $defaults = array(
+    'moono-lisa' => 'Moono-lisa',
+    'moono' => 'Moono',
+    'kama' => 'Kama'
+  );
+
+  // If there is more than one skin to choose from, use the most current
+  // default.
+  if ($skin_options && ($default = array_intersect_key($defaults, $skin_options))) {
+    return key($default);
   }
-  reset($skin_options);
-  //if any default theme not exists select first from the list
+
+  // If there are no defaults, or only one skin, select the first from the list.
   return key($skin_options);
 }
 
