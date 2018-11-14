@@ -220,23 +220,38 @@ htmlspecialchars('<script>hljs.initHighlightingOnLoad();</script>').'</code>'
  * AJAX callback - XSS filter
  */
 function ckeditor_filter_xss() {
-  header('Content-Type: text/plain; charset=utf-8');
+  header('Content-Type: application/json; charset=utf-8');
   $GLOBALS['devel_shutdown'] = FALSE;
 
-  if (!isset($_POST['text']) || !is_string($_POST['text']) || !isset($_POST['input_format']) || !is_string($_POST['input_format']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', FALSE)) {
+  if (!isset($_POST['batch']) || !is_array($_POST['batch']) || !isset($_POST['token']) || !drupal_valid_token($_POST['token'], 'ckeditorAjaxCall', FALSE)) {
     exit;
   }
 
-  $format = filter_format_load($_POST['input_format']);
-  if ($format == FALSE || !is_object($format) || !filter_access($format)) {
-    exit;
+  foreach ($_POST['batch'] as $item) {
+    if (!isset($item['text']) || !is_string($item['text']) || !isset($item['input_format']) || !is_string($item['input_format'])) {
+      exit;
+    }
+    $items[] = $item;
   }
 
   module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
 
-  $text = $_POST['text'];
+  foreach($items as $item) {
+    $return[] = ckeditor_filter_xss_text($item['text'], $item['input_format']);
+  }
+
+  echo json_encode($return);
+  exit;
+}
+
+function ckeditor_filter_xss_text($text, $input_format) {
+  $format = filter_format_load($input_format);
+  if ($format == FALSE || !is_object($format) || !filter_access($format)) {
+    exit;
+  }
+
   $filters = filter_get_filters();
-  $format_filters = filter_list_format($_POST['input_format']);
+  $format_filters = filter_list_format($input_format);
   $security_filters = ckeditor_security_filters();
   $cache_id = $_POST['input_format'] . ':' . '' . ':' . hash('sha256', $text);
 
@@ -292,5 +307,5 @@ function ckeditor_filter_xss() {
     $text = $filters[$name]['process callback']($text, $format_filters[$name], $format, '', TRUE, $cache_id);
   }
 
-  echo $text;
+  return $text;
 }

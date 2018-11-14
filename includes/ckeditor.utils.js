@@ -141,7 +141,41 @@ if (typeof window.CKEDITOR_BASEPATH === 'undefined') {
       textarea_settings = Drupal.ckeditorLoadPlugins(textarea_settings);
       Drupal.ckeditorInstance = CKEDITOR.replace(textarea_id, textarea_settings);
     }
-  }
+  };
+
+  Drupal.ckeditorFilterXSS = (function() {
+    var items = [];
+    var callbacks = [];
+    var timeout;
+
+    return function(text, input_format, callback) {
+      // Collect multiple requests and batch them together
+      items.push({text: text, input_format: input_format});
+      callbacks.push(callback);
+
+      // Run the batch after two frames have passed without another item
+      clearTimeout(timeout);
+      timeout = setTimeout(function(){
+        var request_items = items;
+        var request_callbacks = callbacks;
+        items = [];
+        callbacks = [];
+        $.ajax({
+          type: 'POST',
+          url: Drupal.settings.ckeditor.xss_url,
+          data: {
+            batch: request_items,
+            token: Drupal.settings.ckeditor.ajaxToken
+          },
+          success: function(results) {
+            results.forEach(function (text, index) {
+              request_callbacks[index](text);
+            })
+          }
+        });
+      }, 32);
+    }
+  })();
 
   Drupal.ckeditorOn = function(textarea_id, run_filter) {
 
@@ -163,20 +197,10 @@ if (typeof window.CKEDITOR_BASEPATH === 'undefined') {
     }
 
     if (run_filter && ($("#" + textarea_id).val().length > 0) && typeof(ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]]) != 'undefined' && ((ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]]['ss'] == 1 && typeof(Drupal.settings.ckeditor.autostart) != 'undefined' && typeof(Drupal.settings.ckeditor.autostart[textarea_id]) != 'undefined') || ckeditor_obj.input_formats[ckeditor_obj.elements[textarea_id]]['ss'] == 2)) {
-      $.ajax({
-        type: 'POST',
-        url: Drupal.settings.ckeditor.xss_url,
-        async: false,
-        data: {
-          text: $('#' + textarea_id).val(),
-          input_format: ckeditor_obj.textarea_default_format[textarea_id],
-          token: Drupal.settings.ckeditor.ajaxToken
-        },
-        success: function(text){
-          $("#" + textarea_id).val(text);
-          Drupal.ckeditorInit(textarea_id);
-        }
-      })
+      Drupal.ckeditorFilterXSS($('#' + textarea_id).val(), ckeditor_obj.textarea_default_format[textarea_id], function(text){
+        $("#" + textarea_id).val(text);
+        Drupal.ckeditorInit(textarea_id);
+      });
     }
     else {
       Drupal.ckeditorInit(textarea_id);
